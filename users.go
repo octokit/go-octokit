@@ -27,13 +27,11 @@ type User struct {
 }
 
 func (c *Client) AuthenticatedUser() (*User, error) {
-	body, err := c.get("user", nil)
+	var authUser User
+	err := c.jsonGet("user", nil, &authUser)
 	if err != nil {
 		return nil, err
 	}
-
-	var authUser User
-	err = jsonUnmarshal(body, &authUser)
 
 	return &authUser, err
 }

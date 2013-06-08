@@ -24,13 +24,8 @@ type AuthorizationParams struct {
 }
 
 func (c *Client) Authorizations() ([]Authorization, error) {
-	body, err := c.get("authorizations", nil)
-	if err != nil {
-		return nil, err
-	}
-
 	var auths []Authorization
-	err = jsonUnmarshal(body, &auths)
+	err := c.jsonGet("authorizations", nil, &auths)
 	if err != nil {
 		return nil, err
 	}
