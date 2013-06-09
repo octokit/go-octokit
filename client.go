@@ -20,7 +20,7 @@ type Client struct {
 	Token      string
 }
 
-func (c *Client) WithLogin(login string, password string) *Client {
+func (c *Client) WithLogin(login, password string) *Client {
 	c.Login = login
 	c.Password = password
 	return c
