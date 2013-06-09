@@ -1,4 +1,4 @@
-# Ocotokit [![Build Status](https://drone.io/github.com/jingweno/octokit/status.png)](https://drone.io/github.com/jingweno/octokit/latest)
+# Octokit [![Build Status](https://drone.io/github.com/jingweno/octokit/status.png)](https://drone.io/github.com/jingweno/octokit/latest)
 
 Simple Go wrapper for the GitHub API.
 
