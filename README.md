@@ -18,6 +18,20 @@ func main() {
 }
 ```
 
+## List authorizations
+
+```go
+package main
+
+import "github.com/jingweno/octokit"
+
+func main() {
+    client := octokit.NewClientWithPassword("LOGIN", "PASSWORD")
+    authorizations, err := client.Authorizations()
+    // Do something with authorizations
+}
+```
+
 ## Create a pull request
 
 ```go
