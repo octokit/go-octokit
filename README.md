@@ -2,6 +2,10 @@
 
 Simple Go wrapper for the GitHub API.
 
+# GoDoc
+
+[http://godoc.org/github.com/jingweno/octokit](http://godoc.org/github.com/jingweno/octokit)
+
 # Example
 
 ## Show a user
