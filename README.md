@@ -1,6 +1,6 @@
 # Octokit [![Build Status](https://drone.io/github.com/jingweno/octokit/status.png)](https://drone.io/github.com/jingweno/octokit/latest)
 
-Simple Go wrapper for the GitHub API.
+Simple Go wrapper for the GitHub API. It's written by following the implementation of the official [Ruby wrapper](https://github.com/octokit/octokit.rb).
 
 # GoDoc
 
