@@ -20,6 +20,17 @@ type Client struct {
 	Token      string
 }
 
+func (c *Client) WithLogin(login string, password string) *Client {
+	c.Login = login
+	c.Password = password
+	return c
+}
+
+func (c *Client) WithToken(token string) *Client {
+	c.Token = token
+	return c
+}
+
 func (c *Client) get(path string, extraHeaders map[string]string) ([]byte, error) {
 	return c.request("GET", path, extraHeaders, nil)
 }

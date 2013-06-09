@@ -30,7 +30,7 @@ package main
 import "github.com/jingweno/octokit"
 
 func main() {
-    client := octokit.NewClientWithPassword("LOGIN", "PASSWORD")
+    client := octokit.NewClient().WithLogin("LOGIN", "PASSWORD")
     authorizations, err := client.Authorizations()
     // Do something with authorizations
 }
@@ -44,7 +44,7 @@ package main
 import "github.com/jingweno/octokit"
 
 func main() {
-    client := octokit.NewClientWithToken("OAUTH_TOKEN")
+    client := octokit.NewClient().WithToken("OAUTH_TOKEN")
     repository := octokit.Repository{Name: "octokit", UserName: "jingweno"}
     params := octokit.PullRequestParams{Base: "master", Head: "feature", Title: "A pull request", Body: "A body"}
     pullRequest, err := client.CreatePullRequest(repository, params)

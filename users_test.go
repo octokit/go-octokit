@@ -15,7 +15,7 @@ func TestUser(t *testing.T) {
 }
 
 func TestAuthenticatedUser(t *testing.T) {
-	c := NewClientWithToken(os.Getenv("GITHUB_TOKEN"))
+	c := NewClient().WithToken(os.Getenv("GITHUB_TOKEN"))
 	user, err := c.AuthenticatedUser()
 
 	assert.Equal(t, nil, err)
