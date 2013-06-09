@@ -6,6 +6,14 @@ import (
 	"testing"
 )
 
+func TestUser(t *testing.T) {
+	c := NewClient()
+	user, err := c.User("jingweno")
+
+	assert.Equal(t, nil, err)
+	assert.Equal(t, "jingweno", user.Login)
+}
+
 func TestAuthenticatedUser(t *testing.T) {
 	c := NewClientWithToken(os.Getenv("GITHUB_TOKEN"))
 	user, err := c.AuthenticatedUser()

@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"strings"
 )
 
 func hashAuth(u, p string) string {
@@ -17,4 +18,8 @@ func jsonMarshal(v interface{}) ([]byte, error) {
 
 func jsonUnmarshal(data []byte, v interface{}) error {
 	return json.Unmarshal(data, v)
+}
+
+func concatPath(paths ...string) string {
+	return strings.Join(paths, "/")
 }
