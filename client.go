@@ -53,7 +53,7 @@ func (c *Client) jsonPost(path string, extraHeaders map[string]string, params in
 }
 
 func (c *Client) request(method, path string, extraHeaders map[string]string, content io.Reader) ([]byte, error) {
-	url := fmt.Sprintf("%s/%s", GitHubApiUrl, path)
+	url := concatPath(GitHubApiUrl, path)
 	request, err := http.NewRequest(method, url, content)
 	if err != nil {
 		return nil, err
