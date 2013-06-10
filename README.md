@@ -1,6 +1,7 @@
 # Octokat [![Build Status](https://drone.io/github.com/jingweno/octokat/status.png)](https://drone.io/github.com/jingweno/octokat/latest)
 
 Simple Go wrapper for the GitHub API. It's written by following the implementation of the official [Ruby wrapper](https://github.com/octokat/octokat.rb).
+It's extracted from [my other project](https://github.com/jingweno/gh).
 
 # GoDoc
 
