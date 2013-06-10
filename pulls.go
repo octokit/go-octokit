@@ -1,4 +1,4 @@
-package octokit
+package octokat
 
 import (
 	"fmt"

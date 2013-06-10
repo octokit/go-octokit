@@ -1,4 +1,4 @@
-package octokit
+package octokat
 
 type Authorization struct {
 	Scopes  []string `json:"scopes"`
