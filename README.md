@@ -1,7 +1,6 @@
 # Octokat [![Build Status](https://drone.io/github.com/jingweno/octokat/status.png)](https://drone.io/github.com/jingweno/octokat/latest)
 
-Simple Go wrapper for the GitHub API. It's written by following the implementation of the official [Ruby wrapper](https://github.com/octokat/octokat.rb).
-It's extracted from [my other project](https://github.com/jingweno/gh).
+Simple Go wrapper for the GitHub API. It's extracted from [my other project](https://github.com/jingweno/gh). The API is inspired by [octokit.rb](https://github.com/octokit/octokit.rb).
 
 # GoDoc
 
@@ -46,9 +45,9 @@ import "github.com/jingweno/octokat"
 
 func main() {
     client := octokat.NewClient().WithToken("OAUTH_TOKEN")
-    repository := octokat.Repository{Name: "octokat", UserName: "jingweno"}
+    repo := octokat.Repository{Name: "octokat", UserName: "jingweno"}
     params := octokat.PullRequestParams{Base: "master", Head: "feature", Title: "A pull request", Body: "A body"}
-    pullRequest, err := client.CreatePullRequest(repository, params)
+    pullRequest, err := client.CreatePullRequest(repo, params)
     // Do something with pullRequest
 }
 ```
