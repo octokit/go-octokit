@@ -1,10 +1,10 @@
-# Octokit [![Build Status](https://drone.io/github.com/jingweno/octokit/status.png)](https://drone.io/github.com/jingweno/octokit/latest)
+# Octokat [![Build Status](https://drone.io/github.com/jingweno/octokat/status.png)](https://drone.io/github.com/jingweno/octokat/latest)
 
-Simple Go wrapper for the GitHub API. It's written by following the implementation of the official [Ruby wrapper](https://github.com/octokit/octokit.rb).
+Simple Go wrapper for the GitHub API. It's written by following the implementation of the official [Ruby wrapper](https://github.com/octokat/octokat.rb).
 
 # GoDoc
 
-[http://godoc.org/github.com/jingweno/octokit](http://godoc.org/github.com/jingweno/octokit)
+[http://godoc.org/github.com/jingweno/octokat](http://godoc.org/github.com/jingweno/octokat)
 
 # Example
 
@@ -13,10 +13,10 @@ Simple Go wrapper for the GitHub API. It's written by following the implementati
 ```go
 package main
 
-import "github.com/jingweno/octokit"
+import "github.com/jingweno/octokat"
 
 func main() {
-    client := octokit.NewClient()
+    client := octokat.NewClient()
     user, err := client.User("jingweno")
     // Do something with user
 }
@@ -27,10 +27,10 @@ func main() {
 ```go
 package main
 
-import "github.com/jingweno/octokit"
+import "github.com/jingweno/octokat"
 
 func main() {
-    client := octokit.NewClient().WithLogin("LOGIN", "PASSWORD")
+    client := octokat.NewClient().WithLogin("LOGIN", "PASSWORD")
     authorizations, err := client.Authorizations()
     // Do something with authorizations
 }
@@ -41,12 +41,12 @@ func main() {
 ```go
 package main
 
-import "github.com/jingweno/octokit"
+import "github.com/jingweno/octokat"
 
 func main() {
-    client := octokit.NewClient().WithToken("OAUTH_TOKEN")
-    repository := octokit.Repository{Name: "octokit", UserName: "jingweno"}
-    params := octokit.PullRequestParams{Base: "master", Head: "feature", Title: "A pull request", Body: "A body"}
+    client := octokat.NewClient().WithToken("OAUTH_TOKEN")
+    repository := octokat.Repository{Name: "octokat", UserName: "jingweno"}
+    params := octokat.PullRequestParams{Base: "master", Head: "feature", Title: "A pull request", Body: "A body"}
     pullRequest, err := client.CreatePullRequest(repository, params)
     // Do something with pullRequest
 }
@@ -55,7 +55,7 @@ func main() {
 ## Release Notes
 
 * **0.1.0** June 8, 2013
-  * Extract `octokit` from [`gh`](https://github.com/jingweno/gh)
+  * Extract `octokat` from [`gh`](https://github.com/jingweno/gh)
 
 ## Contributing
 
@@ -67,4 +67,4 @@ func main() {
 
 ## License
 
-octokit is released under the MIT license. See LICENSE.md.
+octokat is released under the MIT license. See LICENSE.md.
