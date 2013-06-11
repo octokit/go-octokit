@@ -1,10 +1,10 @@
 package octokat
 
-type Repository struct {
+type Repo struct {
 	Name     string
 	UserName string
 }
 
-func (r Repository) String() string {
+func (r Repo) String() string {
 	return concatPath(r.UserName, r.Name)
 }

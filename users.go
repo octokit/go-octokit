@@ -23,7 +23,7 @@ type User struct {
 	Following   int       `json:"following"`
 	HtmlUrl     string    `json:"html_url"`
 	CreatedAt   time.Time `json:"created_at"`
-	Type        string    `json:"jsontype"`
+	Type        string    `json:"type"`
 }
 
 func (c *Client) User(login string) (*User, error) {

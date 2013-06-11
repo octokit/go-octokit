@@ -25,15 +25,15 @@ type PullRequest struct {
 	IssueUrl string `json:"issue_url"`
 }
 
-func (c *Client) CreatePullRequest(repo Repository, params PullRequestParams) (*PullRequest, error) {
+func (c *Client) CreatePullRequest(repo Repo, params PullRequestParams) (*PullRequest, error) {
 	return c.createPullRequest(repo, params)
 }
 
-func (c *Client) CreatePullRequestForIssue(repo Repository, params PullRequestForIssueParams) (*PullRequest, error) {
+func (c *Client) CreatePullRequestForIssue(repo Repo, params PullRequestForIssueParams) (*PullRequest, error) {
 	return c.createPullRequest(repo, params)
 }
 
-func (c *Client) createPullRequest(repo Repository, params interface{}) (*PullRequest, error) {
+func (c *Client) createPullRequest(repo Repo, params interface{}) (*PullRequest, error) {
 	path := fmt.Sprintf("repos/%s/pulls", repo)
 	var pr PullRequest
 	err := c.jsonPost(path, nil, params, &pr)

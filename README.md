@@ -45,7 +45,7 @@ import "github.com/jingweno/octokat"
 
 func main() {
     client := octokat.NewClient().WithToken("OAUTH_TOKEN")
-    repo := octokat.Repository{Name: "octokat", UserName: "jingweno"}
+    repo := octokat.Repo{Name: "octokat", UserName: "jingweno"}
     params := octokat.PullRequestParams{Base: "master", Head: "feature", Title: "A pull request", Body: "A body"}
     pullRequest, err := client.CreatePullRequest(repo, params)
     // Do something with pullRequest
@@ -54,6 +54,8 @@ func main() {
 
 ## Release Notes
 
+* **0.2.0** (in progress)
+  * Implement [GET repos](http://developer.github.com/v3/repos/#get)
 * **0.1.0** June 8, 2013
   * Extract `octokat` from [`gh`](https://github.com/jingweno/gh)
 
