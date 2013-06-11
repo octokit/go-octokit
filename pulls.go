@@ -18,11 +18,11 @@ type PullRequestForIssueParams struct {
 }
 
 type PullRequest struct {
-	Url      string `json:"url"`
-	HtmlUrl  string `json:"html_url"`
-	DiffUrl  string `json:"diff_url"`
-	PatchUrl string `json:"patch_url"`
-	IssueUrl string `json:"issue_url"`
+	URL      string `json:"url"`
+	HTMLURL  string `json:"html_url"`
+	DiffURL  string `json:"diff_url"`
+	PatchURL string `json:"patch_url"`
+	IssueURL string `json:"issue_url"`
 }
 
 func (c *Client) CreatePullRequest(repo Repo, params PullRequestParams) (*PullRequest, error) {

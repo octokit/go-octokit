@@ -12,14 +12,14 @@ type Authorization struct {
 type App struct {
 	Url      string `json:"url"`
 	Name     string `json:"name"`
-	ClientId string `json:"client_id"`
+	ClientID string `json:"client_id"`
 }
 
 type AuthorizationParams struct {
 	Scopes       []string `json:"scopes"`
 	Note         string   `json:"note"`
 	NoteUrl      string   `json:"note_url"`
-	ClientId     string   `json:"client_id"`
+	ClientID     string   `json:"client_id"`
 	ClientSecret string   `json:"client_secret"`
 }
 

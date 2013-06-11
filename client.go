@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	GitHubApiUrl  string = "https://" + GitHubApiHost
-	GitHubApiHost string = "api.github.com"
+	GitHubAPIURL  string = "https://" + GitHubAPIHost
+	GitHubAPIHost string = "api.github.com"
 )
 
 type Client struct {
@@ -68,7 +68,7 @@ func (c *Client) jsonPost(path string, extraHeaders map[string]string, params in
 }
 
 func (c *Client) request(method, path string, extraHeaders map[string]string, content io.Reader) ([]byte, error) {
-	url := concatPath(GitHubApiUrl, path)
+	url := concatPath(GitHubAPIURL, path)
 	request, err := http.NewRequest(method, url, content)
 	if err != nil {
 		return nil, err

@@ -6,10 +6,10 @@ import (
 
 type User struct {
 	Login       string    `json:"login"`
-	Id          int       `json:"id"`
-	AvatarUrl   string    `json:"avatar_url"`
-	GravatarId  string    `json:"gravatar_id"`
-	Url         string    `json:"url"`
+	ID          int       `json:"id"`
+	AvatarURL   string    `json:"avatar_url"`
+	GravatarID  string    `json:"gravatar_id"`
+	URL         string    `json:"url"`
 	Name        string    `json:"name"`
 	Company     string    `json:"company"`
 	Blog        string    `json:"blog"`
@@ -21,7 +21,7 @@ type User struct {
 	PublicGists int       `json:"jsonpublic_gists"`
 	Followers   int       `json:"followers"`
 	Following   int       `json:"following"`
-	HtmlUrl     string    `json:"html_url"`
+	HTMLURL     string    `json:"html_url"`
 	CreatedAt   time.Time `json:"created_at"`
 	Type        string    `json:"type"`
 }
