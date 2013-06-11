@@ -14,4 +14,8 @@ func TestRepositories(t *testing.T) {
 	assert.Equal(t, nil, err)
 	assert.Equal(t, "octokat", repository.Name)
 	assert.Equal(t, "jingweno", repository.Owner.Login)
+
+	repo = Repo{"foo", "jingweno"}
+	_, err = c.Repository(repo)
+	assert.NotEqual(t, nil, err)
 }
