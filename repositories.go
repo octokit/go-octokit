@@ -52,3 +52,14 @@ func (c *Client) Repository(repo Repo) (*Repository, error) {
 
 	return &repository, nil
 }
+
+func (c *Client) Fork(repo Repo, params *Params) (*Repository, error) {
+	path := fmt.Sprintf("repos/%s/forks", repo)
+	var repository Repository
+	err := c.jsonPost(path, nil, params, &repository)
+	if err != nil {
+		return nil, err
+	}
+
+	return &repository, nil
+}

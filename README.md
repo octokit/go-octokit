@@ -55,7 +55,8 @@ func main() {
 ## Release Notes
 
 * **0.2.0** (in progress)
-  * Implement [GET repos](http://developer.github.com/v3/repos/#get)
+  * Implement [getting a repository](http://developer.github.com/v3/repos/#get)
+  * Implement [creating a fork](http://developer.github.com/v3/repos/forks/#create-a-fork)
 * **0.1.0** June 8, 2013
   * Extract `octokat` from [`gh`](https://github.com/jingweno/gh)
 

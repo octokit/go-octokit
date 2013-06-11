@@ -49,12 +49,16 @@ func (c *Client) jsonGet(path string, extraHeaders map[string]string, v interfac
 }
 
 func (c *Client) jsonPost(path string, extraHeaders map[string]string, params interface{}, v interface{}) error {
-	b, err := jsonMarshal(params)
-	if err != nil {
-		return err
+	var buffer *bytes.Buffer
+	if params != nil {
+		b, err := jsonMarshal(params)
+		if err != nil {
+			return err
+		}
+
+		buffer = bytes.NewBuffer(b)
 	}
 
-	buffer := bytes.NewBuffer(b)
 	body, err := c.post(path, extraHeaders, buffer)
 	if err != nil {
 		return err

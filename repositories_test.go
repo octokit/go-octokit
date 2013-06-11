@@ -19,3 +19,12 @@ func TestRepositories(t *testing.T) {
 	_, err = c.Repository(repo)
 	assert.NotEqual(t, nil, err)
 }
+
+func TestFork(t *testing.T) {
+	c := NewClient().WithToken(os.Getenv("GITHUB_TOKEN"))
+	repo := Repo{"octokat", "jingweno"}
+
+	repository, err := c.Fork(repo, nil)
+	assert.Equal(t, nil, err)
+	assert.Equal(t, "octokat", repository.Name)
+}
