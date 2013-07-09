@@ -53,6 +53,26 @@ func (c *Client) Repository(repo Repo) (*Repository, error) {
 	return &repository, nil
 }
 
+func (c *Client) CreateRepository(name, params *Params) (*Repository, error) {
+	organization := params.Delete("organization")
+	params.Put("name", name)
+
+	var path string
+	if organization == nil {
+		path = "user/repos"
+	} else {
+		path = fmt.Sprintf("orgs/%s/repos", organization)
+	}
+
+	var repository Repository
+	err := c.jsonPost(path, nil, params, &repository)
+	if err != nil {
+		return nil, err
+	}
+
+	return &repository, nil
+}
+
 func (c *Client) Fork(repo Repo, params *Params) (*Repository, error) {
 	path := fmt.Sprintf("repos/%s/forks", repo)
 	var repository Repository
