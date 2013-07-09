@@ -53,7 +53,7 @@ func (c *Client) Repository(repo Repo) (*Repository, error) {
 	return &repository, nil
 }
 
-func (c *Client) CreateRepository(name, params *Params) (*Repository, error) {
+func (c *Client) CreateRepository(name string, params *Params) (*Repository, error) {
 	organization := params.Delete("organization")
 	params.Put("name", name)
 
