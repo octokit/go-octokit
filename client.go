@@ -8,13 +8,9 @@ import (
 	"net/http"
 )
 
-const (
-	GitHubAPIURL  string = "https://" + GitHubAPIHost
-	GitHubAPIHost string = "api.github.com"
-)
-
 type Client struct {
 	httpClient *http.Client
+	baseURL    string
 	Login      string
 	Password   string
 	Token      string
@@ -68,7 +64,7 @@ func (c *Client) jsonPost(path string, extraHeaders map[string]string, params in
 }
 
 func (c *Client) request(method, path string, extraHeaders map[string]string, content io.Reader) ([]byte, error) {
-	url := concatPath(GitHubAPIURL, path)
+	url := concatPath(c.baseURL, path)
 	request, err := http.NewRequest(method, url, content)
 	if err != nil {
 		return nil, err
@@ -101,6 +97,7 @@ func (c *Client) request(method, path string, extraHeaders map[string]string, co
 
 func (c *Client) setDefaultHeaders(request *http.Request) {
 	request.Header.Set("Accept", "application/vnd.github.beta+json")
+	request.Header.Set("Content-Type", "application/json")
 	if c.Token != "" {
 		request.Header.Set("Authorization", fmt.Sprintf("token %s", c.Token))
 	}

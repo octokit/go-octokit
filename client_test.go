@@ -3,12 +3,11 @@ package octokat
 import (
 	"bytes"
 	"github.com/bmizerany/assert"
-	"net/http"
 	"testing"
 )
 
 func TestGet(t *testing.T) {
-	c := &Client{&http.Client{}, "", "", ""}
+	c := NewClient()
 	body, err := c.get("repos/jingweno/gh/commits", nil)
 
 	assert.Equal(t, nil, err)
@@ -17,7 +16,7 @@ func TestGet(t *testing.T) {
 
 func TestPost(t *testing.T) {
 	content := "# title"
-	c := &Client{&http.Client{}, "", "", ""}
+	c := NewClient()
 
 	headers := make(map[string]string)
 	headers["Content-Type"] = "text/plain"
