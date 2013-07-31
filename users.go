@@ -27,7 +27,13 @@ type User struct {
 }
 
 func (c *Client) User(login string) (*User, error) {
-	path := concatPath("users", login)
+	var path string
+	if login == "" {
+		path = "user"
+	} else {
+		path = concatPath("users", login)
+	}
+
 	var user User
 	err := c.jsonGet(path, nil, &user)
 
@@ -36,14 +42,4 @@ func (c *Client) User(login string) (*User, error) {
 	}
 
 	return &user, err
-}
-
-func (c *Client) AuthenticatedUser() (*User, error) {
-	var authUser User
-	err := c.jsonGet("user", nil, &authUser)
-	if err != nil {
-		return nil, err
-	}
-
-	return &authUser, err
 }

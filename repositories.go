@@ -40,7 +40,22 @@ type Repository struct {
 	HasDownloads  bool          `json:"has_downloads"`
 }
 
-type Organization User
+func (c *Client) Repositories(username string, params *Params) ([]Repository, error) {
+	var path string
+	if username == "" {
+		path = "user/repos"
+	} else {
+		path = fmt.Sprintf("users/%s/repos", username)
+	}
+
+	var repositories []Repository
+	err := c.jsonGet(path, nil, &repositories)
+	if err != nil {
+		return nil, err
+	}
+
+	return repositories, nil
+}
 
 func (c *Client) Repository(repo Repo) (*Repository, error) {
 	path := fmt.Sprintf("repos/%s", repo)
