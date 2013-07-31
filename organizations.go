@@ -19,3 +19,16 @@ func (c *Client) Organizations(user string, params *Params) ([]Organization, err
 
 	return orgs, err
 }
+
+func (c *Client) OrganizationRepositories(org string, params *Params) ([]Repository, error) {
+	path := concatPath("orgs", org, "repos")
+
+	var repos []Repository
+	err := c.jsonGet(path, nil, &repos)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return repos, err
+}
