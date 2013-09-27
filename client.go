@@ -10,7 +10,7 @@ import (
 
 type Client struct {
 	httpClient *http.Client
-	baseURL    string
+	BaseURL    string
 	Login      string
 	Password   string
 	Token      string
@@ -64,7 +64,7 @@ func (c *Client) jsonPost(path string, extraHeaders map[string]string, params in
 }
 
 func (c *Client) request(method, path string, extraHeaders map[string]string, content io.Reader) ([]byte, error) {
-	url := concatPath(c.baseURL, path)
+	url := concatPath(c.BaseURL, path)
 	request, err := http.NewRequest(method, url, content)
 	if err != nil {
 		return nil, err
