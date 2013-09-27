@@ -27,16 +27,16 @@ func (c *Client) WithToken(token string) *Client {
 	return c
 }
 
-func (c *Client) get(path string, extraHeaders map[string]string) ([]byte, error) {
-	return c.request("GET", path, extraHeaders, nil)
+func (c *Client) get(path string, options *Options) ([]byte, error) {
+	return c.request("GET", path, options, nil)
 }
 
-func (c *Client) post(path string, extraHeaders map[string]string, content io.Reader) ([]byte, error) {
-	return c.request("POST", path, extraHeaders, content)
+func (c *Client) post(path string, options *Options, content io.Reader) ([]byte, error) {
+	return c.request("POST", path, options, content)
 }
 
-func (c *Client) jsonGet(path string, extraHeaders map[string]string, v interface{}) error {
-	body, err := c.get(path, extraHeaders)
+func (c *Client) jsonGet(path string, options *Options, v interface{}) error {
+	body, err := c.get(path, options)
 	if err != nil {
 		return err
 	}
@@ -44,7 +44,7 @@ func (c *Client) jsonGet(path string, extraHeaders map[string]string, v interfac
 	return jsonUnmarshal(body, v)
 }
 
-func (c *Client) jsonPost(path string, extraHeaders map[string]string, params interface{}, v interface{}) error {
+func (c *Client) jsonPost(path string, options *Options, params interface{}, v interface{}) error {
 	var buffer *bytes.Buffer
 	if params != nil {
 		b, err := jsonMarshal(params)
@@ -55,7 +55,7 @@ func (c *Client) jsonPost(path string, extraHeaders map[string]string, params in
 		buffer = bytes.NewBuffer(b)
 	}
 
-	body, err := c.post(path, extraHeaders, buffer)
+	body, err := c.post(path, options, buffer)
 	if err != nil {
 		return err
 	}
@@ -63,7 +63,7 @@ func (c *Client) jsonPost(path string, extraHeaders map[string]string, params in
 	return jsonUnmarshal(body, v)
 }
 
-func (c *Client) request(method, path string, extraHeaders map[string]string, content io.Reader) ([]byte, error) {
+func (c *Client) request(method, path string, options *Options, content io.Reader) ([]byte, error) {
 	url := concatPath(c.BaseURL, path)
 	request, err := http.NewRequest(method, url, content)
 	if err != nil {
@@ -72,8 +72,8 @@ func (c *Client) request(method, path string, extraHeaders map[string]string, co
 
 	c.setDefaultHeaders(request)
 
-	if extraHeaders != nil {
-		for h, v := range extraHeaders {
+	if options != nil {
+		for h, v := range options.Headers {
 			request.Header.Set(h, v)
 		}
 	}

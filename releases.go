@@ -5,6 +5,10 @@ import (
 	"time"
 )
 
+const (
+	previewMediaType string = "application/vnd.github.manifold-preview"
+)
+
 type Asset struct {
 	ID            int       `json:"id,omitempty"`
 	Name          string    `json:"name,omitempty"`
@@ -38,16 +42,25 @@ type Release struct {
 // List releases for a repository
 //
 // http://developer.github.com/v3/repos/releases/#list-releases-for-a-repository
-func (c *Client) Releases(repo Repo) ([]Release, error) {
+func (c *Client) Releases(repo Repo, options *Options) (releases []Release, err error) {
 	path := fmt.Sprintf("repos/%s/releases", repo)
-	var releases []Release
 
-	headers := make(map[string]string)
-	headers["Accept"] = "application/vnd.github.manifold-preview"
-	err := c.jsonGet(path, headers, &releases)
-	if err != nil {
-		return nil, err
+	options = addPreviewMediaType(options)
+	err = c.jsonGet(path, options, &releases)
+
+	return
+}
+
+func addPreviewMediaType(options *Options) *Options {
+	if options == nil {
+		options = &Options{}
 	}
 
-	return releases, nil
+	if options.Headers == nil {
+		options.Headers = make(map[string]string)
+	}
+
+	options.Headers["Accept"] = previewMediaType
+
+	return options
 }

@@ -43,6 +43,10 @@ func testMethod(t *testing.T, r *http.Request, want string) {
 	assert.Equal(t, want, r.Method)
 }
 
+func testHeader(t *testing.T, r *http.Request, header string, want string) {
+	assert.Equal(t, want, r.Header.Get(header))
+}
+
 func respondWith(w http.ResponseWriter, s string) {
 	fmt.Fprint(w, s)
 }

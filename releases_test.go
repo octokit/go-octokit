@@ -6,17 +6,23 @@ import (
 	"testing"
 )
 
+func TestAddPreviewMediaType(t *testing.T) {
+	options := addPreviewMediaType(nil)
+	assert.Equal(t, previewMediaType, options.Headers["Accept"])
+}
+
 func TestReleases(t *testing.T) {
 	setup()
 	defer tearDown()
 
 	mux.HandleFunc("/repos/jingweno/gh/releases", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", previewMediaType)
 		respondWith(w, contentOf("releases.json"))
 	})
 
 	repo := Repo{UserName: "jingweno", Name: "gh"}
-	releases, _ := client.Releases(repo)
+	releases, _ := client.Releases(repo, nil)
 	assert.T(t, len(releases) != 0)
 
 	firstRelease := releases[0]
