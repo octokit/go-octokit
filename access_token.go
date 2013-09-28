@@ -1,23 +1,30 @@
 package octokat
 
 type AccessToken struct {
-	Token     string `json:"access_token"`
-	TokenType string `json:"token_type"`
+	Token     string `json:"access_token,omitempty"`
+	TokenType string `json:"token_type,omitempty"`
 }
 
-func CreateAccessToken(params *Params) (*AccessToken, error) {
-	if err := params.Require("client_id", "client_secret", "code"); err != nil {
-		return nil, err
-	}
+type AccessTokenParams struct {
+	ClientID     string `json:"client_id,omitempty"`
+	ClientSecret string `json:"client_secret,omitempty"`
+	Code         string `json:"code,omitempty"`
+	RedirectURI  string `json:"redirect_uri,omitempty"`
+}
 
+func CreateAccessToken(options *Options) (accessToken *AccessToken, err error) {
 	client := NewClient()
 	client.BaseURL = GitHubURL
-	var accessToken AccessToken
-	headers := Headers{"Accept": "application/json"}
-	options := Options{Headers: headers}
-	if err := client.jsonPost("login/oauth/access_token", &options, &accessToken); err != nil {
-		return nil, err
+
+	if options == nil {
+		options = &Options{}
 	}
 
-	return &accessToken, nil
+	if options.Headers == nil {
+		options.Headers = Headers{}
+	}
+
+	options.Headers["Accept"] = "application/json"
+	err = client.jsonPost("login/oauth/access_token", options, &accessToken)
+	return
 }
