@@ -21,6 +21,6 @@ type Status struct {
 // See http://developer.github.com/v3/repos/statuses
 func (c *Client) Statuses(repo Repo, sha string, options *Options) (statuses []Status, err error) {
 	path := fmt.Sprintf("repos/%s/statuses/%s", repo, sha)
-	err = c.jsonGet(path, nil, &statuses)
+	err = c.jsonGet(path, options, &statuses)
 	return
 }
