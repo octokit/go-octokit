@@ -27,7 +27,7 @@ type User struct {
 	Type        string    `json:"type"`
 }
 
-func (c *Client) User(login string) (user *User, err error) {
+func (c *Client) User(login string, options *Options) (user *User, err error) {
 	var path string
 	if login == "" {
 		path = "user"
@@ -35,6 +35,6 @@ func (c *Client) User(login string) (user *User, err error) {
 		path = fmt.Sprintf("users/%s", login)
 	}
 
-	err = c.jsonGet(path, nil, &user)
+	err = c.jsonGet(path, options, &user)
 	return
 }

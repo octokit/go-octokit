@@ -15,7 +15,7 @@ func TestUser(t *testing.T) {
 		respondWith(w, loadFixture("user.json"))
 	})
 
-	user, _ := client.User("")
+	user, _ := client.User("", nil)
 
 	assert.Equal(t, 169064, user.ID)
 	assert.Equal(t, "jingweno", user.Login)
@@ -27,7 +27,7 @@ func TestUser(t *testing.T) {
 		respondWith(w, loadFixture("user.json"))
 	})
 
-	user, _ = client.User("jingweno")
+	user, _ = client.User("jingweno", nil)
 
 	assert.Equal(t, 169064, user.ID)
 	assert.Equal(t, "jingweno", user.Login)
