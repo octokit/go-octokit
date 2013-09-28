@@ -46,12 +46,3 @@ func TestCreateRepository(t *testing.T) {
 	assert.Equal(t, "git@github.com:octocat/Hello-World.git", repo.SSHURL)
 	assert.Equal(t, "master", repo.MasterBranch)
 }
-
-func TestFork(t *testing.T) {
-	//c := NewClient().WithToken(os.Getenv("GITHUB_TOKEN"))
-	//repo := Repo{"octokat", "jingweno"}
-
-	//repository, err := c.Fork(repo, nil)
-	//assert.Equal(t, nil, err)
-	//assert.Equal(t, "octokat", repository.Name)
-}
