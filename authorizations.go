@@ -22,14 +22,6 @@ type App struct {
 	Name     string `json:"name,omitempty"`
 }
 
-type AuthorizationParams struct {
-	Scopes       []string `json:"scopes,omitempty"`
-	Note         string   `json:"note,omitempty"`
-	NoteUrl      string   `json:"note_url,omitempty"`
-	ClientID     string   `json:"client_id,omitempty"`
-	ClientSecret string   `json:"client_secret,omitempty"`
-}
-
 // List the authenticated user's authorizations
 //
 // API for users to manage their own tokens.
@@ -40,6 +32,14 @@ type AuthorizationParams struct {
 func (c *Client) Authorizations(options *Options) (auths []Authorization, err error) {
 	err = c.jsonGet("authorizations", options, &auths)
 	return
+}
+
+type AuthorizationParams struct {
+	Scopes       []string `json:"scopes,omitempty"`
+	Note         string   `json:"note,omitempty"`
+	NoteUrl      string   `json:"note_url,omitempty"`
+	ClientID     string   `json:"client_id,omitempty"`
+	ClientSecret string   `json:"client_secret,omitempty"`
 }
 
 // Create an authorization for the authenticated user.
