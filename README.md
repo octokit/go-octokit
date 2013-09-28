@@ -17,7 +17,7 @@ import "github.com/jingweno/octokat"
 
 func main() {
     client := octokat.NewClient()
-    user, err := client.User("jingweno")
+    user, err := client.User("jingweno", nil)
     // Do something with user
 }
 ```
@@ -31,7 +31,7 @@ import "github.com/jingweno/octokat"
 
 func main() {
     client := octokat.NewClient().WithLogin("LOGIN", "PASSWORD")
-    authorizations, err := client.Authorizations()
+    authorizations, err := client.Authorizations(nil)
     // Do something with authorizations
 }
 ```
@@ -47,18 +47,15 @@ func main() {
     client := octokat.NewClient().WithToken("OAUTH_TOKEN")
     repo := octokat.Repo{Name: "octokat", UserName: "jingweno"}
     params := octokat.PullRequestParams{Base: "master", Head: "feature", Title: "A pull request", Body: "A body"}
-    pullRequest, err := client.CreatePullRequest(repo, params)
+    options := Options{Params: params}
+    pullRequest, err := client.CreatePullRequest(repo, options)
     // Do something with pullRequest
 }
 ```
 
 ## Release Notes
 
-* **0.2.0** June 11, 2013
-  * Implement [getting a repository](http://developer.github.com/v3/repos/#get)
-  * Implement [creating a fork](http://developer.github.com/v3/repos/forks/#create-a-fork)
-* **0.1.0** June 8, 2013
-  * Extract `octokat` from [`gh`](https://github.com/jingweno/gh)
+See [Releases](https://github.com/jingweno/octokat/releases).
 
 ## Contributing
 
@@ -70,4 +67,5 @@ func main() {
 
 ## License
 
-octokat is released under the MIT license. See LICENSE.md.
+octokat is released under the MIT license. See
+[LICENSE.md](https://github.com/jingweno/octokat/blob/master/LICENSE.md).
