@@ -1,6 +1,7 @@
 package octokat
 
 import (
+	"encoding/json"
 	"github.com/bmizerany/assert"
 	"net/http"
 	"reflect"
@@ -40,12 +41,17 @@ func TestCreateAuthorization(t *testing.T) {
 	setup()
 	defer tearDown()
 
+	params := AuthorizationParams{Scopes: []string{"public_repo"}}
+
 	mux.HandleFunc("/authorizations", func(w http.ResponseWriter, r *http.Request) {
+		var authParams AuthorizationParams
+		json.NewDecoder(r.Body).Decode(&authParams)
+		assert.T(t, reflect.DeepEqual(authParams, params))
+
 		testMethod(t, r, "POST")
 		respondWith(w, loadFixture("create_authorization.json"))
 	})
 
-	params := AuthorizationParams{Scopes: []string{"public_repo"}}
 	options := Options{Params: params}
 	auth, _ := client.CreateAuthorization(&options)
 

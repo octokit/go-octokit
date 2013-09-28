@@ -37,7 +37,7 @@ func (c *Client) Authorizations(options *Options) (auths []Authorization, err er
 type AuthorizationParams struct {
 	Scopes       []string `json:"scopes,omitempty"`
 	Note         string   `json:"note,omitempty"`
-	NoteUrl      string   `json:"note_url,omitempty"`
+	NoteURL      string   `json:"note_url,omitempty"`
 	ClientID     string   `json:"client_id,omitempty"`
 	ClientSecret string   `json:"client_secret,omitempty"`
 }
