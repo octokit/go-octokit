@@ -13,7 +13,7 @@ func CreateAccessToken(params *Params) (*AccessToken, error) {
 	client := NewClient()
 	client.BaseURL = GitHubURL
 	var accessToken AccessToken
-	headers := map[string]string{"Accept": "application/json"}
+	headers := Headers{"Accept": "application/json"}
 	options := Options{Headers: headers}
 	if err := client.jsonPost("login/oauth/access_token", &options, params, &accessToken); err != nil {
 		return nil, err

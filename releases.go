@@ -57,7 +57,7 @@ func addPreviewMediaType(options *Options) *Options {
 	}
 
 	if options.Headers == nil {
-		options.Headers = make(map[string]string)
+		options.Headers = Headers{}
 	}
 
 	options.Headers["Accept"] = previewMediaType
