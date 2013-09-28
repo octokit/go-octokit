@@ -1,4 +1,4 @@
-# Octokat [![Build Status](https://drone.io/github.com/jingweno/octokat/status.png)](https://drone.io/github.com/jingweno/octokat/latest)
+# Octokat [![Build Status](https://travis-ci.org/jingweno/octokat.png?branch=master)](https://travis-ci.org/jingweno/octokat)
 
 Simple Go wrapper for the GitHub API. It's extracted from [my other project](https://github.com/jingweno/gh). The API is inspired by [octokit.rb](https://github.com/octokit/octokit.rb).
 
