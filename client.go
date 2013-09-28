@@ -64,7 +64,7 @@ func (c *Client) jsonPost(path string, options *Options, v interface{}) error {
 }
 
 func (c *Client) request(method, path string, options *Options, content io.Reader) ([]byte, error) {
-	url := concatPath(c.BaseURL, path)
+	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
 	request, err := http.NewRequest(method, url, content)
 	if err != nil {
 		return nil, err

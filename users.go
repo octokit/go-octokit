@@ -1,6 +1,7 @@
 package octokat
 
 import (
+	"fmt"
 	"time"
 )
 
@@ -26,20 +27,14 @@ type User struct {
 	Type        string    `json:"type"`
 }
 
-func (c *Client) User(login string) (*User, error) {
+func (c *Client) User(login string) (user *User, err error) {
 	var path string
 	if login == "" {
 		path = "user"
 	} else {
-		path = concatPath("users", login)
+		path = fmt.Sprintf("users/%s", login)
 	}
 
-	var user User
-	err := c.jsonGet(path, nil, &user)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return &user, err
+	err = c.jsonGet(path, nil, &user)
+	return
 }

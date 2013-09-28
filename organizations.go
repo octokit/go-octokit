@@ -1,5 +1,9 @@
 package octokat
 
+import (
+	"fmt"
+)
+
 type Organization User
 
 func (c *Client) Organizations(user string, params *Params) ([]Organization, error) {
@@ -7,7 +11,7 @@ func (c *Client) Organizations(user string, params *Params) ([]Organization, err
 	if user == "" {
 		path = "user/orgs"
 	} else {
-		path = concatPath("users", user, "orgs")
+		path = fmt.Sprintf("users/%s/orgs", user)
 	}
 
 	var orgs []Organization
@@ -21,7 +25,7 @@ func (c *Client) Organizations(user string, params *Params) ([]Organization, err
 }
 
 func (c *Client) OrganizationRepositories(org string, params *Params) ([]Repository, error) {
-	path := concatPath("orgs", org, "repos")
+	path := fmt.Sprintf("orgs/%s/repos", org)
 
 	var repos []Repository
 	err := c.jsonGet(path, nil, &repos)
