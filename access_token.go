@@ -15,7 +15,7 @@ func CreateAccessToken(params *Params) (*AccessToken, error) {
 	var accessToken AccessToken
 	headers := Headers{"Accept": "application/json"}
 	options := Options{Headers: headers}
-	if err := client.jsonPost("login/oauth/access_token", &options, params, &accessToken); err != nil {
+	if err := client.jsonPost("login/oauth/access_token", &options, &accessToken); err != nil {
 		return nil, err
 	}
 

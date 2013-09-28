@@ -68,9 +68,14 @@ func (c *Client) Repository(repo Repo) (*Repository, error) {
 	return &repository, nil
 }
 
-func (c *Client) CreateRepository(name string, params *Params) (*Repository, error) {
+func (c *Client) CreateRepository(name string, params *Params, options *Options) (*Repository, error) {
 	organization := params.Delete("organization")
 	params.Put("name", name)
+
+	if options == nil {
+		options = &Options{}
+	}
+	options.Params = params
 
 	var path string
 	if organization == nil {
@@ -80,7 +85,7 @@ func (c *Client) CreateRepository(name string, params *Params) (*Repository, err
 	}
 
 	var repository Repository
-	err := c.jsonPost(path, nil, params, &repository)
+	err := c.jsonPost(path, options, &repository)
 	if err != nil {
 		return nil, err
 	}
@@ -88,10 +93,15 @@ func (c *Client) CreateRepository(name string, params *Params) (*Repository, err
 	return &repository, nil
 }
 
-func (c *Client) Fork(repo Repo, params *Params) (*Repository, error) {
+func (c *Client) Fork(repo Repo, params *Params, options *Options) (*Repository, error) {
+	if options == nil {
+		options = &Options{}
+	}
+	options.Params = params
+
 	path := fmt.Sprintf("repos/%s/forks", repo)
 	var repository Repository
-	err := c.jsonPost(path, nil, params, &repository)
+	err := c.jsonPost(path, options, &repository)
 	if err != nil {
 		return nil, err
 	}

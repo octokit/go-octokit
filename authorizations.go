@@ -50,6 +50,6 @@ func (c *Client) Authorizations(options *Options) (auths []Authorization, err er
 // See http://developer.github.com/v3/oauth/#scopes Available scopes
 // See http://developer.github.com/v3/oauth/#create-a-new-authorization
 func (c *Client) CreateAuthorization(options *Options) (auth *Authorization, err error) {
-	err = c.jsonPost("authorizations", options, options.Params, &auth)
+	err = c.jsonPost("authorizations", options, &auth)
 	return
 }

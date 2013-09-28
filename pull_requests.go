@@ -20,7 +20,7 @@ type PullRequestForIssueParams struct {
 
 type PullRequest struct {
 	URL               string     `json:"url"`
-	Id                int        `json:"id"`
+	ID                int        `json:"id"`
 	HTMLURL           string     `json:"html_url"`
 	DiffURL           string     `json:"diff_url"`
 	PatchURL          string     `json:"patch_url"`
@@ -60,27 +60,24 @@ type Commit struct {
 	Repo  Repository `json:"repo"`
 }
 
-func (c *Client) PullRequest(repo Repo, number string) (*PullRequest, error) {
+func (c *Client) PullRequest(repo Repo, number string, options *Options) (pr *PullRequest, err error) {
 	path := fmt.Sprintf("repos/%s/pulls/%s", repo, number)
-
-	var pr PullRequest
-	c.jsonGet(path, nil, &pr)
-
-	return &pr, nil
+	err = c.jsonGet(path, options, &pr)
+	return
 }
 
-func (c *Client) CreatePullRequest(repo Repo, params PullRequestParams) (*PullRequest, error) {
-	return c.createPullRequest(repo, params)
+func (c *Client) CreatePullRequest(repo Repo, options *Options) (*PullRequest, error) {
+	return c.createPullRequest(repo, options)
 }
 
-func (c *Client) CreatePullRequestForIssue(repo Repo, params PullRequestForIssueParams) (*PullRequest, error) {
-	return c.createPullRequest(repo, params)
+func (c *Client) CreatePullRequestForIssue(repo Repo, options *Options) (*PullRequest, error) {
+	return c.createPullRequest(repo, options)
 }
 
-func (c *Client) createPullRequest(repo Repo, params interface{}) (*PullRequest, error) {
+func (c *Client) createPullRequest(repo Repo, options *Options) (*PullRequest, error) {
 	path := fmt.Sprintf("repos/%s/pulls", repo)
 	var pr PullRequest
-	err := c.jsonPost(path, nil, params, &pr)
+	err := c.jsonPost(path, options, &pr)
 	if err != nil {
 		return nil, err
 	}

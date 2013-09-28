@@ -44,10 +44,10 @@ func (c *Client) jsonGet(path string, options *Options, v interface{}) error {
 	return jsonUnmarshal(body, v)
 }
 
-func (c *Client) jsonPost(path string, options *Options, params interface{}, v interface{}) error {
+func (c *Client) jsonPost(path string, options *Options, v interface{}) error {
 	var buffer *bytes.Buffer
-	if params != nil {
-		b, err := jsonMarshal(params)
+	if options.Params != nil {
+		b, err := jsonMarshal(options.Params)
 		if err != nil {
 			return err
 		}
