@@ -1,0 +1,20 @@
+[
+  {
+    "scopes": [
+      "repo",
+      "user"
+    ],
+    "id": 1,
+    "url": "https://api.github.com/authorizations/1",
+    "app": {
+      "client_id": "123",
+      "url": "http://localhost:8080",
+      "name": "Test"
+    },
+    "token": "456",
+    "note": null,
+    "note_url": null,
+    "created_at": "2012-11-16T01:05:51Z",
+    "updated_at": "2013-08-21T03:29:51Z"
+  }
+]

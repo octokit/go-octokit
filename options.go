@@ -2,7 +2,7 @@ package octokat
 
 type Options struct {
 	Headers Headers
-	Params  Params
+	Params  interface{}
 }
 
 type Headers map[string]string
