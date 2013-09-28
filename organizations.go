@@ -4,9 +4,17 @@ import (
 	"fmt"
 )
 
-type Organization User
+type Organization struct {
+	AvatarURL        string `json:"avatar_url,omitempty"`
+	PublicMembersURL string `json:"public_member_url,omitempty"`
+	MembersURL       string `json:"members_url,omitempty"`
+	EventsURL        string `json:"events_url,omitempty"`
+	URL              string `json:"url,omitempty"`
+	ID               int    `json:"id,omitempty"`
+	Login            string `json:"login,omitempty"`
+}
 
-func (c *Client) Organizations(user string, params *Params) ([]Organization, error) {
+func (c *Client) Organizations(user string, options *Options) (orgs []Organization, err error) {
 	var path string
 	if user == "" {
 		path = "user/orgs"
@@ -14,25 +22,12 @@ func (c *Client) Organizations(user string, params *Params) ([]Organization, err
 		path = fmt.Sprintf("users/%s/orgs", user)
 	}
 
-	var orgs []Organization
-	err := c.jsonGet(path, nil, &orgs)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return orgs, err
+	err = c.jsonGet(path, options, &orgs)
+	return
 }
 
-func (c *Client) OrganizationRepositories(org string, params *Params) ([]Repository, error) {
+func (c *Client) OrganizationRepositories(org string, options *Options) (repos []Repository, err error) {
 	path := fmt.Sprintf("orgs/%s/repos", org)
-
-	var repos []Repository
-	err := c.jsonGet(path, nil, &repos)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return repos, err
+	err = c.jsonGet(path, options, &repos)
+	return
 }
