@@ -1,29 +1,39 @@
 package octokat
 
 import (
-	//"bytes"
-	//"github.com/bmizerany/assert"
+	"bytes"
+	"net/http"
 	"testing"
 )
 
 func TestGet(t *testing.T) {
-	//c := NewClient()
-	//body, err := c.get("repos/jingweno/gh/commits", nil)
+	setup()
+	defer tearDown()
 
-	//assert.Equal(t, nil, err)
-	//assert.T(t, len(body) > 0)
+	mux.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", MediaType)
+		testHeader(t, r, "User-Agent", UserAgent)
+		testHeader(t, r, "Content-Type", DefaultContentType)
+		respondWith(w, "ok")
+	})
+
+	client.get("foo", nil)
 }
 
 func TestPost(t *testing.T) {
-	//content := "# title"
-	//c := NewClient()
+	setup()
+	defer tearDown()
 
-	//headers := make(map[string]string)
-	//headers["Content-Type"] = "text/plain"
-	//options := Options{Headers: headers}
-	//body, err := c.post("markdown/raw", &options, bytes.NewBufferString(content))
+	content := "content"
+	mux.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", MediaType)
+		testHeader(t, r, "User-Agent", UserAgent)
+		testHeader(t, r, "Content-Type", DefaultContentType)
+		testBody(t, r, content)
+		respondWith(w, "ok")
+	})
 
-	//assert.Equal(t, nil, err)
-	//expectBody := "<h1>\n<a name=\"title\" class=\"anchor\" href=\"#title\"><span class=\"octicon octicon-link\"></span></a>title</h1>"
-	//assert.Equal(t, expectBody, string(body))
+	client.post("foo", nil, bytes.NewBufferString(content))
 }

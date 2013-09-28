@@ -27,16 +27,21 @@ func (c *Client) WithToken(token string) *Client {
 	return c
 }
 
-func (c *Client) get(path string, options *Options) ([]byte, error) {
-	return c.request("GET", path, options, nil)
+func (c *Client) get(path string, headers Headers) ([]byte, error) {
+	return c.request("GET", path, headers, nil)
 }
 
-func (c *Client) post(path string, options *Options, content io.Reader) ([]byte, error) {
-	return c.request("POST", path, options, content)
+func (c *Client) post(path string, headers Headers, content io.Reader) ([]byte, error) {
+	return c.request("POST", path, headers, content)
 }
 
 func (c *Client) jsonGet(path string, options *Options, v interface{}) error {
-	body, err := c.get(path, options)
+	var headers Headers
+	if options != nil {
+		headers = options.Headers
+	}
+
+	body, err := c.get(path, headers)
 	if err != nil {
 		return err
 	}
@@ -45,8 +50,13 @@ func (c *Client) jsonGet(path string, options *Options, v interface{}) error {
 }
 
 func (c *Client) jsonPost(path string, options *Options, v interface{}) error {
+	var headers Headers
+	if options != nil {
+		headers = options.Headers
+	}
+
 	var buffer *bytes.Buffer
-	if options.Params != nil {
+	if options != nil && options.Params != nil {
 		b, err := jsonMarshal(options.Params)
 		if err != nil {
 			return err
@@ -55,7 +65,7 @@ func (c *Client) jsonPost(path string, options *Options, v interface{}) error {
 		buffer = bytes.NewBuffer(b)
 	}
 
-	body, err := c.post(path, options, buffer)
+	body, err := c.post(path, headers, buffer)
 	if err != nil {
 		return err
 	}
@@ -63,7 +73,7 @@ func (c *Client) jsonPost(path string, options *Options, v interface{}) error {
 	return jsonUnmarshal(body, v)
 }
 
-func (c *Client) request(method, path string, options *Options, content io.Reader) ([]byte, error) {
+func (c *Client) request(method, path string, headers Headers, content io.Reader) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
 	request, err := http.NewRequest(method, url, content)
 	if err != nil {
@@ -72,8 +82,8 @@ func (c *Client) request(method, path string, options *Options, content io.Reade
 
 	c.setDefaultHeaders(request)
 
-	if options != nil {
-		for h, v := range options.Headers {
+	if headers != nil {
+		for h, v := range headers {
 			request.Header.Set(h, v)
 		}
 	}
@@ -96,8 +106,9 @@ func (c *Client) request(method, path string, options *Options, content io.Reade
 }
 
 func (c *Client) setDefaultHeaders(request *http.Request) {
-	request.Header.Set("Accept", "application/vnd.github.beta+json")
-	request.Header.Set("Content-Type", "application/json")
+	request.Header.Set("Accept", MediaType)
+	request.Header.Set("User-Agent", UserAgent)
+	request.Header.Set("Content-Type", DefaultContentType)
 	if c.Token != "" {
 		request.Header.Set("Authorization", fmt.Sprintf("token %s", c.Token))
 	}

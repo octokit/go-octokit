@@ -47,6 +47,11 @@ func testHeader(t *testing.T, r *http.Request, header string, want string) {
 	assert.Equal(t, want, r.Header.Get(header))
 }
 
+func testBody(t *testing.T, r *http.Request, want string) {
+	body, _ := ioutil.ReadAll(r.Body)
+	assert.Equal(t, want, string(body))
+}
+
 func respondWith(w http.ResponseWriter, s string) {
 	fmt.Fprint(w, s)
 }

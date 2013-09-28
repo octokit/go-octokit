@@ -5,8 +5,12 @@ import (
 )
 
 const (
-	GitHubURL    string = "https://github.com"
-	GitHubAPIURL string = "https://api.github.com"
+	GitHubURL          = "https://github.com"
+	GitHubAPIURL       = "https://api.github.com"
+	UserAgent          = "Octokat Go " + Version
+	MediaType          = "application/vnd.github.beta+json"
+	DefaultContentType = "application/json"
+	Version            = "0.3.0"
 )
 
 func NewClient() *Client {
