@@ -6,14 +6,14 @@ import (
 )
 
 type Status struct {
-	CreatedAt   time.Time `json:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at"`
-	State       string    `json:"state"`
-	TargetURL   string    `json:"target_url"`
-	Description string    `json:"description"`
-	ID          int       `json:"id"`
-	URL         string    `json:"url"`
-	Creator     User      `json:"creator"`
+	CreatedAt   time.Time `json:"created_at,omitempty"`
+	UpdatedAt   time.Time `json:"updated_at,omitempty"`
+	State       string    `json:"state,omitempty"`
+	TargetURL   string    `json:"target_url,omitempty"`
+	Description string    `json:"description,omitempty"`
+	ID          int       `json:"id,omitempty"`
+	URL         string    `json:"url,omitempty"`
+	Creator     User      `json:"creator,omitempty"`
 }
 
 // List all statuses for a given commit
