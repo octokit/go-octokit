@@ -23,7 +23,7 @@ func TestReleases(t *testing.T) {
 
 	repo := Repo{UserName: "jingweno", Name: "gh"}
 	releases, _ := client.Releases(repo, nil)
-	assert.T(t, len(releases) != 0)
+	assert.Equal(t, 1, len(releases))
 
 	firstRelease := releases[0]
 	assert.Equal(t, 50013, firstRelease.ID)
@@ -41,7 +41,7 @@ func TestReleases(t *testing.T) {
 	assert.Equal(t, "2013-09-23 01:07:56 +0000 UTC", firstRelease.PublishedAt.String())
 
 	firstReleaseAssets := firstRelease.Assets
-	assert.T(t, len(firstReleaseAssets) != 0)
+	assert.Equal(t, 8, len(firstReleaseAssets))
 
 	firstAsset := firstReleaseAssets[0]
 	assert.Equal(t, 20428, firstAsset.ID)
