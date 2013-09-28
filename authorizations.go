@@ -37,14 +37,9 @@ type AuthorizationParams struct {
 // Basic Authentication.
 //
 // See http://developer.github.com/v3/oauth/#list-your-authorizations
-func (c *Client) Authorizations(options *Options) ([]Authorization, error) {
-	var auths []Authorization
-	err := c.jsonGet("authorizations", options, &auths)
-	if err != nil {
-		return nil, err
-	}
-
-	return auths, nil
+func (c *Client) Authorizations(options *Options) (auths []Authorization, err error) {
+	err = c.jsonGet("authorizations", options, &auths)
+	return
 }
 
 // Create an authorization for the authenticated user.
@@ -54,12 +49,7 @@ func (c *Client) Authorizations(options *Options) ([]Authorization, error) {
 //
 // See http://developer.github.com/v3/oauth/#scopes Available scopes
 // See http://developer.github.com/v3/oauth/#create-a-new-authorization
-func (c *Client) CreateAuthorization(options *Options) (*Authorization, error) {
-	var auth Authorization
-	err := c.jsonPost("authorizations", options, options.Params, &auth)
-	if err != nil {
-		return nil, err
-	}
-
-	return &auth, nil
+func (c *Client) CreateAuthorization(options *Options) (auth *Authorization, err error) {
+	err = c.jsonPost("authorizations", options, options.Params, &auth)
+	return
 }

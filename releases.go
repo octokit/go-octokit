@@ -44,10 +44,8 @@ type Release struct {
 // http://developer.github.com/v3/repos/releases/#list-releases-for-a-repository
 func (c *Client) Releases(repo Repo, options *Options) (releases []Release, err error) {
 	path := fmt.Sprintf("repos/%s/releases", repo)
-
 	options = addPreviewMediaType(options)
 	err = c.jsonGet(path, options, &releases)
-
 	return
 }
 
