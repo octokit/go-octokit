@@ -20,7 +20,8 @@ func TestPost(t *testing.T) {
 
 	headers := make(map[string]string)
 	headers["Content-Type"] = "text/plain"
-	body, err := c.post("markdown/raw", headers, bytes.NewBufferString(content))
+	options := Options{Headers: headers}
+	body, err := c.post("markdown/raw", &options, bytes.NewBufferString(content))
 
 	assert.Equal(t, nil, err)
 	expectBody := "<h1>\n<a name=\"title\" class=\"anchor\" href=\"#title\"><span class=\"octicon octicon-link\"></span></a>title</h1>"

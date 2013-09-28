@@ -10,5 +10,5 @@ const (
 )
 
 func NewClient() *Client {
-	return &Client{baseURL: GitHubAPIURL, httpClient: &http.Client{}}
+	return &Client{BaseURL: GitHubAPIURL, httpClient: &http.Client{}}
 }
