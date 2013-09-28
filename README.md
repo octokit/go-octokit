@@ -47,8 +47,8 @@ func main() {
     client := octokat.NewClient().WithToken("OAUTH_TOKEN")
     repo := octokat.Repo{Name: "octokat", UserName: "jingweno"}
     params := octokat.PullRequestParams{Base: "master", Head: "feature", Title: "A pull request", Body: "A body"}
-    options := Options{Params: params}
-    pullRequest, err := client.CreatePullRequest(repo, options)
+    options := octokat.Options{Params: params}
+    pullRequest, err := client.CreatePullRequest(repo, &options)
     // Do something with pullRequest
 }
 ```
