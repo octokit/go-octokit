@@ -16,13 +16,11 @@ type Status struct {
 	Creator     User      `json:"creator"`
 }
 
-func (c *Client) Statuses(repo Repo, sha string) ([]Status, error) {
+// List all statuses for a given commit
+//
+// See http://developer.github.com/v3/repos/statuses
+func (c *Client) Statuses(repo Repo, sha string, options *Options) (statuses []Status, err error) {
 	path := fmt.Sprintf("repos/%s/statuses/%s", repo, sha)
-	var statuses []Status
-	err := c.jsonGet(path, nil, &statuses)
-	if err != nil {
-		return nil, err
-	}
-
-	return statuses, nil
+	err = c.jsonGet(path, nil, &statuses)
+	return
 }

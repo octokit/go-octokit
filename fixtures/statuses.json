@@ -1,0 +1,56 @@
+[
+  {
+    "updated_at": "2013-09-28T20:48:46Z",
+    "created_at": "2013-09-28T20:48:46Z",
+    "creator": {
+      "type": "User",
+      "received_events_url": "https://api.github.com/users/jingweno/received_events",
+      "events_url": "https://api.github.com/users/jingweno/events{/privacy}",
+      "repos_url": "https://api.github.com/users/jingweno/repos",
+      "organizations_url": "https://api.github.com/users/jingweno/orgs",
+      "subscriptions_url": "https://api.github.com/users/jingweno/subscriptions",
+      "starred_url": "https://api.github.com/users/jingweno/starred{/owner}{/repo}",
+      "gists_url": "https://api.github.com/users/jingweno/gists{/gist_id}",
+      "login": "jingweno",
+      "id": 169064,
+      "avatar_url": "https://0.gravatar.com/avatar/41740fef48f778383596392a6b2276c8?d=https%3A%2F%2Fidenticons.github.com%2Fdd5cdc1c8ca1c1a34941e8d3cb5abc1c.png",
+      "gravatar_id": "41740fef48f778383596392a6b2276c8",
+      "url": "https://api.github.com/users/jingweno",
+      "html_url": "https://github.com/jingweno",
+      "followers_url": "https://api.github.com/users/jingweno/followers",
+      "following_url": "https://api.github.com/users/jingweno/following{/other_user}"
+    },
+    "target_url": "https://travis-ci.org/jingweno/gh/builds/11911500",
+    "description": "The Travis CI build is in progress",
+    "state": "pending",
+    "id": 22393833,
+    "url": "https://api.github.com/repos/jingweno/gh/statuses/740211b9c6cd8e526a7124fe2b33115602fbc637"
+  },
+  {
+    "updated_at": "2013-09-28T20:49:20Z",
+    "created_at": "2013-09-28T20:49:20Z",
+    "creator": {
+      "type": "User",
+      "received_events_url": "https://api.github.com/users/jingweno/received_events",
+      "events_url": "https://api.github.com/users/jingweno/events{/privacy}",
+      "repos_url": "https://api.github.com/users/jingweno/repos",
+      "organizations_url": "https://api.github.com/users/jingweno/orgs",
+      "subscriptions_url": "https://api.github.com/users/jingweno/subscriptions",
+      "starred_url": "https://api.github.com/users/jingweno/starred{/owner}{/repo}",
+      "gists_url": "https://api.github.com/users/jingweno/gists{/gist_id}",
+      "login": "jingweno",
+      "id": 169064,
+      "avatar_url": "https://0.gravatar.com/avatar/41740fef48f778383596392a6b2276c8?d=https%3A%2F%2Fidenticons.github.com%2Fdd5cdc1c8ca1c1a34941e8d3cb5abc1c.png",
+      "gravatar_id": "41740fef48f778383596392a6b2276c8",
+      "url": "https://api.github.com/users/jingweno",
+      "html_url": "https://github.com/jingweno",
+      "followers_url": "https://api.github.com/users/jingweno/followers",
+      "following_url": "https://api.github.com/users/jingweno/following{/other_user}"
+    },
+    "target_url": "https://travis-ci.org/jingweno/gh/builds/11911500",
+    "description": "The Travis CI build passed",
+    "state": "success",
+    "id": 22393854,
+    "url": "https://api.github.com/repos/jingweno/gh/statuses/740211b9c6cd8e526a7124fe2b33115602fbc637"
+  }
+]
