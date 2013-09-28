@@ -13,7 +13,7 @@ func TestAuthorizations(t *testing.T) {
 
 	mux.HandleFunc("/authorizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		respondWith(w, contentOf("authorizations.json"))
+		respondWith(w, loadFixture("authorizations.json"))
 	})
 
 	auths, _ := client.Authorizations(nil)
@@ -42,7 +42,7 @@ func TestCreateAuthorization(t *testing.T) {
 
 	mux.HandleFunc("/authorizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		respondWith(w, contentOf("create_authorization.json"))
+		respondWith(w, loadFixture("create_authorization.json"))
 	})
 
 	params := AuthorizationParams{Scopes: []string{"public_repo"}}

@@ -51,9 +51,9 @@ func respondWith(w http.ResponseWriter, s string) {
 	fmt.Fprint(w, s)
 }
 
-func contentOf(f string) string {
+func loadFixture(f string) string {
 	pwd, _ := os.Getwd()
-	p := fmt.Sprintf("%s/%s", pwd, f)
+	p := fmt.Sprintf("%s/fixtures/%s", pwd, f)
 	c, _ := ioutil.ReadFile(p)
 	return string(c)
 }

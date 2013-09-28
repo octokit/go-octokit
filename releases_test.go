@@ -18,7 +18,7 @@ func TestReleases(t *testing.T) {
 	mux.HandleFunc("/repos/jingweno/gh/releases", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", previewMediaType)
-		respondWith(w, contentOf("releases.json"))
+		respondWith(w, loadFixture("releases.json"))
 	})
 
 	repo := Repo{UserName: "jingweno", Name: "gh"}
