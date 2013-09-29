@@ -109,10 +109,17 @@ func (c *Client) setDefaultHeaders(request *http.Request) {
 	request.Header.Set("Accept", MediaType)
 	request.Header.Set("User-Agent", UserAgent)
 	request.Header.Set("Content-Type", DefaultContentType)
-	if c.Token != "" {
+	if c.isBasicAuth() {
+		request.Header.Set("Authorization", fmt.Sprintf("Basic %s", hashAuth(c.Login, c.Password)))
+	} else if c.isTokenAuth() {
 		request.Header.Set("Authorization", fmt.Sprintf("token %s", c.Token))
 	}
-	if c.Login != "" && c.Password != "" {
-		request.Header.Set("Authorization", fmt.Sprintf("Basic %s", hashAuth(c.Login, c.Password)))
-	}
+}
+
+func (c *Client) isBasicAuth() bool {
+	return c.Login != "" && c.Password != ""
+}
+
+func (c *Client) isTokenAuth() bool {
+	return c.Token != ""
 }
