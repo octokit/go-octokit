@@ -22,4 +22,5 @@ func TestOrganizations(t *testing.T) {
 	assert.Equal(t, 1388703, firstOrg.ID)
 	assert.Equal(t, "acl-services", firstOrg.Login)
 	assert.Equal(t, "https://api.github.com/orgs/acl-services", firstOrg.URL)
+	assert.Equal(t, "https://api.github.com/orgs/acl-services/repos", firstOrg.ReposURL)
 }
