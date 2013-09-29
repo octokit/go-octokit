@@ -56,6 +56,10 @@ func respondWith(w http.ResponseWriter, s string) {
 	fmt.Fprint(w, s)
 }
 
+func testURLOf(path string) string {
+	return fmt.Sprintf("%s/%s", server.URL, path)
+}
+
 func loadFixture(f string) string {
 	pwd, _ := os.Getwd()
 	p := fmt.Sprintf("%s/fixtures/%s", pwd, f)

@@ -6,6 +6,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 )
 
 type Client struct {
@@ -74,8 +75,12 @@ func (c *Client) jsonPost(path string, options *Options, v interface{}) error {
 }
 
 func (c *Client) request(method, path string, headers Headers, content io.Reader) ([]byte, error) {
-	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
-	request, err := http.NewRequest(method, url, content)
+	url, err := c.buildURL(path)
+	if err != nil {
+		return nil, err
+	}
+
+	request, err := http.NewRequest(method, url.String(), content)
 	if err != nil {
 		return nil, err
 	}
@@ -103,6 +108,20 @@ func (c *Client) request(method, path string, headers Headers, content io.Reader
 	}
 
 	return body, nil
+}
+
+func (c *Client) buildURL(pathOrURL string) (*url.URL, error) {
+	u, e := url.ParseRequestURI(pathOrURL)
+	if e != nil {
+		u, e = url.Parse(c.BaseURL)
+		if e != nil {
+			return nil, e
+		}
+
+		return u.Parse(pathOrURL)
+	}
+
+	return u, nil
 }
 
 func (c *Client) setDefaultHeaders(request *http.Request) {

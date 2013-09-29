@@ -2,6 +2,7 @@ package octokat
 
 import (
 	"bytes"
+	"github.com/bmizerany/assert"
 	"net/http"
 	"testing"
 )
@@ -36,4 +37,12 @@ func TestPost(t *testing.T) {
 	})
 
 	client.post("foo", nil, bytes.NewBufferString(content))
+}
+
+func TestBuildURL(t *testing.T) {
+	url, _ := client.buildURL("https://api.github.com")
+	assert.Equal(t, "https://api.github.com", url.String())
+
+	url, _ = client.buildURL("repos")
+	assert.Equal(t, testURLOf("repos"), url.String())
 }
