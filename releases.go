@@ -49,6 +49,25 @@ func (c *Client) Releases(repo Repo, options *Options) (releases []Release, err 
 	return
 }
 
+type ReleaseParams struct {
+	TagName         string `json:"tag_name,omitempty"`
+	TargetCommitish string `json:"target_commitish,omitempty"`
+	Name            string `json:"name,omitempty"`
+	Body            string `json:"body,omitempty"`
+	Draft           bool   `json:"draft,omitempty"`
+	Prerelease      bool   `json:"prerelease,omitempty"`
+}
+
+// Create a release
+//
+// See http://developer.github.com/v3/repos/releases/#create-a-release
+func (c *Client) CreateRelease(repo Repo, options *Options) (release *Release, err error) {
+	path := fmt.Sprintf("repos/%s/releases", repo)
+	options = addPreviewMediaType(options)
+	err = c.jsonPost(path, options, &release)
+	return
+}
+
 func addPreviewMediaType(options *Options) *Options {
 	if options == nil {
 		options = &Options{}
@@ -58,7 +77,9 @@ func addPreviewMediaType(options *Options) *Options {
 		options.Headers = Headers{}
 	}
 
-	options.Headers["Accept"] = previewMediaType
+	if options.Headers["Accept"] == "" {
+		options.Headers["Accept"] = previewMediaType
+	}
 
 	return options
 }

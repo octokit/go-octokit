@@ -55,3 +55,25 @@ func TestReleases(t *testing.T) {
 	assert.Equal(t, "2013-09-23 01:05:20 +0000 UTC", firstAsset.CreatedAt.String())
 	assert.Equal(t, "2013-09-23 01:07:56 +0000 UTC", firstAsset.UpdatedAt.String())
 }
+
+func TestCreateRelease(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/repos/octokat/Hello-World/releases", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", previewMediaType)
+		testBody(t, r, `{"tag_name":"v1.0.0","target_commitish":"master"}`)
+		respondWith(w, loadFixture("create_release.json"))
+	})
+
+	repo := Repo{UserName: "octokat", Name: "Hello-World"}
+	params := ReleaseParams{
+		TagName:         "v1.0.0",
+		TargetCommitish: "master",
+	}
+	options := Options{Params: params}
+	release, _ := client.CreateRelease(repo, &options)
+
+	assert.Equal(t, "v1.0.0", release.TagName)
+}
