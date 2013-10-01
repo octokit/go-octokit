@@ -5,23 +5,6 @@ import (
 	"time"
 )
 
-const (
-	previewMediaType string = "application/vnd.github.manifold-preview"
-)
-
-type Asset struct {
-	ID            int       `json:"id,omitempty"`
-	Name          string    `json:"name,omitempty"`
-	Label         string    `json:"label,omitempty"`
-	ContentType   string    `json:"content_type,omitempty"`
-	State         string    `json:"state,omitempty"`
-	Size          int       `json:"size,omitempty"`
-	DownloadCount int       `json:"download_count,omitempty"`
-	URL           string    `json:"url,omitempty"`
-	CreatedAt     time.Time `json:"created_at,omitempty"`
-	UpdatedAt     time.Time `json:"updated_at,omitempty"`
-}
-
 type Release struct {
 	ID             int       `json:"id,omitempty"`
 	URL            string    `json:"url,omitempty"`
@@ -78,7 +61,7 @@ func addPreviewMediaType(options *Options) *Options {
 	}
 
 	if options.Headers["Accept"] == "" {
-		options.Headers["Accept"] = previewMediaType
+		options.Headers["Accept"] = PreviewMediaType
 	}
 
 	return options
