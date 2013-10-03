@@ -2,9 +2,31 @@
 
 Go toolkit for the GitHub API.
 
-# Example
+# Hypermedia-driven client
 
 ## Show a user
+
+```go
+package main
+
+import "github.com/octokit/octokat"
+
+func main() {
+    client := octokat.NewClient()
+    root := client.Root()
+
+    userRel := root.Rel("user")
+    values := make(map[string]interface{})
+    values["user"] = "jingweno"
+    userURL := userRel.Expand(values)
+
+    var user User
+    client.Get(userURL, &user, nil)
+
+    // Do something with user
+}
+```
+or
 
 ```go
 package main
@@ -13,45 +35,14 @@ import "github.com/jingweno/octokat"
 
 func main() {
     client := octokat.NewClient()
-    user, err := client.User("jingweno", nil)
+    user, resp := client.User("jingweno", nil) // Internally it's hypermedia-driven
     // Do something with user
-}
-```
-
-## List authorizations
-
-```go
-package main
-
-import "github.com/jingweno/octokat"
-
-func main() {
-    client := octokat.NewClient().WithLogin("LOGIN", "PASSWORD")
-    authorizations, err := client.Authorizations(nil)
-    // Do something with authorizations
-}
-```
-
-## Create a pull request
-
-```go
-package main
-
-import "github.com/jingweno/octokat"
-
-func main() {
-    client := octokat.NewClient().WithToken("OAUTH_TOKEN")
-    repo := octokat.Repo{Name: "octokat", UserName: "jingweno"}
-    params := octokat.PullRequestParams{Base: "master", Head: "feature", Title: "A pull request", Body: "A body"}
-    options := octokat.Options{Params: params}
-    pullRequest, err := client.CreatePullRequest(repo, &options)
-    // Do something with pullRequest
 }
 ```
 
 ## Release Notes
 
-See [Releases](https://github.com/jingweno/octokat/releases).
+See [Releases](https://github.com/octokit/octokat/releases).
 
 ## Contributing
 
@@ -65,3 +56,4 @@ See [Releases](https://github.com/jingweno/octokat/releases).
 
 octokat is released under the MIT license. See
 [LICENSE.md](https://github.com/jingweno/octokat/blob/master/LICENSE.md).
+```
