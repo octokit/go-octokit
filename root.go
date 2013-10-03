@@ -29,7 +29,7 @@ func (r *Root) UnmarshalJSON(d []byte) error {
 
 	for rel, link := range out {
 		rel = parseRelNameFromURL(rel)
-		r.links[rel] = Hyperlink{client: r.client, Rel: rel, Href: link}
+		r.links[rel] = Hyperlink(link)
 	}
 
 	return nil

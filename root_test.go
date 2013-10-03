@@ -20,9 +20,7 @@ func TestRoot(t *testing.T) {
 	assert.Equal(t, 27, len(root.links))
 
 	repoLink := root.Rel("repository")
-	assert.T(t, repoLink.client != nil)
-	assert.Equal(t, "repository", repoLink.Rel)
-	assert.Equal(t, "https://api.github.com/repos/{owner}/{repo}", repoLink.Href)
+	assert.Equal(t, Hyperlink("https://api.github.com/repos/{owner}/{repo}"), *repoLink)
 }
 
 func TestParseRelNameFromURL(t *testing.T) {

@@ -26,7 +26,6 @@ type User struct {
 	CreatedAt         time.Time `json:"created_at,omitempty"`
 	UpdatedAt         time.Time `json:"updated_at,omitempty"`
 	Type              string    `json:"type,omitempty"`
-  // hypermedia relations
 	FollowingURL      string    `json:"following_url,omitempty"`
 	FollowersURL      string    `json:"followers_url,omitempty"`
 	GistsURL          string    `json:"gists_url,omitempty"`
