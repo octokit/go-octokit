@@ -21,6 +21,7 @@ func TestUser(t *testing.T) {
 	assert.Equal(t, "jingweno", user.Login)
 	assert.Equal(t, "jingweno@gmail.com", user.Email)
 	assert.Equal(t, "User", user.Type)
+	assert.Equal(t, 25, user.PublicGists)
 
 	mux.HandleFunc("/users/jingweno", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -33,4 +34,5 @@ func TestUser(t *testing.T) {
 	assert.Equal(t, "jingweno", user.Login)
 	assert.Equal(t, "jingweno@gmail.com", user.Email)
 	assert.Equal(t, "User", user.Type)
+	assert.Equal(t, "https://api.github.com/users/jingweno/repos", user.ReposURL)
 }
