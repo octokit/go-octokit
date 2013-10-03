@@ -1,10 +1,6 @@
-# Octokat [![Build Status](https://travis-ci.org/jingweno/octokat.png?branch=master)](https://travis-ci.org/jingweno/octokat)
+# Octokat
 
-Simple Go wrapper for the GitHub API. It's extracted from [my other project](https://github.com/jingweno/gh). The API is inspired by [octokit.rb](https://github.com/octokit/octokit.rb).
-
-# GoDoc
-
-[http://godoc.org/github.com/jingweno/octokat](http://godoc.org/github.com/jingweno/octokat)
+Go toolkit for the GitHub API.
 
 # Example
 
