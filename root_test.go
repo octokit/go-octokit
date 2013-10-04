@@ -17,7 +17,6 @@ func TestRoot(t *testing.T) {
 	})
 
 	root, _ := client.Root(nil)
-	assert.T(t, root.client != nil)
 	assert.Equal(t, 27, len(root.links))
 
 	repoLink := root.Rel("repository")

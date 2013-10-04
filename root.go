@@ -7,8 +7,7 @@ import (
 )
 
 type Root struct {
-	client *Client
-	links  map[string]hyper.Link
+	links map[string]hyper.Link
 }
 
 func (r *Root) Rel(rel string) *hyper.Link {
@@ -37,8 +36,6 @@ func (r *Root) UnmarshalJSON(d []byte) error {
 }
 
 func (c *Client) Root(options *Options) (root *Root, err error) {
-	root = &Root{}
-	root.client = c
 	err = c.jsonGet("", options, &root)
 	return
 }
