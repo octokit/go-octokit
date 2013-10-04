@@ -18,9 +18,13 @@ func main() {
     userRel := root.Rel("user")
     userURL := userRel.Expand(octokat.M{"user": "jingweno"})
 
-    var user User
-    client.Get(userURL, &user, nil)
+    resp := client.Get(userURL, nil)
+    if resp.HasError() {
+      // Handle error
+    }
 
+    var user User
+    resp.Data(&user)
     // Do something with user
 }
 ```
