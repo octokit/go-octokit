@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestRoot(t *testing.T) {
+func TestClient_Root(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -17,13 +17,6 @@ func TestRoot(t *testing.T) {
 	})
 
 	root, _ := client.Root(nil)
-	assert.Equal(t, 27, len(root.links))
-
 	repoLink := root.Rel("repository")
 	assert.Equal(t, hyper.Link("https://api.github.com/repos/{owner}/{repo}"), *repoLink)
-}
-
-func TestParseRelNameFromURL(t *testing.T) {
-	assert.Equal(t, "repository", parseRelNameFromURL("repository_url"))
-	assert.Equal(t, "public_gists", parseRelNameFromURL("public_gists_url"))
 }
