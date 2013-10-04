@@ -20,6 +20,12 @@ func TestRoot_Rel(t *testing.T) {
 	assert.T(t, root.Rel("not_exist") == nil)
 }
 
+func TestRoot_AddRel(t *testing.T) {
+	root := Root{}
+	root.AddRel("user", Link("https://api.github.com/users/{user}"))
+	assert.Equal(t, 1, len(root.links))
+}
+
 func TestRoot_Marshal(t *testing.T) {
 	links := make(map[string]Link)
 	links["user"] = Link("https://api.github.com/users/{user}")

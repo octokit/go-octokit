@@ -10,6 +10,14 @@ type Root struct {
 	links map[string]Link
 }
 
+func (r *Root) AddRel(rel string, link Link) {
+	if r.links == nil {
+		r.links = make(map[string]Link)
+	}
+
+	r.links[rel] = link
+}
+
 func (r *Root) Rel(rel string) *Link {
 	if link, ok := r.links[rel]; ok {
 		return &link
