@@ -7,6 +7,26 @@ import (
 	"testing"
 )
 
+func TestGetResponse(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", MediaType)
+		testHeader(t, r, "User-Agent", UserAgent)
+		testHeader(t, r, "Content-Type", DefaultContentType)
+		respondWith(w, "ok")
+	})
+
+	resp := client.Get(testURLOf("foo"), nil)
+	assert.Equal(t, "ok", string(resp.RawBody))
+
+	// path doesn't exist
+	resp = client.Get(testURLOf("bar"), nil)
+	assert.T(t, resp.Error != nil)
+}
+
 func TestGet(t *testing.T) {
 	setup()
 	defer tearDown()

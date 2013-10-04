@@ -28,6 +28,11 @@ func (c *Client) WithToken(token string) *Client {
 	return c
 }
 
+func (c *Client) Get(url string, headers Headers) *Response {
+	body, err := c.request("GET", url, headers, nil)
+	return &Response{RawBody: body, Error: err}
+}
+
 func (c *Client) get(path string, headers Headers) ([]byte, error) {
 	return c.request("GET", path, headers, nil)
 }
