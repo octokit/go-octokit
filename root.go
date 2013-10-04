@@ -35,8 +35,14 @@ func (r *Root) UnmarshalJSON(d []byte) error {
 	return nil
 }
 
-func (c *Client) Root(options *Options) (root *Root, err error) {
-	err = c.jsonGet("", options, &root)
+func (c *Client) Root(headers Headers) (root *Root, err error) {
+	resp := c.Get("", headers)
+	if resp.HasError() {
+		err = resp.Error
+		return
+	}
+
+	err = resp.Data(&root)
 	return
 }
 
