@@ -1,9 +1,18 @@
 package octokat
 
 import (
+	"fmt"
 	"github.com/bmizerany/assert"
 	"testing"
 )
+
+func TestResponse_HasError(t *testing.T) {
+	resp := Response{}
+	assert.T(t, !resp.HasError())
+
+	resp = Response{Error: fmt.Errorf("an error")}
+	assert.T(t, resp.HasError())
+}
 
 func TestResponse_Data(t *testing.T) {
 	resp := Response{RawBody: []byte(loadFixture("user.json"))}
