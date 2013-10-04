@@ -2,15 +2,16 @@ package octokat
 
 import (
 	"encoding/json"
+	"github.com/octokit/octokat/hyper"
 	"regexp"
 )
 
 type Root struct {
 	client *Client
-	links  map[string]Hyperlink
+	links  map[string]hyper.Link
 }
 
-func (r *Root) Rel(rel string) *Hyperlink {
+func (r *Root) Rel(rel string) *hyper.Link {
 	if link, ok := r.links[rel]; ok {
 		return &link
 	}
@@ -25,11 +26,11 @@ func (r *Root) UnmarshalJSON(d []byte) error {
 		return err
 	}
 
-	r.links = make(map[string]Hyperlink, len(out))
+	r.links = make(map[string]hyper.Link, len(out))
 
 	for rel, link := range out {
 		rel = parseRelNameFromURL(rel)
-		r.links[rel] = Hyperlink(link)
+		r.links[rel] = hyper.Link(link)
 	}
 
 	return nil

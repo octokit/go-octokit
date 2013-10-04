@@ -2,6 +2,7 @@ package octokat
 
 import (
 	"github.com/bmizerany/assert"
+	"github.com/octokit/octokat/hyper"
 	"net/http"
 	"testing"
 )
@@ -20,7 +21,7 @@ func TestRoot(t *testing.T) {
 	assert.Equal(t, 27, len(root.links))
 
 	repoLink := root.Rel("repository")
-	assert.Equal(t, Hyperlink("https://api.github.com/repos/{owner}/{repo}"), *repoLink)
+	assert.Equal(t, hyper.Link("https://api.github.com/repos/{owner}/{repo}"), *repoLink)
 }
 
 func TestParseRelNameFromURL(t *testing.T) {
