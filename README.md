@@ -16,9 +16,7 @@ func main() {
     root := client.Root()
 
     userRel := root.Rel("user")
-    values := make(map[string]interface{})
-    values["user"] = "jingweno"
-    userURL := userRel.Expand(values)
+    userURL := userRel.Expand(octokat.M{"user": "jingweno"})
 
     var user User
     client.Get(userURL, &user, nil)
