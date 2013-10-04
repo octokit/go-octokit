@@ -13,10 +13,10 @@ import "github.com/octokit/octokat"
 
 func main() {
     client := octokat.NewClient()
-    root := client.Root()
+    root, _ := client.Root()
 
     userRel := root.Rel("user")
-    userURL := userRel.Expand(octokat.M{"user": "jingweno"})
+    userURL, _ := userRel.Expand(octokat.M{"user": "jingweno"})
 
     resp := client.Get(userURL, nil)
     if resp.HasError() {
@@ -37,7 +37,10 @@ import "github.com/jingweno/octokat"
 
 func main() {
     client := octokat.NewClient()
-    user, resp := client.User("jingweno", nil) // Internally it's hypermedia-driven
+    user, err := client.User("jingweno", nil) // Internally it's hypermedia-driven
+    if err != nil {
+      // Handle error
+    }
     // Do something with user
 }
 ```
