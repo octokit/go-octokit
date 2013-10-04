@@ -2,6 +2,7 @@ package octokat
 
 import (
 	"fmt"
+	"github.com/octokit/octokat/hyper"
 	"time"
 )
 
@@ -37,14 +38,38 @@ type User struct {
 	ReceivedEventsURL string    `json:"received_events_url,omitempty"`
 }
 
-func (c *Client) User(login string, options *Options) (user *User, err error) {
-	var path string
-	if login == "" {
-		path = "user"
-	} else {
-		path = fmt.Sprintf("users/%s", login)
+func (c *Client) User(login string, headers Headers) (user *User, err error) {
+	root, e := c.Root(headers)
+	if e != nil {
+		err = e
+		return
 	}
 
-	err = c.jsonGet(path, options, &user)
+	var relName string
+	if login == "" {
+		relName = "current_user"
+	} else {
+		relName = "user"
+	}
+
+	userLink := root.Rel(relName)
+	if userLink == nil {
+		err = fmt.Errorf("Missing hyperlink %s", relName)
+		return
+	}
+
+	userURL, e := userLink.Expand(hyper.M{"user": login})
+	if e != nil {
+		err = e
+		return
+	}
+
+	resp := c.Get(userURL, headers)
+	if resp.HasError() {
+		err = resp.Error
+		return
+	}
+
+	err = resp.Data(&user)
 	return
 }

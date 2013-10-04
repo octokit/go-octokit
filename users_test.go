@@ -6,9 +6,14 @@ import (
 	"testing"
 )
 
-func TestUser(t *testing.T) {
+func TestClient_User(t *testing.T) {
 	setup()
 	defer tearDown()
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		respondWith(w, testRootJSON())
+	})
 
 	mux.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")

@@ -3,6 +3,7 @@ package octokat
 import (
 	"fmt"
 	"github.com/bmizerany/assert"
+	"github.com/octokit/octokat/hyper"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -58,6 +59,14 @@ func respondWith(w http.ResponseWriter, s string) {
 
 func testURLOf(path string) string {
 	return fmt.Sprintf("%s/%s", server.URL, path)
+}
+
+func testRootJSON() string {
+	root := hyper.Root{}
+	root.AddRel("current_user", hyper.Link(testURLOf("user")))
+	root.AddRel("user", hyper.Link(testURLOf("users/{user}")))
+	json, _ := jsonMarshal(root)
+	return string(json)
 }
 
 func loadFixture(f string) string {
