@@ -2,6 +2,7 @@ package hyper
 
 import (
 	"encoding/json"
+	"fmt"
 	"regexp"
 )
 
@@ -15,6 +16,16 @@ func (r *Root) Rel(rel string) *Link {
 	}
 
 	return nil
+}
+
+func (r Root) MarshalJSON() ([]byte, error) {
+	out := make(map[string]Link)
+	for rel, link := range r.links {
+		rel = fmt.Sprintf("%s_url", rel)
+		out[rel] = link
+	}
+
+	return json.Marshal(out)
 }
 
 func (r *Root) UnmarshalJSON(d []byte) error {
@@ -34,6 +45,7 @@ func (r *Root) UnmarshalJSON(d []byte) error {
 	return nil
 }
 
+// TODO extract it into hyper.Parser
 func parseRelNameFromURL(url string) string {
 	re := regexp.MustCompile("^(.+)_url")
 	if re.MatchString(url) {

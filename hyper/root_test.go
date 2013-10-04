@@ -20,6 +20,18 @@ func TestRoot_Rel(t *testing.T) {
 	assert.T(t, root.Rel("not_exist") == nil)
 }
 
+func TestRoot_Marshal(t *testing.T) {
+	links := make(map[string]Link)
+	links["user"] = Link("https://api.github.com/users/{user}")
+	root := Root{links: links}
+	b, _ := json.Marshal(root)
+	assert.Equal(t, `{"user_url":"https://api.github.com/users/{user}"}`, string(b))
+
+	root = Root{}
+	b, _ = json.Marshal(root)
+	assert.Equal(t, `{}`, string(b))
+}
+
 func TestRoot_Unmarshal(t *testing.T) {
 	data := `{"user_url": "https://api.github.com/users/{user}"}`
 	var root Root
