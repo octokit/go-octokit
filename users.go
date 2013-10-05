@@ -23,8 +23,8 @@ type User struct {
 	Followers         int        `json:"followers,omitempty"`
 	Following         int        `json:"following,omitempty"`
 	HTMLURL           string     `json:"html_url,omitempty"`
-	CreatedAt         time.Time  `json:"created_at,omitempty"`
-	UpdatedAt         time.Time  `json:"updated_at,omitempty"`
+	CreatedAt         *time.Time `json:"created_at,omitempty"`
+	UpdatedAt         *time.Time `json:"updated_at,omitempty"`
 	Type              string     `json:"type,omitempty"`
 	FollowingURL      hyper.Link `json:"following_url,omitempty"`
 	FollowersURL      hyper.Link `json:"followers_url,omitempty"`
@@ -58,6 +58,27 @@ func (c *Client) User(login string, headers Headers) (user *User, err error) {
 	}
 
 	resp, e := c.Get(userURL, headers)
+	if e != nil {
+		err = e
+		return
+	}
+	if resp.HasError() {
+		err = resp.Error
+		return
+	}
+
+	err = resp.Data(&user)
+	return
+}
+
+func (c *Client) UpdateUser(params interface{}, headers Headers) (user *User, err error) {
+	root, e := c.Root(headers)
+	if e != nil {
+		err = e
+		return
+	}
+
+	resp, e := c.Patch(string(root.CurrentUserURL), headers, params)
 	if e != nil {
 		err = e
 		return

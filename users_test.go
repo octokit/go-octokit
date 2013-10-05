@@ -37,3 +37,22 @@ func TestClient_User(t *testing.T) {
 	assert.Equal(t, "User", user.Type)
 	assert.Equal(t, hyper.Link("https://api.github.com/users/jingweno/repos"), user.ReposURL)
 }
+
+func TestUser_UpdateUser(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testBody(t, r, `{"name":"name","email":"email"}`)
+		respondWith(w, loadFixture("user.json"))
+	})
+
+	var userToUpdate = User{
+		Name:  "name",
+		Email: "email",
+	}
+
+	user, _ := client.UpdateUser(userToUpdate, nil)
+	assert.Equal(t, 169064, user.ID)
+}
