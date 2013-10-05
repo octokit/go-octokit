@@ -92,7 +92,7 @@ func (c *Client) Request(method, path string, headers Headers, content io.Reader
 	}
 
 	if response.StatusCode >= 400 && response.StatusCode < 600 {
-		respErr := handleErrors(body)
+		respErr := handleErrors(body) // TODO distinguish parsing error vs response error
 		resp = &Response{Error: respErr}
 		return
 	}
