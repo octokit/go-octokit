@@ -1,7 +1,6 @@
 package octokat
 
 import (
-	"github.com/octokit/octokat/hyper"
 	"time"
 )
 
@@ -26,15 +25,15 @@ type User struct {
 	CreatedAt         *time.Time `json:"created_at,omitempty"`
 	UpdatedAt         *time.Time `json:"updated_at,omitempty"`
 	Type              string     `json:"type,omitempty"`
-	FollowingURL      hyper.Link `json:"following_url,omitempty"`
-	FollowersURL      hyper.Link `json:"followers_url,omitempty"`
-	GistsURL          hyper.Link `json:"gists_url,omitempty"`
-	StarredURL        hyper.Link `json:"starred_url,omitempty"`
-	SubscriptionsURL  hyper.Link `json:"subscriptions_url,omitempty"`
-	OrganizationsURL  hyper.Link `json:"organizations_url,omitempty"`
-	ReposURL          hyper.Link `json:"repos_url,omitempty"`
-	EventsURL         hyper.Link `json:"events_url,omitempty"`
-	ReceivedEventsURL hyper.Link `json:"received_events_url,omitempty"`
+	FollowingURL      Hyperlink  `json:"following_url,omitempty"`
+	FollowersURL      Hyperlink  `json:"followers_url,omitempty"`
+	GistsURL          Hyperlink  `json:"gists_url,omitempty"`
+	StarredURL        Hyperlink  `json:"starred_url,omitempty"`
+	SubscriptionsURL  Hyperlink  `json:"subscriptions_url,omitempty"`
+	OrganizationsURL  Hyperlink  `json:"organizations_url,omitempty"`
+	ReposURL          Hyperlink  `json:"repos_url,omitempty"`
+	EventsURL         Hyperlink  `json:"events_url,omitempty"`
+	ReceivedEventsURL Hyperlink  `json:"received_events_url,omitempty"`
 }
 
 func (c *Client) User(login string, headers Headers) (user *User, err error) {
@@ -44,14 +43,14 @@ func (c *Client) User(login string, headers Headers) (user *User, err error) {
 		return
 	}
 
-	var link hyper.Link
+	var link Hyperlink
 	if login == "" {
 		link = root.CurrentUserURL
 	} else {
 		link = root.UserURL
 	}
 
-	userURL, e := link.Expand(hyper.M{"user": login})
+	userURL, e := link.Expand(M{"user": login})
 	if e != nil {
 		err = e
 		return
@@ -99,7 +98,7 @@ func (c *Client) AllUsers(headers Headers) (users []User, err error) {
 		return
 	}
 
-	url, e := root.UserURL.Expand(hyper.M{"user": ""})
+	url, e := root.UserURL.Expand(M{"user": ""})
 	if e != nil {
 		err = e
 		return

@@ -3,7 +3,6 @@ package octokat
 import (
 	"fmt"
 	"github.com/bmizerany/assert"
-	"github.com/octokit/octokat/hyper"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -71,8 +70,8 @@ func testURLOf(path string) string {
 
 func testRootJSON() string {
 	root := Root{
-		CurrentUserURL: hyper.Link(testURLOf("user")),
-		UserURL:        hyper.Link(testURLOf("users/{user}")),
+		CurrentUserURL: Hyperlink(testURLOf("user")),
+		UserURL:        Hyperlink(testURLOf("users/{user}")),
 	}
 	json, _ := jsonMarshal(root)
 	return string(json)

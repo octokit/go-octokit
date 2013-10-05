@@ -2,7 +2,6 @@ package octokat
 
 import (
 	"github.com/bmizerany/assert"
-	"github.com/octokit/octokat/hyper"
 	"net/http"
 	"testing"
 )
@@ -35,7 +34,7 @@ func TestClient_User(t *testing.T) {
 	assert.Equal(t, "jingweno", user.Login)
 	assert.Equal(t, "jingweno@gmail.com", user.Email)
 	assert.Equal(t, "User", user.Type)
-	assert.Equal(t, hyper.Link("https://api.github.com/users/jingweno/repos"), user.ReposURL)
+	assert.Equal(t, Hyperlink("https://api.github.com/users/jingweno/repos"), user.ReposURL)
 }
 
 func TestUser_UpdateUser(t *testing.T) {

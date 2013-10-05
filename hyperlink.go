@@ -1,4 +1,4 @@
-package hyper
+package octokat
 
 import (
 	"github.com/jtacoma/uritemplates"
@@ -6,9 +6,9 @@ import (
 
 type M map[string]interface{}
 
-type Link string
+type Hyperlink string
 
-func (l *Link) Expand(m M) (string, error) {
+func (l *Hyperlink) Expand(m M) (string, error) {
 	template, err := uritemplates.Parse(string(*l))
 	if err != nil {
 		return "", err
