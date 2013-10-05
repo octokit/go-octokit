@@ -30,8 +30,8 @@ type Root struct {
 	PublicGistsURL              Hyperlink `json:"public_gists_url,omitempty"`
 }
 
-func (c *Client) Root(headers Headers) (root *Root, err error) {
-	resp, e := c.Get("", headers)
+func (c *Client) Root() (root *Root, err error) {
+	resp, e := c.Get("", nil)
 	if e != nil {
 		err = e
 		return

@@ -36,8 +36,8 @@ type User struct {
 	ReceivedEventsURL Hyperlink  `json:"received_events_url,omitempty"`
 }
 
-func (c *Client) User(login string, headers Headers) (user *User, err error) {
-	root, e := c.Root(headers)
+func (c *Client) User(login string) (user *User, err error) {
+	root, e := c.Root()
 	if e != nil {
 		err = e
 		return
@@ -56,7 +56,7 @@ func (c *Client) User(login string, headers Headers) (user *User, err error) {
 		return
 	}
 
-	resp, e := c.Get(userURL, headers)
+	resp, e := c.Get(userURL, nil)
 	if e != nil {
 		err = e
 		return
@@ -70,14 +70,14 @@ func (c *Client) User(login string, headers Headers) (user *User, err error) {
 	return
 }
 
-func (c *Client) UpdateUser(params interface{}, headers Headers) (user *User, err error) {
-	root, e := c.Root(headers)
+func (c *Client) UpdateUser(params interface{}) (user *User, err error) {
+	root, e := c.Root()
 	if e != nil {
 		err = e
 		return
 	}
 
-	resp, e := c.Patch(string(root.CurrentUserURL), headers, params)
+	resp, e := c.Patch(string(root.CurrentUserURL), nil, params)
 	if e != nil {
 		err = e
 		return
@@ -91,8 +91,8 @@ func (c *Client) UpdateUser(params interface{}, headers Headers) (user *User, er
 	return
 }
 
-func (c *Client) AllUsers(headers Headers) (users []User, err error) {
-	root, e := c.Root(headers)
+func (c *Client) AllUsers() (users []User, err error) {
+	root, e := c.Root()
 	if e != nil {
 		err = e
 		return
@@ -104,7 +104,7 @@ func (c *Client) AllUsers(headers Headers) (users []User, err error) {
 		return
 	}
 
-	resp, e := c.Get(url, headers)
+	resp, e := c.Get(url, nil)
 	if e != nil {
 		err = e
 		return
