@@ -62,9 +62,10 @@ func TestUser_AllUsers(t *testing.T) {
 
 	mux.HandleFunc("/users/", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		assert.Equal(t, "/users/?since=1", r.URL.String())
 		respondWith(w, loadFixture("users.json"))
 	})
 
-	users, _ := client.AllUsers()
+	users, _ := client.AllUsers(1)
 	assert.Equal(t, 1, len(users))
 }

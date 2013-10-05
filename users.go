@@ -1,6 +1,7 @@
 package octokat
 
 import (
+	"strconv"
 	"time"
 )
 
@@ -92,7 +93,7 @@ func (c *Client) UpdateUser(params interface{}) (user *User, err error) {
 	return
 }
 
-func (c *Client) AllUsers() (users []User, err error) {
+func (c *Client) AllUsers(since int) (users []User, err error) {
 	root, e := c.Root()
 	if e != nil {
 		err = e
@@ -103,6 +104,12 @@ func (c *Client) AllUsers() (users []User, err error) {
 	if e != nil {
 		err = e
 		return
+	}
+
+	if since > 0 {
+		q := url.Query()
+		q.Set("since", strconv.Itoa(since))
+		url.RawQuery = q.Encode()
 	}
 
 	resp, e := c.Get(url, nil)
