@@ -10,5 +10,5 @@ func TestClient_Root(t *testing.T) {
 	defer tearDown()
 
 	root, _ := client.Root()
-	assert.Equal(t, Hyperlink(testURLOf("users/{user}")), root.UserURL)
+	assert.Equal(t, Hyperlink(testURLStringOf("users/{user}")), root.UserURL)
 }

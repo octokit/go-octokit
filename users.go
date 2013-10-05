@@ -77,7 +77,8 @@ func (c *Client) UpdateUser(params interface{}) (user *User, err error) {
 		return
 	}
 
-	resp, e := c.Patch(string(root.CurrentUserURL), nil, params)
+	url, _ := root.CurrentUserURL.Expand(nil)
+	resp, e := c.Patch(url, nil, params)
 	if e != nil {
 		err = e
 		return

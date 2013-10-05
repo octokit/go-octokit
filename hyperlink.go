@@ -2,22 +2,26 @@ package octokat
 
 import (
 	"github.com/jtacoma/uritemplates"
+	"net/url"
 )
 
 type M map[string]interface{}
 
 type Hyperlink string
 
-func (l *Hyperlink) Expand(m M) (string, error) {
-	template, err := uritemplates.Parse(string(*l))
-	if err != nil {
-		return "", err
+func (l *Hyperlink) Expand(m M) (u *url.URL, err error) {
+	template, e := uritemplates.Parse(string(*l))
+	if e != nil {
+		err = e
+		return
 	}
 
-	expanded, err := template.Expand(m)
-	if err != nil {
-		return "", err
+	expanded, e := template.Expand(m)
+	if e != nil {
+		err = e
+		return
 	}
 
-	return expanded, nil
+	u, err = url.ParseRequestURI(expanded)
+	return
 }

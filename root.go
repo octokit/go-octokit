@@ -31,7 +31,7 @@ type Root struct {
 }
 
 func (c *Client) Root() (root *Root, err error) {
-	resp, e := c.Get("", nil)
+	resp, e := c.Get(nil, nil)
 	if e != nil {
 		err = e
 		return

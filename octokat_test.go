@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"os"
 	"testing"
 )
@@ -64,14 +65,19 @@ func respondWith(w http.ResponseWriter, s string) {
 	fmt.Fprint(w, s)
 }
 
-func testURLOf(path string) string {
+func testURLOf(path string) *url.URL {
+	u, _ := url.ParseRequestURI(testURLStringOf(path))
+	return u
+}
+
+func testURLStringOf(path string) string {
 	return fmt.Sprintf("%s/%s", server.URL, path)
 }
 
 func testRootJSON() string {
 	root := Root{
-		CurrentUserURL: Hyperlink(testURLOf("user")),
-		UserURL:        Hyperlink(testURLOf("users/{user}")),
+		CurrentUserURL: Hyperlink(testURLStringOf("user")),
+		UserURL:        Hyperlink(testURLStringOf("users/{user}")),
 	}
 	json, _ := jsonMarshal(root)
 	return string(json)

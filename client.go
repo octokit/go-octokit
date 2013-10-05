@@ -28,12 +28,12 @@ func (c *Client) WithToken(token string) *Client {
 	return c
 }
 
-func (c *Client) Get(url string, headers Headers) (resp *Response, err error) {
+func (c *Client) Get(url *url.URL, headers Headers) (resp *Response, err error) {
 	resp, err = c.Request("GET", url, headers, nil)
 	return
 }
 
-func (c *Client) Patch(url string, headers Headers, params interface{}) (resp *Response, err error) {
+func (c *Client) Patch(url *url.URL, headers Headers, params interface{}) (resp *Response, err error) {
 	buffer, e := jsonMarshalToBuffer(params)
 	if e != nil {
 		err = e
@@ -44,25 +44,9 @@ func (c *Client) Patch(url string, headers Headers, params interface{}) (resp *R
 	return
 }
 
-func jsonMarshalToBuffer(v interface{}) (r *bytes.Buffer, err error) {
-	if v != nil {
-		b, e := jsonMarshal(v)
-		if e != nil {
-			err = e
-			return
-		}
-
-		r = bytes.NewBuffer(b)
-	}
-
-	return
-}
-
-func (c *Client) Request(method, path string, headers Headers, content io.Reader) (resp *Response, err error) {
-	url, e := c.buildURL(path)
-	if e != nil {
-		err = e
-		return
+func (c *Client) Request(method string, url *url.URL, headers Headers, content io.Reader) (resp *Response, err error) {
+	if url == nil {
+		url, _ = url.Parse(c.BaseURL)
 	}
 
 	request, e := http.NewRequest(method, url.String(), content)
@@ -217,4 +201,18 @@ func (c *Client) isBasicAuth() bool {
 
 func (c *Client) isTokenAuth() bool {
 	return c.Token != ""
+}
+
+func jsonMarshalToBuffer(v interface{}) (r *bytes.Buffer, err error) {
+	if v != nil {
+		b, e := jsonMarshal(v)
+		if e != nil {
+			err = e
+			return
+		}
+
+		r = bytes.NewBuffer(b)
+	}
+
+	return
 }

@@ -87,5 +87,5 @@ func TestBuildURL(t *testing.T) {
 	assert.Equal(t, "https://api.github.com", url.String())
 
 	url, _ = client.buildURL("repos")
-	assert.Equal(t, testURLOf("repos"), url.String())
+	assert.Equal(t, testURLOf("repos"), url)
 }
