@@ -14,10 +14,7 @@ import "github.com/octokit/octokat"
 func main() {
     client := octokat.NewClient()
     root, _ := client.Root()
-
-    userRel := root.Rel("user")
-    userURL, _ := userRel.Expand(octokat.M{"user": "jingweno"})
-
+    userURL, _ := root.UserURL.Expand(octokat.M{"user": "jingweno"})
     resp := client.Get(userURL, nil)
     if resp.HasError() {
       // Handle error
