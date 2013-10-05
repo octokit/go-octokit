@@ -33,6 +33,14 @@ func setup() {
 	// octokat client configured to use test server
 	client = NewClient()
 	client.BaseURL = server.URL
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if m := "GET"; m == r.Method && r.URL.String() == "/" {
+			respondWith(w, testRootJSON())
+		} else {
+			http.Error(w, "Bad Request", 400)
+		}
+	})
 }
 
 // teardown closes the test HTTP server.
