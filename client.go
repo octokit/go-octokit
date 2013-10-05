@@ -33,8 +33,18 @@ func (c *Client) Get(url string, headers Headers) (resp *Response, err error) {
 	return
 }
 
-func (c *Client) Patch(url string, headers Headers, v interface{}) (resp *Response, err error) {
-	var buffer *bytes.Buffer
+func (c *Client) Patch(url string, headers Headers, params interface{}) (resp *Response, err error) {
+	buffer, e := jsonMarshalToBuffer(params)
+	if e != nil {
+		err = e
+		return
+	}
+
+	resp, err = c.Request("PATCH", url, headers, buffer)
+	return
+}
+
+func jsonMarshalToBuffer(v interface{}) (r *bytes.Buffer, err error) {
 	if v != nil {
 		b, e := jsonMarshal(v)
 		if e != nil {
@@ -42,10 +52,9 @@ func (c *Client) Patch(url string, headers Headers, v interface{}) (resp *Respon
 			return
 		}
 
-		buffer = bytes.NewBuffer(b)
+		r = bytes.NewBuffer(b)
 	}
 
-	resp, err = c.Request("PATCH", url, headers, buffer)
 	return
 }
 

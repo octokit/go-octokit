@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestGetResponse(t *testing.T) {
+func TestGet(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -27,7 +27,30 @@ func TestGetResponse(t *testing.T) {
 	assert.T(t, resp.Error != nil)
 }
 
-func TestGet(t *testing.T) {
+func TestPatch(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testHeader(t, r, "Accept", MediaType)
+		testHeader(t, r, "User-Agent", UserAgent)
+		testHeader(t, r, "Content-Type", DefaultContentType)
+		testBody(t, r, `{"foo":"bar"}`)
+		respondWith(w, "ok")
+	})
+
+	m := make(map[string]string)
+	m["foo"] = "bar"
+	resp, _ := client.Patch(testURLOf("foo"), nil, m)
+	assert.Equal(t, "ok", string(resp.RawBody))
+
+	// path doesn't exist
+	resp, _ = client.Patch(testURLOf("bar"), nil, m)
+	assert.T(t, resp.Error != nil)
+}
+
+func TestDeprecatedGet(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -42,7 +65,7 @@ func TestGet(t *testing.T) {
 	client.get("foo", nil)
 }
 
-func TestPost(t *testing.T) {
+func TestDeprecatedPost(t *testing.T) {
 	setup()
 	defer tearDown()
 
