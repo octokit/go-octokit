@@ -35,7 +35,11 @@ type Root struct {
 }
 
 func (c *Client) Root(headers Headers) (root *Root, err error) {
-	resp := c.Get("", headers)
+	resp, e := c.Get("", headers)
+	if e != nil {
+		err = e
+		return
+	}
 	if resp.HasError() {
 		err = resp.Error
 		return

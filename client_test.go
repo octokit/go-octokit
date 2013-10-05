@@ -19,11 +19,11 @@ func TestGetResponse(t *testing.T) {
 		respondWith(w, "ok")
 	})
 
-	resp := client.Get(testURLOf("foo"), nil)
+	resp, _ := client.Get(testURLOf("foo"), nil)
 	assert.Equal(t, "ok", string(resp.RawBody))
 
 	// path doesn't exist
-	resp = client.Get(testURLOf("bar"), nil)
+	resp, _ = client.Get(testURLOf("bar"), nil)
 	assert.T(t, resp.Error != nil)
 }
 

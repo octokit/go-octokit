@@ -57,7 +57,11 @@ func (c *Client) User(login string, headers Headers) (user *User, err error) {
 		return
 	}
 
-	resp := c.Get(userURL, headers)
+	resp, e := c.Get(userURL, headers)
+	if e != nil {
+		err = e
+		return
+	}
 	if resp.HasError() {
 		err = resp.Error
 		return
