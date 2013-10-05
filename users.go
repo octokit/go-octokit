@@ -91,3 +91,30 @@ func (c *Client) UpdateUser(params interface{}, headers Headers) (user *User, er
 	err = resp.Data(&user)
 	return
 }
+
+func (c *Client) AllUsers(headers Headers) (users []User, err error) {
+	root, e := c.Root(headers)
+	if e != nil {
+		err = e
+		return
+	}
+
+	url, e := root.UserURL.Expand(hyper.M{"user": ""})
+	if e != nil {
+		err = e
+		return
+	}
+
+	resp, e := c.Get(url, headers)
+	if e != nil {
+		err = e
+		return
+	}
+	if resp.HasError() {
+		err = resp.Error
+		return
+	}
+
+	err = resp.Data(&users)
+	return
+}

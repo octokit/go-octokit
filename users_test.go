@@ -56,3 +56,16 @@ func TestUser_UpdateUser(t *testing.T) {
 	user, _ := client.UpdateUser(userToUpdate, nil)
 	assert.Equal(t, 169064, user.ID)
 }
+
+func TestUser_AllUsers(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/users/", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		respondWith(w, loadFixture("users.json"))
+	})
+
+	users, _ := client.AllUsers(nil)
+	assert.Equal(t, 1, len(users))
+}
