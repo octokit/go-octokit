@@ -62,9 +62,10 @@ func testURLOf(path string) string {
 }
 
 func testRootJSON() string {
-	root := hyper.Root{}
-	root.AddRel("current_user", hyper.Link(testURLOf("user")))
-	root.AddRel("user", hyper.Link(testURLOf("users/{user}")))
+	root := Root{
+		CurrentUserURL: hyper.Link(testURLOf("user")),
+		UserURL:        hyper.Link(testURLOf("users/{user}")),
+	}
 	json, _ := jsonMarshal(root)
 	return string(json)
 }

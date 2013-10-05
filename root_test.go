@@ -17,6 +17,5 @@ func TestClient_Root(t *testing.T) {
 	})
 
 	root, _ := client.Root(nil)
-	repoLink := root.Rel("repository")
-	assert.Equal(t, hyper.Link("https://api.github.com/repos/{owner}/{repo}"), *repoLink)
+	assert.Equal(t, hyper.Link("https://api.github.com/repos/{owner}/{repo}"), root.RepositoryURL)
 }
