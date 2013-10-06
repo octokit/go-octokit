@@ -15,7 +15,9 @@ func TestClient_User(t *testing.T) {
 		respondWith(w, loadFixture("user.json"))
 	})
 
-	user, _ := client.User("")
+	var user User
+	requester := client.User("")
+	requester.Request(&user)
 
 	assert.Equal(t, 169064, user.ID)
 	assert.Equal(t, "jingweno", user.Login)
@@ -28,7 +30,8 @@ func TestClient_User(t *testing.T) {
 		respondWith(w, loadFixture("user.json"))
 	})
 
-	user, _ = client.User("jingweno")
+	requester = client.User("jingweno")
+	requester.Request(&user)
 
 	assert.Equal(t, 169064, user.ID)
 	assert.Equal(t, "jingweno", user.Login)
@@ -52,7 +55,9 @@ func TestUser_UpdateUser(t *testing.T) {
 		Email: "email",
 	}
 
-	user, _ := client.UpdateUser(userToUpdate)
+	var user *User
+	requester := client.UpdateUser(userToUpdate)
+	requester.Request(&user)
 	assert.Equal(t, 169064, user.ID)
 }
 
@@ -66,6 +71,8 @@ func TestUser_AllUsers(t *testing.T) {
 		respondWith(w, loadFixture("users.json"))
 	})
 
-	users, _ := client.AllUsers(1)
+	var users []User
+	requester := client.AllUsers(1)
+	requester.Request(&users)
 	assert.Equal(t, 1, len(users))
 }

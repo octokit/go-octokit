@@ -9,6 +9,8 @@ func TestClient_Root(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	root, _ := client.Root()
+	var root Root
+	requester := client.Root()
+	requester.Request(&root)
 	assert.Equal(t, Hyperlink(testURLStringOf("users/{user}")), root.UserURL)
 }

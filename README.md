@@ -9,35 +9,48 @@ Go toolkit for the GitHub API.
 ```go
 package main
 
-import "github.com/octokit/octokat"
+import "github.com/jingweno/octokat"
 
 func main() {
     client := octokat.NewClient()
-    root, _ := client.Root()
-    userURL, _ := root.UserURL.Expand(octokat.M{"user": "jingweno"})
-    resp := client.Get(userURL, nil)
-    if resp.HasError() {
-      // Handle error
-    }
 
     var user User
-    resp.Data(&user)
+    requester := client.User("jingweno")
+    resp, err := requester.Request(&user) // Internally it's hypermedia-driven
+    if err != nil {
+      // Handle error
+    }
     // Do something with user
 }
 ```
+
 or
 
 ```go
 package main
 
-import "github.com/jingweno/octokat"
+import "github.com/octokit/octokat"
 
 func main() {
     client := octokat.NewClient()
-    user, err := client.User("jingweno", nil) // Internally it's hypermedia-driven
+
+    // Get root
+    var root Root
+    requester := client.Root()
+    resp, err := requester.Request(&root)
     if err != nil {
       // Handle error
     }
+
+    // Get a user
+    userURL, _ := root.UserURL.Expand(octokat.M{"user": "jingweno"})
+    resp, err = client.Get(userURL, nil)
+    if err != nil {
+      // Handle error
+    }
+
+    var user User
+    request.Data(user)
     // Do something with user
 }
 ```

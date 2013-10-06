@@ -18,3 +18,11 @@ func jsonMarshal(v interface{}) ([]byte, error) {
 func jsonUnmarshal(data []byte, v interface{}) error {
 	return json.Unmarshal(data, v)
 }
+
+func hasError(resp *Response, err error) bool {
+	if err != nil && resp.HasError() {
+		return true
+	}
+
+	return false
+}

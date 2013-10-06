@@ -37,66 +37,77 @@ type User struct {
 	ReceivedEventsURL Hyperlink  `json:"received_events_url,omitempty"`
 }
 
-func (c *Client) User(login string) (user *User, err error) {
-	root, e := c.Root()
-	if e != nil {
-		err = e
+type userRequester struct {
+	client *Client
+	login  string
+}
+
+func (u *userRequester) Request(v interface{}) (resp *Response, err error) {
+	var root Root
+	resp, err = u.client.Root().Request(&root)
+	if hasError(resp, err) {
 		return
 	}
 
 	var link Hyperlink
-	if login == "" {
+	if u.login == "" {
 		link = root.CurrentUserURL
 	} else {
 		link = root.UserURL
 	}
 
-	userURL, e := link.Expand(M{"user": login})
+	userURL, e := link.Expand(M{"user": u.login})
 	if e != nil {
 		err = e
 		return
 	}
 
-	resp, e := c.Get(userURL, nil)
-	if e != nil {
-		err = e
-		return
-	}
-	if resp.HasError() {
-		err = resp.Error
-		return
+	resp, err = u.client.Get(userURL, nil)
+	if !hasError(resp, err) {
+		err = resp.Data(v)
 	}
 
-	err = resp.Data(&user)
 	return
 }
 
-func (c *Client) UpdateUser(params interface{}) (user *User, err error) {
-	root, e := c.Root()
-	if e != nil {
-		err = e
+func (c *Client) User(login string) (req Requester) {
+	return &userRequester{client: c, login: login}
+}
+
+type updateUserRequester struct {
+	client *Client
+	params interface{}
+}
+
+func (u *updateUserRequester) Request(v interface{}) (resp *Response, err error) {
+	var root Root
+	resp, err = u.client.Root().Request(&root)
+	if hasError(resp, err) {
 		return
 	}
 
 	url, _ := root.CurrentUserURL.Expand(nil)
-	resp, e := c.Patch(url, nil, params)
-	if e != nil {
-		err = e
-		return
-	}
-	if resp.HasError() {
-		err = resp.Error
-		return
+	resp, err = u.client.Patch(url, nil, u.params)
+	if !hasError(resp, err) {
+		err = resp.Data(v)
 	}
 
-	err = resp.Data(&user)
 	return
 }
 
-func (c *Client) AllUsers(since int) (users []User, err error) {
-	root, e := c.Root()
-	if e != nil {
-		err = e
+func (c *Client) UpdateUser(params interface{}) Requester {
+	return &updateUserRequester{client: c, params: params}
+}
+
+type allUsersRequester struct {
+	client *Client
+	since  int
+}
+
+func (a *allUsersRequester) Request(v interface{}) (resp *Response, err error) {
+	var root Root
+	resp, err = a.client.Root().Request(&root)
+	if hasError(resp, err) {
 		return
 	}
 
@@ -106,22 +117,20 @@ func (c *Client) AllUsers(since int) (users []User, err error) {
 		return
 	}
 
-	if since > 0 {
+	if a.since > 0 {
 		q := url.Query()
-		q.Set("since", strconv.Itoa(since))
+		q.Set("since", strconv.Itoa(a.since))
 		url.RawQuery = q.Encode()
 	}
 
-	resp, e := c.Get(url, nil)
-	if e != nil {
-		err = e
-		return
-	}
-	if resp.HasError() {
-		err = resp.Error
-		return
+	resp, err = a.client.Get(url, nil)
+	if !hasError(resp, err) {
+		err = resp.Data(v)
 	}
 
-	err = resp.Data(&users)
 	return
+}
+
+func (c *Client) AllUsers(since int) Requester {
+	return &allUsersRequester{client: c, since: since}
 }
