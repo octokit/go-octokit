@@ -42,8 +42,8 @@ func main() {
     userURL, _ := root.UserURL.Expand(octokat.M{"user": "jingweno"})
     var user User
     requester := client.Requester(userURL)
-    resp, err = requester.Get(&user)
-    if err != nil {
+    result = requester.Get(&user)
+    if result.HasError() {
       // Handle error
     }
     // Do something with user

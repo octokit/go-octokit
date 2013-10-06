@@ -32,7 +32,6 @@ type Root struct {
 
 func (c *Client) Root() (root *Root, result *Result) {
 	requester := c.Requester(nil)
-	resp, err := requester.Get(&root)
-	result = newResult(resp, err)
+	result = requester.Get(&root)
 	return
 }

@@ -58,8 +58,7 @@ func (c *Client) User(login string) (user *User, result *Result) {
 	}
 
 	requester := c.Requester(userURL)
-	resp, err := requester.Get(&user)
-	result = newResult(resp, err)
+	result = requester.Get(&user)
 
 	return
 }
@@ -73,8 +72,7 @@ func (c *Client) UpdateUser(params interface{}) (user *User, result *Result) {
 
 	url, _ := root.CurrentUserURL.Expand(nil)
 	requester := c.Requester(url)
-	resp, err := requester.Patch(params, &user)
-	result = newResult(resp, err)
+	result = requester.Patch(params, &user)
 
 	return
 }
@@ -104,8 +102,7 @@ func (c *Client) AllUsers(since int) (users []User, result *Result) {
 	}
 
 	requester := c.Requester(url)
-	resp, err := requester.Get(&users)
-	result = newResult(resp, err)
+	result = requester.Get(&users)
 
 	return
 }
