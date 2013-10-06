@@ -30,19 +30,9 @@ type Root struct {
 	PublicGistsURL              Hyperlink `json:"public_gists_url,omitempty"`
 }
 
-type rootRequester struct {
-	client *Client
-}
-
-func (r *rootRequester) Request(v interface{}) (resp *Response, err error) {
-	resp, err = r.client.Get(nil, nil)
-	if !hasError(resp, err) {
-		err = resp.Data(v)
-	}
-
+func (c *Client) Root() (root *Root, result *Result) {
+	requester := c.Requester(nil)
+	resp, err := requester.Get(&root)
+	result = newResult(resp, err)
 	return
-}
-
-func (c *Client) Root() Requester {
-	return &rootRequester{client: c}
 }

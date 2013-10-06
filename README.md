@@ -14,10 +14,8 @@ import "github.com/jingweno/octokat"
 func main() {
     client := octokat.NewClient()
 
-    var user User
-    requester := client.User("jingweno")
-    resp, err := requester.Request(&user) // Internally it's hypermedia-driven
-    if err != nil {
+    user, result := client.User("jingweno") // Internally it's hypermedia-driven
+    if result.HasError() {
       // Handle error
     }
     // Do something with user
@@ -35,22 +33,19 @@ func main() {
     client := octokat.NewClient()
 
     // Get root
-    var root Root
-    requester := client.Root()
-    resp, err := requester.Request(&root)
-    if err != nil {
+    root, result := client.Root()
+    if result.HasError() {
       // Handle error
     }
 
     // Get a user
     userURL, _ := root.UserURL.Expand(octokat.M{"user": "jingweno"})
-    resp, err = client.Get(userURL, nil)
+    var user User
+    requester := client.Requester(userURL)
+    resp, err = requester.Get(&user)
     if err != nil {
       // Handle error
     }
-
-    var user User
-    request.Data(user)
     // Do something with user
 }
 ```

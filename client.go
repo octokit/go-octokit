@@ -33,6 +33,10 @@ func (c *Client) Get(url *url.URL, headers Headers) (resp *Response, err error) 
 	return
 }
 
+func (c *Client) Requester(url *url.URL) *Requester {
+	return &Requester{client: c, URL: url}
+}
+
 func (c *Client) Patch(url *url.URL, headers Headers, params interface{}) (resp *Response, err error) {
 	buffer, e := jsonMarshalToBuffer(params)
 	if e != nil {

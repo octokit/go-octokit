@@ -37,66 +37,46 @@ type User struct {
 	ReceivedEventsURL Hyperlink  `json:"received_events_url,omitempty"`
 }
 
-type userRequester struct {
-	client *Client
-	login  string
-}
-
-func (u *userRequester) Request(v interface{}) (resp *Response, err error) {
-	var root Root
-	resp, err = u.client.Root().Request(&root)
-	if hasError(resp, err) {
+func (c *Client) User(login string) (user *User, result *Result) {
+	root, r := c.Root()
+	if r.HasError() {
+		result = r
 		return
 	}
 
 	var link Hyperlink
-	if u.login == "" {
+	if login == "" {
 		link = root.CurrentUserURL
 	} else {
 		link = root.UserURL
 	}
 
-	userURL, e := link.Expand(M{"user": u.login})
+	userURL, e := link.Expand(M{"user": login})
 	if e != nil {
-		err = e
+		result = newResult(nil, e)
 		return
 	}
 
-	resp, err = u.client.Get(userURL, nil)
-	if !hasError(resp, err) {
-		err = resp.Data(v)
-	}
+	requester := c.Requester(userURL)
+	resp, err := requester.Get(&user)
+	result = newResult(resp, err)
 
 	return
 }
 
-func (c *Client) User(login string) (req Requester) {
-	return &userRequester{client: c, login: login}
-}
-
-type updateUserRequester struct {
-	client *Client
-	params interface{}
-}
-
-func (u *updateUserRequester) Request(v interface{}) (resp *Response, err error) {
-	var root Root
-	resp, err = u.client.Root().Request(&root)
-	if hasError(resp, err) {
+func (c *Client) UpdateUser(params interface{}) (user *User, result *Result) {
+	root, r := c.Root()
+	if r.HasError() {
+		result = r
 		return
 	}
 
 	url, _ := root.CurrentUserURL.Expand(nil)
-	resp, err = u.client.Patch(url, nil, u.params)
-	if !hasError(resp, err) {
-		err = resp.Data(v)
-	}
+	requester := c.Requester(url)
+	resp, err := requester.Patch(params, &user)
+	result = newResult(resp, err)
 
 	return
-}
-
-func (c *Client) UpdateUser(params interface{}) Requester {
-	return &updateUserRequester{client: c, params: params}
 }
 
 type allUsersRequester struct {
@@ -104,33 +84,28 @@ type allUsersRequester struct {
 	since  int
 }
 
-func (a *allUsersRequester) Request(v interface{}) (resp *Response, err error) {
-	var root Root
-	resp, err = a.client.Root().Request(&root)
-	if hasError(resp, err) {
+func (c *Client) AllUsers(since int) (users []User, result *Result) {
+	root, r := c.Root()
+	if r.HasError() {
+		result = r
 		return
 	}
 
 	url, e := root.UserURL.Expand(M{"user": ""})
 	if e != nil {
-		err = e
+		result = newResult(nil, e)
 		return
 	}
 
-	if a.since > 0 {
+	if since > 0 {
 		q := url.Query()
-		q.Set("since", strconv.Itoa(a.since))
+		q.Set("since", strconv.Itoa(since))
 		url.RawQuery = q.Encode()
 	}
 
-	resp, err = a.client.Get(url, nil)
-	if !hasError(resp, err) {
-		err = resp.Data(v)
-	}
+	requester := c.Requester(url)
+	resp, err := requester.Get(&users)
+	result = newResult(resp, err)
 
 	return
-}
-
-func (c *Client) AllUsers(since int) Requester {
-	return &allUsersRequester{client: c, since: since}
 }
