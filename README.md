@@ -2,7 +2,7 @@
 
 Go toolkit for the GitHub API.
 
-# Example
+# Hypermedia-driven client
 
 ## Show a user
 
@@ -13,45 +13,46 @@ import "github.com/jingweno/octokat"
 
 func main() {
     client := octokat.NewClient()
-    user, err := client.User("jingweno", nil)
+
+    user, result := client.User("jingweno") // Internally it's hypermedia-driven
+    if result.HasError() {
+      // Handle error
+    }
     // Do something with user
 }
 ```
 
-## List authorizations
+or
 
 ```go
 package main
 
-import "github.com/jingweno/octokat"
+import "github.com/octokit/octokat"
 
 func main() {
-    client := octokat.NewClient().WithLogin("LOGIN", "PASSWORD")
-    authorizations, err := client.Authorizations(nil)
-    // Do something with authorizations
-}
-```
+    client := octokat.NewClient()
 
-## Create a pull request
+    // Get root
+    root, result := client.Root()
+    if result.HasError() {
+      // Handle error
+    }
 
-```go
-package main
-
-import "github.com/jingweno/octokat"
-
-func main() {
-    client := octokat.NewClient().WithToken("OAUTH_TOKEN")
-    repo := octokat.Repo{Name: "octokat", UserName: "jingweno"}
-    params := octokat.PullRequestParams{Base: "master", Head: "feature", Title: "A pull request", Body: "A body"}
-    options := octokat.Options{Params: params}
-    pullRequest, err := client.CreatePullRequest(repo, &options)
-    // Do something with pullRequest
+    // Get a user
+    userURL, _ := root.UserURL.Expand(octokat.M{"user": "jingweno"})
+    var user User
+    requester := client.Requester(userURL)
+    result = requester.Get(&user)
+    if result.HasError() {
+      // Handle error
+    }
+    // Do something with user
 }
 ```
 
 ## Release Notes
 
-See [Releases](https://github.com/jingweno/octokat/releases).
+See [Releases](https://github.com/octokit/octokat/releases).
 
 ## Contributing
 
@@ -65,3 +66,4 @@ See [Releases](https://github.com/jingweno/octokat/releases).
 
 octokat is released under the MIT license. See
 [LICENSE.md](https://github.com/jingweno/octokat/blob/master/LICENSE.md).
+```

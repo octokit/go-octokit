@@ -1,12 +1,27 @@
 package octokat
 
-type Hyperlink struct {
-	client *Client
-	Rel    string
-	Href   string
-}
+import (
+	"github.com/jtacoma/uritemplates"
+	"net/url"
+)
 
-func (l *Hyperlink) Get(v interface{}, options *Options) (err error) {
-	err = l.client.jsonGet(l.Href, options, v)
+type M map[string]interface{}
+
+type Hyperlink string
+
+func (l *Hyperlink) Expand(m M) (u *url.URL, err error) {
+	template, e := uritemplates.Parse(string(*l))
+	if e != nil {
+		err = e
+		return
+	}
+
+	expanded, e := template.Expand(m)
+	if e != nil {
+		err = e
+		return
+	}
+
+	u, err = url.ParseRequestURI(expanded)
 	return
 }
