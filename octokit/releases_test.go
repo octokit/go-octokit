@@ -1,4 +1,4 @@
-package octokat
+package octokit
 
 import (
 	"github.com/bmizerany/assert"
@@ -60,14 +60,14 @@ func TestCreateRelease(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/octokat/Hello-World/releases", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/octokit/Hello-World/releases", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", PreviewMediaType)
 		testBody(t, r, `{"tag_name":"v1.0.0","target_commitish":"master"}`)
 		respondWith(w, loadFixture("create_release.json"))
 	})
 
-	repo := Repo{UserName: "octokat", Name: "Hello-World"}
+	repo := Repo{UserName: "octokit", Name: "Hello-World"}
 	params := ReleaseParams{
 		TagName:         "v1.0.0",
 		TargetCommitish: "master",

@@ -1,4 +1,4 @@
-package octokat
+package octokit
 
 type Root struct {
 	UserSearchURL               Hyperlink `json:"user_search_url,omitempty"`

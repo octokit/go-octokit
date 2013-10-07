@@ -1,4 +1,4 @@
-package octokat
+package octokit
 
 type Options struct {
 	Headers Headers

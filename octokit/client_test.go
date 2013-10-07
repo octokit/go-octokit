@@ -1,4 +1,4 @@
-package octokat
+package octokit
 
 import (
 	"bytes"

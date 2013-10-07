@@ -1,4 +1,4 @@
-package octokat
+package octokit
 
 import (
 	"fmt"
@@ -23,7 +23,7 @@ var (
 	server *httptest.Server
 )
 
-// setup sets up a test HTTP server along with a octokat.Client that is
+// setup sets up a test HTTP server along with a octokit.Client that is
 // configured to talk to that test server.  Tests should register handlers on
 // mux which provide mock responses for the API method being tested.
 func setup() {
@@ -31,7 +31,7 @@ func setup() {
 	mux = http.NewServeMux()
 	server = httptest.NewServer(mux)
 
-	// octokat client configured to use test server
+	// octokit client configured to use test server
 	client = NewClient()
 	client.BaseURL = server.URL
 
