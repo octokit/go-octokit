@@ -2,23 +2,18 @@ package octokat
 
 import (
 	"github.com/bmizerany/assert"
-	"net/http"
 	"testing"
 )
 
-func TestUnmarshalJSON(t *testing.T) {
-	setup()
-	defer tearDown()
+func TestHyperlink_Expand(t *testing.T) {
+	link := Hyperlink("https://api.github.com/users/{user}")
+	url, _ := link.Expand(M{"user": "jingweno"})
+	assert.Equal(t, "https://api.github.com/users/jingweno", url.String())
 
-	mux.HandleFunc("/repos/jingweno/octokat", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWith(w, loadFixture("repository.json"))
-	})
+	link = Hyperlink("https://api.github.com/user")
+	url, _ = link.Expand(nil)
+	assert.Equal(t, "https://api.github.com/user", url.String())
 
-	link := Hyperlink{client: client, Rel: "repository", Href: testURLOf("repos/jingweno/octokat")}
-	var repo Repository
-	link.Get(&repo, nil)
-
-	assert.Equal(t, 10575811, repo.ID)
-	assert.Equal(t, "jingweno/octokat", repo.FullName)
+	url, _ = link.Expand(M{})
+	assert.Equal(t, "https://api.github.com/user", url.String())
 }

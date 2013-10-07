@@ -19,10 +19,53 @@ func TestGet(t *testing.T) {
 		respondWith(w, "ok")
 	})
 
+	resp, _ := client.Get(testURLOf("foo"), nil)
+	assert.Equal(t, "ok", string(resp.RawBody))
+
+	// path doesn't exist
+	resp, _ = client.Get(testURLOf("bar"), nil)
+	assert.T(t, resp.Error != nil)
+}
+
+func TestPatch(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testHeader(t, r, "Accept", MediaType)
+		testHeader(t, r, "User-Agent", UserAgent)
+		testHeader(t, r, "Content-Type", DefaultContentType)
+		testBody(t, r, `{"foo":"bar"}`)
+		respondWith(w, "ok")
+	})
+
+	m := make(map[string]string)
+	m["foo"] = "bar"
+	resp, _ := client.Patch(testURLOf("foo"), nil, m)
+	assert.Equal(t, "ok", string(resp.RawBody))
+
+	// path doesn't exist
+	resp, _ = client.Patch(testURLOf("bar"), nil, m)
+	assert.T(t, resp.Error != nil)
+}
+
+func TestDeprecatedGet(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", MediaType)
+		testHeader(t, r, "User-Agent", UserAgent)
+		testHeader(t, r, "Content-Type", DefaultContentType)
+		respondWith(w, "ok")
+	})
+
 	client.get("foo", nil)
 }
 
-func TestPost(t *testing.T) {
+func TestDeprecatedPost(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -44,5 +87,5 @@ func TestBuildURL(t *testing.T) {
 	assert.Equal(t, "https://api.github.com", url.String())
 
 	url, _ = client.buildURL("repos")
-	assert.Equal(t, testURLOf("repos"), url.String())
+	assert.Equal(t, testURLOf("repos"), url)
 }

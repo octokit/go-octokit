@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"os"
 	"testing"
 )
@@ -32,6 +33,14 @@ func setup() {
 	// octokat client configured to use test server
 	client = NewClient()
 	client.BaseURL = server.URL
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if m := "GET"; m == r.Method && r.URL.String() == "/" {
+			respondWith(w, testRootJSON())
+		} else {
+			http.Error(w, "Bad Request", 400)
+		}
+	})
 }
 
 // teardown closes the test HTTP server.
@@ -56,8 +65,22 @@ func respondWith(w http.ResponseWriter, s string) {
 	fmt.Fprint(w, s)
 }
 
-func testURLOf(path string) string {
+func testURLOf(path string) *url.URL {
+	u, _ := url.ParseRequestURI(testURLStringOf(path))
+	return u
+}
+
+func testURLStringOf(path string) string {
 	return fmt.Sprintf("%s/%s", server.URL, path)
+}
+
+func testRootJSON() string {
+	root := Root{
+		CurrentUserURL: Hyperlink(testURLStringOf("user")),
+		UserURL:        Hyperlink(testURLStringOf("users/{user}")),
+	}
+	json, _ := jsonMarshal(root)
+	return string(json)
 }
 
 func loadFixture(f string) string {

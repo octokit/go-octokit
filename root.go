@@ -1,52 +1,37 @@
 package octokat
 
-import (
-	"encoding/json"
-	"regexp"
-)
-
 type Root struct {
-	client *Client
-	links  map[string]Hyperlink
+	UserSearchURL               Hyperlink `json:"user_search_url,omitempty"`
+	UserRepositoriesURL         Hyperlink `json:"user_repositories_url,omitempty"`
+	UserOrganizationsURL        Hyperlink `json:"user_organizations_url,omitempty"`
+	UserURL                     Hyperlink `json:"user_url,omitempty"`
+	TeamURL                     Hyperlink `json:"team_url,omitempty"`
+	StarredGistsURL             Hyperlink `json:"starred_gists_url,omitempty"`
+	StarredURL                  Hyperlink `json:"starred_url,omitempty"`
+	CurrentUserRepositoriesURL  Hyperlink `json:"current_user_repositories_url,omitempty"`
+	RepositorySearchURL         Hyperlink `json:"repository_search_url,omitempty"`
+	RepositoryURL               Hyperlink `json:"repository_url,omitempty"`
+	RateLimitURL                Hyperlink `json:"rate_limit_url,omitempty"`
+	GistsURL                    Hyperlink `json:"gists_url,omitempty"`
+	FollowingURL                Hyperlink `json:"following_url,omitempty"`
+	FeedsURL                    Hyperlink `json:"feeds_url,omitempty"`
+	EventsURL                   Hyperlink `json:"events_url,omitempty"`
+	EmojisURL                   Hyperlink `json:"emojis_url,omitempty"`
+	EmailsURL                   Hyperlink `json:"emails_url,omitempty"`
+	AuthorizationsURL           Hyperlink `json:"authorizations_url,omitempty"`
+	CurrentUserURL              Hyperlink `json:"current_user_url,omitempty"`
+	HubURL                      Hyperlink `json:"hub_url,omitempty"`
+	IssueSearchURL              Hyperlink `json:"issue_search_url,omitempty"`
+	IssuesURL                   Hyperlink `json:"issues_url,omitempty"`
+	KeysURL                     Hyperlink `json:"keys_url,omitempty"`
+	NotificationsURL            Hyperlink `json:"notifications_url,omitempty"`
+	OrganizationRepositoriesURL Hyperlink `json:"organization_repositories_url,omitempty"`
+	OrganizationsURL            Hyperlink `json:"organization_url,omitempty"`
+	PublicGistsURL              Hyperlink `json:"public_gists_url,omitempty"`
 }
 
-func (r *Root) Rel(rel string) *Hyperlink {
-	if link, ok := r.links[rel]; ok {
-		return &link
-	}
-
-	return nil
-}
-
-func (r *Root) UnmarshalJSON(d []byte) error {
-	var out map[string]string
-
-	if err := json.Unmarshal(d, &out); err != nil {
-		return err
-	}
-
-	r.links = make(map[string]Hyperlink, len(out))
-
-	for rel, link := range out {
-		rel = parseRelNameFromURL(rel)
-		r.links[rel] = Hyperlink{client: r.client, Rel: rel, Href: link}
-	}
-
-	return nil
-}
-
-func (c *Client) Root(options *Options) (root *Root, err error) {
-	root = &Root{}
-	root.client = c
-	err = c.jsonGet("", options, &root)
+func (c *Client) Root() (root *Root, result *Result) {
+	requester := c.Requester(nil)
+	result = requester.Get(&root)
 	return
-}
-
-func parseRelNameFromURL(url string) string {
-	re := regexp.MustCompile("^(.+)_url")
-	if re.MatchString(url) {
-		return re.FindStringSubmatch(url)[1]
-	}
-
-	return url
 }

@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestUser(t *testing.T) {
+func TestClient_User(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -15,7 +15,7 @@ func TestUser(t *testing.T) {
 		respondWith(w, loadFixture("user.json"))
 	})
 
-	user, _ := client.User("", nil)
+	user, _ := client.User("")
 
 	assert.Equal(t, 169064, user.ID)
 	assert.Equal(t, "jingweno", user.Login)
@@ -28,11 +28,44 @@ func TestUser(t *testing.T) {
 		respondWith(w, loadFixture("user.json"))
 	})
 
-	user, _ = client.User("jingweno", nil)
+	user, _ = client.User("jingweno")
 
 	assert.Equal(t, 169064, user.ID)
 	assert.Equal(t, "jingweno", user.Login)
 	assert.Equal(t, "jingweno@gmail.com", user.Email)
 	assert.Equal(t, "User", user.Type)
-	assert.Equal(t, "https://api.github.com/users/jingweno/repos", user.ReposURL)
+	assert.Equal(t, Hyperlink("https://api.github.com/users/jingweno/repos"), user.ReposURL)
+}
+
+func TestUser_UpdateUser(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testBody(t, r, `{"name":"name","email":"email"}`)
+		respondWith(w, loadFixture("user.json"))
+	})
+
+	var userToUpdate = User{
+		Name:  "name",
+		Email: "email",
+	}
+
+	user, _ := client.UpdateUser(userToUpdate)
+	assert.Equal(t, 169064, user.ID)
+}
+
+func TestUser_AllUsers(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/users/", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		assert.Equal(t, "/users/?since=1", r.URL.String())
+		respondWith(w, loadFixture("users.json"))
+	})
+
+	users, _ := client.AllUsers(1)
+	assert.Equal(t, 1, len(users))
 }
