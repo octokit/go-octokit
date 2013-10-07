@@ -1,4 +1,4 @@
-# Octokat
+# go-octokit
 
 Go toolkit for the GitHub API.
 
@@ -9,10 +9,10 @@ Go toolkit for the GitHub API.
 ```go
 package main
 
-import "github.com/jingweno/octokat"
+import "github.com/octokit/go-octokit/octokit"
 
 func main() {
-    client := octokat.NewClient()
+    client := octokit.NewClient()
 
     user, result := client.User("jingweno") // Internally it's hypermedia-driven
     if result.HasError() {
@@ -27,10 +27,10 @@ or
 ```go
 package main
 
-import "github.com/octokit/octokat"
+import "github.com/octokit/go-octokit/octokit"
 
 func main() {
-    client := octokat.NewClient()
+    client := octokit.NewClient()
 
     // Get root
     root, result := client.Root()
@@ -39,7 +39,7 @@ func main() {
     }
 
     // Get a user
-    userURL, _ := root.UserURL.Expand(octokat.M{"user": "jingweno"})
+    userURL, _ := root.UserURL.Expand(octokit.M{"user": "jingweno"})
     var user User
     requester := client.Requester(userURL)
     result = requester.Get(&user)
@@ -52,7 +52,7 @@ func main() {
 
 ## Release Notes
 
-See [Releases](https://github.com/octokit/octokat/releases).
+See [Releases](https://github.com/octokit/go-octokit/releases).
 
 ## Contributing
 
@@ -64,6 +64,5 @@ See [Releases](https://github.com/octokit/octokat/releases).
 
 ## License
 
-octokat is released under the MIT license. See
-[LICENSE.md](https://github.com/jingweno/octokat/blob/master/LICENSE.md).
-```
+go-octokit is released under the MIT license. See
+[LICENSE.md](https://github.com/octokit/go-octokit/blob/master/LICENSE.md).

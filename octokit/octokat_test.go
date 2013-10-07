@@ -8,6 +8,7 @@ import (
 	"net/http/httptest"
 	"net/url"
 	"os"
+	"path"
 	"testing"
 )
 
@@ -85,7 +86,7 @@ func testRootJSON() string {
 
 func loadFixture(f string) string {
 	pwd, _ := os.Getwd()
-	p := fmt.Sprintf("%s/fixtures/%s", pwd, f)
+	p := path.Join(pwd, "..", "fixtures", f)
 	c, _ := ioutil.ReadFile(p)
 	return string(c)
 }
