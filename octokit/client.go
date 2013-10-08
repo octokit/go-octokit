@@ -53,9 +53,8 @@ func (c *Client) Request(method string, url *url.URL, headers Headers, content i
 		url, _ = url.Parse(c.BaseURL)
 	}
 
-	request, e := http.NewRequest(method, url.String(), content)
-	if e != nil {
-		err = e
+	request, err := http.NewRequest(method, url.String(), content)
+	if err != nil {
 		return
 	}
 
@@ -67,21 +66,21 @@ func (c *Client) Request(method string, url *url.URL, headers Headers, content i
 		}
 	}
 
-	response, e := c.httpClient.Do(request)
-	if e != nil {
-		err = e
+	response, err := c.httpClient.Do(request)
+	if err != nil {
 		return
 	}
 
+	err = checkResponse(response)
+	if err != nil {
+		resp = &Response{Error: err}
+		return
+	}
+
+	// TODO: move body reading to Response
 	body, e := ioutil.ReadAll(response.Body)
 	if e != nil {
 		err = e
-		return
-	}
-
-	if response.StatusCode >= 400 && response.StatusCode < 600 {
-		respErr := handleErrors(body) // TODO distinguish parsing error vs response error
-		resp = &Response{Error: respErr}
 		return
 	}
 
@@ -166,7 +165,7 @@ func (c *Client) request(method, path string, headers Headers, content io.Reader
 	}
 
 	if response.StatusCode >= 400 && response.StatusCode < 600 {
-		return nil, handleErrors(body)
+		return nil, checkResponse(response)
 	}
 
 	return body, nil
