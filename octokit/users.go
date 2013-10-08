@@ -38,9 +38,8 @@ type User struct {
 }
 
 func (c *Client) User(login string) (user *User, result *Result) {
-	root, r := c.Root()
-	if r.HasError() {
-		result = r
+	root, result := c.Root()
+	if result.HasError() {
 		return
 	}
 
@@ -64,9 +63,8 @@ func (c *Client) User(login string) (user *User, result *Result) {
 }
 
 func (c *Client) UpdateUser(params interface{}) (user *User, result *Result) {
-	root, r := c.Root()
-	if r.HasError() {
-		result = r
+	root, result := c.Root()
+	if result.HasError() {
 		return
 	}
 
@@ -83,9 +81,8 @@ type allUsersRequester struct {
 }
 
 func (c *Client) AllUsers(since int) (users []User, result *Result) {
-	root, r := c.Root()
-	if r.HasError() {
-		result = r
+	root, result := c.Root()
+	if result.HasError() {
 		return
 	}
 
