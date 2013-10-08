@@ -16,8 +16,8 @@ func TestResponse_HasError(t *testing.T) {
 
 func TestResponse_Data(t *testing.T) {
 	resp := Response{RawBody: []byte(loadFixture("user.json"))}
-	var user User
-	err := resp.Data(&user)
+	user := new(User)
+	err := resp.Data(user)
 
 	assert.T(t, err == nil)
 	assert.Equal(t, 169064, user.ID)

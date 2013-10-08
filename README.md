@@ -41,8 +41,8 @@ func main() {
     // Get a user
     userURL, _ := root.UserURL.Expand(octokit.M{"user": "jingweno"})
     requester := client.Requester(userURL)
-    var user User
-    result = requester.Get(&user)
+    user := new(User)
+    result = requester.Get(user)
     if result.HasError() {
       // Handle error
     }
