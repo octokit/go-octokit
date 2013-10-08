@@ -29,11 +29,3 @@ func (r *Requester) Patch(params interface{}, v interface{}) (result *Result) {
 
 	return
 }
-
-func canUnmarshal(resp *Response, err error) bool {
-	if err != nil && resp.HasError() {
-		return true
-	}
-
-	return false
-}

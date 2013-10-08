@@ -73,18 +73,10 @@ func (c *Client) Request(method string, url *url.URL, headers Headers, content i
 
 	err = checkResponse(response)
 	if err != nil {
-		resp = &Response{Error: err}
 		return
 	}
 
-	// TODO: move body reading to Response
-	body, e := ioutil.ReadAll(response.Body)
-	if e != nil {
-		err = e
-		return
-	}
-
-	resp = &Response{RawBody: body}
+	resp = &Response{Response: response}
 	return
 }
 

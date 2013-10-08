@@ -1,21 +1,20 @@
 package octokit
 
 import (
-	"fmt"
 	"github.com/bmizerany/assert"
+	"io/ioutil"
+	"net/http"
+	"strings"
 	"testing"
 )
 
-func TestResponse_HasError(t *testing.T) {
-	resp := Response{}
-	assert.T(t, !resp.HasError())
-
-	resp = Response{Error: fmt.Errorf("an error")}
-	assert.T(t, resp.HasError())
-}
-
 func TestResponse_Data(t *testing.T) {
-	resp := Response{RawBody: []byte(loadFixture("user.json"))}
+	res := &http.Response{
+		Request:    &http.Request{},
+		StatusCode: http.StatusOK,
+		Body:       ioutil.NopCloser(strings.NewReader(loadFixture("user.json"))),
+	}
+	resp := Response{Response: res}
 	user := new(User)
 	err := resp.Data(user)
 

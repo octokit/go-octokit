@@ -20,11 +20,11 @@ func TestGet(t *testing.T) {
 	})
 
 	resp, _ := client.Get(testURLOf("foo"), nil)
-	assert.Equal(t, "ok", string(resp.RawBody))
+	assert.Equal(t, 200, resp.StatusCode)
 
 	// path doesn't exist
-	resp, _ = client.Get(testURLOf("bar"), nil)
-	assert.T(t, resp.Error != nil)
+	_, err := client.Get(testURLOf("bar"), nil)
+	assert.T(t, err != nil)
 }
 
 func TestPatch(t *testing.T) {
@@ -43,11 +43,11 @@ func TestPatch(t *testing.T) {
 	m := make(map[string]string)
 	m["foo"] = "bar"
 	resp, _ := client.Patch(testURLOf("foo"), nil, m)
-	assert.Equal(t, "ok", string(resp.RawBody))
+	assert.Equal(t, 200, resp.StatusCode)
 
 	// path doesn't exist
-	resp, _ = client.Patch(testURLOf("bar"), nil, m)
-	assert.T(t, resp.Error != nil)
+	_, err := client.Patch(testURLOf("bar"), nil, m)
+	assert.T(t, err != nil)
 }
 
 func TestDeprecatedGet(t *testing.T) {

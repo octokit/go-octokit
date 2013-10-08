@@ -6,16 +6,12 @@ type Result struct {
 }
 
 func (r *Result) HasError() bool {
-	return r.Err != nil || (r.Response != nil && r.Response.HasError())
+	return r.Err != nil
 }
 
 func (r *Result) Error() string {
 	if r.Err != nil {
 		return r.Err.Error()
-	}
-
-	if r.Response != nil && r.Response.HasError() {
-		return r.Response.Error.Error()
 	}
 
 	return ""

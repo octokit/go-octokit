@@ -1,14 +1,14 @@
 package octokit
 
-type Response struct {
-	RawBody []byte
-	Error   error
-}
+import (
+	"encoding/json"
+	"net/http"
+)
 
-func (resp *Response) HasError() bool {
-	return resp.Error != nil
+type Response struct {
+	*http.Response
 }
 
 func (resp *Response) Data(v interface{}) error {
-	return jsonUnmarshal(resp.RawBody, v)
+	return json.NewDecoder(resp.Body).Decode(v)
 }
