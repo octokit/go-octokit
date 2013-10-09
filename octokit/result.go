@@ -2,7 +2,6 @@ package octokit
 
 import (
 	"net/url"
-	"strings"
 )
 
 type pageable struct {
@@ -31,50 +30,8 @@ func (r *Result) Error() string {
 }
 
 func newResult(resp *Response, err error) *Result {
-	var p pageable
-	if resp != nil {
-		p = parsePageable(resp.Header.Get("Link"))
-	}
+	parser := paginationPraser{header: resp.Header}
+	pageable := parser.Parse()
 
-	return &Result{Response: resp, pageable: p, Err: err}
-}
-
-func parsePageable(link string) (p pageable) {
-	p = pageable{}
-	if len(link) == 0 {
-		return
-	}
-
-	for _, l := range strings.Split(link, ",") {
-		l = strings.TrimSpace(l)
-		segments := strings.Split(l, ";")
-
-		if len(segments) < 2 {
-			continue
-		}
-
-		if !strings.HasPrefix(segments[0], "<") || !strings.HasSuffix(segments[0], ">") {
-			continue
-		}
-
-		url, err := url.Parse(segments[0][1 : len(segments[0])-1])
-		if err != nil {
-			continue
-		}
-
-		for _, segment := range segments[1:] {
-			switch strings.TrimSpace(segment) {
-			case `rel="next"`:
-				p.NextPage = url
-			case `rel="prev"`:
-				p.PrevPage = url
-			case `rel="first"`:
-				p.FirstPage = url
-			case `rel="last"`:
-				p.LastPage = url
-			}
-		}
-	}
-
-	return
+	return &Result{Response: resp, pageable: pageable, Err: err}
 }
