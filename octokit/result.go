@@ -1,8 +1,20 @@
 package octokit
 
+import (
+	"net/url"
+)
+
+type pageable struct {
+	NextPage  *url.URL
+	LastPage  *url.URL
+	FirstPage *url.URL
+	PrevPage  *url.URL
+}
+
 type Result struct {
 	Response *Response
 	Err      error
+	pageable
 }
 
 func (r *Result) HasError() bool {
@@ -18,5 +30,8 @@ func (r *Result) Error() string {
 }
 
 func newResult(resp *Response, err error) *Result {
-	return &Result{Response: resp, Err: err}
+	parser := paginationParser{header: resp.Header}
+	pageable := parser.Parse()
+
+	return &Result{Response: resp, pageable: pageable, Err: err}
 }
