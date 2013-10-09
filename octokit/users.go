@@ -37,6 +37,10 @@ type User struct {
 	ReceivedEventsURL Hyperlink  `json:"received_events_url,omitempty"`
 }
 
+// Get a single user with the provided login.
+// If login is empty, it gets the authenticated user.
+//
+// See http://developer.github.com/v3/users/#get-a-single-user
 func (c *Client) User(login string) (user *User, result *Result) {
 	root, result := c.Root()
 	if result.HasError() {
@@ -62,6 +66,9 @@ func (c *Client) User(login string) (user *User, result *Result) {
 	return
 }
 
+// Update the authenticated user with params marshaling as JSON input.
+//
+// See http://developer.github.com/v3/users/#update-the-authenticated-user
 func (c *Client) UpdateUser(params interface{}) (user *User, result *Result) {
 	root, result := c.Root()
 	if result.HasError() {
@@ -75,11 +82,10 @@ func (c *Client) UpdateUser(params interface{}) (user *User, result *Result) {
 	return
 }
 
-type allUsersRequester struct {
-	client *Client
-	since  int
-}
-
+// List all GitHub users since the ID of the last User that you've seen.
+// This provides a dump of every user, in the order that they signed up for GitHub.
+//
+// See http://developer.github.com/v3/users/#get-all-users
 func (c *Client) AllUsers(since int) (users []User, result *Result) {
 	root, result := c.Root()
 	if result.HasError() {
