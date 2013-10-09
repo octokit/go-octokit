@@ -7,11 +7,11 @@ import (
 )
 
 // TODO: need a full link header parser for http://tools.ietf.org/html/rfc5988
-type paginationPraser struct {
+type paginationParser struct {
 	header http.Header
 }
 
-func (pp paginationPraser) Parse() pageable {
+func (pp paginationParser) Parse() pageable {
 	link := pp.header.Get("Link")
 	p := pageable{}
 	if len(link) == 0 {
