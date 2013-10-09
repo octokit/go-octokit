@@ -31,7 +31,11 @@ func (r *Result) Error() string {
 }
 
 func newResult(resp *Response, err error) *Result {
-	page := parsePage(resp.Header.Get("Link"))
+	var page Page
+	if resp != nil {
+		page = parsePage(resp.Header.Get("Link"))
+	}
+
 	return &Result{Response: resp, Page: page, Err: err}
 }
 
