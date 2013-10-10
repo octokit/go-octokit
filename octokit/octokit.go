@@ -10,7 +10,6 @@ const (
 	UserAgent          = "Octokat Go " + Version
 	MediaType          = "application/vnd.github.beta+json"
 	DefaultContentType = "application/json"
-	PreviewMediaType   = "application/vnd.github.manifold-preview"
 	Version            = "0.3.0"
 )
 
