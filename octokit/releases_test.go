@@ -8,7 +8,7 @@ import (
 
 func TestAddPreviewMediaType(t *testing.T) {
 	options := addPreviewMediaType(nil)
-	assert.Equal(t, PreviewMediaType, options.Headers["Accept"])
+	assert.Equal(t, ReleasesMediaType, options.Headers["Accept"])
 }
 
 func TestReleases(t *testing.T) {
@@ -17,7 +17,7 @@ func TestReleases(t *testing.T) {
 
 	mux.HandleFunc("/repos/jingweno/gh/releases", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", PreviewMediaType)
+		testHeader(t, r, "Accept", ReleasesMediaType)
 		respondWith(w, loadFixture("releases.json"))
 	})
 
@@ -62,7 +62,7 @@ func TestCreateRelease(t *testing.T) {
 
 	mux.HandleFunc("/repos/octokit/Hello-World/releases", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", PreviewMediaType)
+		testHeader(t, r, "Accept", ReleasesMediaType)
 		testBody(t, r, `{"tag_name":"v1.0.0","target_commitish":"master"}`)
 		respondWith(w, loadFixture("create_release.json"))
 	})
