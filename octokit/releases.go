@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+const ReleasesMediaType = "application/vnd.github.manifold-preview"
+
 type Release struct {
 	ID             int       `json:"id,omitempty"`
 	URL            string    `json:"url,omitempty"`
@@ -61,7 +63,7 @@ func addPreviewMediaType(options *Options) *Options {
 	}
 
 	if options.Headers["Accept"] == "" {
-		options.Headers["Accept"] = PreviewMediaType
+		options.Headers["Accept"] = ReleasesMediaType
 	}
 
 	return options
