@@ -59,14 +59,14 @@ import "github.com/octokit/go-octokit/octokit"
 
 func main() {
     client := octokit.NewClient()
-    users, result := client.AllUsers(0)
+    repos, result := client.OrgRepos("github")
     if result.HasError() {
       // Handle error
     }
-    // Do something with users
+    // Do something with repos
 
     // next page
-    result = client.Requester(result.NextPage).Get(&users)
+    result = client.Requester(result.NextPage).Get(&repos)
     if result.HasError() {
       // Handle error
     }
