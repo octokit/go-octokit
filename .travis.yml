@@ -4,5 +4,4 @@ go:
 install:
 - script/bootstrap
 - script/build
-- script/test
 script: script/test
