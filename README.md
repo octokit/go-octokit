@@ -50,6 +50,31 @@ func main() {
 }
 ```
 
+## Pagination
+
+```go
+package main
+
+import "github.com/octokit/go-octokit/octokit"
+
+func main() {
+    client := octokit.NewClient()
+    repos, result := client.OrgRepos("github")
+    if result.HasError() {
+      // Handle error
+    }
+    // Do something with repos
+
+    // next page
+    result = client.Requester(result.NextPage).Get(&repos)
+    if result.HasError() {
+      // Handle error
+    }
+    // Do something with users
+}
+
+```
+
 ## Release Notes
 
 See [Releases](https://github.com/octokit/go-octokit/releases).
