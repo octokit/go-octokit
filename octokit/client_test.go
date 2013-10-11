@@ -45,8 +45,19 @@ func TestPatch(t *testing.T) {
 	resp, _ := client.Patch(testURLOf("foo"), nil, m)
 	assert.Equal(t, 200, resp.StatusCode)
 
+	mux.HandleFunc("/bar", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testHeader(t, r, "Accept", MediaType)
+		testHeader(t, r, "User-Agent", UserAgent)
+		testHeader(t, r, "Content-Type", DefaultContentType)
+		respondWith(w, "ok")
+	})
+
+	resp, _ = client.Patch(testURLOf("bar"), nil, nil)
+	assert.Equal(t, 200, resp.StatusCode)
+
 	// path doesn't exist
-	_, err := client.Patch(testURLOf("bar"), nil, m)
+	_, err := client.Patch(testURLOf("baz"), nil, m)
 	assert.T(t, err != nil)
 }
 
@@ -80,6 +91,23 @@ func TestDeprecatedPost(t *testing.T) {
 	})
 
 	client.post("foo", nil, bytes.NewBufferString(content))
+}
+
+func TestJSONPost(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", MediaType)
+		testHeader(t, r, "User-Agent", UserAgent)
+		testHeader(t, r, "Content-Type", DefaultContentType)
+		testBody(t, r, "")
+		respondWith(w, `{"ok": "foo"}`)
+	})
+
+	m := make(map[string]interface{})
+	client.jsonPost("foo", nil, &m)
 }
 
 func TestBuildURL(t *testing.T) {
