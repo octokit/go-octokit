@@ -28,23 +28,22 @@ func (c *Client) WithToken(token string) *Client {
 	return c
 }
 
+func (c *Client) Requester(url *url.URL) *Requester {
+	return &Requester{client: c, URL: url}
+}
+
 func (c *Client) Get(url *url.URL, headers Headers) (resp *Response, err error) {
 	resp, err = c.Request("GET", url, headers, nil)
 	return
 }
 
-func (c *Client) Requester(url *url.URL) *Requester {
-	return &Requester{client: c, URL: url}
-}
-
 func (c *Client) Patch(url *url.URL, headers Headers, params interface{}) (resp *Response, err error) {
-	buffer, e := jsonMarshalToBuffer(params)
-	if e != nil {
-		err = e
+	reader, err := jsonMarshalToReader(params)
+	if err != nil {
 		return
 	}
 
-	resp, err = c.Request("PATCH", url, headers, buffer)
+	resp, err = c.Request("PATCH", url, headers, reader)
 	return
 }
 
@@ -119,7 +118,16 @@ func (c *Client) jsonPost(path string, options *Options, v interface{}) error {
 		buffer = bytes.NewBuffer(b)
 	}
 
-	body, err := c.post(path, headers, buffer)
+	// *bytes.Buffer(nil) != nil
+	// see http://golang.org/doc/faq#nil_error
+	var content io.Reader
+	if buffer == nil {
+		content = nil
+	} else {
+		content = buffer
+	}
+
+	body, err := c.post(path, headers, content)
 	if err != nil {
 		return err
 	}
@@ -198,10 +206,10 @@ func (c *Client) isTokenAuth() bool {
 	return c.Token != ""
 }
 
-func jsonMarshalToBuffer(v interface{}) (r *bytes.Buffer, err error) {
+func jsonMarshalToReader(v interface{}) (r io.Reader, err error) {
 	if v != nil {
 		b, e := jsonMarshal(v)
-		if e != nil {
+		if err != nil {
 			err = e
 			return
 		}
