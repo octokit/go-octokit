@@ -62,8 +62,20 @@ func (c *Client) Repositories(username string, options *Options) (repositories [
 //
 // See http://developer.github.com/v3/repos/#get
 func (c *Client) Repository(repo Repo, options *Options) (repository *Repository, err error) {
-	path := fmt.Sprintf("repos/%s", repo)
-	err = c.jsonGet(path, options, &repository)
+	root, result := c.Root()
+	if result.HasError() {
+		return
+	}
+
+	link := root.RepositoryURL
+	url, e := link.Expand(M{"owner": repo.UserName, "repo": repo.Name})
+	if e != nil {
+		result = newResult(nil, e)
+		return
+	}
+
+	requester := c.Requester(url)
+	result = requester.Get(&repository)
 	return
 }
 
