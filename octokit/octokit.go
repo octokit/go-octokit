@@ -1,9 +1,5 @@
 package octokit
 
-import (
-	"net/http"
-)
-
 const (
 	GitHubURL          = "https://github.com"
 	GitHubAPIURL       = "https://api.github.com"
@@ -12,7 +8,3 @@ const (
 	DefaultContentType = "application/json"
 	Version            = "0.3.0"
 )
-
-func NewClient() *Client {
-	return &Client{BaseURL: GitHubAPIURL, httpClient: &http.Client{}}
-}

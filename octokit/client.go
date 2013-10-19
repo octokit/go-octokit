@@ -9,6 +9,10 @@ import (
 	"net/url"
 )
 
+func NewClient() *Client {
+	return &Client{BaseURL: GitHubAPIURL, httpClient: &http.Client{}}
+}
+
 type Client struct {
 	httpClient *http.Client
 	BaseURL    string
