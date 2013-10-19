@@ -30,8 +30,11 @@ func (r *Result) Error() string {
 }
 
 func newResult(resp *Response, err error) *Result {
-	parser := paginationParser{header: resp.Header}
-	pageable := parser.Parse()
+	var pageable pageable
+	if resp != nil {
+		parser := paginationParser{header: resp.Header}
+		pageable = parser.Parse()
+	}
 
 	return &Result{Response: resp, pageable: pageable, Err: err}
 }
