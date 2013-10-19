@@ -26,7 +26,7 @@ type Root struct {
 	KeysURL                     Hyperlink `json:"keys_url,omitempty"`
 	NotificationsURL            Hyperlink `json:"notifications_url,omitempty"`
 	OrganizationRepositoriesURL Hyperlink `json:"organization_repositories_url,omitempty"`
-	OrganizationsURL            Hyperlink `json:"organization_url,omitempty"`
+	OrganizationURL             Hyperlink `json:"organization_url,omitempty"`
 	PublicGistsURL              Hyperlink `json:"public_gists_url,omitempty"`
 }
 

@@ -79,6 +79,7 @@ func testRootJSON() string {
 	root := Root{
 		CurrentUserURL: Hyperlink(testURLStringOf("user")),
 		UserURL:        Hyperlink(testURLStringOf("users/{user}")),
+		RepositoryURL:  Hyperlink(testURLStringOf("repos/{owner}/{repo}")),
 	}
 	json, _ := jsonMarshal(root)
 	return string(json)
