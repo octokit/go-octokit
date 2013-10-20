@@ -89,8 +89,7 @@ func (e *ResponseError) errorMessage() string {
 func NewResponseError(resp *sawyer.Response) (respErr *ResponseError) {
 	if resp.IsApiError() {
 		t := getResponseErrorType(resp.Response)
-		e := resp.ApiError.(ResponseError)
-		respErr = &e
+		respErr := resp.ApiError.(*ResponseError)
 		respErr.Type = t
 	}
 

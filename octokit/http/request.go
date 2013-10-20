@@ -23,3 +23,16 @@ func (r *Request) Head(output interface{}) (resp *Response, err error) {
 
 	return
 }
+
+func (r *Request) Get(output interface{}) (resp *Response, err error) {
+	sawyerResp := r.sawyerReq.Get(output)
+	if sawyerResp.IsError() {
+		err = sawyerResp.ResponseError
+		return
+	}
+
+	respErr := NewResponseError(sawyerResp)
+	resp = &Response{Response: sawyerResp.Response, Error: respErr}
+
+	return
+}

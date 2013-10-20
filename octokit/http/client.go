@@ -6,8 +6,8 @@ import (
 	"reflect"
 )
 
-func NewClient(httpClient *http.Client) *Client {
-	client, _ := sawyer.NewFromString("https://api.github.com", httpClient)
+func NewClient(baseURL string, httpClient *http.Client) *Client {
+	client, _ := sawyer.NewFromString(baseURL, httpClient)
 	client.ErrorType = reflect.TypeOf(ResponseError{})
 	return &Client{client}
 }
