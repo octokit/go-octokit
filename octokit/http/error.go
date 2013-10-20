@@ -53,8 +53,8 @@ type ResponseError struct {
 
 func (e *ResponseError) Error() string {
 	return fmt.Sprintf("%v %v: %d - %s",
-		e.Response.resp.Request.Method, e.Response.resp.Request.URL,
-		e.Response.resp.StatusCode, e.errorMessage())
+		e.Response.Request.Method, e.Response.Request.URL,
+		e.Response.StatusCode, e.errorMessage())
 }
 
 func (e *ResponseError) errorMessage() string {

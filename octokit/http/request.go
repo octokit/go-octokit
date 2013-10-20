@@ -1,22 +1,29 @@
 package http
 
+import (
+	"github.com/lostisland/go-sawyer"
+)
+
 type Headers map[string]string
 
 type Request struct {
-	client  *Client
-	URL     string
-	Headers Headers
+	Headers   Headers
+	sawyerReq *sawyer.Request
 }
 
 func (r *Request) Head(output interface{}) (resp *Response, err error) {
-	var respErr *ResponseError
-	sawyerReq, err := r.client.sawyerClient.NewRequest(r.URL, respErr)
-	if err != nil {
+	sawyerResp := r.sawyerReq.Head(output)
+	if sawyerResp.IsError() {
+		err = sawyerResp.ResponseError
 		return
 	}
 
-	sawyerResp := sawyerReq.Head(output)
-	resp = &Response{Response: sawyerResp.Response, Error: respErr}
+	var respErr ResponseError
+	if sawyerResp.IsApiError() {
+		respErr = sawyerResp.ApiError.(ResponseError)
+	}
+
+	resp = &Response{Response: sawyerResp.Response, Error: &respErr}
 
 	return
 }
