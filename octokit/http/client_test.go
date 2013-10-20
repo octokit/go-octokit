@@ -66,6 +66,7 @@ func TestGetResponseError(t *testing.T) {
 	assert.T(t, resp.IsError())
 	respErr := resp.Error
 	assert.Equal(t, "not found", respErr.Message)
+	assert.Equal(t, ErrorNotFound, respErr.Type)
 }
 
 func TestSuccessfulPost(t *testing.T) {
