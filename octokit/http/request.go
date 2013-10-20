@@ -18,12 +18,8 @@ func (r *Request) Head(output interface{}) (resp *Response, err error) {
 		return
 	}
 
-	var respErr ResponseError
-	if sawyerResp.IsApiError() {
-		respErr = sawyerResp.ApiError.(ResponseError)
-	}
-
-	resp = &Response{Response: sawyerResp.Response, Error: &respErr}
+	respErr := NewResponseError(sawyerResp)
+	resp = &Response{Response: sawyerResp.Response, Error: respErr}
 
 	return
 }

@@ -2,6 +2,7 @@ package http
 
 import (
 	"fmt"
+	"github.com/lostisland/go-sawyer"
 	"io/ioutil"
 	"net/http"
 	"regexp"
@@ -83,6 +84,17 @@ func (e *ResponseError) errorMessage() string {
 	}
 
 	return strings.Join(messages, "\n")
+}
+
+func NewResponseError(resp *sawyer.Response) (respErr *ResponseError) {
+	if resp.IsApiError() {
+		t := getResponseErrorType(resp.Response)
+		e := resp.ApiError.(ResponseError)
+		respErr = &e
+		respErr.Type = t
+	}
+
+	return
 }
 
 func getResponseErrorType(resp *http.Response) ResponseErrorType {
