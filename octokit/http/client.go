@@ -3,12 +3,11 @@ package http
 import (
 	"github.com/lostisland/go-sawyer"
 	"net/http"
-	"reflect"
 )
 
 func NewClient(baseURL string, httpClient *http.Client) *Client {
 	client, _ := sawyer.NewFromString(baseURL, httpClient)
-	client.ErrorType = reflect.TypeOf(ResponseError{})
+	client.SetError(ResponseError{})
 	return &Client{client}
 }
 
