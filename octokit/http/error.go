@@ -44,7 +44,7 @@ func (e *ErrorObject) Error() string {
 }
 
 type ResponseError struct {
-	Response         *Response         `json:"-"`
+	Response         *http.Response    `json:"-"`
 	Type             ResponseErrorType `json:"-"`
 	Message          string            `json:"message,omitempty"`
 	Err              string            `json:"error,omitempty"`
@@ -89,6 +89,7 @@ func (e *ResponseError) errorMessage() string {
 func NewResponseError(resp *sawyer.Response) (respErr *ResponseError) {
 	t := getResponseErrorType(resp.Response)
 	respErr = resp.ApiError.(*ResponseError)
+	respErr.Response = resp.Response
 	respErr.Type = t
 
 	return
