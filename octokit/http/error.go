@@ -86,11 +86,17 @@ func (e *ResponseError) errorMessage() string {
 	return strings.Join(messages, "\n")
 }
 
-func NewResponseError(resp *sawyer.Response) (respErr *ResponseError) {
+func NewResponseError(resp *sawyer.Response) (err error) {
+	var respErr *ResponseError
 	t := getResponseErrorType(resp.Response)
-	respErr = resp.ApiError.(*ResponseError)
+	err = resp.Decode(&respErr)
+	if err != nil {
+		return
+	}
+
 	respErr.Response = resp.Response
 	respErr.Type = t
+	err = respErr
 
 	return
 }

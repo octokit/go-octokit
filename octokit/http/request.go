@@ -41,23 +41,23 @@ func (r *Request) do(method string, input interface{}, output interface{}) (resp
 	var sawyerResp *sawyer.Response
 	switch method {
 	case "HEAD":
-		sawyerResp = r.sawyerReq.Head(output)
+		sawyerResp = r.sawyerReq.Head()
 	case "GET":
-		sawyerResp = r.sawyerReq.Get(output)
+		sawyerResp = r.sawyerReq.Get()
 	case "POST":
 		mtype, _ := mediatype.Parse("application/json")
 		r.sawyerReq.SetBody(mtype, input)
-		sawyerResp = r.sawyerReq.Post(output)
+		sawyerResp = r.sawyerReq.Post()
 	case "PUT":
 		mtype, _ := mediatype.Parse("application/json")
 		r.sawyerReq.SetBody(mtype, input)
-		sawyerResp = r.sawyerReq.Put(output)
+		sawyerResp = r.sawyerReq.Put()
 	case "PATCH":
-		sawyerResp = r.sawyerReq.Patch(output)
+		sawyerResp = r.sawyerReq.Patch()
 	case "DELETE":
-		sawyerResp = r.sawyerReq.Delete(output)
+		sawyerResp = r.sawyerReq.Delete()
 	case "OPTIONS":
-		sawyerResp = r.sawyerReq.Options(output)
+		sawyerResp = r.sawyerReq.Options()
 	}
 
 	if sawyerResp.IsError() {
@@ -71,5 +71,7 @@ func (r *Request) do(method string, input interface{}, output interface{}) (resp
 	}
 
 	resp = &Response{Response: sawyerResp.Response}
+	err = sawyerResp.Decode(output)
+
 	return
 }

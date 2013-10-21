@@ -7,7 +7,6 @@ import (
 
 func NewClient(baseURL string, httpClient *http.Client) *Client {
 	client, _ := sawyer.NewFromString(baseURL, httpClient)
-	client.SetError(ResponseError{})
 	return &Client{client}
 }
 
