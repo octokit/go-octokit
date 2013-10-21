@@ -21,9 +21,8 @@ func TestSuccessfulGet(t *testing.T) {
 	assert.Equal(t, nil, err)
 
 	var output map[string]interface{}
-	resp, err := req.Get(&output)
+	_, err = req.Get(&output)
 	assert.Equal(t, nil, err)
-	assert.T(t, !resp.IsError())
 	assert.Equal(t, "octokit", output["login"])
 }
 
@@ -61,10 +60,10 @@ func TestGetResponseError(t *testing.T) {
 	assert.Equal(t, nil, err)
 
 	var output map[string]interface{}
-	resp, err := req.Get(output)
-	assert.Equal(t, nil, err)
-	assert.T(t, resp.IsError())
-	respErr := resp.Error
+	_, err = req.Get(output)
+	assert.NotEqual(t, nil, err)
+	respErr, ok := err.(*ResponseError)
+	assert.Tf(t, ok, "should be able to convert to *ResponseError")
 	assert.Equal(t, "not found", respErr.Message)
 	assert.Equal(t, ErrorNotFound, respErr.Type)
 }
@@ -87,8 +86,7 @@ func TestSuccessfulPost(t *testing.T) {
 
 	input := map[string]interface{}{"input": "bar"}
 	var output map[string]interface{}
-	resp, err := req.Post(input, &output)
+	_, err = req.Post(input, &output)
 	assert.Equal(t, nil, err)
-	assert.T(t, !resp.IsError())
 	assert.Equal(t, "octokit", output["login"])
 }

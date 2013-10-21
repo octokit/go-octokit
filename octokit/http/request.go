@@ -65,8 +65,11 @@ func (r *Request) do(method string, input interface{}, output interface{}) (resp
 		return
 	}
 
-	respErr := NewResponseError(sawyerResp)
-	resp = &Response{Response: sawyerResp.Response, Error: respErr}
+	if sawyerResp.IsApiError() {
+		err = NewResponseError(sawyerResp)
+		return
+	}
 
+	resp = &Response{Response: sawyerResp.Response}
 	return
 }
