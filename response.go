@@ -1,4 +1,4 @@
-package http
+package octokit
 
 import (
 	"net/http"
