@@ -68,7 +68,7 @@ func testURLStringOf(path string) string {
 
 func loadFixture(f string) string {
 	pwd, _ := os.Getwd()
-	p := path.Join(pwd, "..", "fixtures", f)
+	p := path.Join(pwd, "fixtures", f)
 	c, _ := ioutil.ReadFile(p)
 	return string(c)
 }
