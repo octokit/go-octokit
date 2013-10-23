@@ -40,23 +40,23 @@ func (r *Request) Delete(output interface{}) (resp *Response, err error) {
 func (r *Request) do(method string, input interface{}, output interface{}) (resp *Response, err error) {
 	var sawyerResp *sawyer.Response
 	switch method {
-	case "HEAD":
+	case sawyer.HeadMethod:
 		sawyerResp = r.sawyerReq.Head()
-	case "GET":
+	case sawyer.GetMethod:
 		sawyerResp = r.sawyerReq.Get()
-	case "POST":
+	case sawyer.PostMethod:
 		mtype, _ := mediatype.Parse("application/json")
 		r.sawyerReq.SetBody(mtype, input)
 		sawyerResp = r.sawyerReq.Post()
-	case "PUT":
+	case sawyer.PutMethod:
 		mtype, _ := mediatype.Parse("application/json")
 		r.sawyerReq.SetBody(mtype, input)
 		sawyerResp = r.sawyerReq.Put()
-	case "PATCH":
+	case sawyer.PatchMethod:
 		sawyerResp = r.sawyerReq.Patch()
-	case "DELETE":
+	case sawyer.DeleteMethod:
 		sawyerResp = r.sawyerReq.Delete()
-	case "OPTIONS":
+	case sawyer.OptionsMethod:
 		sawyerResp = r.sawyerReq.Options()
 	}
 
