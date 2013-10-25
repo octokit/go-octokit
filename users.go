@@ -6,8 +6,20 @@ import (
 	"time"
 )
 
-func (c *Client) Users(url *url.URL) *UsersService {
-	return &UsersService{client: c, URL: url}
+var DefaultUserHyperlink = Hyperlink("users/{user}")
+
+func (c *Client) Users(link *Hyperlink, m M) (users *UsersService, err error) {
+	if link == nil {
+		link = &DefaultUserHyperlink
+	}
+
+	url, err := link.Expand(m)
+	if err != nil {
+		return
+	}
+
+	users = &UsersService{client: c, URL: url}
+	return
 }
 
 type UsersService struct {
@@ -16,6 +28,15 @@ type UsersService struct {
 }
 
 func (u *UsersService) Get() (user *User, result *Result) {
+	req, err := u.client.NewRequest(u.URL.String())
+	if err != nil {
+		result = newResult(nil, err)
+		return
+	}
+
+	resp, err := req.Get(&user)
+	result = newResult(resp, err)
+
 	return
 }
 
