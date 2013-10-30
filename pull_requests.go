@@ -36,6 +36,11 @@ func (p *PullRequestsService) Get() (pull *PullRequest, result *Result) {
 	return
 }
 
+func (p *PullRequestsService) Create(params interface{}) (pull *PullRequest, result *Result) {
+	result = p.client.Post(p.URL, params, &pull)
+	return
+}
+
 func (p *PullRequestsService) GetAll() (pulls []PullRequest, result *Result) {
 	result = p.client.Get(p.URL, &pulls)
 	return
@@ -81,4 +86,17 @@ type Commit struct {
 	Sha   string     `json:"sha,omitempty"`
 	User  User       `json:"user,omitempty"`
 	Repo  Repository `json:"repo,omitempty"`
+}
+
+type PullRequestParams struct {
+	Base  string `json:"base,omitempty"`
+	Head  string `json:"head,omitempty"`
+	Title string `json:"title,omitempty"`
+	Body  string `json:"body,omitempty"`
+}
+
+type PullRequestForIssueParams struct {
+	Base  string `json:"base,omitempty"`
+	Head  string `json:"head,omitempty"`
+	Issue string `json:"issue,omitempty"`
 }
