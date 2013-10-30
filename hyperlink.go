@@ -1,29 +1,22 @@
 package octokit
 
 import (
-	"github.com/jtacoma/uritemplates"
+	"github.com/lostisland/go-sawyer"
 	"net/url"
 )
-
-// TODO: use sawyer.Hyperlink
 
 type M map[string]interface{}
 
 type Hyperlink string
 
+// TODO: find out a way to not wrapping sawyer.Hyperlink like this
 func (l *Hyperlink) Expand(m M) (u *url.URL, err error) {
-	template, e := uritemplates.Parse(string(*l))
-	if e != nil {
-		err = e
-		return
+	link := sawyer.Hyperlink(string(*l))
+	sawyerM := sawyer.M{}
+	for k, v := range m {
+		sawyerM[k] = v
 	}
 
-	expanded, e := template.Expand(m)
-	if e != nil {
-		err = e
-		return
-	}
-
-	u, err = url.Parse(expanded)
+	u, err = link.Expand(sawyerM)
 	return
 }
