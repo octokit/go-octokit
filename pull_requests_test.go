@@ -58,7 +58,7 @@ func TestPullRequestService_Post(t *testing.T) {
 		respondWithJSON(w, loadFixture("pull_request.json"))
 	})
 
-	prService, err := client.PullRequests(&AllPullRequestsHyperlink, M{"owner": "octokit", "repo": "go-octokit"})
+	prService, err := client.PullRequests(&PullRequestsHyperlink, M{"owner": "octokit", "repo": "go-octokit"})
 	assert.Equal(t, nil, err)
 
 	params := PullRequestParams{
@@ -108,7 +108,7 @@ func TestPullRequestService_GetAll(t *testing.T) {
 		respondWithJSON(w, loadFixture("pull_requests.json"))
 	})
 
-	prService, err := client.PullRequests(&AllPullRequestsHyperlink, M{"owner": "rails", "repo": "rails"})
+	prService, err := client.PullRequests(&PullRequestsHyperlink, M{"owner": "rails", "repo": "rails"})
 	assert.Equal(t, nil, err)
 
 	prs, result := prService.GetAll()
