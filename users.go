@@ -6,11 +6,11 @@ import (
 	"time"
 )
 
-var DefaultUserHyperlink = Hyperlink("users/{user}")
+var DefaultUsersHyperlink = Hyperlink("users/{user}")
 
 func (c *Client) Users(link *Hyperlink, m M) (users *UsersService, err error) {
 	if link == nil {
-		link = &DefaultUserHyperlink
+		link = &DefaultUsersHyperlink
 	}
 
 	url, err := link.Expand(m)
