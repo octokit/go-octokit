@@ -99,7 +99,7 @@ func TestUsersService_GetAll(t *testing.T) {
 
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 1, len(allUsers))
-	assert.Equal(t, testURLOf("users?since=135").String(), string(*result.NextPage))
+	assert.Equal(t, testURLStringOf("users?since=135"), string(*result.NextPage))
 
 	users, err = client.Users(result.NextPage, nil)
 	assert.Equal(t, nil, err)
