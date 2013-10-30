@@ -1,6 +1,7 @@
 package octokit
 
 import (
+	"github.com/lostisland/go-sawyer"
 	"net/url"
 	"time"
 )
@@ -47,6 +48,8 @@ func (p *PullRequestsService) GetAll() (pulls []PullRequest, result *Result) {
 }
 
 type PullRequest struct {
+	*sawyer.HALResource
+
 	URL               string     `json:"url,omitempty"`
 	ID                int        `json:"id,omitempty"`
 	HTMLURL           string     `json:"html_url,omitempty"`
