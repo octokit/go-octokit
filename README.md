@@ -2,9 +2,9 @@
 
 Go toolkit for the GitHub API.
 
-# Hypermedia-driven client
+## Hypermedia-driven client
 
-## Show a user
+### Show a user
 
 ```go
 package main
@@ -27,7 +27,7 @@ func main() {
 }
 ```
 
-## Pagination
+### Pagination
 
 ```go
 package main
@@ -57,6 +57,16 @@ func main() {
     // Do something with users
 }
 
+```
+
+### Exploring hypermedia APIs
+
+```go
+rootService, _ := client.Root(nil)
+root, _ := rootService.Get()
+
+usersService, _ := client.Users(root.UserURL, octokit.M{"users": "jingweno"})
+user, _ := usersService.Get()
 ```
 
 More [examples](https://github.com/octokit/go-octokit/blob/master/examples/example.go) are available.
