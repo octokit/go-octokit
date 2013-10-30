@@ -6,7 +6,11 @@ import (
 	"net/url"
 )
 
-func NewClient(baseURL string, httpClient *http.Client) *Client {
+func NewClient() *Client {
+	return NewClientWith(GitHubAPIURL, nil)
+}
+
+func NewClientWith(baseURL string, httpClient *http.Client) *Client {
 	client, _ := sawyer.NewFromString(baseURL, httpClient)
 	return &Client{client}
 }
