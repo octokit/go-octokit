@@ -9,43 +9,21 @@ Go toolkit for the GitHub API.
 ```go
 package main
 
-import "github.com/octokit/go-octokit/octokit"
+import "github.com/octokit/go-octokit"
 
 func main() {
     client := octokit.NewClient()
 
-    user, result := client.User("jingweno") // Internally it's hypermedia-driven
-    if result.HasError() {
+    usersService, err := client.Users(&octokit.UsersHyperlink, octokit.M{"user": "jingweno"})
+    if err != nil  {
       // Handle error
     }
-    // Do something with user
-}
-```
 
-or
-
-```go
-package main
-
-import "github.com/octokit/go-octokit/octokit"
-
-func main() {
-    client := octokit.NewClient()
-
-    // Get root
-    root, result := client.Root()
+    user, result := usersService.Get()
     if result.HasError() {
       // Handle error
     }
 
-    // Get a user
-    userURL, _ := root.UserURL.Expand(octokit.M{"user": "jingweno"})
-    requester := client.Requester(userURL)
-    user := new(User)
-    result = requester.Get(user)
-    if result.HasError() {
-      // Handle error
-    }
     // Do something with user
 }
 ```
@@ -59,17 +37,25 @@ import "github.com/octokit/go-octokit/octokit"
 
 func main() {
     client := octokit.NewClient()
-    repos, result := client.OrgRepos("github")
-    if result.HasError() {
-      // Handle error
-    }
-    // Do something with repos
 
-    // next page
-    result = client.Requester(result.NextPage).Get(&repos)
+    usersService, err := client.Users(&octokit.AllUsersHyperlink, nil)
+    if err != nil  {
+      // Handle error
+    }
+
+    users, result := usersService.GetAll()
     if result.HasError() {
       // Handle error
     }
+
+    // Do something with users
+
+    // Next page
+    usersService, err := client.Users(result.NextPage, nil)
+    if result.HasError() {
+      // Handle error
+    }
+
     // Do something with users
 }
 
