@@ -25,15 +25,12 @@ func (c *Client) CurrentUser(link *Hyperlink, m M) (users *CurrentUserService, e
 	return
 }
 
+func (u *CurrentUserService) Get() (user *User, result *Result) {
+	result = u.client.Get(u.URL, &user)
+	return
+}
+
 func (u *CurrentUserService) Update(params interface{}) (user *User, result *Result) {
-	req, err := u.client.NewRequest(u.URL.String())
-	if err != nil {
-		result = newResult(nil, err)
-		return
-	}
-
-	resp, err := req.Put(params, &user)
-	result = newResult(resp, err)
-
+	result = u.client.Put(u.URL, params, &user)
 	return
 }

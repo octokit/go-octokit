@@ -6,7 +6,29 @@ import (
 	"testing"
 )
 
-func TestUsersService_Update(t *testing.T) {
+func TestCurrentUserService_Get(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		respondWithJSON(w, loadFixture("user.json"))
+	})
+
+	currentUser, err := client.CurrentUser(nil, nil)
+	assert.Equal(t, nil, err)
+
+	user, result := currentUser.Get()
+
+	assert.T(t, !result.HasError())
+	assert.Equal(t, 169064, user.ID)
+	assert.Equal(t, "jingweno", user.Login)
+	assert.Equal(t, "jingweno@gmail.com", user.Email)
+	assert.Equal(t, "User", user.Type)
+	assert.Equal(t, "https://api.github.com/users/jingweno/repos", string(user.ReposURL))
+}
+
+func TestCurrentUserService_Update(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -16,11 +38,11 @@ func TestUsersService_Update(t *testing.T) {
 		respondWithJSON(w, loadFixture("user.json"))
 	})
 
-	users, err := client.CurrentUser(nil, nil)
+	currentUser, err := client.CurrentUser(nil, nil)
 	assert.Equal(t, nil, err)
 
 	userToUpdate := User{Email: "jingweno@gmail.com"}
-	user, result := users.Update(userToUpdate)
+	user, result := currentUser.Update(userToUpdate)
 
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 169064, user.ID)

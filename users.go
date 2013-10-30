@@ -28,15 +28,7 @@ type UsersService struct {
 }
 
 func (u *UsersService) Get() (user *User, result *Result) {
-	req, err := u.client.NewRequest(u.URL.String())
-	if err != nil {
-		result = newResult(nil, err)
-		return
-	}
-
-	resp, err := req.Get(&user)
-	result = newResult(resp, err)
-
+	result = u.client.Get(u.URL, &user)
 	return
 }
 
