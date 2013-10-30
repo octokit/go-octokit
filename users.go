@@ -12,6 +12,8 @@ var (
 	AllUsersHyperlink    = Hyperlink("users{?since}")
 )
 
+// Create a UsersService with the base Hyperlink and the params M to expand the Hyperlink
+// If no Hyperlink is passed in, it will use CurrentUserHyperlink.
 func (c *Client) Users(link *Hyperlink, m M) (users *UsersService, err error) {
 	if link == nil {
 		link = &CurrentUserHyperlink
@@ -26,21 +28,25 @@ func (c *Client) Users(link *Hyperlink, m M) (users *UsersService, err error) {
 	return
 }
 
+// A service to return user records
 type UsersService struct {
 	client *Client
 	URL    *url.URL
 }
 
+// Get a user based on UserService#URL
 func (u *UsersService) Get() (user *User, result *Result) {
 	result = u.client.Get(u.URL, &user)
 	return
 }
 
+// Update a user based on UserService#URL
 func (u *UsersService) Update(params interface{}) (user *User, result *Result) {
 	result = u.client.Put(u.URL, params, &user)
 	return
 }
 
+// Get a list of users based on UserService#URL
 func (u *UsersService) GetAll() (users []User, result *Result) {
 	result = u.client.Get(u.URL, &users)
 	return
