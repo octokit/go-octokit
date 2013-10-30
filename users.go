@@ -6,11 +6,15 @@ import (
 	"time"
 )
 
-var DefaultUsersHyperlink = Hyperlink("users/{user}")
+var (
+	CurrentUserHyperlink = Hyperlink("user")
+	UsersHyperlink       = Hyperlink("users/{user}")
+	AllUsersHyperlink    = Hyperlink("users{?since}")
+)
 
 func (c *Client) Users(link *Hyperlink, m M) (users *UsersService, err error) {
 	if link == nil {
-		link = &DefaultUsersHyperlink
+		link = &CurrentUserHyperlink
 	}
 
 	url, err := link.Expand(m)
@@ -29,6 +33,16 @@ type UsersService struct {
 
 func (u *UsersService) Get() (user *User, result *Result) {
 	result = u.client.Get(u.URL, &user)
+	return
+}
+
+func (u *UsersService) Update(params interface{}) (user *User, result *Result) {
+	result = u.client.Put(u.URL, params, &user)
+	return
+}
+
+func (u *UsersService) GetAll() (users []User, result *Result) {
+	result = u.client.Get(u.URL, &users)
 	return
 }
 
