@@ -12,9 +12,7 @@ func TestUsersService_Get_FallbackURL(t *testing.T) {
 
 	mux.HandleFunc("/users/jingweno", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		head := w.Header()
-		head.Set("Content-Type", "application/json")
-		respondWith(w, loadFixture("user.json"))
+		respondWithJSON(w, loadFixture("user.json"))
 	})
 
 	users, err := client.Users(nil, M{"user": "jingweno"})
@@ -36,9 +34,7 @@ func TestUsersService_Get_PassInURL(t *testing.T) {
 
 	mux.HandleFunc("/my-users/jingweno", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		head := w.Header()
-		head.Set("Content-Type", "application/json")
-		respondWith(w, loadFixture("user.json"))
+		respondWithJSON(w, loadFixture("user.json"))
 	})
 
 	userLink := Hyperlink("my-users/{user}")

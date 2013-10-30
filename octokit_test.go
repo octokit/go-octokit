@@ -53,6 +53,12 @@ func testBody(t *testing.T, r *http.Request, want string) {
 	assert.Equal(t, want, string(body))
 }
 
+func respondWithJSON(w http.ResponseWriter, s string) {
+	header := w.Header()
+	header.Set("Content-Type", "application/json")
+	respondWith(w, s)
+}
+
 func respondWith(w http.ResponseWriter, s string) {
 	fmt.Fprint(w, s)
 }

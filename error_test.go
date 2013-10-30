@@ -32,7 +32,6 @@ func TestResponseError_Error_422_error(t *testing.T) {
 
 	mux.HandleFunc("/error", func(w http.ResponseWriter, r *http.Request) {
 		head := w.Header()
-
 		head.Set("Content-Type", "application/json")
 		w.WriteHeader(422)
 		respondWith(w, `{"error":"No repository found for hubtopic"}`)

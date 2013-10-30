@@ -12,9 +12,7 @@ func TestSuccessfulGet(t *testing.T) {
 
 	mux.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		head := w.Header()
-		head.Set("Content-Type", "application/json")
-		respondWith(w, `{"login": "octokit"}`)
+		respondWithJSON(w, `{"login": "octokit"}`)
 	})
 
 	req, err := client.NewRequest("foo")
@@ -50,8 +48,8 @@ func TestGetResponseError(t *testing.T) {
 	defer tearDown()
 
 	mux.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
-		head := w.Header()
-		head.Set("Content-Type", "application/json")
+		header := w.Header()
+		header.Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusNotFound)
 		respondWith(w, `{"message": "not found"}`)
 	})
@@ -76,9 +74,7 @@ func TestSuccessfulPost(t *testing.T) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Content-Type", "application/json")
 		testBody(t, r, "{\"input\":\"bar\"}\n")
-		head := w.Header()
-		head.Set("Content-Type", "application/json")
-		respondWith(w, `{"login": "octokit"}`)
+		respondWithJSON(w, `{"login": "octokit"}`)
 	})
 
 	req, err := client.NewRequest("foo")
