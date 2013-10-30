@@ -36,16 +36,18 @@ func (pp paginationParser) Parse() pageable {
 			continue
 		}
 
+		link := Hyperlink(url.String())
+
 		for _, segment := range segments[1:] {
 			switch strings.TrimSpace(segment) {
 			case `rel="next"`:
-				p.NextPage = url
+				p.NextPage = &link
 			case `rel="prev"`:
-				p.PrevPage = url
+				p.PrevPage = &link
 			case `rel="first"`:
-				p.FirstPage = url
+				p.FirstPage = &link
 			case `rel="last"`:
-				p.LastPage = url
+				p.LastPage = &link
 			}
 		}
 	}

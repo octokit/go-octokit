@@ -1,8 +1,10 @@
 package octokit
 
 import (
+	"fmt"
 	"github.com/bmizerany/assert"
 	"net/http"
+	"regexp"
 	"testing"
 )
 
@@ -80,7 +82,13 @@ func TestUsersService_GetAll(t *testing.T) {
 
 	mux.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		assert.Equal(t, "/users?since=1", r.URL.String())
+
+		rr := regexp.MustCompile(`users\?since=\d+`)
+		assert.Tf(t, rr.MatchString(r.URL.String()), "Regexp should match users?since=\\d+")
+
+		header := w.Header()
+		link := fmt.Sprintf(`<%s>; rel="next", <%s>; rel="first"`, testURLOf("users?since=135"), testURLOf("users{?since}"))
+		header.Set("Link", link)
 		respondWithJSON(w, loadFixture("users.json"))
 	})
 
@@ -89,6 +97,14 @@ func TestUsersService_GetAll(t *testing.T) {
 
 	allUsers, result := users.GetAll()
 
+	assert.T(t, !result.HasError())
+	assert.Equal(t, 1, len(allUsers))
+	assert.Equal(t, testURLOf("users?since=135").String(), string(*result.NextPage))
+
+	users, err = client.Users(result.NextPage, nil)
+	assert.Equal(t, nil, err)
+
+	allUsers, result = users.GetAll()
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 1, len(allUsers))
 }

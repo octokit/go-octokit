@@ -1,14 +1,10 @@
 package octokit
 
-import (
-	"net/url"
-)
-
 type pageable struct {
-	NextPage  *url.URL
-	LastPage  *url.URL
-	FirstPage *url.URL
-	PrevPage  *url.URL
+	NextPage  *Hyperlink
+	LastPage  *Hyperlink
+	FirstPage *Hyperlink
+	PrevPage  *Hyperlink
 }
 
 type Result struct {
