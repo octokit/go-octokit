@@ -13,7 +13,6 @@ import "github.com/octokit/go-octokit"
 
 func main() {
     client := octokit.NewClient()
-
     usersService, err := client.Users(&octokit.UsersHyperlink, octokit.M{"user": "jingweno"})
     if err != nil  {
       // Handle error
@@ -37,7 +36,6 @@ import "github.com/octokit/go-octokit/octokit"
 
 func main() {
     client := octokit.NewClient()
-
     usersService, err := client.Users(&octokit.AllUsersHyperlink, nil)
     if err != nil  {
       // Handle error
@@ -60,6 +58,8 @@ func main() {
 }
 
 ```
+
+More [examples](https://github.com/octokit/go-octokit/blob/master/examples/example.go) are available.
 
 ## Release Notes
 
