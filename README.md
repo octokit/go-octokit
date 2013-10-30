@@ -32,7 +32,7 @@ func main() {
 ```go
 package main
 
-import "github.com/octokit/go-octokit/octokit"
+import "github.com/octokit/go-octokit"
 
 func main() {
     client := octokit.NewClient()
