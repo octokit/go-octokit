@@ -16,7 +16,7 @@ func TestPullRequestService_Get(t *testing.T) {
 		respondWithJSON(w, loadFixture("pull_request.json"))
 	})
 
-	prService, err := client.PullRequests(&PullRequestHyperlink, M{"owner": "octokit", "repo": "go-octokit", "id": 1})
+	prService, err := client.PullRequests(&PullRequestsHyperlink, M{"owner": "octokit", "repo": "go-octokit", "number": 1})
 	assert.Equal(t, nil, err)
 
 	pr, result := prService.Get()
