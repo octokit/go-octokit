@@ -92,7 +92,7 @@ func TestUsersService_GetAll(t *testing.T) {
 		respondWithJSON(w, loadFixture("users.json"))
 	})
 
-	users, err := client.Users(&AllUsersHyperlink, M{"since": 1})
+	users, err := client.Users(&UsersHyperlink, M{"since": 1})
 	assert.Equal(t, nil, err)
 
 	allUsers, result := users.GetAll()
