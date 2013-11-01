@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	RepositoryURL       = Hyperlink("repos{/owner}{/repo}")
+	RepositoryURL       = Hyperlink("repos/{owner}/{repo}")
 	ForksURL            = Hyperlink("repos/{owner}/{repo}/forks")
 	UserRepositoriesURL = Hyperlink("user/repos")
 	OrgRepositoriesURL  = Hyperlink("orgs/{org}/repos")
