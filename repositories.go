@@ -1,10 +1,55 @@
 package octokit
 
 import (
+	"github.com/lostisland/go-sawyer"
+	"net/url"
 	"time"
 )
 
+var (
+	RepositoryURL       = Hyperlink("repos/{owner}/{repo}")
+	ForksURL            = Hyperlink("repos/{owner}/{repo}/forks")
+	UserRepositoriesURL = Hyperlink("user/repos")
+	OrgRepositoriesURL  = Hyperlink("orgs/{org}/repos")
+)
+
+func (c *Client) Repositories(link *Hyperlink, m M) (repos *RepositoriesService, err error) {
+	if link == nil {
+		link = &RepositoryURL
+	}
+
+	url, err := link.Expand(m)
+	if err != nil {
+		return
+	}
+
+	repos = &RepositoriesService{client: c, URL: url}
+	return
+}
+
+type RepositoriesService struct {
+	client *Client
+	URL    *url.URL
+}
+
+func (r *RepositoriesService) Get() (repo *Repository, result *Result) {
+	result = r.client.Get(r.URL, &repo)
+	return
+}
+
+func (r *RepositoriesService) GetAll() (repos []Repository, result *Result) {
+	result = r.client.Get(r.URL, &repos)
+	return
+}
+
+func (r *RepositoriesService) Create(params interface{}) (repo *Repository, result *Result) {
+	result = r.client.Post(r.URL, params, &repo)
+	return
+}
+
 type Repository struct {
+	*sawyer.HALResource
+
 	ID            int           `json:"id,omitempty"`
 	Owner         User          `json:"owner,omitempty"`
 	Name          string        `json:"name,omitempty"`
