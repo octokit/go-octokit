@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/bmizerany/assert"
 	"net/http"
-	"reflect"
 	"testing"
 )
 
@@ -66,7 +65,7 @@ func TestRepositoresService_Create(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	params := RepositoryParams{}
+	params := Repository{}
 	params.Name = "Hello-World"
 	params.Description = "This is your first repo"
 	params.Homepage = "https://github.com"
@@ -76,9 +75,15 @@ func TestRepositoresService_Create(t *testing.T) {
 	params.HasDownloads = true
 
 	mux.HandleFunc("/user/repos", func(w http.ResponseWriter, r *http.Request) {
-		var repoParams RepositoryParams
+		var repoParams Repository
 		json.NewDecoder(r.Body).Decode(&repoParams)
-		assert.T(t, reflect.DeepEqual(repoParams, params))
+		assert.Equal(t, params.Name, repoParams.Name)
+		assert.Equal(t, params.Description, repoParams.Description)
+		assert.Equal(t, params.Homepage, repoParams.Homepage)
+		assert.Equal(t, params.Private, repoParams.Private)
+		assert.Equal(t, params.HasIssues, repoParams.HasIssues)
+		assert.Equal(t, params.HasWiki, repoParams.HasWiki)
+		assert.Equal(t, params.HasDownloads, repoParams.HasDownloads)
 
 		testMethod(t, r, "POST")
 		respondWithJSON(w, loadFixture("create_repository.json"))

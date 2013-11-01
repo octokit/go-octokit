@@ -83,16 +83,3 @@ type Repository struct {
 	HasWiki       bool          `json:"has_wiki,omitempty"`
 	HasDownloads  bool          `json:"has_downloads,omitempty"`
 }
-
-type RepositoryParams struct {
-	Name              string `json:"name,omitempty"`
-	Description       string `json:"description,omitempty"`
-	Homepage          string `json:"homepage,omitempty"`
-	Private           bool   `json:"private,omitempty"`
-	HasIssues         bool   `json:"has_issues,omitempty"`
-	HasWiki           bool   `json:"has_wiki,omitempty"`
-	HasDownloads      bool   `json:"has_downloads,omitempty"`
-	TeamID            int    `json:"team_id,omitempty"`
-	AutoInit          bool   `json:"auto_init,omitempty"`
-	GitignoreTemplate string `json:"gitignore_template,omitempty"`
-}
