@@ -92,14 +92,14 @@ func TestUsersService_GetAll(t *testing.T) {
 		respondWithJSON(w, loadFixture("users.json"))
 	})
 
-	users, err := client.Users(&AllUsersHyperlink, M{"since": 1})
+	users, err := client.Users(&UsersHyperlink, M{"since": 1})
 	assert.Equal(t, nil, err)
 
 	allUsers, result := users.GetAll()
 
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 1, len(allUsers))
-	assert.Equal(t, testURLOf("users?since=135").String(), string(*result.NextPage))
+	assert.Equal(t, testURLStringOf("users?since=135"), string(*result.NextPage))
 
 	users, err = client.Users(result.NextPage, nil)
 	assert.Equal(t, nil, err)

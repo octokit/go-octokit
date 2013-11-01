@@ -8,8 +8,7 @@ import (
 
 var (
 	CurrentUserHyperlink = Hyperlink("user")
-	UsersHyperlink       = Hyperlink("users/{user}")
-	AllUsersHyperlink    = Hyperlink("users{?since}")
+	UsersHyperlink       = Hyperlink("users{/user}{?since}")
 )
 
 // Create a UsersService with the base Hyperlink and the params M to expand the Hyperlink

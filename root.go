@@ -9,6 +9,8 @@ var (
 	RootHyperlink = Hyperlink("")
 )
 
+// Create a RooService with the base Hyperlink
+// If no Hyperlink is passed in, it will use RootHyperlink.
 func (c *Client) Root(link *Hyperlink) (root *RootService, err error) {
 	if link == nil {
 		link = &RootHyperlink
@@ -30,6 +32,11 @@ type RootService struct {
 
 func (r *RootService) Get() (root *Root, result *Result) {
 	result = r.client.Get(r.URL, &root)
+	if root != nil {
+		// Cached hyperlinks
+		root.PullsURL = PullRequestsHyperlink
+	}
+
 	return
 }
 
@@ -63,4 +70,5 @@ type Root struct {
 	OrganizationRepositoriesURL Hyperlink `json:"organization_repositories_url,omitempty"`
 	OrganizationURL             Hyperlink `json:"organization_url,omitempty"`
 	PublicGistsURL              Hyperlink `json:"public_gists_url,omitempty"`
+	PullsURL                    Hyperlink `json:"-"`
 }
