@@ -103,3 +103,33 @@ func TestRepositoresService_Create(t *testing.T) {
 	assert.Equal(t, "git@github.com:octocat/Hello-World.git", repo.SSHURL)
 	assert.Equal(t, "master", repo.MasterBranch)
 }
+
+func TestRepositoresService_CreateFork(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/repos/jingweno/octokat/forks", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testBody(t, r, "{\"organization\":\"github\"}\n")
+		respondWithJSON(w, loadFixture("create_repository.json"))
+	})
+
+	reposService, err := client.Repositories(&ForksURL, M{"owner": "jingweno", "repo": "octokat"})
+	assert.Equal(t, nil, err)
+
+	repo, result := reposService.Create(M{"organization": "github"})
+
+	assert.T(t, !result.HasError())
+	assert.Equal(t, 1296269, repo.ID)
+	assert.Equal(t, "Hello-World", repo.Name)
+	assert.Equal(t, "octocat/Hello-World", repo.FullName)
+	assert.Equal(t, "This is your first repo", repo.Description)
+	assert.T(t, !repo.Private)
+	assert.T(t, repo.Fork)
+	assert.Equal(t, "https://api.github.com/repos/octocat/Hello-World", repo.URL)
+	assert.Equal(t, "https://github.com/octocat/Hello-World", repo.HTMLURL)
+	assert.Equal(t, "https://github.com/octocat/Hello-World.git", repo.CloneURL)
+	assert.Equal(t, "git://github.com/octocat/Hello-World.git", repo.GitURL)
+	assert.Equal(t, "git@github.com:octocat/Hello-World.git", repo.SSHURL)
+	assert.Equal(t, "master", repo.MasterBranch)
+}
