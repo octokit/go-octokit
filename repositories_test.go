@@ -2,6 +2,7 @@ package octokit
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/bmizerany/assert"
 	"net/http"
 	"reflect"
@@ -34,7 +35,31 @@ func TestRepositoresService_Get(t *testing.T) {
 	assert.Equal(t, "git://github.com/jingweno/octokat.git", repo.GitURL)
 	assert.Equal(t, "git@github.com:jingweno/octokat.git", repo.SSHURL)
 	assert.Equal(t, "master", repo.MasterBranch)
+}
 
+func TestRepositoresService_GetAll(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/orgs/rails/repos", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+
+		header := w.Header()
+		link := fmt.Sprintf(`<%s>; rel="next", <%s>; rel="last"`, testURLOf("organizations/4223/repos?page=2"), testURLOf("organizations/4223/repos?page=3"))
+		header.Set("Link", link)
+
+		respondWithJSON(w, loadFixture("repositories.json"))
+	})
+
+	reposService, err := client.Repositories(&OrgRepositoriesURL, M{"org": "rails"})
+	assert.Equal(t, nil, err)
+
+	repos, result := reposService.GetAll()
+
+	assert.T(t, !result.HasError())
+	assert.Equal(t, 30, len(repos))
+	assert.Equal(t, testURLStringOf("organizations/4223/repos?page=2"), string(*result.NextPage))
+	assert.Equal(t, testURLStringOf("organizations/4223/repos?page=3"), string(*result.LastPage))
 }
 
 func TestRepositoresService_Create(t *testing.T) {
