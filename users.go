@@ -1,14 +1,14 @@
 package octokit
 
 import (
-	"github.com/lostisland/go-sawyer"
+	"github.com/lostisland/go-sawyer/hypermedia"
 	"net/url"
 	"time"
 )
 
 var (
-	CurrentUserHyperlink = Hyperlink("user")
-	UsersHyperlink       = Hyperlink("users{/user}{?since}")
+	CurrentUserHyperlink = Hyperlink("/user")
+	UsersHyperlink       = Hyperlink("/users{/user}{?since}")
 )
 
 // Create a UsersService with the base Hyperlink and the params M to expand the Hyperlink
@@ -52,7 +52,7 @@ func (u *UsersService) GetAll() (users []User, result *Result) {
 }
 
 type User struct {
-	*sawyer.HALResource
+	*hypermedia.HALResource
 
 	Login             string     `json:"login,omitempty"`
 	ID                int        `json:"id,omitempty"`

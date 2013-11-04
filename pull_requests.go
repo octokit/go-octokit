@@ -1,13 +1,13 @@
 package octokit
 
 import (
-	"github.com/lostisland/go-sawyer"
+	"github.com/lostisland/go-sawyer/hypermedia"
 	"net/url"
 	"time"
 )
 
 var (
-	PullRequestsHyperlink = Hyperlink("repos/{owner}/{repo}/pulls{/number}")
+	PullRequestsHyperlink = Hyperlink("/repos/{owner}/{repo}/pulls{/number}")
 )
 
 // Create a PullRequestsService with the base Hyperlink and the params M to expand the Hyperlink
@@ -47,7 +47,7 @@ func (p *PullRequestsService) GetAll() (pulls []PullRequest, result *Result) {
 }
 
 type PullRequest struct {
-	*sawyer.HALResource
+	*hypermedia.HALResource
 
 	URL               string     `json:"url,omitempty"`
 	ID                int        `json:"id,omitempty"`

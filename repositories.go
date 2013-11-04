@@ -1,16 +1,16 @@
 package octokit
 
 import (
-	"github.com/lostisland/go-sawyer"
+	"github.com/lostisland/go-sawyer/hypermedia"
 	"net/url"
 	"time"
 )
 
 var (
-	RepositoryURL       = Hyperlink("repos/{owner}/{repo}")
-	ForksURL            = Hyperlink("repos/{owner}/{repo}/forks")
-	UserRepositoriesURL = Hyperlink("user/repos")
-	OrgRepositoriesURL  = Hyperlink("orgs/{org}/repos")
+	RepositoryURL       = Hyperlink("/repos/{owner}/{repo}")
+	ForksURL            = Hyperlink("/repos/{owner}/{repo}/forks")
+	UserRepositoriesURL = Hyperlink("/user/repos")
+	OrgRepositoriesURL  = Hyperlink("/orgs/{org}/repos")
 )
 
 func (c *Client) Repositories(link *Hyperlink, m M) (repos *RepositoriesService, err error) {
@@ -48,7 +48,7 @@ func (r *RepositoriesService) Create(params interface{}) (repo *Repository, resu
 }
 
 type Repository struct {
-	*sawyer.HALResource
+	*hypermedia.HALResource
 
 	ID            int           `json:"id,omitempty"`
 	Owner         User          `json:"owner,omitempty"`
