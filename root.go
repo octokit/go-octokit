@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	RootHyperlink = Hyperlink("")
+	RootHyperlink = Hyperlink("/")
 )
 
 // Create a RooService with the base Hyperlink

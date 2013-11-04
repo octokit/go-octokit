@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	PullRequestsHyperlink = Hyperlink("repos/{owner}/{repo}/pulls{/number}")
+	PullRequestsHyperlink = Hyperlink("/repos/{owner}/{repo}/pulls{/number}")
 )
 
 // Create a PullRequestsService with the base Hyperlink and the params M to expand the Hyperlink
