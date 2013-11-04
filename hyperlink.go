@@ -1,7 +1,7 @@
 package octokit
 
 import (
-	"github.com/lostisland/go-sawyer"
+	"github.com/lostisland/go-sawyer/hypermedia"
 	"net/url"
 )
 
@@ -10,7 +10,7 @@ type M map[string]interface{}
 type Hyperlink string
 
 func (l *Hyperlink) Expand(m M) (u *url.URL, err error) {
-	sawyerHyperlink := sawyer.Hyperlink(string(*l))
+	sawyerHyperlink := hypermedia.Hyperlink(string(*l))
 	u, err = sawyerHyperlink.Expand(m)
 	return
 }

@@ -1,7 +1,7 @@
 package octokit
 
 import (
-	"github.com/lostisland/go-sawyer"
+	"github.com/lostisland/go-sawyer/hypermedia"
 	"net/url"
 	"time"
 )
@@ -48,7 +48,7 @@ func (r *RepositoriesService) Create(params interface{}) (repo *Repository, resu
 }
 
 type Repository struct {
-	*sawyer.HALResource
+	*hypermedia.HALResource
 
 	ID            int           `json:"id,omitempty"`
 	Owner         User          `json:"owner,omitempty"`

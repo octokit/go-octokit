@@ -1,7 +1,7 @@
 package octokit
 
 import (
-	"github.com/lostisland/go-sawyer"
+	"github.com/lostisland/go-sawyer/hypermedia"
 	"net/url"
 )
 
@@ -41,7 +41,7 @@ func (r *RootService) Get() (root *Root, result *Result) {
 }
 
 type Root struct {
-	*sawyer.HALResource
+	*hypermedia.HALResource
 
 	UserSearchURL               Hyperlink `json:"user_search_url,omitempty"`
 	UserRepositoriesURL         Hyperlink `json:"user_repositories_url,omitempty"`

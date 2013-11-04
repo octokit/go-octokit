@@ -1,7 +1,7 @@
 package octokit
 
 import (
-	"github.com/lostisland/go-sawyer"
+	"github.com/lostisland/go-sawyer/hypermedia"
 	"net/url"
 	"time"
 )
@@ -47,7 +47,7 @@ func (p *PullRequestsService) GetAll() (pulls []PullRequest, result *Result) {
 }
 
 type PullRequest struct {
-	*sawyer.HALResource
+	*hypermedia.HALResource
 
 	URL               string     `json:"url,omitempty"`
 	ID                int        `json:"id,omitempty"`
