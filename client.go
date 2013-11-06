@@ -30,6 +30,10 @@ func (c *Client) NewRequest(urlStr string) (req *Request, err error) {
 	sawyerReq.Header.Add("User-Agent", c.UserAgent)
 	sawyerReq.Header.Add("Authorization", c.AuthMethod.String())
 
+	if basicAuth, ok := c.AuthMethod.(BasicAuth); ok && basicAuth.OneTimePassword != "" {
+		sawyerReq.Header.Add("X-GitHub-OTP", basicAuth.OneTimePassword)
+	}
+
 	req = &Request{sawyerReq: sawyerReq}
 	return
 }

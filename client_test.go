@@ -26,6 +26,28 @@ func TestSuccessfulGet(t *testing.T) {
 	assert.Equal(t, "octokit", output["login"])
 }
 
+func TestSuccessfulGet_BasicAuth(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "User-Agent", userAgent)
+		testHeader(t, r, "Authorization", "Basic amluZ3dlbm86cGFzc3dvcmQ=")
+		testHeader(t, r, "X-GitHub-OTP", "OTP")
+		respondWithJSON(w, `{"login": "octokit"}`)
+	})
+
+	client = NewClientWith(server.URL, nil, BasicAuth{Login: "jingweno", Password: "password", OneTimePassword: "OTP"})
+	req, err := client.NewRequest("foo")
+	assert.Equal(t, nil, err)
+
+	var output map[string]interface{}
+	_, err = req.Get(&output)
+	assert.Equal(t, nil, err)
+	assert.Equal(t, "octokit", output["login"])
+}
+
 func TestGetWithoutDecoder(t *testing.T) {
 	setup()
 	defer tearDown()

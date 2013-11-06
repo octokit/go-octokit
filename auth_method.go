@@ -11,8 +11,9 @@ type AuthMethod interface {
 }
 
 type BasicAuth struct {
-	Login    string
-	Password string
+	Login           string
+	Password        string
+	OneTimePassword string // for two-factor authentication
 }
 
 func (b BasicAuth) String() string {
