@@ -12,6 +12,7 @@ func TestSuccessfulGet(t *testing.T) {
 
 	mux.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "User-Agent", userAgent)
 		respondWithJSON(w, `{"login": "octokit"}`)
 	})
 
@@ -72,7 +73,8 @@ func TestSuccessfulPost(t *testing.T) {
 
 	mux.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Content-Type", "application/json")
+		testHeader(t, r, "User-Agent", userAgent)
+		testHeader(t, r, "Content-Type", defaultMediaType)
 		testBody(t, r, "{\"input\":\"bar\"}\n")
 		respondWithJSON(w, `{"login": "octokit"}`)
 	})
