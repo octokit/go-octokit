@@ -5,6 +5,7 @@ import (
 	"fmt"
 )
 
+// See http://developer.github.com/v3/auth/
 type AuthMethod interface {
 	fmt.Stringer
 }
