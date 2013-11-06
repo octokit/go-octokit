@@ -6,17 +6,18 @@ import (
 	"net/url"
 )
 
-func NewClient() *Client {
-	return NewClientWith(gitHubAPIURL, nil)
+func NewClient(authMethod AuthMethod) *Client {
+	return NewClientWith(gitHubAPIURL, nil, authMethod)
 }
 
-func NewClientWith(baseURL string, httpClient *http.Client) *Client {
+func NewClientWith(baseURL string, httpClient *http.Client, authMethod AuthMethod) *Client {
 	client, _ := sawyer.NewFromString(baseURL, httpClient)
-	return &Client{sawyerClient: client, UserAgent: userAgent}
+	return &Client{sawyerClient: client, UserAgent: userAgent, AuthMethod: authMethod}
 }
 
 type Client struct {
 	UserAgent    string
+	AuthMethod   AuthMethod
 	sawyerClient *sawyer.Client
 }
 
@@ -27,6 +28,7 @@ func (c *Client) NewRequest(urlStr string) (req *Request, err error) {
 	}
 
 	sawyerReq.Header.Add("User-Agent", c.UserAgent)
+	sawyerReq.Header.Add("Authorization", c.AuthMethod.String())
 
 	req = &Request{sawyerReq: sawyerReq}
 	return
