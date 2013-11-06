@@ -7,14 +7,14 @@ import (
 )
 
 var (
-	PullRequestsHyperlink = Hyperlink("/repos/{owner}/{repo}/pulls{/number}")
+	PullRequestsURL = Hyperlink("/repos/{owner}/{repo}/pulls{/number}")
 )
 
 // Create a PullRequestsService with the base Hyperlink and the params M to expand the Hyperlink
 // If no Hyperlink is passed in, it will use PullRequestsHyperlink.
 func (c *Client) PullRequests(link *Hyperlink, m M) (pullRequests *PullRequestsService, err error) {
 	if link == nil {
-		link = &PullRequestsHyperlink
+		link = &PullRequestsURL
 	}
 
 	url, err := link.Expand(m)

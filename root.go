@@ -34,7 +34,7 @@ func (r *RootService) Get() (root *Root, result *Result) {
 	result = r.client.Get(r.URL, &root)
 	if root != nil {
 		// Cached hyperlinks
-		root.PullsURL = PullRequestsHyperlink
+		root.PullsURL = PullRequestsURL
 	}
 
 	return
