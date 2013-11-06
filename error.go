@@ -36,11 +36,20 @@ type ErrorObject struct {
 	Resource string `json:"resource,omitempty"`
 	Code     string `json:"code,omitempty"`
 	Field    string `json:"field,omitempty"`
+	Message  string `json:"message,omitempty"`
 }
 
 func (e *ErrorObject) Error() string {
-	return fmt.Sprintf("%v error caused by %v field on %v resource",
-		e.Code, e.Field, e.Resource)
+	err := fmt.Sprintf("%v error", e.Code)
+	if e.Field != "" {
+		err = fmt.Sprintf("%v caused by %v field", err, e.Field)
+	}
+	err = fmt.Sprintf("%v on %v resource", err, e.Resource)
+	if e.Message != "" {
+		err = fmt.Sprintf("%v: %v", err, e.Message)
+	}
+
+	return err
 }
 
 type ResponseError struct {
