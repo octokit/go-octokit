@@ -70,7 +70,7 @@ func (r *Request) do(method string, input interface{}, output interface{}) (resp
 		return
 	}
 
-	resp = &Response{Response: sawyerResp.Response}
+	resp = &Response{Response: sawyerResp.Response, MediaType: sawyerResp.MediaType, MediaHeader: sawyerResp.MediaHeader}
 	err = sawyerResp.Decode(output)
 
 	return
