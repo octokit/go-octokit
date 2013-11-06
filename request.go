@@ -5,10 +5,7 @@ import (
 	"github.com/lostisland/go-sawyer/mediatype"
 )
 
-type Headers map[string]string
-
 type Request struct {
-	Headers   Headers
 	sawyerReq *sawyer.Request
 }
 
@@ -45,11 +42,11 @@ func (r *Request) do(method string, input interface{}, output interface{}) (resp
 	case sawyer.GetMethod:
 		sawyerResp = r.sawyerReq.Get()
 	case sawyer.PostMethod:
-		mtype, _ := mediatype.Parse("application/json")
+		mtype, _ := mediatype.Parse(defaultMediaType)
 		r.sawyerReq.SetBody(mtype, input)
 		sawyerResp = r.sawyerReq.Post()
 	case sawyer.PutMethod:
-		mtype, _ := mediatype.Parse("application/json")
+		mtype, _ := mediatype.Parse(defaultMediaType)
 		r.sawyerReq.SetBody(mtype, input)
 		sawyerResp = r.sawyerReq.Put()
 	case sawyer.PatchMethod:

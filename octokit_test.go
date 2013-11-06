@@ -32,7 +32,7 @@ func setup() {
 	server = httptest.NewServer(mux)
 
 	// octokit client configured to use test server
-	client = NewClientWith(server.URL, nil)
+	client = NewClientWith(server.URL, nil, TokenAuth{AccessToken: "token"})
 }
 
 // teardown closes the test HTTP server.

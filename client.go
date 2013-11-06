@@ -6,16 +6,18 @@ import (
 	"net/url"
 )
 
-func NewClient() *Client {
-	return NewClientWith(GitHubAPIURL, nil)
+func NewClient(authMethod AuthMethod) *Client {
+	return NewClientWith(gitHubAPIURL, nil, authMethod)
 }
 
-func NewClientWith(baseURL string, httpClient *http.Client) *Client {
+func NewClientWith(baseURL string, httpClient *http.Client, authMethod AuthMethod) *Client {
 	client, _ := sawyer.NewFromString(baseURL, httpClient)
-	return &Client{client}
+	return &Client{sawyerClient: client, UserAgent: userAgent, AuthMethod: authMethod}
 }
 
 type Client struct {
+	UserAgent    string
+	AuthMethod   AuthMethod
 	sawyerClient *sawyer.Client
 }
 
@@ -23,6 +25,13 @@ func (c *Client) NewRequest(urlStr string) (req *Request, err error) {
 	sawyerReq, err := c.sawyerClient.NewRequest(urlStr)
 	if err != nil {
 		return
+	}
+
+	sawyerReq.Header.Add("User-Agent", c.UserAgent)
+	sawyerReq.Header.Add("Authorization", c.AuthMethod.String())
+
+	if basicAuth, ok := c.AuthMethod.(BasicAuth); ok && basicAuth.OneTimePassword != "" {
+		sawyerReq.Header.Add("X-GitHub-OTP", basicAuth.OneTimePassword)
 	}
 
 	req = &Request{sawyerReq: sawyerReq}
