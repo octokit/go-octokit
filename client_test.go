@@ -12,6 +12,7 @@ func TestSuccessfulGet(t *testing.T) {
 
 	mux.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", defaultMediaType)
 		testHeader(t, r, "User-Agent", userAgent)
 		testHeader(t, r, "Authorization", "token token")
 		respondWithJSON(w, `{"login": "octokit"}`)
@@ -32,6 +33,7 @@ func TestSuccessfulGet_BasicAuth(t *testing.T) {
 
 	mux.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", defaultMediaType)
 		testHeader(t, r, "User-Agent", userAgent)
 		testHeader(t, r, "Authorization", "Basic amluZ3dlbm86cGFzc3dvcmQ=")
 		testHeader(t, r, "X-GitHub-OTP", "OTP")
@@ -96,9 +98,9 @@ func TestSuccessfulPost(t *testing.T) {
 
 	mux.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
+		testHeader(t, r, "Content-Type", defaultMediaType)
 		testHeader(t, r, "User-Agent", userAgent)
 		testHeader(t, r, "Authorization", "token token")
-		testHeader(t, r, "Content-Type", defaultMediaType)
 		testBody(t, r, "{\"input\":\"bar\"}\n")
 		respondWithJSON(w, `{"login": "octokit"}`)
 	})
