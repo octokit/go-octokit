@@ -38,10 +38,8 @@ func (r *Request) do(method string, input interface{}, output interface{}) (resp
 	var sawyerResp *sawyer.Response
 	switch method {
 	case sawyer.HeadMethod:
-		r.sawyerReq.Header.Add("Accept", defaultMediaType)
 		sawyerResp = r.sawyerReq.Head()
 	case sawyer.GetMethod:
-		r.sawyerReq.Header.Add("Accept", defaultMediaType)
 		sawyerResp = r.sawyerReq.Get()
 	case sawyer.PostMethod:
 		mtype, _ := mediatype.Parse(defaultMediaType)

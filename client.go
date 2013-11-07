@@ -27,6 +27,7 @@ func (c *Client) NewRequest(urlStr string) (req *Request, err error) {
 		return
 	}
 
+	sawyerReq.Header.Add("Accept", defaultMediaType)
 	sawyerReq.Header.Add("User-Agent", c.UserAgent)
 	sawyerReq.Header.Add("Authorization", c.AuthMethod.String())
 

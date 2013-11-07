@@ -98,6 +98,7 @@ func TestSuccessfulPost(t *testing.T) {
 
 	mux.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", defaultMediaType)
 		testHeader(t, r, "Content-Type", defaultMediaType)
 		testHeader(t, r, "User-Agent", userAgent)
 		testHeader(t, r, "Authorization", "token token")
