@@ -1,10 +1,8 @@
 package octokit
 
 const (
-	GitHubURL          = "https://github.com"
-	GitHubAPIURL       = "https://api.github.com"
-	UserAgent          = "Octokit Go " + Version
-	MediaType          = "application/vnd.github.beta+json"
-	DefaultContentType = "application/json"
-	Version            = "0.3.0"
+	gitHubAPIURL     = "https://api.github.com"
+	userAgent        = "Octokit Go " + version
+	version          = "0.3.0"
+	defaultMediaType = "application/vnd.github.v3+json"
 )

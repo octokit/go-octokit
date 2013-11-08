@@ -8,17 +8,51 @@ import (
 	"testing"
 )
 
-func TestAuthorizations(t *testing.T) {
+func TestAuthorizationsService_Get(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/authorizations/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		respondWithJSON(w, loadFixture("authorization.json"))
+	})
+
+	authsService, err := client.Authorizations(nil, M{"auth_id": 1})
+	assert.Equal(t, nil, err)
+
+	auth, result := authsService.Get()
+
+	assert.T(t, !result.HasError())
+	assert.Equal(t, 1, auth.ID)
+	assert.Equal(t, "https://api.github.com/authorizations/1", auth.URL)
+	assert.Equal(t, "456", auth.Token)
+	assert.Equal(t, "", auth.Note)
+	assert.Equal(t, "", auth.NoteURL)
+	assert.Equal(t, "2012-11-16 01:05:51 +0000 UTC", auth.CreatedAt.String())
+	assert.Equal(t, "2013-08-21 03:29:51 +0000 UTC", auth.UpdatedAt.String())
+
+	app := App{ClientID: "123", URL: "http://localhost:8080", Name: "Test"}
+	assert.Equal(t, app, auth.App)
+
+	assert.Equal(t, 2, len(auth.Scopes))
+	scopes := []string{"repo", "user"}
+	assert.T(t, reflect.DeepEqual(auth.Scopes, scopes))
+}
+
+func TestAuthorizationsService_GetAll(t *testing.T) {
 	setup()
 	defer tearDown()
 
 	mux.HandleFunc("/authorizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		respondWith(w, loadFixture("authorizations.json"))
+		respondWithJSON(w, loadFixture("authorizations.json"))
 	})
 
-	auths, _ := client.Authorizations(nil)
-	assert.Equal(t, 1, len(auths))
+	authsService, err := client.Authorizations(nil, nil)
+	assert.Equal(t, nil, err)
+
+	auths, result := authsService.GetAll()
+	assert.T(t, !result.HasError())
 
 	firstAuth := auths[0]
 	assert.Equal(t, 1, firstAuth.ID)
@@ -37,7 +71,7 @@ func TestAuthorizations(t *testing.T) {
 	assert.T(t, reflect.DeepEqual(firstAuth.Scopes, scopes))
 }
 
-func TestCreateAuthorization(t *testing.T) {
+func TestAuthorizationsService_Create(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -49,11 +83,13 @@ func TestCreateAuthorization(t *testing.T) {
 		assert.T(t, reflect.DeepEqual(authParams, params))
 
 		testMethod(t, r, "POST")
-		respondWith(w, loadFixture("create_authorization.json"))
+		respondWithJSON(w, loadFixture("create_authorization.json"))
 	})
 
-	options := Options{Params: params}
-	auth, _ := client.CreateAuthorization(&options)
+	authsService, err := client.Authorizations(nil, nil)
+	assert.Equal(t, nil, err)
+
+	auth, _ := authsService.Create(params)
 
 	assert.Equal(t, 3844190, auth.ID)
 	assert.Equal(t, "https://api.github.com/authorizations/3844190", auth.URL)

@@ -2,6 +2,7 @@ package octokit
 
 import (
 	"fmt"
+	"github.com/lostisland/go-sawyer"
 	"io/ioutil"
 	"net/http"
 	"regexp"
@@ -35,20 +36,29 @@ type ErrorObject struct {
 	Resource string `json:"resource,omitempty"`
 	Code     string `json:"code,omitempty"`
 	Field    string `json:"field,omitempty"`
+	Message  string `json:"message,omitempty"`
 }
 
 func (e *ErrorObject) Error() string {
-	return fmt.Sprintf("%v error caused by %v field on %v resource",
-		e.Code, e.Field, e.Resource)
+	err := fmt.Sprintf("%v error", e.Code)
+	if e.Field != "" {
+		err = fmt.Sprintf("%v caused by %v field", err, e.Field)
+	}
+	err = fmt.Sprintf("%v on %v resource", err, e.Resource)
+	if e.Message != "" {
+		err = fmt.Sprintf("%v: %v", err, e.Message)
+	}
+
+	return err
 }
 
 type ResponseError struct {
-	Response         *http.Response
-	Type             ResponseErrorType
-	Message          string        `json:"message,omitempty"`
-	Err              string        `json:"error,omitempty"`
-	Errors           []ErrorObject `json:"errors,omitempty"`
-	DocumentationURL string        `json:"documentation_url,omitempty"`
+	Response         *http.Response    `json:"-"`
+	Type             ResponseErrorType `json:"-"`
+	Message          string            `json:"message,omitempty"`
+	Err              string            `json:"error,omitempty"`
+	Errors           []ErrorObject     `json:"errors,omitempty"`
+	DocumentationURL string            `json:"documentation_url,omitempty"`
 }
 
 func (e *ResponseError) Error() string {
@@ -85,23 +95,19 @@ func (e *ResponseError) errorMessage() string {
 	return strings.Join(messages, "\n")
 }
 
-func checkResponse(resp *http.Response) error {
-	if c := resp.StatusCode; 200 <= c && c <= 399 {
-		return nil
-	}
-
-	t := getResponseErrorType(resp)
-	responseError := &ResponseError{Response: resp, Type: t}
-	data, err := ioutil.ReadAll(resp.Body)
+func NewResponseError(resp *sawyer.Response) (err error) {
+	var respErr *ResponseError
+	t := getResponseErrorType(resp.Response)
+	err = resp.Decode(&respErr)
 	if err != nil {
-		return err
+		return
 	}
 
-	if data != nil {
-		err = jsonUnmarshal(data, responseError)
-	}
+	respErr.Response = resp.Response
+	respErr.Type = t
+	err = respErr
 
-	return responseError
+	return
 }
 
 func getResponseErrorType(resp *http.Response) ResponseErrorType {

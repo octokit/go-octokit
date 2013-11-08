@@ -1,225 +1,105 @@
 package octokit
 
 import (
-	"bytes"
-	"fmt"
-	"io"
-	"io/ioutil"
+	"github.com/lostisland/go-sawyer"
 	"net/http"
 	"net/url"
 )
 
-func NewClient() *Client {
-	return &Client{BaseURL: GitHubAPIURL, httpClient: &http.Client{}}
+func NewClient(authMethod AuthMethod) *Client {
+	return NewClientWith(gitHubAPIURL, nil, authMethod)
+}
+
+func NewClientWith(baseURL string, httpClient *http.Client, authMethod AuthMethod) *Client {
+	client, _ := sawyer.NewFromString(baseURL, httpClient)
+	return &Client{sawyerClient: client, UserAgent: userAgent, AuthMethod: authMethod}
 }
 
 type Client struct {
-	httpClient *http.Client
-	BaseURL    string
-	Login      string
-	Password   string
-	Token      string
+	UserAgent    string
+	AuthMethod   AuthMethod
+	sawyerClient *sawyer.Client
 }
 
-func (c *Client) WithLogin(login, password string) *Client {
-	c.Login = login
-	c.Password = password
-	return c
-}
+func (c *Client) NewRequest(urlStr string) (req *Request, err error) {
+	sawyerReq, err := c.sawyerClient.NewRequest(urlStr)
+	if err != nil {
+		return
+	}
 
-func (c *Client) WithToken(token string) *Client {
-	c.Token = token
-	return c
-}
+	sawyerReq.Header.Add("Accept", defaultMediaType)
+	sawyerReq.Header.Add("User-Agent", c.UserAgent)
+	sawyerReq.Header.Add("Authorization", c.AuthMethod.String())
 
-func (c *Client) Requester(url *url.URL) *Requester {
-	return &Requester{client: c, URL: url}
-}
+	if basicAuth, ok := c.AuthMethod.(BasicAuth); ok && basicAuth.OneTimePassword != "" {
+		sawyerReq.Header.Add("X-GitHub-OTP", basicAuth.OneTimePassword)
+	}
 
-func (c *Client) Get(url *url.URL, headers Headers) (resp *Response, err error) {
-	resp, err = c.Request("GET", url, headers, nil)
+	req = &Request{sawyerReq: sawyerReq}
 	return
 }
 
-func (c *Client) Patch(url *url.URL, headers Headers, params interface{}) (resp *Response, err error) {
-	reader, err := jsonMarshalToReader(params)
+func (c *Client) Head(url *url.URL, output interface{}) (result *Result) {
+	req, err := c.NewRequest(url.String())
 	if err != nil {
+		result = newResult(nil, err)
 		return
 	}
 
-	resp, err = c.Request("PATCH", url, headers, reader)
+	resp, err := req.Head(output)
+	result = newResult(resp, err)
+
 	return
 }
 
-func (c *Client) Request(method string, url *url.URL, headers Headers, content io.Reader) (resp *Response, err error) {
-	if url == nil {
-		url, _ = url.Parse(c.BaseURL)
-	}
-
-	request, err := http.NewRequest(method, url.String(), content)
+func (c *Client) Get(url *url.URL, output interface{}) (result *Result) {
+	req, err := c.NewRequest(url.String())
 	if err != nil {
+		result = newResult(nil, err)
 		return
 	}
 
-	c.setDefaultHeaders(request)
+	resp, err := req.Get(output)
+	result = newResult(resp, err)
 
-	if headers != nil {
-		for h, v := range headers {
-			request.Header.Set(h, v)
-		}
-	}
-
-	response, err := c.httpClient.Do(request)
-	if err != nil {
-		return
-	}
-
-	err = checkResponse(response)
-	if err != nil {
-		return
-	}
-
-	resp = &Response{Response: response}
 	return
 }
 
-// Deprecated
-func (c *Client) get(path string, headers Headers) ([]byte, error) {
-	return c.request("GET", path, headers, nil)
-}
-
-func (c *Client) post(path string, headers Headers, content io.Reader) ([]byte, error) {
-	return c.request("POST", path, headers, content)
-}
-
-func (c *Client) jsonGet(path string, options *Options, v interface{}) error {
-	var headers Headers
-	if options != nil {
-		headers = options.Headers
-	}
-
-	body, err := c.get(path, headers)
+func (c *Client) Post(url *url.URL, input interface{}, output interface{}) (result *Result) {
+	req, err := c.NewRequest(url.String())
 	if err != nil {
-		return err
+		result = newResult(nil, err)
+		return
 	}
 
-	return jsonUnmarshal(body, v)
+	resp, err := req.Post(input, output)
+	result = newResult(resp, err)
+
+	return
 }
 
-func (c *Client) jsonPost(path string, options *Options, v interface{}) error {
-	var headers Headers
-	if options != nil {
-		headers = options.Headers
-	}
-
-	var buffer *bytes.Buffer
-	if options != nil && options.Params != nil {
-		b, err := jsonMarshal(options.Params)
-		if err != nil {
-			return err
-		}
-
-		buffer = bytes.NewBuffer(b)
-	}
-
-	// *bytes.Buffer(nil) != nil
-	// see http://golang.org/doc/faq#nil_error
-	var content io.Reader
-	if buffer == nil {
-		content = nil
-	} else {
-		content = buffer
-	}
-
-	body, err := c.post(path, headers, content)
+func (c *Client) Put(url *url.URL, input interface{}, output interface{}) (result *Result) {
+	req, err := c.NewRequest(url.String())
 	if err != nil {
-		return err
+		result = newResult(nil, err)
+		return
 	}
 
-	return jsonUnmarshal(body, v)
+	resp, err := req.Put(input, output)
+	result = newResult(resp, err)
+
+	return
 }
 
-func (c *Client) request(method, path string, headers Headers, content io.Reader) ([]byte, error) {
-	url, err := c.buildURL(path)
+func (c *Client) Delete(url *url.URL, output interface{}) (result *Result) {
+	req, err := c.NewRequest(url.String())
 	if err != nil {
-		return nil, err
+		result = newResult(nil, err)
+		return
 	}
 
-	request, err := http.NewRequest(method, url.String(), content)
-	if err != nil {
-		return nil, err
-	}
-
-	c.setDefaultHeaders(request)
-
-	if headers != nil {
-		for h, v := range headers {
-			request.Header.Set(h, v)
-		}
-	}
-
-	response, err := c.httpClient.Do(request)
-	if err != nil {
-		return nil, err
-	}
-
-	body, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	if response.StatusCode >= 400 && response.StatusCode < 600 {
-		return nil, checkResponse(response)
-	}
-
-	return body, nil
-}
-
-// Deprecated
-
-func (c *Client) buildURL(pathOrURL string) (*url.URL, error) {
-	u, e := url.ParseRequestURI(pathOrURL)
-	if e != nil {
-		u, e = url.Parse(c.BaseURL)
-		if e != nil {
-			return nil, e
-		}
-
-		return u.Parse(pathOrURL)
-	}
-
-	return u, nil
-}
-
-func (c *Client) setDefaultHeaders(request *http.Request) {
-	request.Header.Set("Accept", MediaType)
-	request.Header.Set("User-Agent", UserAgent)
-	request.Header.Set("Content-Type", DefaultContentType)
-	if c.isBasicAuth() {
-		request.Header.Set("Authorization", fmt.Sprintf("Basic %s", hashAuth(c.Login, c.Password)))
-	} else if c.isTokenAuth() {
-		request.Header.Set("Authorization", fmt.Sprintf("token %s", c.Token))
-	}
-}
-
-func (c *Client) isBasicAuth() bool {
-	return c.Login != "" && c.Password != ""
-}
-
-func (c *Client) isTokenAuth() bool {
-	return c.Token != ""
-}
-
-func jsonMarshalToReader(v interface{}) (r io.Reader, err error) {
-	if v != nil {
-		b, e := jsonMarshal(v)
-		if err != nil {
-			err = e
-			return
-		}
-
-		r = bytes.NewBuffer(b)
-	}
+	resp, err := req.Delete(output)
+	result = newResult(resp, err)
 
 	return
 }

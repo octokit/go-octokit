@@ -6,29 +6,26 @@ import (
 	"testing"
 )
 
-func TestAddPreviewMediaType(t *testing.T) {
-	options := addPreviewMediaType(nil)
-	assert.Equal(t, ReleasesMediaType, options.Headers["Accept"])
-}
-
-func TestReleases(t *testing.T) {
+func TestReleasesService_GetAll(t *testing.T) {
 	setup()
 	defer tearDown()
 
 	mux.HandleFunc("/repos/jingweno/gh/releases", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", ReleasesMediaType)
-		respondWith(w, loadFixture("releases.json"))
+		respondWithJSON(w, loadFixture("releases.json"))
 	})
 
-	repo := Repo{UserName: "jingweno", Name: "gh"}
-	releases, _ := client.Releases(repo, nil)
+	releasesService, err := client.Releases(nil, M{"owner": "jingweno", "repo": "gh"})
+	assert.Equal(t, nil, err)
+
+	releases, result := releasesService.GetAll()
+	assert.T(t, !result.HasError())
 	assert.Equal(t, 1, len(releases))
 
 	firstRelease := releases[0]
 	assert.Equal(t, 50013, firstRelease.ID)
 	assert.Equal(t, "v0.23.0", firstRelease.TagName)
-	assert.Equal(t, "master", firstRelease.TargetCommitsh)
+	assert.Equal(t, "master", firstRelease.TargetCommitish)
 	assert.Equal(t, "v0.23.0", firstRelease.Name)
 	assert.T(t, !firstRelease.Draft)
 	assert.T(t, !firstRelease.Prerelease)
@@ -62,18 +59,19 @@ func TestCreateRelease(t *testing.T) {
 
 	mux.HandleFunc("/repos/octokit/Hello-World/releases", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", ReleasesMediaType)
-		testBody(t, r, `{"tag_name":"v1.0.0","target_commitish":"master"}`)
-		respondWith(w, loadFixture("create_release.json"))
+		testBody(t, r, "{\"tag_name\":\"v1.0.0\",\"target_commitish\":\"master\"}\n")
+		respondWithJSON(w, loadFixture("create_release.json"))
 	})
 
-	repo := Repo{UserName: "octokit", Name: "Hello-World"}
-	params := ReleaseParams{
+	releasesService, err := client.Releases(nil, M{"owner": "octokit", "repo": "Hello-World"})
+	assert.Equal(t, nil, err)
+
+	params := Release{
 		TagName:         "v1.0.0",
 		TargetCommitish: "master",
 	}
-	options := Options{Params: params}
-	release, _ := client.CreateRelease(repo, &options)
+	release, result := releasesService.Create(params)
 
+	assert.T(t, !result.HasError())
 	assert.Equal(t, "v1.0.0", release.TagName)
 }

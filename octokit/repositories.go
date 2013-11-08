@@ -1,11 +1,55 @@
 package octokit
 
 import (
-	"fmt"
+	"github.com/lostisland/go-sawyer/hypermedia"
+	"net/url"
 	"time"
 )
 
+var (
+	RepositoryURL       = Hyperlink("/repos/{owner}/{repo}")
+	ForksURL            = Hyperlink("/repos/{owner}/{repo}/forks")
+	UserRepositoriesURL = Hyperlink("/user/repos")
+	OrgRepositoriesURL  = Hyperlink("/orgs/{org}/repos")
+)
+
+func (c *Client) Repositories(link *Hyperlink, m M) (repos *RepositoriesService, err error) {
+	if link == nil {
+		link = &RepositoryURL
+	}
+
+	url, err := link.Expand(m)
+	if err != nil {
+		return
+	}
+
+	repos = &RepositoriesService{client: c, URL: url}
+	return
+}
+
+type RepositoriesService struct {
+	client *Client
+	URL    *url.URL
+}
+
+func (r *RepositoriesService) Get() (repo *Repository, result *Result) {
+	result = r.client.Get(r.URL, &repo)
+	return
+}
+
+func (r *RepositoriesService) GetAll() (repos []Repository, result *Result) {
+	result = r.client.Get(r.URL, &repos)
+	return
+}
+
+func (r *RepositoriesService) Create(params interface{}) (repo *Repository, result *Result) {
+	result = r.client.Post(r.URL, params, &repo)
+	return
+}
+
 type Repository struct {
+	*hypermedia.HALResource
+
 	ID            int           `json:"id,omitempty"`
 	Owner         User          `json:"owner,omitempty"`
 	Name          string        `json:"name,omitempty"`
@@ -38,82 +82,4 @@ type Repository struct {
 	HasIssues     bool          `json:"has_issues,omitempty"`
 	HasWiki       bool          `json:"has_wiki,omitempty"`
 	HasDownloads  bool          `json:"has_downloads,omitempty"`
-}
-
-// List repositories
-//
-// If username is not supplied, repositories for the current
-// authenticated user are returned
-//
-// See http://developer.github.com/v3/repos/#list-your-repositories
-func (c *Client) Repositories(username string, options *Options) (repositories []Repository, err error) {
-	var path string
-	if username == "" {
-		path = "user/repos"
-	} else {
-		path = fmt.Sprintf("users/%s/repos", username)
-	}
-
-	err = c.jsonGet(path, options, &repositories)
-	return
-}
-
-// Get a single repository
-//
-// See http://developer.github.com/v3/repos/#get
-func (c *Client) Repository(repo Repo, options *Options) (repository *Repository, err error) {
-	root, result := c.Root()
-	if result.HasError() {
-		return
-	}
-
-	link := root.RepositoryURL
-	url, e := link.Expand(M{"owner": repo.UserName, "repo": repo.Name})
-	if e != nil {
-		result = newResult(nil, e)
-		return
-	}
-
-	requester := c.Requester(url)
-	result = requester.Get(&repository)
-	return
-}
-
-type RepositoryParams struct {
-	Name              string `json:"name,omitempty"`
-	Description       string `json:"description,omitempty"`
-	Homepage          string `json:"homepage,omitempty"`
-	Private           bool   `json:"private,omitempty"`
-	HasIssues         bool   `json:"has_issues,omitempty"`
-	HasWiki           bool   `json:"has_wiki,omitempty"`
-	HasDownloads      bool   `json:"has_downloads,omitempty"`
-	TeamID            int    `json:"team_id,omitempty"`
-	AutoInit          bool   `json:"auto_init,omitempty"`
-	GitignoreTemplate string `json:"gitignore_template,omitempty"`
-}
-
-// Create a repository for a user or organization
-//
-// If org is not specified, create a repository for current user.
-//
-// See http://developer.github.com/v3/repos/#create
-func (c *Client) CreateRepository(org string, options *Options) (repository *Repository, err error) {
-	var path string
-	if org == "" {
-		path = "user/repos"
-	} else {
-		path = fmt.Sprintf("orgs/%s/repos", org)
-	}
-
-	err = c.jsonPost(path, options, &repository)
-	return
-}
-
-// Fork a repository
-//
-// See http://developer.github.com/v3/repos/forks/#create-a-fork
-func (c *Client) Fork(repo Repo, options *Options) (repository *Repository, err error) {
-	path := fmt.Sprintf("repos/%s/forks", repo)
-	err = c.jsonPost(path, options, &repository)
-	return
 }
