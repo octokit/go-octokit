@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	AuthorizationsURL = Hyperlink("/authorizations{/auth_id}")
+	AuthorizationsURL = Hyperlink("/authorizations{/id}")
 )
 
 // Create a AuthorizationsService with the base Hyperlink and the params M to expand the Hyperlink

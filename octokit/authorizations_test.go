@@ -17,7 +17,7 @@ func TestAuthorizationsService_Get(t *testing.T) {
 		respondWithJSON(w, loadFixture("authorization.json"))
 	})
 
-	authsService, err := client.Authorizations(nil, M{"auth_id": 1})
+	authsService, err := client.Authorizations(nil, M{"id": 1})
 	assert.Equal(t, nil, err)
 
 	auth, result := authsService.Get()
