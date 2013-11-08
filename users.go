@@ -7,15 +7,15 @@ import (
 )
 
 var (
-	CurrentUserHyperlink = Hyperlink("/user")
-	UsersHyperlink       = Hyperlink("/users{/user}{?since}")
+	CurrentUserURL = Hyperlink("/user")
+	UserURL        = Hyperlink("/users{/user}{?since}")
 )
 
 // Create a UsersService with the base Hyperlink and the params M to expand the Hyperlink
 // If no Hyperlink is passed in, it will use CurrentUserHyperlink.
 func (c *Client) Users(link *Hyperlink, m M) (users *UsersService, err error) {
 	if link == nil {
-		link = &CurrentUserHyperlink
+		link = &CurrentUserURL
 	}
 
 	url, err := link.Expand(m)

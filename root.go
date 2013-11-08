@@ -6,14 +6,14 @@ import (
 )
 
 var (
-	RootHyperlink = Hyperlink("/")
+	RootURL = Hyperlink("/")
 )
 
 // Create a RooService with the base Hyperlink
 // If no Hyperlink is passed in, it will use RootHyperlink.
 func (c *Client) Root(link *Hyperlink) (root *RootService, err error) {
 	if link == nil {
-		link = &RootHyperlink
+		link = &RootURL
 	}
 
 	url, err := link.Expand(nil)
