@@ -4,7 +4,7 @@ Go toolkit for the GitHub API.
 
 ## Status
 
-Very experimental.
+Very experimental. APIs are subject to change.
 
 ## Motivation
 
