@@ -9,11 +9,11 @@ Go toolkit for the GitHub API.
 ```go
 package main
 
-import "github.com/octokit/go-octokit"
+import "github.com/octokit/go-octokit/octokit"
 
 func main() {
-    client := octokit.NewClient()
-    usersService, err := client.Users(&octokit.UsersHyperlink, octokit.M{"user": "jingweno"})
+    client := octokit.NewClient(nil)
+    usersService, err := client.Users(&octokit.UserURL, octokit.M{"user": "jingweno"})
     if err != nil  {
       // Handle error
     }
@@ -32,11 +32,11 @@ func main() {
 ```go
 package main
 
-import "github.com/octokit/go-octokit"
+import "github.com/octokit/go-octokit/octokit"
 
 func main() {
-    client := octokit.NewClient()
-    usersService, err := client.Users(&octokit.AllUsersHyperlink, nil)
+    client := octokit.NewClient(nil)
+    usersService, err := client.Users(&octokit.UserURL, nil)
     if err != nil  {
       // Handle error
     }
