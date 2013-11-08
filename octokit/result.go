@@ -1,14 +1,14 @@
 package octokit
 
 import (
-	"net/url"
+	"github.com/lostisland/go-sawyer/mediaheader"
 )
 
 type pageable struct {
-	NextPage  *url.URL
-	LastPage  *url.URL
-	FirstPage *url.URL
-	PrevPage  *url.URL
+	NextPage  *Hyperlink
+	LastPage  *Hyperlink
+	FirstPage *Hyperlink
+	PrevPage  *Hyperlink
 }
 
 type Result struct {
@@ -30,11 +30,32 @@ func (r *Result) Error() string {
 }
 
 func newResult(resp *Response, err error) *Result {
-	var pageable pageable
+	pageable := pageable{}
 	if resp != nil {
-		parser := paginationParser{header: resp.Header}
-		pageable = parser.Parse()
+		fillPageable(&pageable, resp.MediaHeader)
 	}
 
 	return &Result{Response: resp, pageable: pageable, Err: err}
+}
+
+func fillPageable(pageable *pageable, header *mediaheader.MediaHeader) {
+	if link, ok := header.Relations["next"]; ok {
+		l := Hyperlink(link)
+		pageable.NextPage = &l
+	}
+
+	if link, ok := header.Relations["prev"]; ok {
+		l := Hyperlink(link)
+		pageable.PrevPage = &l
+	}
+
+	if link, ok := header.Relations["first"]; ok {
+		l := Hyperlink(link)
+		pageable.FirstPage = &l
+	}
+
+	if link, ok := header.Relations["last"]; ok {
+		l := Hyperlink(link)
+		pageable.LastPage = &l
+	}
 }

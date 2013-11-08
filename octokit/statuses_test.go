@@ -12,14 +12,16 @@ func TestStatuses(t *testing.T) {
 
 	mux.HandleFunc("/repos/jingweno/gh/statuses/740211b9c6cd8e526a7124fe2b33115602fbc637", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		respondWith(w, loadFixture("statuses.json"))
+		respondWithJSON(w, loadFixture("statuses.json"))
 	})
 
-	repo := Repo{UserName: "jingweno", Name: "gh"}
 	sha := "740211b9c6cd8e526a7124fe2b33115602fbc637"
-	statuses, _ := client.Statuses(repo, sha, nil)
-	assert.Equal(t, 2, len(statuses))
+	statusesService, err := client.Statuses(nil, M{"owner": "jingweno", "repo": "gh", "ref": sha})
+	assert.Equal(t, nil, err)
 
+	statuses, err := statusesService.GetAll()
+
+	assert.Equal(t, 2, len(statuses))
 	firstStatus := statuses[0]
 	assert.Equal(t, "pending", firstStatus.State)
 	assert.Equal(t, "The Travis CI build is in progress", firstStatus.Description)

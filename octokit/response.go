@@ -1,14 +1,13 @@
 package octokit
 
 import (
-	"encoding/json"
+	"github.com/lostisland/go-sawyer/mediaheader"
+	"github.com/lostisland/go-sawyer/mediatype"
 	"net/http"
 )
 
 type Response struct {
+	MediaType   *mediatype.MediaType
+	MediaHeader *mediaheader.MediaHeader
 	*http.Response
-}
-
-func (resp *Response) Data(v interface{}) error {
-	return json.NewDecoder(resp.Body).Decode(v)
 }

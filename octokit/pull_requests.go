@@ -1,11 +1,54 @@
 package octokit
 
 import (
-	"fmt"
+	"github.com/lostisland/go-sawyer/hypermedia"
+	"net/url"
 	"time"
 )
 
+var (
+	PullRequestsURL = Hyperlink("/repos/{owner}/{repo}/pulls{/number}")
+)
+
+// Create a PullRequestsService with the base Hyperlink and the params M to expand the Hyperlink
+// If no Hyperlink is passed in, it will use PullRequestsHyperlink.
+func (c *Client) PullRequests(link *Hyperlink, m M) (pullRequests *PullRequestsService, err error) {
+	if link == nil {
+		link = &PullRequestsURL
+	}
+
+	url, err := link.Expand(m)
+	if err != nil {
+		return
+	}
+
+	pullRequests = &PullRequestsService{client: c, URL: url}
+	return
+}
+
+type PullRequestsService struct {
+	client *Client
+	URL    *url.URL
+}
+
+func (p *PullRequestsService) Get() (pull *PullRequest, result *Result) {
+	result = p.client.Get(p.URL, &pull)
+	return
+}
+
+func (p *PullRequestsService) Create(params interface{}) (pull *PullRequest, result *Result) {
+	result = p.client.Post(p.URL, params, &pull)
+	return
+}
+
+func (p *PullRequestsService) GetAll() (pulls []PullRequest, result *Result) {
+	result = p.client.Get(p.URL, &pulls)
+	return
+}
+
 type PullRequest struct {
+	*hypermedia.HALResource
+
 	URL               string     `json:"url,omitempty"`
 	ID                int        `json:"id,omitempty"`
 	HTMLURL           string     `json:"html_url,omitempty"`
@@ -47,15 +90,6 @@ type Commit struct {
 	Repo  Repository `json:"repo,omitempty"`
 }
 
-// Get a pull request
-//
-// See http://developer.github.com/v3/pulls/#get-a-single-pull-request
-func (c *Client) PullRequest(repo Repo, number string, options *Options) (pr *PullRequest, err error) {
-	path := fmt.Sprintf("repos/%s/pulls/%s", repo, number)
-	err = c.jsonGet(path, options, &pr)
-	return
-}
-
 type PullRequestParams struct {
 	Base  string `json:"base,omitempty"`
 	Head  string `json:"head,omitempty"`
@@ -67,14 +101,4 @@ type PullRequestForIssueParams struct {
 	Base  string `json:"base,omitempty"`
 	Head  string `json:"head,omitempty"`
 	Issue string `json:"issue,omitempty"`
-}
-
-// Create a pull request
-//
-// See http://developer.github.com/v3/pulls/#create-a-pull-request
-// See http://developer.github.com/v3/pulls/#alternative-input
-func (c *Client) CreatePullRequest(repo Repo, options *Options) (pr *PullRequest, err error) {
-	path := fmt.Sprintf("repos/%s/pulls", repo)
-	err = c.jsonPost(path, options, &pr)
-	return
 }

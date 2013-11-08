@@ -32,16 +32,7 @@ func setup() {
 	server = httptest.NewServer(mux)
 
 	// octokit client configured to use test server
-	client = NewClient()
-	client.BaseURL = server.URL
-
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m == r.Method && r.URL.String() == "/" {
-			respondWith(w, testRootJSON())
-		} else {
-			http.Error(w, "Bad Request", 400)
-		}
-	})
+	client = NewClientWith(server.URL, nil, TokenAuth{AccessToken: "token"})
 }
 
 // teardown closes the test HTTP server.
@@ -62,6 +53,12 @@ func testBody(t *testing.T, r *http.Request, want string) {
 	assert.Equal(t, want, string(body))
 }
 
+func respondWithJSON(w http.ResponseWriter, s string) {
+	header := w.Header()
+	header.Set("Content-Type", "application/json")
+	respondWith(w, s)
+}
+
 func respondWith(w http.ResponseWriter, s string) {
 	fmt.Fprint(w, s)
 }
@@ -73,16 +70,6 @@ func testURLOf(path string) *url.URL {
 
 func testURLStringOf(path string) string {
 	return fmt.Sprintf("%s/%s", server.URL, path)
-}
-
-func testRootJSON() string {
-	root := Root{
-		CurrentUserURL: Hyperlink(testURLStringOf("user")),
-		UserURL:        Hyperlink(testURLStringOf("users/{user}")),
-		RepositoryURL:  Hyperlink(testURLStringOf("repos/{owner}/{repo}")),
-	}
-	json, _ := jsonMarshal(root)
-	return string(json)
 }
 
 func loadFixture(f string) string {

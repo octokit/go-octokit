@@ -1,6 +1,48 @@
 package octokit
 
+import (
+	"github.com/lostisland/go-sawyer/hypermedia"
+	"net/url"
+)
+
+var (
+	RootURL = Hyperlink("/")
+)
+
+// Create a RooService with the base Hyperlink
+// If no Hyperlink is passed in, it will use RootHyperlink.
+func (c *Client) Root(link *Hyperlink) (root *RootService, err error) {
+	if link == nil {
+		link = &RootURL
+	}
+
+	url, err := link.Expand(nil)
+	if err != nil {
+		return
+	}
+
+	root = &RootService{client: c, URL: url}
+	return
+}
+
+type RootService struct {
+	client *Client
+	URL    *url.URL
+}
+
+func (r *RootService) Get() (root *Root, result *Result) {
+	result = r.client.Get(r.URL, &root)
+	if root != nil {
+		// Cached hyperlinks
+		root.PullsURL = PullRequestsURL
+	}
+
+	return
+}
+
 type Root struct {
+	*hypermedia.HALResource
+
 	UserSearchURL               Hyperlink `json:"user_search_url,omitempty"`
 	UserRepositoriesURL         Hyperlink `json:"user_repositories_url,omitempty"`
 	UserOrganizationsURL        Hyperlink `json:"user_organizations_url,omitempty"`
@@ -28,10 +70,5 @@ type Root struct {
 	OrganizationRepositoriesURL Hyperlink `json:"organization_repositories_url,omitempty"`
 	OrganizationURL             Hyperlink `json:"organization_url,omitempty"`
 	PublicGistsURL              Hyperlink `json:"public_gists_url,omitempty"`
-}
-
-func (c *Client) Root() (root *Root, result *Result) {
-	requester := c.Requester(nil)
-	result = requester.Get(&root)
-	return
+	PullsURL                    Hyperlink `json:"-"`
 }
