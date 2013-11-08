@@ -1,6 +1,7 @@
 package octokit
 
 import (
+	"github.com/lostisland/go-sawyer/hypermedia"
 	"net/url"
 	"time"
 )
@@ -46,6 +47,8 @@ func (a *AuthorizationsService) Create(params interface{}) (auth *Authorization,
 }
 
 type Authorization struct {
+	*hypermedia.HALResource
+
 	ID        int       `json:"id,omitempty"`
 	URL       string    `json:"url,omitempty"`
 	App       App       `json:"app,omitempty"`
@@ -58,6 +61,8 @@ type Authorization struct {
 }
 
 type App struct {
+	*hypermedia.HALResource
+
 	ClientID string `json:"client_id,omitempty"`
 	URL      string `json:"url,omitempty"`
 	Name     string `json:"name,omitempty"`
