@@ -1,10 +1,54 @@
 package octokit
 
 import (
+	"github.com/lostisland/go-sawyer/hypermedia"
+	"net/url"
 	"time"
 )
 
+var (
+	AuthorizationsURL = Hyperlink("/authorizations{/auth_id}")
+)
+
+// Create a AuthorizationsService with the base Hyperlink and the params M to expand the Hyperlink
+// If no Hyperlink is passed in, it will use AuthorizationsURL.
+func (c *Client) Authorizations(link *Hyperlink, m M) (auths *AuthorizationsService, err error) {
+	if link == nil {
+		link = &AuthorizationsURL
+	}
+
+	url, err := link.Expand(m)
+	if err != nil {
+		return
+	}
+
+	auths = &AuthorizationsService{client: c, URL: url}
+	return
+}
+
+type AuthorizationsService struct {
+	client *Client
+	URL    *url.URL
+}
+
+func (a *AuthorizationsService) Get() (auth *Authorization, result *Result) {
+	result = a.client.Get(a.URL, &auth)
+	return
+}
+
+func (a *AuthorizationsService) GetAll() (auths []Authorization, result *Result) {
+	result = a.client.Get(a.URL, &auths)
+	return
+}
+
+func (a *AuthorizationsService) Create(params interface{}) (auth *Authorization, result *Result) {
+	result = a.client.Post(a.URL, params, &auth)
+	return
+}
+
 type Authorization struct {
+	*hypermedia.HALResource
+
 	ID        int       `json:"id,omitempty"`
 	URL       string    `json:"url,omitempty"`
 	App       App       `json:"app,omitempty"`
@@ -17,21 +61,11 @@ type Authorization struct {
 }
 
 type App struct {
+	*hypermedia.HALResource
+
 	ClientID string `json:"client_id,omitempty"`
 	URL      string `json:"url,omitempty"`
 	Name     string `json:"name,omitempty"`
-}
-
-// List the authenticated user's authorizations
-//
-// API for users to manage their own tokens.
-// You can only access your own tokens, and only through
-// Basic Authentication.
-//
-// See http://developer.github.com/v3/oauth/#list-your-authorizations
-func (c *Client) Authorizations(options *Options) (auths []Authorization, err error) {
-	err = c.jsonGet("authorizations", options, &auths)
-	return
 }
 
 type AuthorizationParams struct {
@@ -40,16 +74,4 @@ type AuthorizationParams struct {
 	NoteURL      string   `json:"note_url,omitempty"`
 	ClientID     string   `json:"client_id,omitempty"`
 	ClientSecret string   `json:"client_secret,omitempty"`
-}
-
-// Create an authorization for the authenticated user.
-//
-// You can create your own tokens, and only through
-// Basic Authentication.
-//
-// See http://developer.github.com/v3/oauth/#scopes Available scopes
-// See http://developer.github.com/v3/oauth/#create-a-new-authorization
-func (c *Client) CreateAuthorization(options *Options) (auth *Authorization, err error) {
-	err = c.jsonPost("authorizations", options, &auth)
-	return
 }
