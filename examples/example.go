@@ -6,16 +6,16 @@ import (
 )
 
 func main() {
-	client := octokit.NewClient()
-	usersLink := &octokit.AllUsersHyperlink
+	client := octokit.NewClient(nil)
+	userURL := &octokit.UserURL
 
 	fmt.Println("Printing GitHub users for the first 5 pages")
 	for i := 0; i < 5; i++ {
-		if usersLink == nil {
+		if userURL == nil {
 			return
 		}
 
-		usersService, err := client.Users(usersLink, nil)
+		usersService, err := client.Users(userURL, nil)
 		if err != nil {
 			fmt.Printf("error: %s\n", err)
 			return
@@ -31,6 +31,6 @@ func main() {
 			fmt.Printf("%v - %s\n", user.ID, user.Login)
 		}
 
-		usersLink = result.NextPage
+		userURL = result.NextPage
 	}
 }

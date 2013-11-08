@@ -29,7 +29,9 @@ func (c *Client) NewRequest(urlStr string) (req *Request, err error) {
 
 	sawyerReq.Header.Add("Accept", defaultMediaType)
 	sawyerReq.Header.Add("User-Agent", c.UserAgent)
-	sawyerReq.Header.Add("Authorization", c.AuthMethod.String())
+	if c.AuthMethod != nil {
+		sawyerReq.Header.Add("Authorization", c.AuthMethod.String())
+	}
 
 	if basicAuth, ok := c.AuthMethod.(BasicAuth); ok && basicAuth.OneTimePassword != "" {
 		sawyerReq.Header.Add("X-GitHub-OTP", basicAuth.OneTimePassword)
