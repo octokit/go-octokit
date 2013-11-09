@@ -1,4 +1,4 @@
-# go-octokit
+# go-octokit [![Build Status](https://travis-ci.org/octokit/go-octokit.png?branch=master)](https://travis-ci.org/octokit/go-octokit)
 
 Go toolkit for the GitHub API.
 
