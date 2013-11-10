@@ -41,7 +41,7 @@ func (c *Client) NewRequest(urlStr string) (req *Request, err error) {
 	return
 }
 
-func (c *Client) Head(url *url.URL, output interface{}) (result *Result) {
+func (c *Client) head(url *url.URL, output interface{}) (result *Result) {
 	req, err := c.NewRequest(url.String())
 	if err != nil {
 		result = newResult(nil, err)
@@ -54,7 +54,7 @@ func (c *Client) Head(url *url.URL, output interface{}) (result *Result) {
 	return
 }
 
-func (c *Client) Get(url *url.URL, output interface{}) (result *Result) {
+func (c *Client) get(url *url.URL, output interface{}) (result *Result) {
 	req, err := c.NewRequest(url.String())
 	if err != nil {
 		result = newResult(nil, err)
@@ -67,7 +67,7 @@ func (c *Client) Get(url *url.URL, output interface{}) (result *Result) {
 	return
 }
 
-func (c *Client) Post(url *url.URL, input interface{}, output interface{}) (result *Result) {
+func (c *Client) post(url *url.URL, input interface{}, output interface{}) (result *Result) {
 	req, err := c.NewRequest(url.String())
 	if err != nil {
 		result = newResult(nil, err)
@@ -80,7 +80,7 @@ func (c *Client) Post(url *url.URL, input interface{}, output interface{}) (resu
 	return
 }
 
-func (c *Client) Put(url *url.URL, input interface{}, output interface{}) (result *Result) {
+func (c *Client) put(url *url.URL, input interface{}, output interface{}) (result *Result) {
 	req, err := c.NewRequest(url.String())
 	if err != nil {
 		result = newResult(nil, err)

@@ -35,19 +35,19 @@ type UsersService struct {
 
 // Get a user based on UserService#URL
 func (u *UsersService) Get() (user *User, result *Result) {
-	result = u.client.Get(u.URL, &user)
+	result = u.client.get(u.URL, &user)
 	return
 }
 
 // Update a user based on UserService#URL
 func (u *UsersService) Update(params interface{}) (user *User, result *Result) {
-	result = u.client.Put(u.URL, params, &user)
+	result = u.client.put(u.URL, params, &user)
 	return
 }
 
 // Get a list of users based on UserService#URL
 func (u *UsersService) GetAll() (users []User, result *Result) {
-	result = u.client.Get(u.URL, &users)
+	result = u.client.get(u.URL, &users)
 	return
 }
 

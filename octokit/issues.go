@@ -32,12 +32,12 @@ type IssuesService struct {
 }
 
 func (i *IssuesService) Get() (issue *Issue, result *Result) {
-	result = i.client.Get(i.URL, &issue)
+	result = i.client.get(i.URL, &issue)
 	return
 }
 
 func (i *IssuesService) GetAll() (issues []Issue, result *Result) {
-	result = i.client.Get(i.URL, &issues)
+	result = i.client.get(i.URL, &issues)
 	return
 }
 

@@ -32,7 +32,7 @@ type StatusesService struct {
 }
 
 func (s *StatusesService) GetAll() (statuses []Status, result *Result) {
-	result = s.client.Get(s.URL, &statuses)
+	result = s.client.get(s.URL, &statuses)
 	return
 }
 

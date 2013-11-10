@@ -32,17 +32,17 @@ type AuthorizationsService struct {
 }
 
 func (a *AuthorizationsService) Get() (auth *Authorization, result *Result) {
-	result = a.client.Get(a.URL, &auth)
+	result = a.client.get(a.URL, &auth)
 	return
 }
 
 func (a *AuthorizationsService) GetAll() (auths []Authorization, result *Result) {
-	result = a.client.Get(a.URL, &auths)
+	result = a.client.get(a.URL, &auths)
 	return
 }
 
 func (a *AuthorizationsService) Create(params interface{}) (auth *Authorization, result *Result) {
-	result = a.client.Post(a.URL, params, &auth)
+	result = a.client.post(a.URL, params, &auth)
 	return
 }
 

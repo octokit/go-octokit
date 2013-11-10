@@ -33,17 +33,17 @@ type RepositoriesService struct {
 }
 
 func (r *RepositoriesService) Get() (repo *Repository, result *Result) {
-	result = r.client.Get(r.URL, &repo)
+	result = r.client.get(r.URL, &repo)
 	return
 }
 
 func (r *RepositoriesService) GetAll() (repos []Repository, result *Result) {
-	result = r.client.Get(r.URL, &repos)
+	result = r.client.get(r.URL, &repos)
 	return
 }
 
 func (r *RepositoriesService) Create(params interface{}) (repo *Repository, result *Result) {
-	result = r.client.Post(r.URL, params, &repo)
+	result = r.client.post(r.URL, params, &repo)
 	return
 }
 

@@ -64,12 +64,12 @@ type ReleasesService struct {
 }
 
 func (r *ReleasesService) GetAll() (releases []Release, result *Result) {
-	result = r.client.Get(r.URL, &releases)
+	result = r.client.get(r.URL, &releases)
 	return
 }
 
 func (r *ReleasesService) Create(params interface{}) (release *Release, result *Result) {
-	result = r.client.Post(r.URL, params, &release)
+	result = r.client.post(r.URL, params, &release)
 	return
 }
 

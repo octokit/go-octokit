@@ -32,17 +32,17 @@ type PullRequestsService struct {
 }
 
 func (p *PullRequestsService) Get() (pull *PullRequest, result *Result) {
-	result = p.client.Get(p.URL, &pull)
+	result = p.client.get(p.URL, &pull)
 	return
 }
 
 func (p *PullRequestsService) Create(params interface{}) (pull *PullRequest, result *Result) {
-	result = p.client.Post(p.URL, params, &pull)
+	result = p.client.post(p.URL, params, &pull)
 	return
 }
 
 func (p *PullRequestsService) GetAll() (pulls []PullRequest, result *Result) {
-	result = p.client.Get(p.URL, &pulls)
+	result = p.client.get(p.URL, &pulls)
 	return
 }
 

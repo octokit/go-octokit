@@ -31,7 +31,7 @@ type RootService struct {
 }
 
 func (r *RootService) Get() (root *Root, result *Result) {
-	result = r.client.Get(r.URL, &root)
+	result = r.client.get(r.URL, &root)
 	if root != nil {
 		// Cached hyperlinks
 		root.PullsURL = PullRequestsURL
