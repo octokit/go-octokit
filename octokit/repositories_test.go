@@ -17,10 +17,10 @@ func TestRepositoresService_Get(t *testing.T) {
 		respondWithJSON(w, loadFixture("repository.json"))
 	})
 
-	reposService, err := client.Repositories(&RepositoryURL, M{"owner": "jingweno", "repo": "octokat"})
+	url, err := RepositoryURL.Expand(M{"owner": "jingweno", "repo": "octokat"})
 	assert.Equal(t, nil, err)
 
-	repo, result := reposService.Get()
+	repo, result := client.Repositories(url).Get()
 
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 10575811, repo.ID)
@@ -50,10 +50,10 @@ func TestRepositoresService_GetAll(t *testing.T) {
 		respondWithJSON(w, loadFixture("repositories.json"))
 	})
 
-	reposService, err := client.Repositories(&OrgRepositoriesURL, M{"org": "rails"})
+	url, err := OrgRepositoriesURL.Expand(M{"org": "rails"})
 	assert.Equal(t, nil, err)
 
-	repos, result := reposService.GetAll()
+	repos, result := client.Repositories(url).GetAll()
 
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 30, len(repos))
@@ -89,10 +89,10 @@ func TestRepositoresService_Create(t *testing.T) {
 		respondWithJSON(w, loadFixture("create_repository.json"))
 	})
 
-	reposService, err := client.Repositories(&UserRepositoriesURL, nil)
+	url, err := UserRepositoriesURL.Expand(nil)
 	assert.Equal(t, nil, err)
 
-	repo, result := reposService.Create(params)
+	repo, result := client.Repositories(url).Create(params)
 
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 1296269, repo.ID)
@@ -119,10 +119,10 @@ func TestRepositoresService_CreateFork(t *testing.T) {
 		respondWithJSON(w, loadFixture("create_repository.json"))
 	})
 
-	reposService, err := client.Repositories(&ForksURL, M{"owner": "jingweno", "repo": "octokat"})
+	url, err := ForksURL.Expand(M{"owner": "jingweno", "repo": "octokat"})
 	assert.Equal(t, nil, err)
 
-	repo, result := reposService.Create(M{"organization": "github"})
+	repo, result := client.Repositories(url).Create(M{"organization": "github"})
 
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 1296269, repo.ID)

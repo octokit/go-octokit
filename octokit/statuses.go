@@ -10,18 +10,8 @@ var (
 	StatusesURL = Hyperlink("/repos/{owner}/{repo}/statuses/{ref}")
 )
 
-// Create a StatusesService with the base Hyperlink and the params M to expand the Hyperlink
-// If no Hyperlink is passed in, it will use StatusesURL.
-func (c *Client) Statuses(link *Hyperlink, m M) (statuses *StatusesService, err error) {
-	if link == nil {
-		link = &StatusesURL
-	}
-
-	url, err := link.Expand(m)
-	if err != nil {
-		return
-	}
-
+// Create a StatusesService with the base url.URL
+func (c *Client) Statuses(url *url.URL) (statuses *StatusesService) {
 	statuses = &StatusesService{client: c, URL: url}
 	return
 }

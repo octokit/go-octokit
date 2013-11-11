@@ -17,10 +17,8 @@ func TestUsersService_GetCurrentUser(t *testing.T) {
 		respondWithJSON(w, loadFixture("user.json"))
 	})
 
-	users, err := client.Users(nil, nil)
-	assert.Equal(t, nil, err)
-
-	user, result := users.Get()
+	url, _ := CurrentUserURL.Expand(nil)
+	user, result := client.Users(url).Get()
 
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 169064, user.ID)
@@ -40,11 +38,9 @@ func TestUsersService_UpdateCurrentUser(t *testing.T) {
 		respondWithJSON(w, loadFixture("user.json"))
 	})
 
-	users, err := client.Users(nil, nil)
-	assert.Equal(t, nil, err)
-
+	url, _ := CurrentUserURL.Expand(nil)
 	userToUpdate := User{Email: "jingweno@gmail.com"}
-	user, result := users.Update(userToUpdate)
+	user, result := client.Users(url).Update(userToUpdate)
 
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 169064, user.ID)
@@ -63,10 +59,9 @@ func TestUsersService_GetUser(t *testing.T) {
 		respondWithJSON(w, loadFixture("user.json"))
 	})
 
-	users, err := client.Users(&UserURL, M{"user": "jingweno"})
+	url, err := UserURL.Expand(M{"user": "jingweno"})
 	assert.Equal(t, nil, err)
-
-	user, result := users.Get()
+	user, result := client.Users(url).Get()
 
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 169064, user.ID)
@@ -92,19 +87,19 @@ func TestUsersService_GetAll(t *testing.T) {
 		respondWithJSON(w, loadFixture("users.json"))
 	})
 
-	users, err := client.Users(&UserURL, M{"since": 1})
+	url, err := UserURL.Expand(M{"since": 1})
 	assert.Equal(t, nil, err)
 
-	allUsers, result := users.GetAll()
+	allUsers, result := client.Users(url).GetAll()
 
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 1, len(allUsers))
 	assert.Equal(t, testURLStringOf("users?since=135"), string(*result.NextPage))
 
-	users, err = client.Users(result.NextPage, nil)
+	nextPageURL, err := result.NextPage.Expand(nil)
 	assert.Equal(t, nil, err)
 
-	allUsers, result = users.GetAll()
+	allUsers, result = client.Users(nextPageURL).GetAll()
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 1, len(allUsers))
 }

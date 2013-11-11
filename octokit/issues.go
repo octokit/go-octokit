@@ -10,18 +10,8 @@ var (
 	RepoIssuesURL = Hyperlink("/repos/{owner}/{repo}/issues{/number}")
 )
 
-// Create a IssuesService with the base Hyperlink and the params M to expand the Hyperlink
-// If no Hyperlink is passed in, it will use RepoIssuesURL.
-func (c *Client) Issues(link *Hyperlink, m M) (issues *IssuesService, err error) {
-	if link == nil {
-		link = &RepoIssuesURL
-	}
-
-	url, err := link.Expand(m)
-	if err != nil {
-		return
-	}
-
+// Create a IssuesService with the base url.URL
+func (c *Client) Issues(url *url.URL) (issues *IssuesService) {
 	issues = &IssuesService{client: c, URL: url}
 	return
 }

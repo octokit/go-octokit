@@ -16,10 +16,10 @@ func TestStatuses(t *testing.T) {
 	})
 
 	sha := "740211b9c6cd8e526a7124fe2b33115602fbc637"
-	statusesService, err := client.Statuses(nil, M{"owner": "jingweno", "repo": "gh", "ref": sha})
+	url, err := StatusesURL.Expand(M{"owner": "jingweno", "repo": "gh", "ref": sha})
 	assert.Equal(t, nil, err)
 
-	statuses, err := statusesService.GetAll()
+	statuses, err := client.Statuses(url).GetAll()
 
 	assert.Equal(t, 2, len(statuses))
 	firstStatus := statuses[0]

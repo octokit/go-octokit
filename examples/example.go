@@ -15,13 +15,13 @@ func main() {
 			return
 		}
 
-		usersService, err := client.Users(userURL, nil)
+		url, err := userURL.Expand(nil)
 		if err != nil {
 			fmt.Printf("error: %s\n", err)
 			return
 		}
 
-		users, result := usersService.GetAll()
+		users, result := client.Users(url).GetAll()
 		if result.HasError() {
 			fmt.Println(result)
 			return

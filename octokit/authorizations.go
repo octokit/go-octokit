@@ -10,18 +10,8 @@ var (
 	AuthorizationsURL = Hyperlink("/authorizations{/id}")
 )
 
-// Create a AuthorizationsService with the base Hyperlink and the params M to expand the Hyperlink
-// If no Hyperlink is passed in, it will use AuthorizationsURL.
-func (c *Client) Authorizations(link *Hyperlink, m M) (auths *AuthorizationsService, err error) {
-	if link == nil {
-		link = &AuthorizationsURL
-	}
-
-	url, err := link.Expand(m)
-	if err != nil {
-		return
-	}
-
+// Create a AuthorizationsService with the base url.URL
+func (c *Client) Authorizations(url *url.URL) (auths *AuthorizationsService) {
 	auths = &AuthorizationsService{client: c, URL: url}
 	return
 }
