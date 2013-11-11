@@ -15,10 +15,10 @@ func TestRootService_Get(t *testing.T) {
 		respondWithJSON(w, loadFixture("root.json"))
 	})
 
-	rootService, err := client.Root(nil)
+	url, err := RootURL.Expand(nil)
 	assert.Equal(t, nil, err)
 
-	root, result := rootService.Get()
+	root, result := client.Root(url).Get()
 	assert.T(t, !result.HasError())
 	assert.Equal(t, "https://api.github.com/users/{user}", string(root.UserURL))
 }
