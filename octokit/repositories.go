@@ -13,16 +13,8 @@ var (
 	OrgRepositoriesURL  = Hyperlink("/orgs/{org}/repos")
 )
 
-func (c *Client) Repositories(link *Hyperlink, m M) (repos *RepositoriesService, err error) {
-	if link == nil {
-		link = &RepositoryURL
-	}
-
-	url, err := link.Expand(m)
-	if err != nil {
-		return
-	}
-
+// Create a RepositoriesService with the base url.URL
+func (c *Client) Repositories(url *url.URL) (repos *RepositoriesService) {
 	repos = &RepositoriesService{client: c, URL: url}
 	return
 }
