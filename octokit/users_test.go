@@ -90,6 +90,9 @@ func TestUsersService_All(t *testing.T) {
 	url, err := UserURL.Expand(M{"since": 1})
 	assert.Equal(t, nil, err)
 
+	q := url.Query()
+	q.Set("since", "1")
+	url.RawQuery = q.Encode()
 	allUsers, result := client.Users(url).All()
 
 	assert.T(t, !result.HasError())
