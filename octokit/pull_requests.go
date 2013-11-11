@@ -10,18 +10,8 @@ var (
 	PullRequestsURL = Hyperlink("/repos/{owner}/{repo}/pulls{/number}")
 )
 
-// Create a PullRequestsService with the base Hyperlink and the params M to expand the Hyperlink
-// If no Hyperlink is passed in, it will use PullRequestsHyperlink.
-func (c *Client) PullRequests(link *Hyperlink, m M) (pullRequests *PullRequestsService, err error) {
-	if link == nil {
-		link = &PullRequestsURL
-	}
-
-	url, err := link.Expand(m)
-	if err != nil {
-		return
-	}
-
+// Create a PullRequestsService with the base url.URL
+func (c *Client) PullRequests(url *url.URL) (pullRequests *PullRequestsService) {
 	pullRequests = &PullRequestsService{client: c, URL: url}
 	return
 }
