@@ -17,10 +17,10 @@ func TestAuthorizationsService_Get(t *testing.T) {
 		respondWithJSON(w, loadFixture("authorization.json"))
 	})
 
-	authsService, err := client.Authorizations(nil, M{"id": 1})
+	url, err := AuthorizationsURL.Expand(M{"id": 1})
 	assert.Equal(t, nil, err)
 
-	auth, result := authsService.Get()
+	auth, result := client.Authorizations(url).Get()
 
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 1, auth.ID)
@@ -48,10 +48,10 @@ func TestAuthorizationsService_GetAll(t *testing.T) {
 		respondWithJSON(w, loadFixture("authorizations.json"))
 	})
 
-	authsService, err := client.Authorizations(nil, nil)
+	url, err := AuthorizationsURL.Expand(nil)
 	assert.Equal(t, nil, err)
 
-	auths, result := authsService.GetAll()
+	auths, result := client.Authorizations(url).GetAll()
 	assert.T(t, !result.HasError())
 
 	firstAuth := auths[0]
@@ -86,10 +86,10 @@ func TestAuthorizationsService_Create(t *testing.T) {
 		respondWithJSON(w, loadFixture("create_authorization.json"))
 	})
 
-	authsService, err := client.Authorizations(nil, nil)
+	url, err := AuthorizationsURL.Expand(nil)
 	assert.Equal(t, nil, err)
 
-	auth, _ := authsService.Create(params)
+	auth, _ := client.Authorizations(url).Create(params)
 
 	assert.Equal(t, 3844190, auth.ID)
 	assert.Equal(t, "https://api.github.com/authorizations/3844190", auth.URL)
