@@ -16,10 +16,10 @@ func TestPullRequestService_Get(t *testing.T) {
 		respondWithJSON(w, loadFixture("pull_request.json"))
 	})
 
-	prService, err := client.PullRequests(&PullRequestsURL, M{"owner": "octokit", "repo": "go-octokit", "number": 1})
+	url, err := PullRequestsURL.Expand(M{"owner": "octokit", "repo": "go-octokit", "number": 1})
 	assert.Equal(t, nil, err)
 
-	pr, result := prService.Get()
+	pr, result := client.PullRequests(url).Get()
 
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 1, pr.ChangedFiles)
@@ -58,7 +58,7 @@ func TestPullRequestService_Post(t *testing.T) {
 		respondWithJSON(w, loadFixture("pull_request.json"))
 	})
 
-	prService, err := client.PullRequests(&PullRequestsURL, M{"owner": "octokit", "repo": "go-octokit"})
+	url, err := PullRequestsURL.Expand(M{"owner": "octokit", "repo": "go-octokit"})
 	assert.Equal(t, nil, err)
 
 	params := PullRequestParams{
@@ -67,8 +67,7 @@ func TestPullRequestService_Post(t *testing.T) {
 		Title: "title",
 		Body:  "body",
 	}
-
-	pr, result := prService.Create(params)
+	pr, result := client.PullRequests(url).Create(params)
 
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 1, pr.ChangedFiles)
@@ -108,11 +107,10 @@ func TestPullRequestService_GetAll(t *testing.T) {
 		respondWithJSON(w, loadFixture("pull_requests.json"))
 	})
 
-	prService, err := client.PullRequests(&PullRequestsURL, M{"owner": "rails", "repo": "rails"})
+	url, err := PullRequestsURL.Expand(M{"owner": "rails", "repo": "rails"})
 	assert.Equal(t, nil, err)
 
-	prs, result := prService.GetAll()
-
+	prs, result := client.PullRequests(url).GetAll()
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 30, len(prs))
 	assert.Equal(t, testURLStringOf("repositories/8514/pulls?page=2"), string(*result.NextPage))

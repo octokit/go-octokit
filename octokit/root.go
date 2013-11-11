@@ -9,18 +9,8 @@ var (
 	RootURL = Hyperlink("/")
 )
 
-// Create a RooService with the base Hyperlink
-// If no Hyperlink is passed in, it will use RootHyperlink.
-func (c *Client) Root(link *Hyperlink) (root *RootService, err error) {
-	if link == nil {
-		link = &RootURL
-	}
-
-	url, err := link.Expand(nil)
-	if err != nil {
-		return
-	}
-
+// Create a RooService with the base url.URL
+func (c *Client) Root(url *url.URL) (root *RootService) {
 	root = &RootService{client: c, URL: url}
 	return
 }

@@ -10,14 +10,16 @@ Very experimental. APIs are subject to change.
 
 `go-octokit` is designed to be a hypermedia API client that [wraps](http://wynnnetherland.com/journal/what-makes-a-good-api-wrapper) the [GitHub API](http://developer.github.com/).
 
-## Hypermedia agent
+## Hypermedia Client
 
-`go-octokit` is hypermedia-driven by default.
-Under the hood, it uses [`go-sawyer`](https://github.com/lostisland/go-sawyer), the Go version of [Ruby Sawyer](https://github.com/lostisland/sawyer).
+[HAL](http://tools.ietf.org/html/draft-kelly-json-hal) is a simple format that gives a consistent and easy way to hyperlink between resources in web API.
+Being a client for HAL means it can navigate around the resources by following hyperlinks.
+`go-octokit` is a hypermedia client for the GitHub API that it can traverse links by following the GitHub API conventions.
+Under the hood, it uses [`go-sawyer`](https://github.com/lostisland/go-sawyer), the Go version of the [Ruby Sawyer](https://github.com/lostisland/sawyer).
 
-### Hypermedia in go-octokit
+### Resource Objects
 
-Resources in `go-octokit` contain not only data but hypermedia links:
+Resources in `go-octokit` contain not only data but hyperlinks:
 
 ```go
 package main
@@ -26,12 +28,13 @@ import "github.com/octokit/go-octokit/octokit"
 
 func main() {
     client := octokit.NewClient(nil)
-    usersService, err := client.Users(&octokit.UserURL, octokit.M{"user": "jingweno"})
+
+    url, err := octokit.UserURL.Expand(octokit.M{"user": "jingweno"})
     if err != nil  {
       // Handle error
     }
 
-    user, result := usersService.Get()
+    user, result := client.Users(url).Get()
     if result.HasError() {
       // Handle error
     }
@@ -55,7 +58,7 @@ func main() {
 }
 ```
 
-### The Full Hypermedia Experience™
+### API Discoverability
 
 If you want to use `go-octokit` as a pure hypermedia API client, you can
 start at the API root and follow hypermedia links which drive the application state transitions:
@@ -66,11 +69,11 @@ package main
 import "github.com/octokit/go-octokit/octokit"
 
 func main() {
-  rootService, _ := client.Root(nil)
-  root, _ := rootService.Get()
+  rootURL, _ := client.RootURL.Expand(nil)
+  root, _ := client.Root(rootURL).Get()
 
-  usersService, _ := client.Users(root.UserURL, octokit.M{"users": "jingweno"})
-  user, _ := usersService.Get()
+  userURL, _ := root.UserURL.Expand(octokit.M{"users": "jingweno"})
+  user, _ := client.Users(userURL).Get()
 }
 ```
 
@@ -82,13 +85,12 @@ package main
 import "github.com/octokit/go-octokit/octokit"
 
 func main() {
-    client := octokit.NewClient(nil)
-    usersService, err := client.Users(&octokit.UserURL, nil)
+    url, err := octokit.UserURL.Expand(nil)
     if err != nil  {
       // Handle error
     }
 
-    users, result := usersService.GetAll()
+    users, result := client.Users(url).GetAll()
     if result.HasError() {
       // Handle error
     }
@@ -96,7 +98,8 @@ func main() {
     // Do something with users
 
     // Next page
-    usersService, err := client.Users(result.NextPage, nil)
+    nextPageURL, _ := result.NextPage.Expand(nil)
+    users, result := client.Users(nextPageURL).GetAll()
     if result.HasError() {
       // Handle error
     }
