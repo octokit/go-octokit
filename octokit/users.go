@@ -8,21 +8,12 @@ import (
 
 var (
 	CurrentUserURL = Hyperlink("/user")
+  // FIXME: make ?since as get param
 	UserURL        = Hyperlink("/users{/user}{?since}")
 )
 
-// Create a UsersService with the base Hyperlink and the params M to expand the Hyperlink
-// If no Hyperlink is passed in, it will use CurrentUserHyperlink.
-func (c *Client) Users(link *Hyperlink, m M) (users *UsersService, err error) {
-	if link == nil {
-		link = &CurrentUserURL
-	}
-
-	url, err := link.Expand(m)
-	if err != nil {
-		return
-	}
-
+// Create a UsersService with the base url.URL
+func (c *Client) Users(url *url.URL) (users *UsersService) {
 	users = &UsersService{client: c, URL: url}
 	return
 }
