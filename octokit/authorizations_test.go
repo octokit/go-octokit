@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func TestAuthorizationsService_Get(t *testing.T) {
+func TestAuthorizationsService_One(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -20,7 +20,7 @@ func TestAuthorizationsService_Get(t *testing.T) {
 	url, err := AuthorizationsURL.Expand(M{"id": 1})
 	assert.Equal(t, nil, err)
 
-	auth, result := client.Authorizations(url).Get()
+	auth, result := client.Authorizations(url).One()
 
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 1, auth.ID)
@@ -39,7 +39,7 @@ func TestAuthorizationsService_Get(t *testing.T) {
 	assert.T(t, reflect.DeepEqual(auth.Scopes, scopes))
 }
 
-func TestAuthorizationsService_GetAll(t *testing.T) {
+func TestAuthorizationsService_All(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -51,7 +51,7 @@ func TestAuthorizationsService_GetAll(t *testing.T) {
 	url, err := AuthorizationsURL.Expand(nil)
 	assert.Equal(t, nil, err)
 
-	auths, result := client.Authorizations(url).GetAll()
+	auths, result := client.Authorizations(url).All()
 	assert.T(t, !result.HasError())
 
 	firstAuth := auths[0]

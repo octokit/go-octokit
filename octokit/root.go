@@ -20,7 +20,7 @@ type RootService struct {
 	URL    *url.URL
 }
 
-func (r *RootService) Get() (root *Root, result *Result) {
+func (r *RootService) One() (root *Root, result *Result) {
 	result = r.client.get(r.URL, &root)
 	if root != nil {
 		// Cached hyperlinks

@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestPullRequestService_Get(t *testing.T) {
+func TestPullRequestService_One(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -19,7 +19,7 @@ func TestPullRequestService_Get(t *testing.T) {
 	url, err := PullRequestsURL.Expand(M{"owner": "octokit", "repo": "go-octokit", "number": 1})
 	assert.Equal(t, nil, err)
 
-	pr, result := client.PullRequests(url).Get()
+	pr, result := client.PullRequests(url).One()
 
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 1, pr.ChangedFiles)
@@ -95,7 +95,7 @@ func TestPullRequestService_Post(t *testing.T) {
 	assert.Equal(t, "https://api.github.com/repos/jingweno/octokat/issues/1/comments", pr.CommentsURL)
 }
 
-func TestPullRequestService_GetAll(t *testing.T) {
+func TestPullRequestService_All(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -110,7 +110,7 @@ func TestPullRequestService_GetAll(t *testing.T) {
 	url, err := PullRequestsURL.Expand(M{"owner": "rails", "repo": "rails"})
 	assert.Equal(t, nil, err)
 
-	prs, result := client.PullRequests(url).GetAll()
+	prs, result := client.PullRequests(url).All()
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 30, len(prs))
 	assert.Equal(t, testURLStringOf("repositories/8514/pulls?page=2"), string(*result.NextPage))

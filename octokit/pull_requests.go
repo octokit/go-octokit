@@ -21,7 +21,7 @@ type PullRequestsService struct {
 	URL    *url.URL
 }
 
-func (p *PullRequestsService) Get() (pull *PullRequest, result *Result) {
+func (p *PullRequestsService) One() (pull *PullRequest, result *Result) {
 	result = p.client.get(p.URL, &pull)
 	return
 }
@@ -31,7 +31,7 @@ func (p *PullRequestsService) Create(params interface{}) (pull *PullRequest, res
 	return
 }
 
-func (p *PullRequestsService) GetAll() (pulls []PullRequest, result *Result) {
+func (p *PullRequestsService) All() (pulls []PullRequest, result *Result) {
 	result = p.client.get(p.URL, &pulls)
 	return
 }

@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestReleasesService_GetAll(t *testing.T) {
+func TestReleasesService_All(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -18,7 +18,7 @@ func TestReleasesService_GetAll(t *testing.T) {
 	url, err := ReleasesURL.Expand(M{"owner": "jingweno", "repo": "gh"})
 	assert.Equal(t, nil, err)
 
-	releases, result := client.Releases(url).GetAll()
+	releases, result := client.Releases(url).All()
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 1, len(releases))
 

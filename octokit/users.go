@@ -25,7 +25,7 @@ type UsersService struct {
 }
 
 // Get a user based on UserService#URL
-func (u *UsersService) Get() (user *User, result *Result) {
+func (u *UsersService) One() (user *User, result *Result) {
 	result = u.client.get(u.URL, &user)
 	return
 }
@@ -37,7 +37,7 @@ func (u *UsersService) Update(params interface{}) (user *User, result *Result) {
 }
 
 // Get a list of users based on UserService#URL
-func (u *UsersService) GetAll() (users []User, result *Result) {
+func (u *UsersService) All() (users []User, result *Result) {
 	result = u.client.get(u.URL, &users)
 	return
 }

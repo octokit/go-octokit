@@ -34,7 +34,7 @@ func main() {
       // Handle error
     }
 
-    user, result := client.Users(url).Get()
+    user, result := client.Users(url).One()
     if result.HasError() {
       // Handle error
     }
@@ -70,10 +70,10 @@ import "github.com/octokit/go-octokit/octokit"
 
 func main() {
   rootURL, _ := client.RootURL.Expand(nil)
-  root, _ := client.Root(rootURL).Get()
+  root, _ := client.Root(rootURL).One()
 
   userURL, _ := root.UserURL.Expand(octokit.M{"users": "jingweno"})
-  user, _ := client.Users(userURL).Get()
+  user, _ := client.Users(userURL).One()
 }
 ```
 
@@ -90,7 +90,7 @@ func main() {
       // Handle error
     }
 
-    users, result := client.Users(url).GetAll()
+    users, result := client.Users(url).All()
     if result.HasError() {
       // Handle error
     }
@@ -99,7 +99,7 @@ func main() {
 
     // Next page
     nextPageURL, _ := result.NextPage.Expand(nil)
-    users, result := client.Users(nextPageURL).GetAll()
+    users, result := client.Users(nextPageURL).All()
     if result.HasError() {
       // Handle error
     }

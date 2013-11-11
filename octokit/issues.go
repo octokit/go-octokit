@@ -21,12 +21,12 @@ type IssuesService struct {
 	URL    *url.URL
 }
 
-func (i *IssuesService) Get() (issue *Issue, result *Result) {
+func (i *IssuesService) One() (issue *Issue, result *Result) {
 	result = i.client.get(i.URL, &issue)
 	return
 }
 
-func (i *IssuesService) GetAll() (issues []Issue, result *Result) {
+func (i *IssuesService) All() (issues []Issue, result *Result) {
 	result = i.client.get(i.URL, &issues)
 	return
 }
