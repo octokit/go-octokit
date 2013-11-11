@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestRootService_Get(t *testing.T) {
+func TestRootService_One(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -18,7 +18,7 @@ func TestRootService_Get(t *testing.T) {
 	url, err := RootURL.Expand(nil)
 	assert.Equal(t, nil, err)
 
-	root, result := client.Root(url).Get()
+	root, result := client.Root(url).One()
 	assert.T(t, !result.HasError())
 	assert.Equal(t, "https://api.github.com/users/{user}", string(root.UserURL))
 }

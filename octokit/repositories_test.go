@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func TestRepositoresService_Get(t *testing.T) {
+func TestRepositoresService_One(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -20,7 +20,7 @@ func TestRepositoresService_Get(t *testing.T) {
 	url, err := RepositoryURL.Expand(M{"owner": "jingweno", "repo": "octokat"})
 	assert.Equal(t, nil, err)
 
-	repo, result := client.Repositories(url).Get()
+	repo, result := client.Repositories(url).One()
 
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 10575811, repo.ID)
@@ -36,7 +36,7 @@ func TestRepositoresService_Get(t *testing.T) {
 	assert.Equal(t, "master", repo.MasterBranch)
 }
 
-func TestRepositoresService_GetAll(t *testing.T) {
+func TestRepositoresService_All(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -53,7 +53,7 @@ func TestRepositoresService_GetAll(t *testing.T) {
 	url, err := OrgRepositoriesURL.Expand(M{"org": "rails"})
 	assert.Equal(t, nil, err)
 
-	repos, result := client.Repositories(url).GetAll()
+	repos, result := client.Repositories(url).All()
 
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 30, len(repos))

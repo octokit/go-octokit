@@ -53,7 +53,7 @@ type ReleasesService struct {
 	URL    *url.URL
 }
 
-func (r *ReleasesService) GetAll() (releases []Release, result *Result) {
+func (r *ReleasesService) All() (releases []Release, result *Result) {
 	result = r.client.get(r.URL, &releases)
 	return
 }
