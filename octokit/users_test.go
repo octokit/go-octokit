@@ -18,7 +18,7 @@ func TestUsersService_GetCurrentUser(t *testing.T) {
 	})
 
 	url, _ := CurrentUserURL.Expand(nil)
-	user, result := client.Users(url).Get()
+	user, result := client.Users(url).One()
 
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 169064, user.ID)
@@ -61,7 +61,7 @@ func TestUsersService_GetUser(t *testing.T) {
 
 	url, err := UserURL.Expand(M{"user": "jingweno"})
 	assert.Equal(t, nil, err)
-	user, result := client.Users(url).Get()
+	user, result := client.Users(url).One()
 
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 169064, user.ID)
@@ -71,7 +71,7 @@ func TestUsersService_GetUser(t *testing.T) {
 	assert.Equal(t, "https://api.github.com/users/jingweno/repos", string(user.ReposURL))
 }
 
-func TestUsersService_GetAll(t *testing.T) {
+func TestUsersService_All(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -90,7 +90,7 @@ func TestUsersService_GetAll(t *testing.T) {
 	url, err := UserURL.Expand(M{"since": 1})
 	assert.Equal(t, nil, err)
 
-	allUsers, result := client.Users(url).GetAll()
+	allUsers, result := client.Users(url).All()
 
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 1, len(allUsers))
@@ -99,7 +99,7 @@ func TestUsersService_GetAll(t *testing.T) {
 	nextPageURL, err := result.NextPage.Expand(nil)
 	assert.Equal(t, nil, err)
 
-	allUsers, result = client.Users(nextPageURL).GetAll()
+	allUsers, result = client.Users(nextPageURL).All()
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 1, len(allUsers))
 }

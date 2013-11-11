@@ -21,7 +21,7 @@ func main() {
 			return
 		}
 
-		users, result := client.Users(url).GetAll()
+		users, result := client.Users(url).All()
 		if result.HasError() {
 			fmt.Println(result)
 			return

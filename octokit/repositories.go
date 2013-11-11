@@ -24,12 +24,12 @@ type RepositoriesService struct {
 	URL    *url.URL
 }
 
-func (r *RepositoriesService) Get() (repo *Repository, result *Result) {
+func (r *RepositoriesService) One() (repo *Repository, result *Result) {
 	result = r.client.get(r.URL, &repo)
 	return
 }
 
-func (r *RepositoriesService) GetAll() (repos []Repository, result *Result) {
+func (r *RepositoriesService) All() (repos []Repository, result *Result) {
 	result = r.client.get(r.URL, &repos)
 	return
 }

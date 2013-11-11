@@ -19,7 +19,7 @@ func TestStatuses(t *testing.T) {
 	url, err := StatusesURL.Expand(M{"owner": "jingweno", "repo": "gh", "ref": sha})
 	assert.Equal(t, nil, err)
 
-	statuses, err := client.Statuses(url).GetAll()
+	statuses, err := client.Statuses(url).All()
 
 	assert.Equal(t, 2, len(statuses))
 	firstStatus := statuses[0]

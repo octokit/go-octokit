@@ -21,7 +21,7 @@ type StatusesService struct {
 	URL    *url.URL
 }
 
-func (s *StatusesService) GetAll() (statuses []Status, result *Result) {
+func (s *StatusesService) All() (statuses []Status, result *Result) {
 	result = s.client.get(s.URL, &statuses)
 	return
 }

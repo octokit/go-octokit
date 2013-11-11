@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func TestIssuesService_GetAll(t *testing.T) {
+func TestIssuesService_All(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -19,7 +19,7 @@ func TestIssuesService_GetAll(t *testing.T) {
 	url, err := RepoIssuesURL.Expand(M{"owner": "octocat", "repo": "Hello-World"})
 	assert.Equal(t, nil, err)
 
-	issues, result := client.Issues(url).GetAll()
+	issues, result := client.Issues(url).All()
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 1, len(issues))
 
@@ -27,7 +27,7 @@ func TestIssuesService_GetAll(t *testing.T) {
 	validateIssue(t, issue)
 }
 
-func TestIssuesService_Get(t *testing.T) {
+func TestIssuesService_One(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -39,7 +39,7 @@ func TestIssuesService_Get(t *testing.T) {
 	url, err := RepoIssuesURL.Expand(M{"owner": "octocat", "repo": "Hello-World", "number": 1347})
 	assert.Equal(t, nil, err)
 
-	issue, result := client.Issues(url).Get()
+	issue, result := client.Issues(url).One()
 
 	assert.T(t, !result.HasError())
 	validateIssue(t, *issue)

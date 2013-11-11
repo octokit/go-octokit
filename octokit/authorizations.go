@@ -21,12 +21,12 @@ type AuthorizationsService struct {
 	URL    *url.URL
 }
 
-func (a *AuthorizationsService) Get() (auth *Authorization, result *Result) {
+func (a *AuthorizationsService) One() (auth *Authorization, result *Result) {
 	result = a.client.get(a.URL, &auth)
 	return
 }
 
-func (a *AuthorizationsService) GetAll() (auths []Authorization, result *Result) {
+func (a *AuthorizationsService) All() (auths []Authorization, result *Result) {
 	result = a.client.get(a.URL, &auths)
 	return
 }
