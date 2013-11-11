@@ -42,18 +42,8 @@ type Asset struct {
 	UpdatedAt     *time.Time `json:"updated_at,omitempty"`
 }
 
-// Create a ReleasesService with the base Hyperlink and the params M to expand the Hyperlink
-// If no Hyperlink is passed in, it will use ReleasesURL.
-func (c *Client) Releases(link *Hyperlink, m M) (releases *ReleasesService, err error) {
-	if link == nil {
-		link = &ReleasesURL
-	}
-
-	url, err := link.Expand(m)
-	if err != nil {
-		return
-	}
-
+// Create a ReleasesService with the base url.URL
+func (c *Client) Releases(url *url.URL) (releases *ReleasesService) {
 	releases = &ReleasesService{client: c, URL: url}
 	return
 }

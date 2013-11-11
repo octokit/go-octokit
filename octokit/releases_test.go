@@ -15,10 +15,10 @@ func TestReleasesService_GetAll(t *testing.T) {
 		respondWithJSON(w, loadFixture("releases.json"))
 	})
 
-	releasesService, err := client.Releases(nil, M{"owner": "jingweno", "repo": "gh"})
+	url, err := ReleasesURL.Expand(M{"owner": "jingweno", "repo": "gh"})
 	assert.Equal(t, nil, err)
 
-	releases, result := releasesService.GetAll()
+	releases, result := client.Releases(url).GetAll()
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 1, len(releases))
 
@@ -63,14 +63,14 @@ func TestCreateRelease(t *testing.T) {
 		respondWithJSON(w, loadFixture("create_release.json"))
 	})
 
-	releasesService, err := client.Releases(nil, M{"owner": "octokit", "repo": "Hello-World"})
+	url, err := ReleasesURL.Expand(M{"owner": "octokit", "repo": "Hello-World"})
 	assert.Equal(t, nil, err)
 
 	params := Release{
 		TagName:         "v1.0.0",
 		TargetCommitish: "master",
 	}
-	release, result := releasesService.Create(params)
+	release, result := client.Releases(url).Create(params)
 
 	assert.T(t, !result.HasError())
 	assert.Equal(t, "v1.0.0", release.TagName)
