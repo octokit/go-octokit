@@ -8,8 +8,8 @@ import (
 
 var (
 	CurrentUserURL = Hyperlink("/user")
-  // FIXME: make ?since as get param
-	UserURL        = Hyperlink("/users{/user}{?since}")
+	// FIXME: make ?since as get param
+	UserURL = Hyperlink("/users{/user}{?since}")
 )
 
 // Create a UsersService with the base url.URL

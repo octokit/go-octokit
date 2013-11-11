@@ -16,10 +16,10 @@ func TestIssuesService_GetAll(t *testing.T) {
 		respondWithJSON(w, loadFixture("issues.json"))
 	})
 
-	issuesService, err := client.Issues(&RepoIssuesURL, M{"owner": "octocat", "repo": "Hello-World"})
+	url, err := RepoIssuesURL.Expand(M{"owner": "octocat", "repo": "Hello-World"})
 	assert.Equal(t, nil, err)
 
-	issues, result := issuesService.GetAll()
+	issues, result := client.Issues(url).GetAll()
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 1, len(issues))
 
@@ -36,10 +36,11 @@ func TestIssuesService_Get(t *testing.T) {
 		respondWithJSON(w, loadFixture("issue.json"))
 	})
 
-	issuesService, err := client.Issues(&RepoIssuesURL, M{"owner": "octocat", "repo": "Hello-World", "number": 1347})
+	url, err := RepoIssuesURL.Expand(M{"owner": "octocat", "repo": "Hello-World", "number": 1347})
 	assert.Equal(t, nil, err)
 
-	issue, result := issuesService.Get()
+	issue, result := client.Issues(url).Get()
+
 	assert.T(t, !result.HasError())
 	validateIssue(t, *issue)
 }
@@ -94,6 +95,4 @@ func validateIssue(t *testing.T, issue Issue) {
 	assert.Equal(t, (*time.Time)(nil), issue.ClosedAt)
 	assert.Equal(t, "2011-04-22 13:33:48 +0000 UTC", issue.CreatedAt.String())
 	assert.Equal(t, "2011-04-22 13:33:48 +0000 UTC", issue.UpdatedAt.String())
-
-	// phew!
 }
