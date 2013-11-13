@@ -9,24 +9,8 @@ var (
 	RootURL = Hyperlink("/")
 )
 
-// Create a RooService with the base url.URL
-func (c *Client) Root(url *url.URL) (root *RootService) {
-	root = &RootService{client: c, URL: url}
-	return
-}
-
-type RootService struct {
-	client *Client
-	URL    *url.URL
-}
-
-func (r *RootService) One() (root *Root, result *Result) {
-	result = r.client.get(r.URL, &root)
-	if root != nil {
-		// Cached hyperlinks
-		root.PullsURL = PullRequestsURL
-	}
-
+func (c *Client) Root() (root *Root) {
+	root = &Root{UserURL: UserURL, PullsURL: PullRequestsURL}
 	return
 }
 

@@ -59,9 +59,10 @@ func TestUsersService_GetUser(t *testing.T) {
 		respondWithJSON(w, loadFixture("user.json"))
 	})
 
-	url, err := UserURL.Expand(M{"user": "jingweno"})
+	usersService, err := client.Users(M{"user": "jingwen"})
 	assert.Equal(t, nil, err)
-	user, result := client.Users(url).One()
+
+	user, result := usersService.One()
 
 	assert.T(t, !result.HasError())
 	assert.Equal(t, 169064, user.ID)
