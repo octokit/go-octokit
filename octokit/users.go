@@ -11,8 +11,12 @@ var (
 	UserURL        = Hyperlink("/users{/user}")
 )
 
-// Create a UsersService with the base url.URL
-func (c *Client) Users(url *url.URL) (users *UsersService) {
+func (c *Client) Users(m M) (users *UsersService, err error) {
+	url, err := c.Root().UserURL.Expand(m)
+	if err != nil {
+		return
+	}
+
 	users = &UsersService{client: c, URL: url}
 	return
 }
