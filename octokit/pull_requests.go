@@ -2,7 +2,6 @@ package octokit
 
 import (
 	"github.com/lostisland/go-sawyer/hypermedia"
-	"net/url"
 	"time"
 )
 
@@ -10,29 +9,14 @@ var (
 	PullRequestsURL = Hyperlink("/repos/{owner}/{repo}/pulls{/number}")
 )
 
-// Create a PullRequestsService with the base url.URL
-func (c *Client) PullRequests(url *url.URL) (pullRequests *PullRequestsService) {
-	pullRequests = &PullRequestsService{client: c, URL: url}
-	return
-}
+func (c *Client) CreatePullRequest(owner, repo string, params *PullRequestParams) (pull *PullRequest, result *Result) {
+	url, err := c.Root().PullsURL.Expand(M{"owner": owner, "repo": repo})
+	if err != nil {
+		result = newResult(nil, err)
+		return
+	}
 
-type PullRequestsService struct {
-	client *Client
-	URL    *url.URL
-}
-
-func (p *PullRequestsService) One() (pull *PullRequest, result *Result) {
-	result = p.client.get(p.URL, &pull)
-	return
-}
-
-func (p *PullRequestsService) Create(params interface{}) (pull *PullRequest, result *Result) {
-	result = p.client.post(p.URL, params, &pull)
-	return
-}
-
-func (p *PullRequestsService) All() (pulls []PullRequest, result *Result) {
-	result = p.client.get(p.URL, &pulls)
+	result = c.post(url, params, &pull)
 	return
 }
 

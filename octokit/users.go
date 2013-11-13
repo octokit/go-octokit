@@ -2,7 +2,6 @@ package octokit
 
 import (
 	"github.com/lostisland/go-sawyer/hypermedia"
-	"net/url"
 	"time"
 )
 
@@ -11,37 +10,14 @@ var (
 	UserURL        = Hyperlink("/users{/user}")
 )
 
-func (c *Client) Users(m M) (users *UsersService, err error) {
-	url, err := c.Root().UserURL.Expand(m)
+func (c *Client) User(login string) (user *User, result *Result) {
+	url, err := c.Root().UserURL.Expand(M{"user": login})
 	if err != nil {
+		result = newResult(nil, err)
 		return
 	}
 
-	users = &UsersService{client: c, URL: url}
-	return
-}
-
-// A service to return user records
-type UsersService struct {
-	client *Client
-	URL    *url.URL
-}
-
-// Get a user based on UserService#URL
-func (u *UsersService) One() (user *User, result *Result) {
-	result = u.client.get(u.URL, &user)
-	return
-}
-
-// Update a user based on UserService#URL
-func (u *UsersService) Update(params interface{}) (user *User, result *Result) {
-	result = u.client.put(u.URL, params, &user)
-	return
-}
-
-// Get a list of users based on UserService#URL
-func (u *UsersService) All() (users []User, result *Result) {
-	result = u.client.get(u.URL, &users)
+	result = c.get(url, &user)
 	return
 }
 
