@@ -34,7 +34,7 @@ type RootService struct {
 }
 
 func (r *RootService) One() (root *Root, result *Result) {
-	root = &Root{HALResource: &hypermedia.HALResource{}}
+	root = &Root{Resource: NewResource()}
 	result = r.client.get(r.URL, &root)
 	if root != nil {
 		// Cached hyperlinks
@@ -45,7 +45,7 @@ func (r *RootService) One() (root *Root, result *Result) {
 }
 
 type Root struct {
-	*hypermedia.HALResource
+	*Resource
 
 	UserSearchURL               hypermedia.Hyperlink `rel:"user_search" json:"user_search_url,omitempty"`
 	UserRepositoriesURL         hypermedia.Hyperlink `rel:"user_repositories" json:"user_repositories_url,omitempty"`
@@ -75,15 +75,8 @@ type Root struct {
 	OrganizationURL             hypermedia.Hyperlink `rel:"organization" json:"organization_url,omitempty"`
 	PublicGistsURL              hypermedia.Hyperlink `rel:"public_gists" json:"public_gists_url,omitempty"`
 	PullsURL                    hypermedia.Hyperlink `rel:"pulls" json:"-"`
-	rels                        hypermedia.Relations `json:"-"`
 }
 
 func (r *Root) Rels() hypermedia.Relations {
-	if r.rels == nil || len(r.rels) == 0 {
-		r.rels = hypermedia.HyperFieldDecoder(r)
-		for key, hyperlink := range r.HALResource.Rels() {
-			r.rels[key] = hyperlink
-		}
-	}
-	return r.rels
+	return r.Resource.RelsOf(r)
 }
