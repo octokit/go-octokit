@@ -22,7 +22,6 @@ type PullRequestsService struct {
 }
 
 func (p *PullRequestsService) One() (pull *PullRequest, result *Result) {
-	pull = &PullRequest{Resource: NewResource()}
 	result = p.client.get(p.URL, &pull)
 	return
 }
@@ -75,6 +74,9 @@ type PullRequest struct {
 }
 
 func (r *PullRequest) Rels() hypermedia.Relations {
+	if r.Resource == nil {
+		r.Resource = NewResource()
+	}
 	return r.Resource.RelsOf(r)
 }
 

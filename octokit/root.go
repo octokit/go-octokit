@@ -34,7 +34,6 @@ type RootService struct {
 }
 
 func (r *RootService) One() (root *Root, result *Result) {
-	root = &Root{Resource: NewResource()}
 	result = r.client.get(r.URL, &root)
 	if root != nil {
 		// Cached hyperlinks
@@ -78,5 +77,8 @@ type Root struct {
 }
 
 func (r *Root) Rels() hypermedia.Relations {
+	if r.Resource == nil {
+		r.Resource = NewResource()
+	}
 	return r.Resource.RelsOf(r)
 }
