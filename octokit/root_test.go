@@ -21,6 +21,7 @@ func TestRootService_One(t *testing.T) {
 	root, result := client.Root(url).One()
 	assert.T(t, !result.HasError())
 	assert.Equal(t, "https://api.github.com/users/{user}", string(root.UserURL))
+	assert.T(t, root.Resource != nil)
 }
 
 func TestClientRel(t *testing.T) {

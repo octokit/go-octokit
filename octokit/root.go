@@ -34,7 +34,8 @@ type RootService struct {
 }
 
 func (r *RootService) One() (root *Root, result *Result) {
-	result = r.client.get(r.URL, &root)
+	root = &Root{}
+	result = r.client.get(r.URL, root)
 	if root != nil {
 		// Cached hyperlinks
 		root.PullsURL = hypermedia.Hyperlink(PullRequestsURL)
@@ -44,8 +45,7 @@ func (r *RootService) One() (root *Root, result *Result) {
 }
 
 type Root struct {
-	*Resource
-
+	*Resource                   `inject`
 	UserSearchURL               hypermedia.Hyperlink `rel:"user_search" json:"user_search_url,omitempty"`
 	UserRepositoriesURL         hypermedia.Hyperlink `rel:"user_repositories" json:"user_repositories_url,omitempty"`
 	UserOrganizationsURL        hypermedia.Hyperlink `rel:"user_organizations" json:"user_organizations_url,omitempty"`
@@ -77,8 +77,5 @@ type Root struct {
 }
 
 func (r *Root) Rels() hypermedia.Relations {
-	if r.Resource == nil {
-		r.Resource = NewResource()
-	}
 	return r.Resource.RelsOf(r)
 }
