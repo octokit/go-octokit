@@ -260,7 +260,7 @@
       "href": "https://api.github.com/repos/jingweno/octokat/pulls/1/comments"
     },
     "comments": {
-      "href": "https://api.github.com/repos/jingweno/octokat/issues/1/comments"
+      "href": "https://api.github.com/repos/jingweno/octokat/issues/2/comments"
     },
     "issue": {
       "href": "https://api.github.com/repos/jingweno/octokat/issues/1"
