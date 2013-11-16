@@ -6,6 +6,15 @@ import (
 	"testing"
 )
 
+func TestInjectRels(t *testing.T) {
+	res := NewResource()
+	root := &Root{}
+	err := injectField(root, res)
+
+	assert.Equal(t, nil, err)
+	assert.Equal(t, res, root.Resource)
+}
+
 func TestSuccessfulGet(t *testing.T) {
 	setup()
 	defer tearDown()

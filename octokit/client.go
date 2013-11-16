@@ -1,6 +1,7 @@
 package octokit
 
 import (
+	"github.com/codegangsta/inject"
 	"github.com/lostisland/go-sawyer"
 	"github.com/lostisland/go-sawyer/hypermedia"
 	"net/http"
@@ -56,6 +57,12 @@ func (c *Client) head(url *url.URL, output interface{}) (result *Result) {
 	return
 }
 
+func injectField(v interface{}, f interface{}) error {
+	injector := inject.New()
+	injector.Map(f)
+	return injector.Apply(v)
+}
+
 func (c *Client) get(url *url.URL, output interface{}) (result *Result) {
 	req, err := c.NewRequest(url.String())
 	if err != nil {
@@ -64,6 +71,13 @@ func (c *Client) get(url *url.URL, output interface{}) (result *Result) {
 	}
 
 	resp, err := req.Get(output)
+	e := injectField(output, NewResource())
+	if e != nil {
+		// panic if it's not a Octokit resource
+		// TODO: remove panic, use interface to ensure
+		panic(e)
+	}
+
 	result = newResult(resp, err)
 
 	return
