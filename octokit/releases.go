@@ -62,12 +62,3 @@ func (r *ReleasesService) Create(params interface{}) (release *Release, result *
 	result = r.client.post(r.URL, params, &release)
 	return
 }
-
-type ReleaseParams struct {
-	TagName         string `json:"tag_name,omitempty"`
-	TargetCommitish string `json:"target_commitish,omitempty"`
-	Name            string `json:"name,omitempty"`
-	Body            string `json:"body,omitempty"`
-	Draft           bool   `json:"draft,omitempty"`
-	Prerelease      bool   `json:"prerelease,omitempty"`
-}
