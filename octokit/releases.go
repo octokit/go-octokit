@@ -8,6 +8,7 @@ import (
 
 var (
 	ReleasesURL = Hyperlink("/repos/{owner}/{repo}/releases{/id}")
+	AssetsURL   = Hyperlink("/repos/{owner}/{repo}/releases/{id}/assets")
 )
 
 type Release struct {
@@ -60,5 +61,20 @@ func (r *ReleasesService) All() (releases []Release, result *Result) {
 
 func (r *ReleasesService) Create(params interface{}) (release *Release, result *Result) {
 	result = r.client.post(r.URL, params, &release)
+	return
+}
+
+func (c *Client) Assets(url *url.URL) (assets *AssetsService) {
+	assets = &AssetsService{client: c, URL: url}
+	return
+}
+
+type AssetsService struct {
+	client *Client
+	URL    *url.URL
+}
+
+func (a *AssetsService) All() (assets []Asset, result *Result) {
+	result = a.client.get(a.URL, &assets)
 	return
 }

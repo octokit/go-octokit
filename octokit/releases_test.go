@@ -75,3 +75,29 @@ func TestCreateRelease(t *testing.T) {
 	assert.T(t, !result.HasError())
 	assert.Equal(t, "v1.0.0", release.TagName)
 }
+
+func TestAssetsService_All(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/repos/jingweno/gh/releases/89758/assets", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		respondWithJSON(w, loadFixture("assets.json"))
+	})
+
+	url, err := AssetsURL.Expand(M{"owner": "jingweno", "repo": "gh", "id": 89758})
+	assert.Equal(t, nil, err)
+	assets, result := client.Assets(url).All()
+
+	assert.T(t, !result.HasError())
+	assert.Equal(t, 8, len(assets))
+
+	firstAsset := assets[0]
+	assert.Equal(t, 35872, firstAsset.ID)
+	assert.Equal(t, "gh_0.25.0-snapshot_amd64.deb", firstAsset.Name)
+	assert.Equal(t, "application/octet-stream", firstAsset.ContentType)
+	assert.Equal(t, "uploaded", firstAsset.State)
+	assert.Equal(t, 1615248, firstAsset.Size)
+	assert.Equal(t, 6, firstAsset.DownloadCount)
+	assert.Equal(t, "https://api.github.com/repos/jingweno/gh/releases/assets/35872", firstAsset.URL)
+}
