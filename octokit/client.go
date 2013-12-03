@@ -95,7 +95,7 @@ func (c *Client) put(url *url.URL, input interface{}, output interface{}) (resul
 	return
 }
 
-func (c *Client) Delete(url *url.URL, output interface{}) (result *Result) {
+func (c *Client) delete(url *url.URL, output interface{}) (result *Result) {
 	req, err := c.NewRequest(url.String())
 	if err != nil {
 		result = newResult(nil, err)
