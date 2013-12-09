@@ -1,4 +1,3 @@
 #!/bin/bash
 
-go get github.com/pelletier/go-toml
 go get github.com/d2fn/gopack
