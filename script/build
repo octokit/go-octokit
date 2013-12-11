@@ -1,4 +1,5 @@
 #!/bin/bash
 
 script/bootstrap
-go build -v ./...
+GOPATH="`pwd`/.gopack/vendor" \
+  go build -v ./...
