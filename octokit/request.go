@@ -3,34 +3,73 @@ package octokit
 import (
 	"github.com/lostisland/go-sawyer"
 	"github.com/lostisland/go-sawyer/mediatype"
+	"net/url"
 )
 
 type Request struct {
 	sawyerReq *sawyer.Request
 }
 
+func NewRequest(c *Client, urlStr string) (req *Request, err error) {
+	sawyerReq, err := c.sawyerClient.NewRequest(urlStr)
+	if err != nil {
+		return
+	}
+
+	sawyerReq.Header.Add("Accept", defaultMediaType)
+	sawyerReq.Header.Add("User-Agent", c.UserAgent)
+	if c.AuthMethod != nil {
+		sawyerReq.Header.Add("Authorization", c.AuthMethod.String())
+	}
+
+	if basicAuth, ok := c.AuthMethod.(BasicAuth); ok && basicAuth.OneTimePassword != "" {
+		sawyerReq.Header.Add("X-GitHub-OTP", basicAuth.OneTimePassword)
+	}
+
+	req = &Request{sawyerReq: sawyerReq}
+	return
+}
+
+func SendRequest(c *Client, url *url.URL, fn func(r *Request) (*Response, error)) (result *Result) {
+	req, err := NewRequest(c, url.String())
+	if err != nil {
+		result = newResult(nil, err)
+		return
+	}
+
+	resp, err := fn(req)
+	result = newResult(resp, err)
+
+	return
+}
+
 func (r *Request) Head(output interface{}) (resp *Response, err error) {
-	resp, err = r.do("HEAD", nil, output)
+	resp, err = r.do(sawyer.HeadMethod, nil, output)
 	return
 }
 
 func (r *Request) Get(output interface{}) (resp *Response, err error) {
-	resp, err = r.do("GET", nil, output)
+	resp, err = r.do(sawyer.GetMethod, nil, output)
 	return
 }
 
 func (r *Request) Post(input interface{}, output interface{}) (resp *Response, err error) {
-	resp, err = r.do("POST", input, output)
+	resp, err = r.do(sawyer.PostMethod, input, output)
 	return
 }
 
 func (r *Request) Put(input interface{}, output interface{}) (resp *Response, err error) {
-	resp, err = r.do("PUT", input, output)
+	resp, err = r.do(sawyer.PutMethod, input, output)
 	return
 }
 
 func (r *Request) Delete(output interface{}) (resp *Response, err error) {
-	resp, err = r.do("DELETE", nil, output)
+	resp, err = r.do(sawyer.DeleteMethod, nil, output)
+	return
+}
+
+func (r *Request) Patch(input interface{}, output interface{}) (resp *Response, err error) {
+	resp, err = r.do(sawyer.PatchMethod, input, output)
 	return
 }
 

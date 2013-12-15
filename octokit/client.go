@@ -23,87 +23,44 @@ type Client struct {
 	rootRels     hypermedia.Relations
 }
 
-func (c *Client) NewRequest(urlStr string) (req *Request, err error) {
-	sawyerReq, err := c.sawyerClient.NewRequest(urlStr)
-	if err != nil {
-		return
-	}
-
-	sawyerReq.Header.Add("Accept", defaultMediaType)
-	sawyerReq.Header.Add("User-Agent", c.UserAgent)
-	if c.AuthMethod != nil {
-		sawyerReq.Header.Add("Authorization", c.AuthMethod.String())
-	}
-
-	if basicAuth, ok := c.AuthMethod.(BasicAuth); ok && basicAuth.OneTimePassword != "" {
-		sawyerReq.Header.Add("X-GitHub-OTP", basicAuth.OneTimePassword)
-	}
-
-	req = &Request{sawyerReq: sawyerReq}
-	return
+// Kept to maintain backwards compatibility.
+// See octokit.NewRequest
+func (c *Client) NewRequest(urlStr string) (*Request, error) {
+	return NewRequest(c, urlStr)
 }
 
 func (c *Client) head(url *url.URL, output interface{}) (result *Result) {
-	req, err := c.NewRequest(url.String())
-	if err != nil {
-		result = newResult(nil, err)
-		return
-	}
-
-	resp, err := req.Head(output)
-	result = newResult(resp, err)
-
-	return
+	return SendRequest(c, url, func(req *Request) (*Response, error) {
+		return req.Head(output)
+	})
 }
 
 func (c *Client) get(url *url.URL, output interface{}) (result *Result) {
-	req, err := c.NewRequest(url.String())
-	if err != nil {
-		result = newResult(nil, err)
-		return
-	}
-
-	resp, err := req.Get(output)
-	result = newResult(resp, err)
-
-	return
+	return SendRequest(c, url, func(req *Request) (*Response, error) {
+		return req.Get(output)
+	})
 }
 
 func (c *Client) post(url *url.URL, input interface{}, output interface{}) (result *Result) {
-	req, err := c.NewRequest(url.String())
-	if err != nil {
-		result = newResult(nil, err)
-		return
-	}
-
-	resp, err := req.Post(input, output)
-	result = newResult(resp, err)
-
-	return
+	return SendRequest(c, url, func(req *Request) (*Response, error) {
+		return req.Post(input, output)
+	})
 }
 
-func (c *Client) put(url *url.URL, input interface{}, output interface{}) (result *Result) {
-	req, err := c.NewRequest(url.String())
-	if err != nil {
-		result = newResult(nil, err)
-		return
-	}
-
-	resp, err := req.Put(input, output)
-	result = newResult(resp, err)
-
-	return
+func (c *Client) put(url *url.URL, input interface{}, output interface{}) *Result {
+	return SendRequest(c, url, func(req *Request) (*Response, error) {
+		return req.Put(input, output)
+	})
 }
 
 func (c *Client) delete(url *url.URL, output interface{}) (result *Result) {
-	req, err := c.NewRequest(url.String())
-	if err != nil {
-		result = newResult(nil, err)
-		return
-	}
+	return SendRequest(c, url, func(req *Request) (*Response, error) {
+		return req.Delete(output)
+	})
+}
 
-	resp, err := req.Delete(output)
-	result = newResult(resp, err)
-
-	return
+func (c *Client) patch(url *url.URL, input interface{}, output interface{}) (result *Result) {
+	return SendRequest(c, url, func(req *Request) (*Response, error) {
+		return req.Patch(input, output)
+	})
 }
