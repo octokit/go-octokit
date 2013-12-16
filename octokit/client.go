@@ -30,37 +30,50 @@ func (c *Client) NewRequest(urlStr string) (*Request, error) {
 }
 
 func (c *Client) head(url *url.URL, output interface{}) (result *Result) {
-	return SendRequest(c, url, func(req *Request) (*Response, error) {
+	return sendRequest(c, url, func(req *Request) (*Response, error) {
 		return req.Head(output)
 	})
 }
 
 func (c *Client) get(url *url.URL, output interface{}) (result *Result) {
-	return SendRequest(c, url, func(req *Request) (*Response, error) {
+	return sendRequest(c, url, func(req *Request) (*Response, error) {
 		return req.Get(output)
 	})
 }
 
 func (c *Client) post(url *url.URL, input interface{}, output interface{}) (result *Result) {
-	return SendRequest(c, url, func(req *Request) (*Response, error) {
+	return sendRequest(c, url, func(req *Request) (*Response, error) {
 		return req.Post(input, output)
 	})
 }
 
 func (c *Client) put(url *url.URL, input interface{}, output interface{}) *Result {
-	return SendRequest(c, url, func(req *Request) (*Response, error) {
+	return sendRequest(c, url, func(req *Request) (*Response, error) {
 		return req.Put(input, output)
 	})
 }
 
 func (c *Client) delete(url *url.URL, output interface{}) (result *Result) {
-	return SendRequest(c, url, func(req *Request) (*Response, error) {
+	return sendRequest(c, url, func(req *Request) (*Response, error) {
 		return req.Delete(output)
 	})
 }
 
 func (c *Client) patch(url *url.URL, input interface{}, output interface{}) (result *Result) {
-	return SendRequest(c, url, func(req *Request) (*Response, error) {
+	return sendRequest(c, url, func(req *Request) (*Response, error) {
 		return req.Patch(input, output)
 	})
+}
+
+func sendRequest(c *Client, url *url.URL, fn func(r *Request) (*Response, error)) (result *Result) {
+	req, err := NewRequest(c, url.String())
+	if err != nil {
+		result = newResult(nil, err)
+		return
+	}
+
+	resp, err := fn(req)
+	result = newResult(resp, err)
+
+	return
 }

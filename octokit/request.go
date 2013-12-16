@@ -3,7 +3,6 @@ package octokit
 import (
 	"github.com/lostisland/go-sawyer"
 	"github.com/lostisland/go-sawyer/mediatype"
-	"net/url"
 )
 
 type Request struct {
@@ -27,19 +26,6 @@ func NewRequest(c *Client, urlStr string) (req *Request, err error) {
 	}
 
 	req = &Request{sawyerReq: sawyerReq}
-	return
-}
-
-func SendRequest(c *Client, url *url.URL, fn func(r *Request) (*Response, error)) (result *Result) {
-	req, err := NewRequest(c, url.String())
-	if err != nil {
-		result = newResult(nil, err)
-		return
-	}
-
-	resp, err := fn(req)
-	result = newResult(resp, err)
-
 	return
 }
 
