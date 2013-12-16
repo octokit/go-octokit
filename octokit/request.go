@@ -9,26 +9,6 @@ type Request struct {
 	sawyerReq *sawyer.Request
 }
 
-func NewRequest(c *Client, urlStr string) (req *Request, err error) {
-	sawyerReq, err := c.sawyerClient.NewRequest(urlStr)
-	if err != nil {
-		return
-	}
-
-	sawyerReq.Header.Add("Accept", defaultMediaType)
-	sawyerReq.Header.Add("User-Agent", c.UserAgent)
-	if c.AuthMethod != nil {
-		sawyerReq.Header.Add("Authorization", c.AuthMethod.String())
-	}
-
-	if basicAuth, ok := c.AuthMethod.(BasicAuth); ok && basicAuth.OneTimePassword != "" {
-		sawyerReq.Header.Add("X-GitHub-OTP", basicAuth.OneTimePassword)
-	}
-
-	req = &Request{sawyerReq: sawyerReq}
-	return
-}
-
 func (r *Request) Head(output interface{}) (resp *Response, err error) {
 	resp, err = r.do(sawyer.HeadMethod, nil, output)
 	return
