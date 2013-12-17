@@ -55,6 +55,8 @@ func (r *Request) do(method string, input interface{}, output interface{}) (resp
 		r.sawyerReq.SetBody(mtype, input)
 		sawyerResp = r.sawyerReq.Put()
 	case sawyer.PatchMethod:
+		mtype, _ := mediatype.Parse(defaultMediaType)
+		r.sawyerReq.SetBody(mtype, input)
 		sawyerResp = r.sawyerReq.Patch()
 	case sawyer.DeleteMethod:
 		sawyerResp = r.sawyerReq.Delete()

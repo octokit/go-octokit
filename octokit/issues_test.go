@@ -51,6 +51,7 @@ func TestIssuesService_Create(t *testing.T) {
 
 	mux.HandleFunc("/repos/octocat/Hello-World/issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
+		testBody(t, r, "{\"title\":\"title\",\"body\":\"body\"}\n")
 		respondWithJSON(w, loadFixture("issue.json"))
 	})
 
@@ -73,6 +74,7 @@ func TestIssuesService_Update(t *testing.T) {
 
 	mux.HandleFunc("/repos/octocat/Hello-World/issues/1347", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
+		testBody(t, r, "{\"title\":\"title\",\"body\":\"body\"}\n")
 		respondWithJSON(w, loadFixture("issue.json"))
 	})
 
