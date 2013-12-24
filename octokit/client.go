@@ -102,7 +102,7 @@ func (c *Client) newSawyerRequest(urlStr string) (sawyerReq *sawyer.Request, err
 	sawyerReq.Header.Add("Accept", defaultMediaType)
 	sawyerReq.Header.Add("User-Agent", c.UserAgent)
 
-	c.addAuthenticationHeaders(&sawyerReq.Header)
+	c.addAuthenticationHeaders(sawyerReq.Header)
 
 	return
 }
@@ -120,7 +120,7 @@ func sendRequest(c *Client, url *url.URL, fn func(r *Request) (*Response, error)
 	return
 }
 
-func (c *Client) addAuthenticationHeaders(header *http.Header) {
+func (c *Client) addAuthenticationHeaders(header http.Header) {
 	if c.AuthMethod != nil {
 		header.Add("Authorization", c.AuthMethod.String())
 	}
