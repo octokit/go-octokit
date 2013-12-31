@@ -2,14 +2,14 @@ package octokit
 
 import (
 	"github.com/lostisland/go-sawyer"
-	"github.com/lostisland/go-sawyer/mediaheader"
+	"github.com/lostisland/go-sawyer/hypermedia"
 	"github.com/lostisland/go-sawyer/mediatype"
 	"net/http"
 )
 
 type Response struct {
-	MediaType   *mediatype.MediaType
-	MediaHeader *mediaheader.MediaHeader
+	MediaType *mediatype.MediaType
+	Relations hypermedia.Relations
 	*http.Response
 }
 
@@ -24,7 +24,8 @@ func NewResponse(sawyerResp *sawyer.Response) (resp *Response, err error) {
 		return
 	}
 
-	resp = &Response{Response: sawyerResp.Response, MediaType: sawyerResp.MediaType, MediaHeader: sawyerResp.MediaHeader}
+	relations := hypermedia.HyperHeaderRelations(sawyerResp.Header, nil)
+	resp = &Response{Response: sawyerResp.Response, MediaType: sawyerResp.MediaType, Relations: relations}
 
 	return
 }

@@ -2,7 +2,6 @@ package octokit
 
 import (
 	"github.com/lostisland/go-sawyer"
-	"github.com/lostisland/go-sawyer/hypermedia"
 	"net/http"
 	"net/url"
 	"os"
@@ -21,7 +20,6 @@ type Client struct {
 	UserAgent    string
 	AuthMethod   AuthMethod
 	sawyerClient *sawyer.Client
-	rootRels     hypermedia.Relations
 }
 
 func (c *Client) NewRequest(urlStr string) (req *Request, err error) {

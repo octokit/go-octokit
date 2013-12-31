@@ -9,19 +9,6 @@ var (
 	RootURL = Hyperlink("")
 )
 
-func (c *Client) Rel(name string, m map[string]interface{}) (*url.URL, error) {
-	if c.rootRels == nil || len(c.rootRels) == 0 {
-		u, _ := url.Parse("/")
-		root, res := c.Root(u).One()
-		if res.HasError() {
-			return nil, res
-		}
-		c.rootRels = root.Rels()
-	}
-
-	return c.rootRels.Rel(name, m)
-}
-
 // Create a RooService with the base url.URL
 func (c *Client) Root(url *url.URL) (root *RootService) {
 	root = &RootService{client: c, URL: url}
@@ -76,14 +63,4 @@ type Root struct {
 	PublicGistsURL              hypermedia.Hyperlink `rel:"public_gists" json:"public_gists_url,omitempty"`
 	PullsURL                    hypermedia.Hyperlink `rel:"pulls" json:"-"`
 	rels                        hypermedia.Relations `json:"-"`
-}
-
-func (r *Root) Rels() hypermedia.Relations {
-	if r.rels == nil || len(r.rels) == 0 {
-		r.rels = hypermedia.HyperFieldDecoder(r)
-		for key, hyperlink := range r.HALResource.Rels() {
-			r.rels[key] = hyperlink
-		}
-	}
-	return r.rels
 }

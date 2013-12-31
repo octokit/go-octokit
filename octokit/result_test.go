@@ -3,12 +3,11 @@ package octokit
 import (
 	"github.com/bmizerany/assert"
 	"github.com/lostisland/go-sawyer/hypermedia"
-	"github.com/lostisland/go-sawyer/mediaheader"
 	"testing"
 )
 
 func TestNewResult_Pageable(t *testing.T) {
-	resp := &Response{MediaHeader: &mediaheader.MediaHeader{Relations: hypermedia.Relations{"next": hypermedia.Hyperlink("/path")}}}
+	resp := &Response{Relations: hypermedia.Relations{"next": hypermedia.Hyperlink("/path")}}
 	result := newResult(resp, nil)
 
 	assert.Equal(t, "/path", string(*result.NextPage))
