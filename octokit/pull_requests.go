@@ -61,8 +61,8 @@ type PullRequest struct {
 	ReviewCommentsURL string     `json:"review_comments_url,omitempty"`
 	ReviewCommentURL  string     `json:"review_comment_url,omitempty"`
 	CommentsURL       string     `json:"comments_url,omitempty"`
-	Head              *Commit    `json:"head,omitempty"`
-	Base              *Commit    `json:"base,omitempty"`
+	Head              Commit     `json:"head,omitempty"`
+	Base              Commit     `json:"base,omitempty"`
 	Merged            bool       `json:"merged,omitempty"`
 	MergedBy          User       `json:"merged_by,omitempty"`
 	Comments          int        `json:"comments,omitempty"`
@@ -74,11 +74,11 @@ type PullRequest struct {
 }
 
 type Commit struct {
-	Label string     `json:"label,omitempty"`
-	Ref   string     `json:"ref,omitempty"`
-	Sha   string     `json:"sha,omitempty"`
-	User  User       `json:"user,omitempty"`
-	Repo  Repository `json:"repo,omitempty"`
+	Label string      `json:"label,omitempty"`
+	Ref   string      `json:"ref,omitempty"`
+	Sha   string      `json:"sha,omitempty"`
+	User  User        `json:"user,omitempty"`
+	Repo  *Repository `json:"repo,omitempty"`
 }
 
 type PullRequestParams struct {
