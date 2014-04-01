@@ -5,7 +5,12 @@ import (
 	"github.com/lostisland/go-sawyer/mediatype"
 )
 
-func newRequest(client *Client, sawyerReq *sawyer.Request) (req *Request, err error) {
+func newRequest(client *Client, urlStr string) (req *Request, err error) {
+	sawyerReq, err := client.sawyerClient.NewRequest(urlStr)
+	if err != nil {
+		return
+	}
+
 	req = &Request{client: client, Request: sawyerReq}
 	err = client.applyRequestMiddlewares(req)
 
