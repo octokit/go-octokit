@@ -7,6 +7,18 @@ import (
 	"github.com/bmizerany/assert"
 )
 
+type TestMiddlware struct{}
+
+func (m *TestMiddlware) PrepareRequest(req *Request) error {
+	req.Header.Set("Middleware-Request", "PrepareRequest")
+	return nil
+}
+
+func (m *TestMiddlware) PrepareResponse(resp *Response) error {
+	resp.Header.Set("Middleware-Response", "PrepareResponse")
+	return nil
+}
+
 func TestSuccessfulGet(t *testing.T) {
 	setup()
 	defer tearDown()
@@ -123,4 +135,25 @@ func TestSuccessfulPost(t *testing.T) {
 	_, err = req.Post(input, &output)
 	assert.Equal(t, nil, err)
 	assert.Equal(t, "octokit", output["login"])
+}
+
+func TestMiddleware(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Middleware-Request", "PrepareRequest")
+		respondWithJSON(w, `{"login": "octokit"}`)
+	})
+
+	client.Use(&TestMiddlware{})
+	req, err := client.NewRequest("foo")
+	assert.Equal(t, nil, err)
+
+	var output map[string]interface{}
+	resp, err := req.Get(&output)
+	assert.Equal(t, nil, err)
+	assert.Equal(t, "octokit", output["login"])
+	assert.Equal(t, "PrepareResponse", resp.Header.Get("Middleware-Response"))
 }

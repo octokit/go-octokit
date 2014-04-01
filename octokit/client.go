@@ -23,6 +23,11 @@ type Client struct {
 	AuthMethod   AuthMethod
 	sawyerClient *sawyer.Client
 	rootRels     hypermedia.Relations
+	middlewares  []Middleware
+}
+
+func (c *Client) Use(m Middleware) {
+	c.middlewares = append(c.middlewares, m)
 }
 
 func (c *Client) NewRequest(urlStr string) (req *Request, err error) {
@@ -31,7 +36,8 @@ func (c *Client) NewRequest(urlStr string) (req *Request, err error) {
 		return
 	}
 
-	req = &Request{sawyerReq: sawyerReq}
+	req, err = newRequest(c, sawyerReq)
+
 	return
 }
 
@@ -113,6 +119,26 @@ func sendRequest(c *Client, url *url.URL, fn func(r *Request) (*Response, error)
 	result = newResult(resp, err)
 
 	return
+}
+
+func (c *Client) applyRequestMiddlewares(req *Request) error {
+	for _, m := range c.middlewares {
+		if err := m.PrepareRequest(req); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (c *Client) applyResponseMiddlewares(resp *Response) error {
+	for _, m := range c.middlewares {
+		if err := m.PrepareResponse(resp); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func (c *Client) addAuthenticationHeaders(header http.Header) {
