@@ -131,11 +131,13 @@ func TestAddHeader(t *testing.T) {
 
 	mux.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Foo", "Bar")
 		assert.Equal(t, "example.com", r.Host)
 		respondWithJSON(w, `{"login": "octokit"}`)
 	})
 
 	client.Header.Set("Host", "example.com")
+	client.Header.Set("Foo", "Bar")
 	req, err := client.NewRequest("foo")
 	assert.Equal(t, nil, err)
 
