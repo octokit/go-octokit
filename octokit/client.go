@@ -15,19 +15,15 @@ func NewClient(authMethod AuthMethod) *Client {
 
 func NewClientWith(baseURL string, userAgent string, authMethod AuthMethod, httpClient *http.Client) *Client {
 	client, _ := sawyer.NewFromString(baseURL, httpClient)
-	return &Client{sawyerClient: client, UserAgent: userAgent, AuthMethod: authMethod}
+	return &Client{Client: client, UserAgent: userAgent, AuthMethod: authMethod}
 }
 
 type Client struct {
-	UserAgent    string
-	AuthMethod   AuthMethod
-	sawyerClient *sawyer.Client
-	rootRels     hypermedia.Relations
-	middlewares  []Middleware
-}
+	*sawyer.Client
 
-func (c *Client) Use(m Middleware) {
-	c.middlewares = append(c.middlewares, m)
+	UserAgent  string
+	AuthMethod AuthMethod
+	rootRels   hypermedia.Relations
 }
 
 func (c *Client) NewRequest(urlStr string) (req *Request, err error) {
@@ -106,6 +102,14 @@ func (c *Client) applyRequestHeaders(req *Request) {
 		req.Header.Set("X-GitHub-OTP", basicAuth.OneTimePassword)
 	}
 
+	// Go doesn't apply `Host` on the header, instead it consults `Request.Host`
+	// Populate `Host` if it exists in `Client.Header`
+	// See Bug https://code.google.com/p/go/issues/detail?id=7682
+	host := c.Header.Get("Host")
+	if host != "" {
+		req.Request.Host = host
+	}
+
 	return
 }
 
@@ -120,24 +124,4 @@ func sendRequest(c *Client, url *url.URL, fn func(r *Request) (*Response, error)
 	result = newResult(resp, err)
 
 	return
-}
-
-func (c *Client) applyRequestMiddlewares(req *Request) error {
-	for _, m := range c.middlewares {
-		if err := m.PrepareRequest(req); err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
-func (c *Client) applyResponseMiddlewares(resp *Response) error {
-	for _, m := range c.middlewares {
-		if err := m.PrepareResponse(resp); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

@@ -6,13 +6,12 @@ import (
 )
 
 func newRequest(client *Client, urlStr string) (req *Request, err error) {
-	sawyerReq, err := client.sawyerClient.NewRequest(urlStr)
+	sawyerReq, err := client.Client.NewRequest(urlStr)
 	if err != nil {
 		return
 	}
 
 	req = &Request{client: client, Request: sawyerReq}
-	err = client.applyRequestMiddlewares(req)
 
 	return
 }
@@ -62,10 +61,6 @@ func (r *Request) createResponse(sawyerResp *sawyer.Response, output interface{}
 	resp, err = NewResponse(sawyerResp)
 	if err == nil {
 		err = sawyerResp.Decode(output)
-	}
-
-	if err == nil {
-		err = r.client.applyResponseMiddlewares(resp)
 	}
 
 	return
