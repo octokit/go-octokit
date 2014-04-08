@@ -63,6 +63,11 @@
   "labels_url": "https://api.github.com/repos/jingweno/octokat/labels{/name}",
   "created_at": "2013-06-08T23:50:29Z",
   "updated_at": "2013-09-29T20:49:29Z",
+  "permissions": {
+    "admin": false,
+    "push": false,
+    "pull": true
+  },
   "pushed_at": "2013-09-29T20:49:25Z",
   "git_url": "git://github.com/jingweno/octokat.git",
   "ssh_url": "git@github.com:jingweno/octokat.git",
