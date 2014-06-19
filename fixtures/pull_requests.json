@@ -8,7 +8,7 @@
         "href": "https://api.github.com/repos/rails/rails/pulls/12704/comments"
       },
       "comments": {
-        "href": "https://api.github.com/repos/rails/rails/issues/12704/comments"
+        "href": "https://hypermedia.github.com/repos/rails/rails/issues/12704/comments"
       },
       "issue": {
         "href": "https://api.github.com/repos/rails/rails/issues/12704"

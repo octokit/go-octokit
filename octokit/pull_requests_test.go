@@ -32,7 +32,7 @@ func TestPullRequestService_One(t *testing.T) {
 	assert.Equal(t, "2013-06-09 00:52:12 +0000 UTC", pr.CreatedAt.String())
 	assert.Equal(t, "typo", pr.Body)
 	assert.Equal(t, "Update README.md", pr.Title)
-	assert.Equal(t, "https://api.github.com/repos/jingweno/octokat/pulls/1", pr.URL)
+	assert.Equal(t, "https://api.github.com/repos/jingweno/octokat/pulls/1", string(pr.URL))
 	assert.Equal(t, 6206442, pr.ID)
 	assert.Equal(t, "https://github.com/jingweno/octokat/pull/1", pr.HTMLURL)
 	assert.Equal(t, "https://github.com/jingweno/octokat/pull/1.diff", pr.DiffURL)
@@ -43,8 +43,12 @@ func TestPullRequestService_One(t *testing.T) {
 	assert.T(t, nil == pr.Assignee)
 	assert.Equal(t, "https://github.com/jingweno/octokat/pull/1/commits", pr.CommitsURL)
 	assert.Equal(t, "https://github.com/jingweno/octokat/pull/1/comments", pr.ReviewCommentsURL)
-	assert.Equal(t, "/repos/jingweno/octokat/pulls/comments/{number}", pr.ReviewCommentURL)
-	assert.Equal(t, "https://api.github.com/repos/jingweno/octokat/issues/1/comments", pr.CommentsURL)
+	assert.Equal(t, "/repos/jingweno/octokat/pulls/comments/{number}", string(pr.ReviewCommentURL))
+	assert.Equal(t, "https://api.github.com/repos/jingweno/octokat/issues/1/comments", string(pr.CommentsURL))
+
+	u, e := pr.Rels().Rel("comments", nil)
+	assert.Equal(t, nil, e)
+	assert.Equal(t, "https://api.github.com/repos/jingweno/octokat/issues/2/comments", u.String())
 }
 
 func TestPullRequestService_Post(t *testing.T) {
@@ -80,7 +84,7 @@ func TestPullRequestService_Post(t *testing.T) {
 	assert.Equal(t, "2013-06-09 00:52:12 +0000 UTC", pr.CreatedAt.String())
 	assert.Equal(t, "typo", pr.Body)
 	assert.Equal(t, "Update README.md", pr.Title)
-	assert.Equal(t, "https://api.github.com/repos/jingweno/octokat/pulls/1", pr.URL)
+	assert.Equal(t, "https://api.github.com/repos/jingweno/octokat/pulls/1", string(pr.URL))
 	assert.Equal(t, 6206442, pr.ID)
 	assert.Equal(t, "https://github.com/jingweno/octokat/pull/1", pr.HTMLURL)
 	assert.Equal(t, "https://github.com/jingweno/octokat/pull/1.diff", pr.DiffURL)
@@ -91,8 +95,8 @@ func TestPullRequestService_Post(t *testing.T) {
 	assert.T(t, nil == pr.Assignee)
 	assert.Equal(t, "https://github.com/jingweno/octokat/pull/1/commits", pr.CommitsURL)
 	assert.Equal(t, "https://github.com/jingweno/octokat/pull/1/comments", pr.ReviewCommentsURL)
-	assert.Equal(t, "/repos/jingweno/octokat/pulls/comments/{number}", pr.ReviewCommentURL)
-	assert.Equal(t, "https://api.github.com/repos/jingweno/octokat/issues/1/comments", pr.CommentsURL)
+	assert.Equal(t, "/repos/jingweno/octokat/pulls/comments/{number}", string(pr.ReviewCommentURL))
+	assert.Equal(t, "https://api.github.com/repos/jingweno/octokat/issues/1/comments", string(pr.CommentsURL))
 }
 
 func TestPullRequestService_All(t *testing.T) {
@@ -115,4 +119,10 @@ func TestPullRequestService_All(t *testing.T) {
 	assert.Equal(t, 30, len(prs))
 	assert.Equal(t, testURLStringOf("repositories/8514/pulls?page=2"), string(*result.NextPage))
 	assert.Equal(t, testURLStringOf("repositories/8514/pulls?page=14"), string(*result.LastPage))
+
+	pr := prs[0]
+	assert.Equal(t, "https://api.github.com/repos/rails/rails/issues/12704/comments", string(pr.CommentsURL))
+	u, e := pr.Rels().Rel("comments", nil)
+	assert.Equal(t, nil, e)
+	assert.Equal(t, "https://hypermedia.github.com/repos/rails/rails/issues/12704/comments", u.String())
 }
