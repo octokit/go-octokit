@@ -2,9 +2,10 @@ package octokit
 
 import (
 	"fmt"
-	"github.com/bmizerany/assert"
 	"net/http"
 	"testing"
+
+	"github.com/bmizerany/assert"
 )
 
 func TestPullRequestService_One(t *testing.T) {
