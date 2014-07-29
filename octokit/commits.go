@@ -1,55 +1,84 @@
-package main
+package octokit
 
-import "time"
+import (
+	"net/url"
+	"time"
+
+	"github.com/jingweno/go-sawyer/hypermedia"
+)
+
+var CommitsURL = Hyperlink("repos/{owner}/{repo}/commits{/sha}")
+
+func (c *Client) Commits(url *url.URL) (commits *CommitsService) {
+	commits = &CommitsService{client: c, URL: url}
+	return
+}
+
+type CommitsService struct {
+	client *Client
+	URL    *url.URL
+}
+
+func (c *CommitsService) All() (commits []Commit, result *Result) {
+	result = c.client.get(c.URL, &commits)
+	return
+}
+
+func (c *CommitsService) One() (commit *Commit, result *Result) {
+	result = c.client.get(c.URL, &commit)
+	return
+}
 
 type CommitFile struct {
-	Additions   int    `json:"additions"`
-	BlobURL     string `json:"blob_url"`
-	Changes     int    `json:"changes"`
-	ContentsURL string `json:"contents_url"`
-	Deletions   int    `json:"deletions"`
-	Filename    string `json:"filename"`
-	Patch       string `json:"patch"`
-	RawURL      string `json:"raw_url"`
-	Sha         string `json:"sha"`
-	Status      string `json:"status"`
+	Additions   int    `json:"additions,omitempty"`
+	BlobURL     string `json:"blob_url,omitempty"`
+	Changes     int    `json:"changes,omitempty"`
+	ContentsURL string `json:"contents_url,omitempty"`
+	Deletions   int    `json:"deletions,omitempty"`
+	Filename    string `json:"filename,omitempty"`
+	Patch       string `json:"patch,omitempty"`
+	RawURL      string `json:"raw_url,omitempty"`
+	Sha         string `json:"sha,omitempty"`
+	Status      string `json:"status,omitempty"`
 }
 
 type CommitStats struct {
-	Additions int `json:"additions"`
-	Deletions int `json:"deletions"`
-	Total     int `json:"total"`
+	Additions int `json:"additions,omitempty"`
+	Deletions int `json:"deletions,omitempty"`
+	Total     int `json:"total,omitempty"`
 }
 
 type CommitCommit struct {
 	Author struct {
-		Date  *time.Time `json:"date"`
-		Email string     `json:"email"`
-		Name  string     `json:"name"`
-	} `json:"author"`
-	CommentCount int `json:"comment_count"`
+		Date  *time.Time `json:"date,omitempty"`
+		Email string     `json:"email,omitempty"`
+		Name  string     `json:"name,omitempty"`
+	} `json:"author,omitempty"`
+	CommentCount int `json:"comment_count,omitempty"`
 	Committer    struct {
-		Date  *time.Time `json:"date"`
-		Email string     `json:"email"`
-		Name  string     `json:"name"`
-	} `json:"committer"`
-	Message string `json:"message"`
+		Date  *time.Time `json:"date,omitempty"`
+		Email string     `json:"email,omitempty"`
+		Name  string     `json:"name,omitempty"`
+	} `json:"committer,omitempty"`
+	Message string `json:"message,omitempty"`
 	Tree    struct {
-		Sha string `json:"sha"`
-		URL string `json:"url"`
-	} `json:"tree"`
-	URL string `json:"url"`
+		Sha string `json:"sha,omitempty"`
+		URL string `json:"url,omitempty"`
+	} `json:"tree,omitempty"`
+	URL string `json:"url,omitempty"`
 }
 
 type Commit struct {
-	Author      *User         `json:"author"`
-	CommentsURL string        `json:"comments_url"`
-	Commit      *CommitCommit `json:"commit"`
-	Committer   *User         `json:"committer"`
-	Files       []CommitFile  `json:"files"`
-	HtmlURL     string        `json:"html_url"`
-	Parents     []Commit      `json:"parents"`
-	Sha         string        `json:"sha"`
-	Stats       CommitStats   `json:"stats"`
-	URL         string        `json:"url"`
+	*hypermedia.HALResource
+
+	Author      *User         `json:"author,omitempty"`
+	CommentsURL string        `json:"comments_url,omitempty"`
+	Commit      *CommitCommit `json:"commit,omitempty"`
+	Committer   *User         `json:"committer,omitempty"`
+	Files       []CommitFile  `json:"files,omitempty"`
+	HtmlURL     string        `json:"html_url,omitempty"`
+	Parents     []Commit      `json:"parents,omitempty"`
+	Sha         string        `json:"sha,omitempty"`
+	Stats       CommitStats   `json:"stats,omitempty"`
+	URL         string        `json:"url,omitempty"`
 }
