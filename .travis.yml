@@ -2,5 +2,5 @@ language: go
 go:
 - 1.2.1
 install:
-- script/build
-script: script/test
+- go build ./...
+script: go test ./...

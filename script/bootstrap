@@ -1,6 +1,0 @@
-#!/bin/bash
-
-gopack="bin/gp-darwin-amd64"
-[ -d "/proc" ] && gopack="bin/gp-linux-amd64"
-
-$gopack version
