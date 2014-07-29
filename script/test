@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Usage: script/test
+#
+# Downloads dependencies and run tests
+
+set -e
+
+go get ./...
+go get github.com/bmizerany/assert
+go test ./...
