@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/lostisland/go-sawyer"
-	"github.com/lostisland/go-sawyer/hypermedia"
+	"github.com/jingweno/go-sawyer"
+	"github.com/jingweno/go-sawyer/hypermedia"
 )
 
 func NewClient(authMethod AuthMethod) *Client {

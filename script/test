@@ -1,5 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# Usage: script/test
+#
+# Downloads dependencies and run tests
 
-script/fmt
-GOPATH="`pwd`/.gopack/vendor" \
-  go test -v ./...
+set -e
+
+go get ./...
+go get github.com/bmizerany/assert
+go test ./...
