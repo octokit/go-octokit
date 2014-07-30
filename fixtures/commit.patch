@@ -1,0 +1,43 @@
+From b6d21008bf7553a29ad77ee0a8bb3b66e6f11aa2 Mon Sep 17 00:00:00 2001
+From: Jingwen Owen Ou <jingweno@gmail.com>
+Date: Tue, 29 Jul 2014 10:46:47 -0700
+Subject: [PATCH] Use a wrapper script to run test
+
+---
+ .travis.yml |  5 +----
+ script/test | 10 ++++++++++
+ 2 files changed, 11 insertions(+), 4 deletions(-)
+ create mode 100755 script/test
+
+diff --git a/.travis.yml b/.travis.yml
+index f8659fa..7dcce00 100644
+--- a/.travis.yml
++++ b/.travis.yml
+@@ -1,7 +1,4 @@
+ language: go
+ go:
+ - 1.3
+-install:
+-- go get ./...
+-- go build ./...
+-script: go test ./...
++script: script/test
+diff --git a/script/test b/script/test
+new file mode 100755
+index 0000000..b63172e
+--- /dev/null
++++ b/script/test
+@@ -0,0 +1,10 @@
++#!/usr/bin/env bash
++# Usage: script/test
++#
++# Downloads dependencies and run tests
++
++set -e
++
++go get ./...
++go get github.com/bmizerany/assert
++go test ./...
+-- 
+2.0.3
+
