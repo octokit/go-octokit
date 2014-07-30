@@ -1,6 +1,7 @@
 package octokit
 
 import (
+	"io"
 	"net/url"
 	"time"
 
@@ -19,13 +20,21 @@ type CommitsService struct {
 	URL    *url.URL
 }
 
+// Get all commits on CommitsService#URL
 func (c *CommitsService) All() (commits []Commit, result *Result) {
 	result = c.client.get(c.URL, &commits)
 	return
 }
 
+// Get a commit based on CommitsService#URL
 func (c *CommitsService) One() (commit *Commit, result *Result) {
 	result = c.client.get(c.URL, &commit)
+	return
+}
+
+// Get a commit patch based on CommitsService#URL
+func (c *CommitsService) Patch() (patch io.ReadCloser, result *Result) {
+	patch, result = c.client.getPatch(c.URL)
 	return
 }
 

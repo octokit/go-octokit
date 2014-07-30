@@ -37,6 +37,16 @@ func (c *Client) NewRequest(urlStr string) (req *Request, err error) {
 	return
 }
 
+// a GET request with .patch media type set
+func (c *Client) getPatch(url *url.URL) (patch io.ReadCloser, result *Result) {
+	result = sendRequest(c, url, func(req *Request) (*Response, error) {
+		req.Header.Set("Accept", patchMediaType)
+		return req.Get(nil)
+	})
+
+	return result.Response.Body, result
+}
+
 func (c *Client) head(url *url.URL, output interface{}) (result *Result) {
 	return sendRequest(c, url, func(req *Request) (*Response, error) {
 		return req.Head(output)
