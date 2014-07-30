@@ -44,7 +44,11 @@ func (c *Client) getPatch(url *url.URL) (patch io.ReadCloser, result *Result) {
 		return req.Get(nil)
 	})
 
-	return result.Response.Body, result
+	if result.Response != nil {
+		patch = result.Response.Body
+	}
+
+	return
 }
 
 func (c *Client) head(url *url.URL, output interface{}) (result *Result) {
