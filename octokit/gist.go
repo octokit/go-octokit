@@ -1,7 +1,9 @@
 package octokit
 
 import (
+	"io"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/jingweno/go-sawyer/hypermedia"
@@ -28,13 +30,36 @@ func (g *GistsService) One() (gist *Gist, result *Result) {
 
 // Update a gist based on GistsService#URL
 func (g *GistsService) Update(params interface{}) (gist *Gist, result *Result) {
-  result = g.client.put(g.URL, params, &gist)
+	result = g.client.put(g.URL, params, &gist)
 	return
 }
 
 // Get a list of gists based on UserService#URL
 func (g *GistsService) All() (gists []Gist, result *Result) {
 	result = g.client.get(g.URL, &gists)
+	return
+}
+
+// Get raw contents of first file in a gist
+func (g *GistsService) Raw() (body io.ReadCloser, result *Result) {
+	var gist *Gist
+	var rawURL *url.URL
+
+	gist, result = g.One()
+	for _, file := range gist.Files {
+		rawURL, _ = url.Parse(file.RawURL)
+		break
+	}
+
+	// FIXME: hack to keep requests constrained to the test server
+	if strings.HasPrefix(g.client.Endpoint.Host, "127.0.0.1") {
+		g.client.Header.Set("Host", rawURL.Host)
+		g.client.Header.Set("X-Original-Scheme", rawURL.Scheme)
+		rawURL.Host = g.client.Endpoint.Host
+		rawURL.Scheme = g.client.Endpoint.Scheme
+	}
+
+	body, result = g.client.getBody(rawURL, textMediaType)
 	return
 }
 
