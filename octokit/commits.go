@@ -34,7 +34,7 @@ func (c *CommitsService) One() (commit *Commit, result *Result) {
 
 // Get a commit patch based on CommitsService#URL
 func (c *CommitsService) Patch() (patch io.ReadCloser, result *Result) {
-	patch, result = c.client.getPatch(c.URL)
+	patch, result = c.client.getBody(c.URL, patchMediaType)
 	return
 }
 
