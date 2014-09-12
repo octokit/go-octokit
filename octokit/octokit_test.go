@@ -31,12 +31,23 @@ type TestTransport struct {
 	overrideURL *url.URL
 }
 
-// Go docs: "RoundTrip should not modify the request" -- TROLOLOLOLO
 func (t TestTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	req = cloneRequest(req)
 	req.Header.Set("X-Original-Scheme", req.URL.Scheme)
 	req.URL.Scheme = t.overrideURL.Scheme
 	req.URL.Host = t.overrideURL.Host
 	return t.RoundTripper.RoundTrip(req)
+}
+
+func cloneRequest(r *http.Request) *http.Request {
+	r2 := new(http.Request)
+	*r2 = *r
+	r2.URL, _ = url.Parse(r.URL.String())
+	r2.Header = make(http.Header)
+	for k, s := range r.Header {
+		r2.Header[k] = s
+	}
+	return r2
 }
 
 // setup sets up a test HTTP server along with a octokit.Client that is
