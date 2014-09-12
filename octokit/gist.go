@@ -3,7 +3,6 @@ package octokit
 import (
 	"io"
 	"net/url"
-	"strings"
 	"time"
 
 	"github.com/jingweno/go-sawyer/hypermedia"
@@ -49,14 +48,6 @@ func (g *GistsService) Raw() (body io.ReadCloser, result *Result) {
 	for _, file := range gist.Files {
 		rawURL, _ = url.Parse(file.RawURL)
 		break
-	}
-
-	// FIXME: hack to keep requests constrained to the test server
-	if strings.HasPrefix(g.client.Endpoint.Host, "127.0.0.1") {
-		g.client.Header.Set("Host", rawURL.Host)
-		g.client.Header.Set("X-Original-Scheme", rawURL.Scheme)
-		rawURL.Host = g.client.Endpoint.Host
-		rawURL.Scheme = g.client.Endpoint.Scheme
 	}
 
 	body, result = g.client.getBody(rawURL, textMediaType)
