@@ -1,4 +1,5 @@
+install: script/bootstrap
+script: script/test
 language: go
 go:
 - 1.3
-script: script/test
