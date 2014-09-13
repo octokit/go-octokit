@@ -1,0 +1,109 @@
+{
+  "url": "https://api.github.com/gists/a6bea192debdbec0d4ab",
+  "forks_url": "https://api.github.com/gists/a6bea192debdbec0d4ab/forks",
+  "commits_url": "https://api.github.com/gists/a6bea192debdbec0d4ab/commits",
+  "id": "a6bea192debdbec0d4ab",
+  "git_pull_url": "https://gist.github.com/a6bea192debdbec0d4ab.git",
+  "git_push_url": "https://gist.github.com/a6bea192debdbec0d4ab.git",
+  "html_url": "https://gist.github.com/a6bea192debdbec0d4ab",
+  "files": {
+    "grep_cellar": {
+      "filename": "grep_cellar",
+      "type": "text/plain",
+      "language": null,
+      "raw_url": "https://gist.githubusercontent.com/jingweno/a6bea192debdbec0d4ab/raw/80757419d2bd4cfddf7c6be24308eca11b3c330e/grep_cellar",
+      "size": 8107,
+      "truncated": false,
+      "content": "$ pwd\n/opt/boxen/homebrew/Library/Formula\n\n$ grep -ri \"Cellar\" *\nargp-standalone.rb:    cellar :any\naria2.rb:    cellar :any\nasciidoc.rb:    cellar :any\nat-spi2-atk.rb:    cellar :any\nautojump.rb:        . /usr/local/Cellar/gautojump/HEAD/etc/autojump.fish\nbagit.rb:    # put logs in var, not in the Cellar\nbdw-gc.rb:    cellar :any\nberkeley-db.rb:    cellar :any\nboost.rb:    cellar :any\ncabal-install.rb:    cellar :any\ncapstone.rb:    cellar :any\ncheckbashisms.rb:    cellar :any\nchrome-cli.rb:    cellar :any\nclib.rb:    cellar :any\nclojure14.rb:    # Put the Clojure jar from the cellar and the current folder in the classpath.\ncloog.rb:    cellar :any\ncmake.rb:    cellar :any\ncolordiff.rb:    cellar :any\nconcurrencykit.rb:    cellar :any\ncppunit.rb:    cellar :any\ncputhrottle.rb:    cellar :any\ncspice.rb:    cellar :any\ncurl.rb:    cellar :any\ndisco.rb:    # Fix the config file to point at the linked files, not in to cellar\ndisco.rb:      s.gsub!(\"Cellar/disco/\"+version+\"/\", \"\")\ndistcc.rb:    # Make sure python stuff is put into the Cellar.\ndistcc.rb:    # --root triggers a bug and installs into HOMEBREW_PREFIX/lib/python2.7/site-packages instead of the Cellar.\ndocbook-xsl.rb:    cellar :any\neigen.rb:    cellar :any\nentr.rb:    cellar :any\nexiftool.rb:    # Install privately to the Cellar\nfaac.rb:    cellar :any\nfftw.rb:    cellar :any\nflac.rb:    cellar :any\nfossil.rb:    cellar :any\nfreetype.rb:    cellar :any\nfreexl.rb:    cellar :any\nfuse4x-kext.rb:    cellar :any\ngcore.rb:    cellar :any\ngd.rb:    cellar :any\ngdbm.rb:    cellar :any\ngeoip.rb:    cellar :any\ngeos.rb:    cellar :any\ngiflib.rb:    cellar :any\ngit-ssh.rb:    # Change loading of required code from libexec location (Cellar only)\ngit-ssh.rb:    # Install required code into libexec location (Cellar only)\ngmp.rb:    cellar :any\ngnutls.rb:    cellar :any\ngocr.rb:    cellar :any\ngphoto2.rb:    cellar :any\ngpm.rb:    cellar :any\ngpp.rb:    cellar :any\ngringo.rb:    cellar :any\ngsl.rb:    cellar :any\ngstreamer.rb:    # HOMEBREW_PREFIX/Cellar/gstreamer/1.0/lib/gstreamer-1.0, so we'll find\ngstreamer010.rb:    # HOMEBREW_PREFIX/Cellar/gstreamer/0.10/lib/gstreamer-0.10, so we'll find\ngtk-engines.rb:    as by default GTK looks for modules in Cellar.\ngvp.rb:    cellar :any\nharfbuzz.rb:    cellar :any\nhaxe.rb:    cellar :any\nhicolor-icon-theme.rb:    cellar :any\niperf3.rb:    cellar :any\nisl.rb:    cellar :any\njbig2dec.rb:    cellar :any\njemalloc.rb:    cellar :any\njpeg.rb:    cellar :any\njson-c.rb:    cellar :any\njustniffer.rb:  # '--prefix=/usr/local/Cellar/justniffer/0.5.11'  'CXX=/usr/bin/llvm-g++'\nksh.rb:    cellar :any\nl-smash.rb:    cellar :any\nlame.rb:    cellar :any\nlaunch.rb:    cellar :any\nleveldb.rb:    cellar :any\nlhasa.rb:    cellar :any\nlibarchive.rb:    cellar :any\nlibassuan.rb:    cellar :any\nlibb2.rb:    cellar :any\nlibcmph.rb:    cellar :any\nlibebml.rb:    cellar :any\nlibelf.rb:    cellar :any\nlibevent.rb:    cellar :any\nlibffi.rb:    cellar :any\nlibftdi0.rb:    cellar :any\nlibgcrypt.rb:    cellar :any\nlibgpg-error.rb:    cellar :any\nlibid3tag.rb:    cellar :any\nlibidn.rb:    cellar :any\nliblo.rb:    cellar :any\nliblwgeom.rb:    cellar :any\nlibmatroska.rb:    cellar :any\nlibmemcached.rb:    cellar :any\nlibmicrohttpd.rb:    cellar :any\nlibmpc.rb:    cellar :any\nlibnet.rb:    cellar :any\nlibogg.rb:    cellar :any\nlibplist.rb:    cellar :any\nlibpng.rb:    cellar :any\nlibqglviewer.rb:    cellar :any\nlibrsync.rb:    cellar :any\nlibsamplerate.rb:    cellar :any\nlibsndfile.rb:    cellar :any\nlibspatialite.rb:    cellar :any\nlibssh2.rb:    cellar :any\nlibstfl.rb:      # Install into the site-packages in the Cellar (so uninstall works)\nlibtar.rb:    cellar :any\nlibtasn1.rb:    cellar :any\nlibtiff.rb:    cellar :any\nlibunistring.rb:    cellar :any\nlibusb-compat.rb:    cellar :any\nlibusb.rb:    cellar :any\nlibvorbis.rb:    cellar :any\nlibyaml.rb:    cellar :any\nlibzip.rb:    cellar :any\nlittle-cms.rb:    cellar :any\nlittle-cms2.rb:    cellar :any\nllvm33.rb:        # Change to Cellar path here.\nllvm34.rb:        # Change to Cellar path here.\nllvm35.rb:        # Change to Cellar path here.\nlua.rb:    cellar :any\nluarocks.rb:    # Install to the Cellar, but direct modules to HOMEBREW_PREFIX\nlz4.rb:    cellar :any\nlzlib.rb:    cellar :any\nmad.rb:    cellar :any\nmakedepend.rb:    cellar :any\nmarst.rb:    cellar :any\nmd5sha1sum.rb:    cellar :any\nmmix.rb:    cellar :any\nmon.rb:    cellar :any\nmongroup.rb:    cellar :any\nmoreutils.rb:    cellar :any\nmpfr.rb:    cellar :any\nmruby.rb:    cellar :any\nmsgpack.rb:    cellar :any\nneko.rb:    cellar :any\nnettle.rb:    cellar :any\nngrep.rb:    cellar :any\nnode08.rb:      path.realpath.to_s.include?(HOMEBREW_CELLAR)\nnoweb.rb:        ohai 'No TeX installation found. Installing TeX support files in the noweb Cellar.'\nnspr.rb:    cellar :any\nnss.rb:    cellar :any\nobjective-caml.rb:    # site-lib in the Cellar will be a symlink to the HOMEBREW_PREFIX location,\nocrad.rb:    cellar :any\nopenrtsp.rb:    cellar :any\nossp-uuid.rb:    cellar :any\npass.rb:    cellar :any\npazpar2.rb:    cellar :any\npcre.rb:    cellar :any\nphantomjs.rb:    cellar :any\npidof.rb:    cellar :any\npike.rb:    # it; that is, if prefix=/Cellar, installation would create\npike.rb:    # /Cellar/pike/ver/bin and so forth. We could just go with that, but it's\npixman.rb:    cellar :any\nportmidi.rb:        # Provide correct dirs (that point into the Cellar)\nprotobuf-c.rb:    cellar :any\nprotobuf.rb:    cellar :any\npth.rb:    cellar :any\npygtk.rb:    # pygtk to pygobject. But our pkgfiles point into the cellar and in the\npygtk.rb:    # pygtk-cellar there is no pygobject.\npypy.rb:    # Symlink the prefix site-packages into the cellar.\npypy.rb:  # The Cellar location of distutils\npython.rb:  def lib_cellar\npython.rb:  def site_packages_cellar\npython.rb:    lib_cellar/\"site-packages\"\npython.rb:    inreplace lib_cellar/\"config/Makefile\" do |s|\npython.rb:    # Remove the site-packages that Python created in its Cellar.\npython.rb:    site_packages_cellar.rmtree\npython.rb:    # Symlink the prefix site-packages into the cellar.\npython.rb:    site_packages_cellar.unlink if site_packages_cellar.exist?\npython.rb:    site_packages_cellar.parent.install_symlink site_packages\npython.rb:    cfg = lib_cellar/\"distutils/distutils.cfg\"\npython.rb:              # Remove /System site-packages, and the Cellar site-packages\npython3.rb:  def site_packages_cellar\npython3.rb:    # Remove the site-packages that Python created in its Cellar.\npython3.rb:    site_packages_cellar.rmtree\npython3.rb:    # Symlink the prefix site-packages into the cellar.\npython3.rb:    site_packages_cellar.unlink if site_packages_cellar.exist?\npython3.rb:    site_packages_cellar.parent.install_symlink site_packages\npython3.rb:              # Remove /System site-packages, and the Cellar site-packages\npyxplot.rb:    # changes install directory to Cellar, per instructions\nquantlib.rb:    cellar :any\nrcssserver.rb:    cellar :any\nre2.rb:    cellar :any\nreadline.rb:    cellar :any\nrkflashtool.rb:    cellar :any\nry.rb:    cellar :any\ns3cmd.rb:    cellar :any\nscons.rb:    cellar :any\nscreenfetch.rb:    cellar :any\nsdl.rb:    cellar :any\nsdl2.rb:    cellar :any\nsf-pwgen.rb:    cellar :any\nslimerjs.rb:    cellar :any\nsnap7.rb:    cellar :any\nsnappy.rb:    cellar :any\nsparkey.rb:    cellar :any\nsqlite.rb:    cellar :any\nssh-copy-id.rb:    cellar :any\nsshfs.rb:    cellar :any\nterminal-notifier.rb:    cellar :any\nthe_silver_searcher.rb:    cellar :any\ntinyxml2.rb:    cellar :any\ntmux.rb:    cellar :any\ntracebox.rb:    cellar :any\ntree.rb:    cellar :any\ntup.rb:    cellar :any\nunar.rb:    cellar :any\nvisitors.rb:    cellar :any\nvtk5.rb:        # Set the prefix for the python bindings to the Cellar\nwemux.rb:    cellar :any\nx264.rb:    cellar :any\nx265.rb:    cellar :any\nxerces-c.rb:    cellar :any\nxspin.rb:    inreplace \"xspin525.tcl\", \"CELLAR\", prefix\nxspin.rb:+exec wish CELLAR/bin/xspin -- $*\nxulrunner.rb:    cellar :any\nxvid.rb:    cellar :any\nxz.rb:    cellar :any\nyajl.rb:    cellar :any\nyasm.rb:    cellar :any\nyaz.rb:    cellar :any\nyoutube-dl.rb:    cellar :any"
+    }
+  },
+  "public": true,
+  "created_at": "2014-05-02T15:36:34Z",
+  "updated_at": "2014-05-02T15:37:41Z",
+  "description": "grep_cellar",
+  "comments": 0,
+  "user": null,
+  "comments_url": "https://api.github.com/gists/a6bea192debdbec0d4ab/comments",
+  "owner": {
+    "login": "jingweno",
+    "id": 169064,
+    "avatar_url": "https://avatars.githubusercontent.com/u/169064?",
+    "gravatar_id": "41740fef48f778383596392a6b2276c8",
+    "url": "https://api.github.com/users/jingweno",
+    "html_url": "https://github.com/jingweno",
+    "followers_url": "https://api.github.com/users/jingweno/followers",
+    "following_url": "https://api.github.com/users/jingweno/following{/other_user}",
+    "gists_url": "https://api.github.com/users/jingweno/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/jingweno/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/jingweno/subscriptions",
+    "organizations_url": "https://api.github.com/users/jingweno/orgs",
+    "repos_url": "https://api.github.com/users/jingweno/repos",
+    "events_url": "https://api.github.com/users/jingweno/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/jingweno/received_events",
+    "type": "User",
+    "site_admin": false
+  },
+  "forks": [
+
+  ],
+  "history": [
+    {
+      "user": {
+        "login": "jingweno",
+        "id": 169064,
+        "avatar_url": "https://avatars.githubusercontent.com/u/169064?",
+        "gravatar_id": "41740fef48f778383596392a6b2276c8",
+        "url": "https://api.github.com/users/jingweno",
+        "html_url": "https://github.com/jingweno",
+        "followers_url": "https://api.github.com/users/jingweno/followers",
+        "following_url": "https://api.github.com/users/jingweno/following{/other_user}",
+        "gists_url": "https://api.github.com/users/jingweno/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/jingweno/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/jingweno/subscriptions",
+        "organizations_url": "https://api.github.com/users/jingweno/orgs",
+        "repos_url": "https://api.github.com/users/jingweno/repos",
+        "events_url": "https://api.github.com/users/jingweno/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/jingweno/received_events",
+        "type": "User",
+        "site_admin": false
+      },
+      "version": "c2c724161ae0d90ae16d167bb6237da688ecc940",
+      "committed_at": "2014-05-02T15:37:41Z",
+      "change_status": {
+        "total": 3,
+        "additions": 1,
+        "deletions": 2
+      },
+      "url": "https://api.github.com/gists/a6bea192debdbec0d4ab/c2c724161ae0d90ae16d167bb6237da688ecc940"
+    },
+    {
+      "user": {
+        "login": "jingweno",
+        "id": 169064,
+        "avatar_url": "https://avatars.githubusercontent.com/u/169064?",
+        "gravatar_id": "41740fef48f778383596392a6b2276c8",
+        "url": "https://api.github.com/users/jingweno",
+        "html_url": "https://github.com/jingweno",
+        "followers_url": "https://api.github.com/users/jingweno/followers",
+        "following_url": "https://api.github.com/users/jingweno/following{/other_user}",
+        "gists_url": "https://api.github.com/users/jingweno/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/jingweno/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/jingweno/subscriptions",
+        "organizations_url": "https://api.github.com/users/jingweno/orgs",
+        "repos_url": "https://api.github.com/users/jingweno/repos",
+        "events_url": "https://api.github.com/users/jingweno/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/jingweno/received_events",
+        "type": "User",
+        "site_admin": false
+      },
+      "version": "32a30aef632671b30470db0db4b81b82d2322ed6",
+      "committed_at": "2014-05-02T15:36:34Z",
+      "change_status": {
+        "total": 226,
+        "additions": 226,
+        "deletions": 0
+      },
+      "url": "https://api.github.com/gists/a6bea192debdbec0d4ab/32a30aef632671b30470db0db4b81b82d2322ed6"
+    }
+  ]
+}
