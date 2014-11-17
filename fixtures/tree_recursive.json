@@ -1,0 +1,125 @@
+{
+  "sha": "9c1337e761bbd517f3cc1b5acb9373b17f4810e8",
+  "url": "https://api.github.com/repos/pengwynn/flint/git/trees/9c1337e761bbd517f3cc1b5acb9373b17f4810e8",
+  "tree": [
+    {
+      "path": ".gitignore",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f47698acab5bb849abd6fed978760f47b6e03bea",
+      "size": 27,
+      "url": "https://api.github.com/repos/pengwynn/flint/git/blobs/f47698acab5bb849abd6fed978760f47b6e03bea"
+    },
+    {
+      "path": ".travis.yml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "48fd403c6d23eb9856828fff1bf72fde47f956b9",
+      "size": 67,
+      "url": "https://api.github.com/repos/pengwynn/flint/git/blobs/48fd403c6d23eb9856828fff1bf72fde47f956b9"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f8f410dd9fee47b4390baff43e548470d3382616",
+      "size": 656,
+      "url": "https://api.github.com/repos/pengwynn/flint/git/blobs/f8f410dd9fee47b4390baff43e548470d3382616"
+    },
+    {
+      "path": "LICENSE.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "77edd100f67a1a9b923eb26b3061a9c3d3137cdc",
+      "size": 1086,
+      "url": "https://api.github.com/repos/pengwynn/flint/git/blobs/77edd100f67a1a9b923eb26b3061a9c3d3137cdc"
+    },
+    {
+      "path": "README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "75414323e54aea85bccd02953bd139652f557f3a",
+      "size": 4453,
+      "url": "https://api.github.com/repos/pengwynn/flint/git/blobs/75414323e54aea85bccd02953bd139652f557f3a"
+    },
+    {
+      "path": "flint.go",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "836549a55bae146afd3b0fba5a30fb9b60142fc7",
+      "size": 2122,
+      "url": "https://api.github.com/repos/pengwynn/flint/git/blobs/836549a55bae146afd3b0fba5a30fb9b60142fc7"
+    },
+    {
+      "path": "flint",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "c9e2169cca2ffd5041fbdcd99dd56ab6d965e8cf",
+      "url": "https://api.github.com/repos/pengwynn/flint/git/trees/c9e2169cca2ffd5041fbdcd99dd56ab6d965e8cf"
+    },
+    {
+      "path": "flint/flint.go",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b640c50c6aee12f2693a21c063644a13d87946dd",
+      "size": 1573,
+      "url": "https://api.github.com/repos/pengwynn/flint/git/blobs/b640c50c6aee12f2693a21c063644a13d87946dd"
+    },
+    {
+      "path": "flint/flint_test.go",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c7edaea959818de5ef97b95ae3c5071c5d209be2",
+      "size": 4670,
+      "url": "https://api.github.com/repos/pengwynn/flint/git/blobs/c7edaea959818de5ef97b95ae3c5071c5d209be2"
+    },
+    {
+      "path": "gopack.config",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1b938ab7fecfd4c6bfdd5056177427de695ce8e8",
+      "size": 243,
+      "url": "https://api.github.com/repos/pengwynn/flint/git/blobs/1b938ab7fecfd4c6bfdd5056177427de695ce8e8"
+    },
+    {
+      "path": "script",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "78fb904f1d83e7e880241cc27853ee0b26dc4737",
+      "url": "https://api.github.com/repos/pengwynn/flint/git/trees/78fb904f1d83e7e880241cc27853ee0b26dc4737"
+    },
+    {
+      "path": "script/bootstrap",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "33240d9528b947f45b47f38bd95b8a76d4ba8bf0",
+      "size": 99,
+      "url": "https://api.github.com/repos/pengwynn/flint/git/blobs/33240d9528b947f45b47f38bd95b8a76d4ba8bf0"
+    },
+    {
+      "path": "script/build",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "a05747d890bc081675deaa59d47a0602f133d954",
+      "size": 161,
+      "url": "https://api.github.com/repos/pengwynn/flint/git/blobs/a05747d890bc081675deaa59d47a0602f133d954"
+    },
+    {
+      "path": "script/release",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "aaaf3463c970d5af2b58be4a365c5dd04e6880da",
+      "size": 387,
+      "url": "https://api.github.com/repos/pengwynn/flint/git/blobs/aaaf3463c970d5af2b58be4a365c5dd04e6880da"
+    },
+    {
+      "path": "script/test",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "8d200f7423909f94b813bf51efe2f40574c8f269",
+      "size": 54,
+      "url": "https://api.github.com/repos/pengwynn/flint/git/blobs/8d200f7423909f94b813bf51efe2f40574c8f269"
+    }
+  ],
+  "truncated": false
+}
