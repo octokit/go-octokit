@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Usage: script/bootstrap [--force]
+#
+# Installs necessary dependencies in `./_vendor` directory and keeps only
+# runtime files for them.
+
+set -e
+
+if [ "$1" = "--force" ]; then
+  rm -rf ./_vendor
+  shift 1
+fi
+
+export GOPATH="${PWD}/_vendor"
+
+# When current directory isn't under GOPATH, go install emits a non-fatal warning:
+# "no install location for directory <...> outside GOPATH"
+# Ignore this error, as everything works anyway.
+go get -t ./octokit/... 2> >(grep -v 'outside GOPATH$' >&2) || true
+
+# remove git repos
+find ./_vendor/src -type d -name .git -exec rm -rf {} +
+# remove non-runtime files
+find ./_vendor/src -type f -not -name '*.go' -not -iname 'license*' -exec rm {} +
+find ./_vendor/src -type f -name '*_test.go' -exec rm {} +
+# cleanup empty directories
+find ./_vendor/src -type d -empty -exec rmdir {} +
