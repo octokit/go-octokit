@@ -19,7 +19,7 @@ func TestAuthorizationsService_One(t *testing.T) {
 	})
 
 	url, err := AuthorizationsURL.Expand(M{"id": 1})
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 
 	auth, result := client.Authorizations(url).One()
 
@@ -50,7 +50,7 @@ func TestAuthorizationsService_All(t *testing.T) {
 	})
 
 	url, err := AuthorizationsURL.Expand(nil)
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 
 	auths, result := client.Authorizations(url).All()
 	assert.False(t, result.HasError())
@@ -88,7 +88,7 @@ func TestAuthorizationsService_Create(t *testing.T) {
 	})
 
 	url, err := AuthorizationsURL.Expand(nil)
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 
 	auth, _ := client.Authorizations(url).Create(params)
 

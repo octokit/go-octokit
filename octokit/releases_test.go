@@ -17,7 +17,7 @@ func TestReleasesService_All(t *testing.T) {
 	})
 
 	url, err := ReleasesURL.Expand(M{"owner": "jingweno", "repo": "gh"})
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 
 	releases, result := client.Releases(url).All()
 	assert.False(t, result.HasError())
@@ -65,7 +65,7 @@ func TestCreateRelease(t *testing.T) {
 	})
 
 	url, err := ReleasesURL.Expand(M{"owner": "octokit", "repo": "Hello-World"})
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 
 	params := Release{
 		TagName:         "v1.0.0",
@@ -88,7 +88,7 @@ func TestUpdateRelease(t *testing.T) {
 	})
 
 	url, err := ReleasesURL.Expand(M{"owner": "octokit", "repo": "Hello-World", "id": "123"})
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 
 	params := Release{
 		TagName:         "v1.0.0",

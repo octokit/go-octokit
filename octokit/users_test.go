@@ -65,7 +65,7 @@ func TestUsersService_GetUser(t *testing.T) {
 	})
 
 	url, err := UserURL.Expand(M{"user": "jingweno"})
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 	user, result := client.Users(url).One()
 
 	assert.False(t, result.HasError())
@@ -93,7 +93,7 @@ func TestUsersService_All(t *testing.T) {
 	})
 
 	url, err := UserURL.Expand(M{"since": 1})
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 
 	q := url.Query()
 	q.Set("since", "1")
@@ -105,7 +105,7 @@ func TestUsersService_All(t *testing.T) {
 	assert.Equal(t, testURLStringOf("users?since=135"), string(*result.NextPage))
 
 	nextPageURL, err := result.NextPage.Expand(nil)
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 
 	allUsers, result = client.Users(nextPageURL).All()
 	assert.False(t, result.HasError())

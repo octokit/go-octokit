@@ -18,7 +18,7 @@ func TestIssuesService_All(t *testing.T) {
 	})
 
 	url, err := RepoIssuesURL.Expand(M{"owner": "octocat", "repo": "Hello-World"})
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 
 	issues, result := client.Issues(url).All()
 	assert.False(t, result.HasError())
@@ -38,7 +38,7 @@ func TestIssuesService_One(t *testing.T) {
 	})
 
 	url, err := RepoIssuesURL.Expand(M{"owner": "octocat", "repo": "Hello-World", "number": 1347})
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 
 	issue, result := client.Issues(url).One()
 
@@ -57,7 +57,7 @@ func TestIssuesService_Create(t *testing.T) {
 	})
 
 	url, err := RepoIssuesURL.Expand(M{"owner": "octocat", "repo": "Hello-World"})
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 
 	params := IssueParams{
 		Title: "title",
@@ -80,7 +80,7 @@ func TestIssuesService_Update(t *testing.T) {
 	})
 
 	url, err := RepoIssuesURL.Expand(M{"owner": "octocat", "repo": "Hello-World", "number": 1347})
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 
 	params := IssueParams{
 		Title: "title",

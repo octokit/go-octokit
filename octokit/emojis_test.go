@@ -17,7 +17,7 @@ func TestRootEmojisService_All(t *testing.T) {
 	})
 
 	url, err := EmojisURL.Expand(nil)
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 
 	emojis, result := client.Emojis(url).All()
 	assert.False(t, result.HasError())

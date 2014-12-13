@@ -22,7 +22,7 @@ func TestCommitsService_One(t *testing.T) {
 		"repo":  "go-octokit",
 		"sha":   "4351fb69b8d5ed075e9cd844e67ad2114b335c82",
 	})
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 	commit, result := client.Commits(url).One()
 
 	assert.False(t, result.HasError())
@@ -53,6 +53,6 @@ func TestCommitsService_Patch(t *testing.T) {
 
 	assert.False(t, result.HasError())
 	content, err := ioutil.ReadAll(patch)
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 	assert.True(t, len(content) > 0)
 }

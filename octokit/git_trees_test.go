@@ -21,7 +21,7 @@ func TestGitTreesService_One(t *testing.T) {
 		"repo":  "flint",
 		"sha":   "master",
 	})
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 	tree, result := client.GitTrees(url).One()
 
 	assert.False(t, result.HasError())
@@ -47,7 +47,7 @@ func TestGitTreesService_One_Recursive(t *testing.T) {
 		"sha":       "master",
 		"recursive": "1",
 	})
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 	tree, result := client.GitTrees(url).One()
 
 	assert.False(t, result.HasError())

@@ -54,6 +54,6 @@ func TestGistsService_Raw(t *testing.T) {
 
 	assert.False(t, result.HasError())
 	content, err := ioutil.ReadAll(body)
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 	assert.Equal(t, "hello", string(content))
 }

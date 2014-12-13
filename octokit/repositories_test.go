@@ -19,7 +19,7 @@ func TestRepositoresService_One(t *testing.T) {
 	})
 
 	url, err := RepositoryURL.Expand(M{"owner": "jingweno", "repo": "octokat"})
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 
 	repo, result := client.Repositories(url).One()
 
@@ -55,7 +55,7 @@ func TestRepositoresService_All(t *testing.T) {
 	})
 
 	url, err := OrgRepositoriesURL.Expand(M{"org": "rails"})
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 
 	repos, result := client.Repositories(url).All()
 
@@ -94,7 +94,7 @@ func TestRepositoresService_Create(t *testing.T) {
 	})
 
 	url, err := UserRepositoriesURL.Expand(nil)
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 
 	repo, result := client.Repositories(url).Create(params)
 
@@ -124,7 +124,7 @@ func TestRepositoresService_CreateFork(t *testing.T) {
 	})
 
 	url, err := ForksURL.Expand(M{"owner": "jingweno", "repo": "octokat"})
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 
 	repo, result := client.Repositories(url).Create(M{"organization": "github"})
 

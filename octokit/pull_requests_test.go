@@ -19,7 +19,7 @@ func TestPullRequestService_One(t *testing.T) {
 	})
 
 	url, err := PullRequestsURL.Expand(M{"owner": "octokit", "repo": "go-octokit", "number": 1})
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 
 	pr, result := client.PullRequests(url).One()
 
@@ -61,7 +61,7 @@ func TestPullRequestService_Post(t *testing.T) {
 	})
 
 	url, err := PullRequestsURL.Expand(M{"owner": "octokit", "repo": "go-octokit"})
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 
 	params := PullRequestParams{
 		Base:  "base",
@@ -110,7 +110,7 @@ func TestPullRequestService_All(t *testing.T) {
 	})
 
 	url, err := PullRequestsURL.Expand(M{"owner": "rails", "repo": "rails"})
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 
 	prs, result := client.PullRequests(url).All()
 	assert.False(t, result.HasError())
@@ -130,13 +130,13 @@ func TestPullRequestService_Diff(t *testing.T) {
 	})
 
 	url, err := PullRequestsURL.Expand(M{"owner": "octokit", "repo": "go-octokit", "number": 1})
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 
 	diff, result := client.PullRequests(url).Diff()
 
 	assert.False(t, result.HasError())
 	content, err := ioutil.ReadAll(diff)
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 	assert.Equal(t, "diff --git", string(content))
 }
 
@@ -151,12 +151,12 @@ func TestPullRequestService_Patch(t *testing.T) {
 	})
 
 	url, err := PullRequestsURL.Expand(M{"owner": "octokit", "repo": "go-octokit", "number": 1})
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 
 	patch, result := client.PullRequests(url).Patch()
 
 	assert.False(t, result.HasError())
 	content, err := ioutil.ReadAll(patch)
-	assert.Equal(t, nil, err)
+	assert.NoError(t, err)
 	assert.Equal(t, "patches galore", string(content))
 }
