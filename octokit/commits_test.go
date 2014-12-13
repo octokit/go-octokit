@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/bmizerany/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestCommitsService_One(t *testing.T) {
@@ -25,7 +25,7 @@ func TestCommitsService_One(t *testing.T) {
 	assert.Equal(t, nil, err)
 	commit, result := client.Commits(url).One()
 
-	assert.T(t, !result.HasError())
+	assert.False(t, result.HasError())
 	assert.Equal(t, "4351fb69b8d5ed075e9cd844e67ad2114b335c82", commit.Sha)
 	assert.Equal(t, "https://api.github.com/repos/octokit/go-octokit/commits/4351fb69b8d5ed075e9cd844e67ad2114b335c82", commit.URL)
 
@@ -51,8 +51,8 @@ func TestCommitsService_Patch(t *testing.T) {
 	assert.Equal(t, nil, err)
 	patch, result := client.Commits(url).Patch()
 
-	assert.T(t, !result.HasError())
+	assert.False(t, result.HasError())
 	content, err := ioutil.ReadAll(patch)
 	assert.Equal(t, nil, err)
-	assert.T(t, len(content) > 0)
+	assert.True(t, len(content) > 0)
 }

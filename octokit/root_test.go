@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/bmizerany/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestRootService_One(t *testing.T) {
@@ -20,7 +20,7 @@ func TestRootService_One(t *testing.T) {
 	assert.Equal(t, nil, err)
 
 	root, result := client.Root(url).One()
-	assert.T(t, !result.HasError())
+	assert.False(t, result.HasError())
 	assert.Equal(t, "https://api.github.com/users/{user}", string(root.UserURL))
 }
 

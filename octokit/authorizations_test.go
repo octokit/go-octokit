@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/bmizerany/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestAuthorizationsService_One(t *testing.T) {
@@ -23,7 +23,7 @@ func TestAuthorizationsService_One(t *testing.T) {
 
 	auth, result := client.Authorizations(url).One()
 
-	assert.T(t, !result.HasError())
+	assert.False(t, result.HasError())
 	assert.Equal(t, 1, auth.ID)
 	assert.Equal(t, "https://api.github.com/authorizations/1", auth.URL)
 	assert.Equal(t, "456", auth.Token)
@@ -37,7 +37,7 @@ func TestAuthorizationsService_One(t *testing.T) {
 
 	assert.Equal(t, 2, len(auth.Scopes))
 	scopes := []string{"repo", "user"}
-	assert.T(t, reflect.DeepEqual(auth.Scopes, scopes))
+	assert.True(t, reflect.DeepEqual(auth.Scopes, scopes))
 }
 
 func TestAuthorizationsService_All(t *testing.T) {
@@ -53,7 +53,7 @@ func TestAuthorizationsService_All(t *testing.T) {
 	assert.Equal(t, nil, err)
 
 	auths, result := client.Authorizations(url).All()
-	assert.T(t, !result.HasError())
+	assert.False(t, result.HasError())
 
 	firstAuth := auths[0]
 	assert.Equal(t, 1, firstAuth.ID)
@@ -69,7 +69,7 @@ func TestAuthorizationsService_All(t *testing.T) {
 
 	assert.Equal(t, 2, len(firstAuth.Scopes))
 	scopes := []string{"repo", "user"}
-	assert.T(t, reflect.DeepEqual(firstAuth.Scopes, scopes))
+	assert.True(t, reflect.DeepEqual(firstAuth.Scopes, scopes))
 }
 
 func TestAuthorizationsService_Create(t *testing.T) {
@@ -81,7 +81,7 @@ func TestAuthorizationsService_Create(t *testing.T) {
 	mux.HandleFunc("/authorizations", func(w http.ResponseWriter, r *http.Request) {
 		var authParams AuthorizationParams
 		json.NewDecoder(r.Body).Decode(&authParams)
-		assert.T(t, reflect.DeepEqual(authParams, params))
+		assert.True(t, reflect.DeepEqual(authParams, params))
 
 		testMethod(t, r, "POST")
 		respondWithJSON(w, loadFixture("create_authorization.json"))
@@ -105,5 +105,5 @@ func TestAuthorizationsService_Create(t *testing.T) {
 
 	assert.Equal(t, 1, len(auth.Scopes))
 	scopes := []string{"public_repo"}
-	assert.T(t, reflect.DeepEqual(auth.Scopes, scopes))
+	assert.True(t, reflect.DeepEqual(auth.Scopes, scopes))
 }

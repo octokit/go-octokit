@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/bmizerany/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSuccessfulGet(t *testing.T) {
@@ -96,7 +96,7 @@ func TestGetResponseError(t *testing.T) {
 	_, err = req.Get(output)
 	assert.NotEqual(t, nil, err)
 	respErr, ok := err.(*ResponseError)
-	assert.Tf(t, ok, "should be able to convert to *ResponseError")
+	assert.True(t, ok, "should be able to convert to *ResponseError")
 	assert.Equal(t, "not found", respErr.Message)
 	assert.Equal(t, ErrorNotFound, respErr.Type)
 }

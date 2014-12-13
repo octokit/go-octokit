@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/bmizerany/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestReleasesService_All(t *testing.T) {
@@ -20,7 +20,7 @@ func TestReleasesService_All(t *testing.T) {
 	assert.Equal(t, nil, err)
 
 	releases, result := client.Releases(url).All()
-	assert.T(t, !result.HasError())
+	assert.False(t, result.HasError())
 	assert.Equal(t, 1, len(releases))
 
 	firstRelease := releases[0]
@@ -28,8 +28,8 @@ func TestReleasesService_All(t *testing.T) {
 	assert.Equal(t, "v0.23.0", firstRelease.TagName)
 	assert.Equal(t, "master", firstRelease.TargetCommitish)
 	assert.Equal(t, "v0.23.0", firstRelease.Name)
-	assert.T(t, !firstRelease.Draft)
-	assert.T(t, !firstRelease.Prerelease)
+	assert.False(t, firstRelease.Draft)
+	assert.False(t, firstRelease.Prerelease)
 	assert.Equal(t, "* Windows works!: https://github.com/jingweno/gh/commit/6cb80cb09fd9f624a64d85438157955751a9ac70", firstRelease.Body)
 	assert.Equal(t, "https://api.github.com/repos/jingweno/gh/releases/50013", firstRelease.URL)
 	assert.Equal(t, "https://api.github.com/repos/jingweno/gh/releases/50013/assets", firstRelease.AssetsURL)
@@ -73,7 +73,7 @@ func TestCreateRelease(t *testing.T) {
 	}
 	release, result := client.Releases(url).Create(params)
 
-	assert.T(t, !result.HasError())
+	assert.False(t, result.HasError())
 	assert.Equal(t, "v1.0.0", release.TagName)
 }
 
@@ -96,6 +96,6 @@ func TestUpdateRelease(t *testing.T) {
 	}
 	release, result := client.Releases(url).Update(params)
 
-	assert.T(t, !result.HasError())
+	assert.False(t, result.HasError())
 	assert.Equal(t, "v1.0.0", release.TagName)
 }

@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/bmizerany/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestResponseError_empty_body(t *testing.T) {
@@ -21,7 +21,7 @@ func TestResponseError_empty_body(t *testing.T) {
 
 	req, _ := client.NewRequest("error")
 	_, err := req.Get(nil)
-	assert.Tf(t, strings.Contains(err.Error(), "400 - Problems parsing error message: EOF"), "%s", err.Error())
+	assert.True(t, strings.Contains(err.Error(), "400 - Problems parsing error message: EOF"), "%s", err.Error())
 
 	e := err.(*ResponseError)
 	assert.Equal(t, ErrorBadRequest, e.Type)
@@ -40,7 +40,7 @@ func TestResponseError_Error_400(t *testing.T) {
 
 	req, _ := client.NewRequest("error")
 	_, err := req.Get(nil)
-	assert.Tf(t, strings.Contains(err.Error(), "400 - Problems parsing JSON"), "%s", err.Error())
+	assert.True(t, strings.Contains(err.Error(), "400 - Problems parsing JSON"), "%s", err.Error())
 
 	e := err.(*ResponseError)
 	assert.Equal(t, ErrorBadRequest, e.Type)
@@ -59,7 +59,7 @@ func TestResponseError_Error_401(t *testing.T) {
 
 	req, _ := client.NewRequest("error")
 	_, err := req.Get(nil)
-	assert.Tf(t, strings.Contains(err.Error(), "401 - Unauthorized"), "%s", err.Error())
+	assert.True(t, strings.Contains(err.Error(), "401 - Unauthorized"), "%s", err.Error())
 
 	e := err.(*ResponseError)
 	assert.Equal(t, ErrorUnauthorized, e.Type)
@@ -74,7 +74,7 @@ func TestResponseError_Error_401(t *testing.T) {
 
 	req, _ = client.NewRequest("error_2fa")
 	_, err = req.Get(nil)
-	assert.Tf(t, strings.Contains(err.Error(), "401 - Unauthorized"), "%s", err.Error())
+	assert.True(t, strings.Contains(err.Error(), "401 - Unauthorized"), "%s", err.Error())
 
 	e = err.(*ResponseError)
 	assert.Equal(t, ErrorOneTimePasswordRequired, e.Type)
@@ -93,7 +93,7 @@ func TestResponseError_Error_422_error(t *testing.T) {
 
 	req, _ := client.NewRequest("error")
 	_, err := req.Get(nil)
-	assert.Tf(t, strings.Contains(err.Error(), "Error: No repository found for hubtopic"), "%s", err.Error())
+	assert.True(t, strings.Contains(err.Error(), "Error: No repository found for hubtopic"), "%s", err.Error())
 
 	e := err.(*ResponseError)
 	assert.Equal(t, ErrorUnprocessableEntity, e.Type)
@@ -112,8 +112,8 @@ func TestResponseError_Error_422_error_summary(t *testing.T) {
 
 	req, _ := client.NewRequest("error")
 	_, err := req.Get(nil)
-	assert.Tf(t, strings.Contains(err.Error(), "422 - Validation Failed"), "%s", err.Error())
-	assert.Tf(t, strings.Contains(err.Error(), "missing_field error caused by title field on Issue resource"), "%s", err.Error())
+	assert.True(t, strings.Contains(err.Error(), "422 - Validation Failed"), "%s", err.Error())
+	assert.True(t, strings.Contains(err.Error(), "missing_field error caused by title field on Issue resource"), "%s", err.Error())
 
 	e := err.(*ResponseError)
 	assert.Equal(t, ErrorUnprocessableEntity, e.Type)
@@ -132,8 +132,8 @@ func TestResponseError_Error_415(t *testing.T) {
 
 	req, _ := client.NewRequest("error")
 	_, err := req.Get(nil)
-	assert.Tf(t, strings.Contains(err.Error(), "415 - Unsupported Media Type"), "%s", err.Error())
-	assert.Tf(t, strings.Contains(err.Error(), "// See: http://developer.github.com/v3"), "%s", err.Error())
+	assert.True(t, strings.Contains(err.Error(), "415 - Unsupported Media Type"), "%s", err.Error())
+	assert.True(t, strings.Contains(err.Error(), "// See: http://developer.github.com/v3"), "%s", err.Error())
 
 	e := err.(*ResponseError)
 	assert.Equal(t, ErrorUnsupportedMediaType, e.Type)

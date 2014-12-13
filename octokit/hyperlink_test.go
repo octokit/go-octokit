@@ -3,7 +3,7 @@ package octokit
 import (
 	"testing"
 
-	"github.com/bmizerany/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestHyperlink_Expand(t *testing.T) {

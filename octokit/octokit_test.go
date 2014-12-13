@@ -10,7 +10,7 @@ import (
 	"path"
 	"testing"
 
-	"github.com/bmizerany/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 var (

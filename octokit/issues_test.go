@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bmizerany/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestIssuesService_All(t *testing.T) {
@@ -21,7 +21,7 @@ func TestIssuesService_All(t *testing.T) {
 	assert.Equal(t, nil, err)
 
 	issues, result := client.Issues(url).All()
-	assert.T(t, !result.HasError())
+	assert.False(t, result.HasError())
 	assert.Equal(t, 1, len(issues))
 
 	issue := issues[0]
@@ -42,7 +42,7 @@ func TestIssuesService_One(t *testing.T) {
 
 	issue, result := client.Issues(url).One()
 
-	assert.T(t, !result.HasError())
+	assert.False(t, result.HasError())
 	validateIssue(t, *issue)
 }
 
@@ -65,7 +65,7 @@ func TestIssuesService_Create(t *testing.T) {
 	}
 	issue, result := client.Issues(url).Create(params)
 
-	assert.T(t, !result.HasError())
+	assert.False(t, result.HasError())
 	validateIssue(t, *issue)
 }
 
@@ -88,7 +88,7 @@ func TestIssuesService_Update(t *testing.T) {
 	}
 	issue, result := client.Issues(url).Update(params)
 
-	assert.T(t, !result.HasError())
+	assert.False(t, result.HasError())
 	validateIssue(t, *issue)
 }
 

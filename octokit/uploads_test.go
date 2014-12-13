@@ -7,7 +7,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/bmizerany/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestUploadsService_UploadAsset(t *testing.T) {
@@ -36,7 +36,7 @@ func TestUploadsService_UploadAsset(t *testing.T) {
 	open, _ := os.Open(file.Name())
 	result := client.Uploads(url).UploadAsset(open, "text/plain", fi.Size())
 	fmt.Println(result)
-	assert.T(t, !result.HasError())
+	assert.False(t, result.HasError())
 
 	assert.Equal(t, 201, result.Response.StatusCode)
 }

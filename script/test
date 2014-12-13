@@ -6,5 +6,5 @@
 set -e
 
 go get ./...
-go get github.com/bmizerany/assert
+go get github.com/stretchr/testify
 go test ./...

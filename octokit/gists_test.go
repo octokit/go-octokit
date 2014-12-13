@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/bmizerany/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGistsService_One(t *testing.T) {
@@ -20,7 +20,7 @@ func TestGistsService_One(t *testing.T) {
 	url, _ := GistsURL.Expand(M{"gist_id": "a6bea192debdbec0d4ab"})
 	gist, result := client.Gists(url).One()
 
-	assert.T(t, !result.HasError())
+	assert.False(t, result.HasError())
 	assert.Equal(t, "a6bea192debdbec0d4ab", gist.ID)
 	assert.Equal(t, 1, len(gist.Files))
 
@@ -52,7 +52,7 @@ func TestGistsService_Raw(t *testing.T) {
 	url, _ := GistsURL.Expand(M{"gist_id": "a6bea192debdbec0d4ab"})
 	body, result := client.Gists(url).Raw()
 
-	assert.T(t, !result.HasError())
+	assert.False(t, result.HasError())
 	content, err := ioutil.ReadAll(body)
 	assert.Equal(t, nil, err)
 	assert.Equal(t, "hello", string(content))
