@@ -21,7 +21,7 @@ func TestReleasesService_All(t *testing.T) {
 
 	releases, result := client.Releases(url).All()
 	assert.False(t, result.HasError())
-	assert.Equal(t, 1, len(releases))
+	assert.Len(t, releases, 1)
 
 	firstRelease := releases[0]
 	assert.Equal(t, 50013, firstRelease.ID)
@@ -39,7 +39,7 @@ func TestReleasesService_All(t *testing.T) {
 	assert.Equal(t, "2013-09-23 01:07:56 +0000 UTC", firstRelease.PublishedAt.String())
 
 	firstReleaseAssets := firstRelease.Assets
-	assert.Equal(t, 8, len(firstReleaseAssets))
+	assert.Len(t, firstReleaseAssets, 8)
 
 	firstAsset := firstReleaseAssets[0]
 	assert.Equal(t, 20428, firstAsset.ID)

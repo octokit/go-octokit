@@ -22,7 +22,7 @@ func TestStatuses(t *testing.T) {
 
 	statuses, err := client.Statuses(url).All()
 
-	assert.Equal(t, 2, len(statuses))
+	assert.Len(t, statuses, 2)
 	firstStatus := statuses[0]
 	assert.Equal(t, "pending", firstStatus.State)
 	assert.Equal(t, "The Travis CI build is in progress", firstStatus.Description)

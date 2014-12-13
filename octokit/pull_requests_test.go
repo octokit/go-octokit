@@ -114,7 +114,7 @@ func TestPullRequestService_All(t *testing.T) {
 
 	prs, result := client.PullRequests(url).All()
 	assert.False(t, result.HasError())
-	assert.Equal(t, 30, len(prs))
+	assert.Len(t, prs, 30)
 	assert.Equal(t, testURLStringOf("repositories/8514/pulls?page=2"), string(*result.NextPage))
 	assert.Equal(t, testURLStringOf("repositories/8514/pulls?page=14"), string(*result.LastPage))
 }

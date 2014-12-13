@@ -60,7 +60,7 @@ func TestRepositoresService_All(t *testing.T) {
 	repos, result := client.Repositories(url).All()
 
 	assert.False(t, result.HasError())
-	assert.Equal(t, 30, len(repos))
+	assert.Len(t, repos, 30)
 	assert.Equal(t, testURLStringOf("organizations/4223/repos?page=2"), string(*result.NextPage))
 	assert.Equal(t, testURLStringOf("organizations/4223/repos?page=3"), string(*result.LastPage))
 }

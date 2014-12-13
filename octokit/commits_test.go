@@ -30,7 +30,7 @@ func TestCommitsService_One(t *testing.T) {
 	assert.Equal(t, "https://api.github.com/repos/octokit/go-octokit/commits/4351fb69b8d5ed075e9cd844e67ad2114b335c82", commit.URL)
 
 	files := commit.Files
-	assert.Equal(t, 35, len(files))
+	assert.Len(t, files, 35)
 }
 
 func TestCommitsService_Patch(t *testing.T) {
@@ -54,5 +54,5 @@ func TestCommitsService_Patch(t *testing.T) {
 	assert.False(t, result.HasError())
 	content, err := ioutil.ReadAll(patch)
 	assert.NoError(t, err)
-	assert.True(t, len(content) > 0)
+	assert.NotEmpty(t, content)
 }

@@ -22,7 +22,7 @@ func TestIssuesService_All(t *testing.T) {
 
 	issues, result := client.Issues(url).All()
 	assert.False(t, result.HasError())
-	assert.Equal(t, 1, len(issues))
+	assert.Len(t, issues, 1)
 
 	issue := issues[0]
 	validateIssue(t, issue)
@@ -107,7 +107,7 @@ func validateIssue(t *testing.T, issue Issue) {
 	assert.Equal(t, "somehexcode", issue.User.GravatarID)
 	assert.Equal(t, "https://api.github.com/users/octocat", issue.User.URL)
 
-	assert.Equal(t, 1, len(issue.Labels))
+	assert.Len(t, issue.Labels, 1)
 	assert.Equal(t, "https://api.github.com/repos/octocat/Hello-World/labels/bug", issue.Labels[0].URL)
 	assert.Equal(t, "bug", issue.Labels[0].Name)
 

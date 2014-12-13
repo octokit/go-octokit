@@ -29,7 +29,7 @@ func TestGitTreesService_One(t *testing.T) {
 	assert.Equal(t, "https://api.github.com/repos/pengwynn/flint/git/trees/9c1337e761bbd517f3cc1b5acb9373b17f4810e8", tree.URL)
 
 	entries := tree.Tree
-	assert.Equal(t, 9, len(entries))
+	assert.Len(t, entries, 9)
 }
 
 func TestGitTreesService_One_Recursive(t *testing.T) {
@@ -55,5 +55,5 @@ func TestGitTreesService_One_Recursive(t *testing.T) {
 	assert.Equal(t, "https://api.github.com/repos/pengwynn/flint/git/trees/9c1337e761bbd517f3cc1b5acb9373b17f4810e8", tree.URL)
 
 	entries := tree.Tree
-	assert.Equal(t, 15, len(entries))
+	assert.Len(t, entries, 15)
 }

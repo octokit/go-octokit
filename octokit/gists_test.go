@@ -22,7 +22,7 @@ func TestGistsService_One(t *testing.T) {
 
 	assert.False(t, result.HasError())
 	assert.Equal(t, "a6bea192debdbec0d4ab", gist.ID)
-	assert.Equal(t, 1, len(gist.Files))
+	assert.Len(t, gist.Files, 1)
 
 	file := gist.Files["grep_cellar"]
 	assert.Equal(t, "grep_cellar", file.FileName)

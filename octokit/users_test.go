@@ -101,7 +101,7 @@ func TestUsersService_All(t *testing.T) {
 	allUsers, result := client.Users(url).All()
 
 	assert.False(t, result.HasError())
-	assert.Equal(t, 1, len(allUsers))
+	assert.Len(t, allUsers, 1)
 	assert.Equal(t, testURLStringOf("users?since=135"), string(*result.NextPage))
 
 	nextPageURL, err := result.NextPage.Expand(nil)
@@ -109,5 +109,5 @@ func TestUsersService_All(t *testing.T) {
 
 	allUsers, result = client.Users(nextPageURL).All()
 	assert.False(t, result.HasError())
-	assert.Equal(t, 1, len(allUsers))
+	assert.Len(t, allUsers, 1)
 }
