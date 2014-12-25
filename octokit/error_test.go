@@ -137,3 +137,23 @@ func TestResponseError_Error_415(t *testing.T) {
 	e := err.(*ResponseError)
 	assert.Equal(t, ErrorUnsupportedMediaType, e.Type)
 }
+
+func TestResponseError_403(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/error", func(w http.ResponseWriter, r *http.Request) {
+		head := w.Header()
+		head.Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusForbidden)
+		respondWith(w, `{"message":"API rate limit exceeded for xxx.xxx.xxx.xxx. (But here's the good news: Authenticated requests get a higher rate limit. Check out the documentation for more details.)", "documentation_url":"https://developer.github.com/v3/#rate-limiting"`)
+	})
+
+	req, _ := client.NewRequest("error")
+	_, err := req.Get(nil)
+	assert.Contains(t, err.Error(), "403 - Unsupported Media Type")
+	assert.Contains(t, err.Error(), "// See: http://developer.github.com/v3")
+
+	e := err.(*ResponseError)
+	assert.Equal(t, ErrorUnsupportedMediaType, e.Type)
+}
