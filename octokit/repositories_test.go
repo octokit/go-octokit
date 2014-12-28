@@ -34,6 +34,7 @@ func TestRepositoresService_One(t *testing.T) {
 	assert.Equal(t, "https://github.com/jingweno/octokat.git", repo.CloneURL)
 	assert.Equal(t, "git://github.com/jingweno/octokat.git", repo.GitURL)
 	assert.Equal(t, "git@github.com:jingweno/octokat.git", repo.SSHURL)
+	assert.Equal(t, 79, repo.StargazersCount)
 	assert.Equal(t, "master", repo.MasterBranch)
 	assert.False(t, repo.Permissions.Admin)
 	assert.False(t, repo.Permissions.Push)
