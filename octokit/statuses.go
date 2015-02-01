@@ -7,9 +7,7 @@ import (
 	"github.com/jingweno/go-sawyer/hypermedia"
 )
 
-var (
-	StatusesURL = Hyperlink("repos/{owner}/{repo}/statuses/{ref}")
-)
+var StatusesURL = Hyperlink("repos/{owner}/{repo}/statuses/{ref}")
 
 // Create a StatusesService with the base url.URL
 func (c *Client) Statuses(url *url.URL) (statuses *StatusesService) {

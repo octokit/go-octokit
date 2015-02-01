@@ -7,9 +7,7 @@ import (
 	"github.com/jingweno/go-sawyer/hypermedia"
 )
 
-var (
-	ReleasesURL = Hyperlink("repos/{owner}/{repo}/releases{/id}")
-)
+var ReleasesURL = Hyperlink("repos/{owner}/{repo}/releases{/id}")
 
 type Release struct {
 	*hypermedia.HALResource

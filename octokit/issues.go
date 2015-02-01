@@ -7,9 +7,7 @@ import (
 	"github.com/jingweno/go-sawyer/hypermedia"
 )
 
-var (
-	RepoIssuesURL = Hyperlink("repos/{owner}/{repo}/issues{/number}")
-)
+var RepoIssuesURL = Hyperlink("repos/{owner}/{repo}/issues{/number}")
 
 // Create a IssuesService with the base url.URL
 func (c *Client) Issues(url *url.URL) (issues *IssuesService) {

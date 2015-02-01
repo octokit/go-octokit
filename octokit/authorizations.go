@@ -7,9 +7,7 @@ import (
 	"github.com/jingweno/go-sawyer/hypermedia"
 )
 
-var (
-	AuthorizationsURL = Hyperlink("authorizations{/id}")
-)
+var AuthorizationsURL = Hyperlink("authorizations{/id}")
 
 // Create a AuthorizationsService with the base url.URL
 func (c *Client) Authorizations(url *url.URL) (auths *AuthorizationsService) {

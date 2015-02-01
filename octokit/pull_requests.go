@@ -8,9 +8,7 @@ import (
 	"github.com/jingweno/go-sawyer/hypermedia"
 )
 
-var (
-	PullRequestsURL = Hyperlink("repos/{owner}/{repo}/pulls{/number}")
-)
+var PullRequestsURL = Hyperlink("repos/{owner}/{repo}/pulls{/number}")
 
 // Create a PullRequestsService with the base url.URL
 func (c *Client) PullRequests(url *url.URL) (pullRequests *PullRequestsService) {

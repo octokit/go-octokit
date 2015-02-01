@@ -4,9 +4,7 @@ import (
 	"net/url"
 )
 
-var (
-	EmojisURL = Hyperlink("/emojis")
-)
+var EmojisURL = Hyperlink("/emojis")
 
 // Create a EmojisService with the base url.URL
 func (c *Client) Emojis(url *url.URL) (emojis *EmojisService) {

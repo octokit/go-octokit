@@ -6,9 +6,7 @@ import (
 	"github.com/jingweno/go-sawyer/hypermedia"
 )
 
-var (
-	RootURL = Hyperlink("")
-)
+var RootURL = Hyperlink("")
 
 func (c *Client) Rel(name string, m map[string]interface{}) (*url.URL, error) {
 	if c.rootRels == nil || len(c.rootRels) == 0 {
