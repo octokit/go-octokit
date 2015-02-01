@@ -16,10 +16,12 @@ func TestUserSearchService_All(t *testing.T) {
 		respondWithJSON(w, loadFixture("user_search.json"))
 	})
 
-	url, err := SearchURL.Expand(map[string]interface{}{"type": "users"})
+	url, err := SearchURL.Expand(map[string]interface{}{
+		"type":  "users",
+		"query": "dhruvsinghal"})
 	assert.NoError(t, err)
 
-	searchResults, result := client.UserSearches(url).All()
+	searchResults, result := client.Searches(url).UserSearch()
 
 	assert.False(t, result.HasError())
 	assert.False(t, searchResults.IncompleteResults)

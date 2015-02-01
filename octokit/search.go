@@ -5,21 +5,21 @@ import (
 	"net/url"
 )
 
-var SearchURL = Hyperlink("search{/type}")
+var SearchURL = Hyperlink("search{/type}?q={query}")
 
-func (c *Client) UserSearches(url *url.URL) (searches *UserSearchService) {
-	searches = &UserSearchService{client: c, URL: url}
+func (c *Client) Searches(url *url.URL) (searches *SearchService) {
+	searches = &SearchService{client: c, URL: url}
 	return
 }
 
 // A service to return search records
-type UserSearchService struct {
+type SearchService struct {
 	client *Client
 	URL    *url.URL
 }
 
 // Get a list of search results based on SearchService#URL
-func (g *UserSearchService) All() (userSearchResults UserSearchResults,
+func (g *SearchService) UserSearch() (userSearchResults UserSearchResults,
 	result *Result) {
 	result = g.client.get(g.URL, &userSearchResults)
 	return
