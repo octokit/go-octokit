@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestUserSearchService_All(t *testing.T) {
+func TestSearchService_UserSearch(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -33,7 +33,7 @@ func TestUserSearchService_All(t *testing.T) {
 	assert.Equal(t, searchResults.Items[1].Login, "dhruvsinghal5")
 }
 
-func TestIssueSearchService_All(t *testing.T) {
+func TestSearchService_IssueSearch(t *testing.T) {
 	setup()
 	defer tearDown()
 
