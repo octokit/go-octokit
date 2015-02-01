@@ -8,6 +8,8 @@ import (
 	"github.com/jingweno/go-sawyer/hypermedia"
 )
 
+// PullRequestsURL is a template for accessing a partiular numbered pull request in a
+// particular repository for a particular owner that can be expanded to a full address.
 var PullRequestsURL = Hyperlink("repos/{owner}/{repo}/pulls{/number}")
 
 // Create a PullRequestsService with the base url.URL

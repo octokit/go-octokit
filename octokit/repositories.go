@@ -7,6 +7,11 @@ import (
 	"github.com/jingweno/go-sawyer/hypermedia"
 )
 
+// Hyperlinks to the various repository locations on github.
+// RepositoryURL is a template for a particular repository for a particular owner.
+// ForksURL is a template for the forks of a user's repository.
+// UserRepositoriesURL is the address for all user repositories.
+// OrgRepositoriesUrl is the template for repositories within a particular organization.
 var (
 	RepositoryURL       = Hyperlink("repos/{owner}/{repo}")
 	ForksURL            = Hyperlink("repos/{owner}/{repo}/forks")

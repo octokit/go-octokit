@@ -8,6 +8,8 @@ import (
 	"github.com/jingweno/go-sawyer/hypermedia"
 )
 
+// GistsURL is a template for accessing a particular gist from GitHub with
+// a specific identification code that can be expanded to a full address.
 var GistsURL = Hyperlink("gists{/gist_id}")
 
 func (c *Client) Gists(url *url.URL) (gists *GistsService) {

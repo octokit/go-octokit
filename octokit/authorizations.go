@@ -7,6 +7,8 @@ import (
 	"github.com/jingweno/go-sawyer/hypermedia"
 )
 
+// AuthorizationsURL is a template for accessing authorizations associated with a
+// given identification number that can be expanded to a full address.
 var AuthorizationsURL = Hyperlink("authorizations{/id}")
 
 // Create a AuthorizationsService with the base url.URL

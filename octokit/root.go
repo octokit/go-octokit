@@ -6,6 +6,8 @@ import (
 	"github.com/jingweno/go-sawyer/hypermedia"
 )
 
+// RootURL is simply the root GitHub address. Accessing this address provides all
+// other accessible templates and addresses.
 var RootURL = Hyperlink("")
 
 func (c *Client) Rel(name string, m map[string]interface{}) (*url.URL, error) {

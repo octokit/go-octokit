@@ -4,6 +4,7 @@ import (
 	"net/url"
 )
 
+// EmojisURL is an address for accessing the emojis available for use on GitHub.
 var EmojisURL = Hyperlink("/emojis")
 
 // Create a EmojisService with the base url.URL

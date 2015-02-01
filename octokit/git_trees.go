@@ -4,6 +4,10 @@ import (
 	"net/url"
 )
 
+// GitTreesURL is a template for accessing git trees at a particular sha hash or branch
+// of a particular repository of a particular owner. The request may be set to be
+// recursive for a particular level of depth (0 is no recursion) to follow sub-trees from
+// the primary repository.
 var GitTreesURL = Hyperlink("repos/{owner}/{repo}/git/trees/{sha}{?recursive}")
 
 func (c *Client) GitTrees(url *url.URL) (trees *GitTreesService) {

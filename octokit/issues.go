@@ -7,6 +7,8 @@ import (
 	"github.com/jingweno/go-sawyer/hypermedia"
 )
 
+// RepoIssuesURL is a template for accessing a partiular numbered issue in a particular
+// repository for a particular owner that can be expanded to a full address.
 var RepoIssuesURL = Hyperlink("repos/{owner}/{repo}/issues{/number}")
 
 // Create a IssuesService with the base url.URL

@@ -7,6 +7,8 @@ import (
 	"github.com/jingweno/go-sawyer/hypermedia"
 )
 
+// ReleasesURL is a template for accessing a partiular numbered release in a particular
+// repository for a particular owner that can be expanded to a full address.
 var ReleasesURL = Hyperlink("repos/{owner}/{repo}/releases{/id}")
 
 type Release struct {

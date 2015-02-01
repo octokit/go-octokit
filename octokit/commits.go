@@ -8,6 +8,8 @@ import (
 	"github.com/jingweno/go-sawyer/hypermedia"
 )
 
+// CommitsURL is a template for accessing a particular commit in a specific owner's
+// repository with a particular sha hash that can be expanded to a full address.
 var CommitsURL = Hyperlink("repos/{owner}/{repo}/commits{/sha}")
 
 func (c *Client) Commits(url *url.URL) (commits *CommitsService) {

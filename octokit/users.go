@@ -7,6 +7,9 @@ import (
 	"github.com/jingweno/go-sawyer/hypermedia"
 )
 
+//Hyperlinks to various ways of accessing users on github.
+//CurrentUserURL is the address for the current user.
+//UserURL is a template for the address any particular user.
 var (
 	CurrentUserURL = Hyperlink("user")
 	UserURL        = Hyperlink("users{/user}")

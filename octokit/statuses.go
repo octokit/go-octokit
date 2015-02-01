@@ -7,6 +7,9 @@ import (
 	"github.com/jingweno/go-sawyer/hypermedia"
 )
 
+// StatusesURL is a template for accessing statuses, such as build state, with of a particular
+// reference or hash in a particular repository for a particular owner that can be expanded
+// to a full address.
 var StatusesURL = Hyperlink("repos/{owner}/{repo}/statuses/{ref}")
 
 // Create a StatusesService with the base url.URL
