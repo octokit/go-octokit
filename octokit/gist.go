@@ -8,40 +8,41 @@ import (
 	"github.com/jingweno/go-sawyer/hypermedia"
 )
 
-// GistsURL is a template for accessing a particular gist from GitHub with
+// GistsURL is a template for accessing gists from GitHub possibly with
 // a specific identification code that can be expanded to a full address.
 var GistsURL = Hyperlink("gists{/gist_id}")
 
+// Gists creates a GistsService with a base url
 func (c *Client) Gists(url *url.URL) (gists *GistsService) {
 	gists = &GistsService{client: c, URL: url}
 	return
 }
 
-// A service to return gist records
+// GistsService is a service providing access to gists from a particular url
 type GistsService struct {
 	client *Client
 	URL    *url.URL
 }
 
-// Get a gist based on GistsService#URL
+// One gets a specific gist based on the url of the service
 func (g *GistsService) One() (gist *Gist, result *Result) {
 	result = g.client.get(g.URL, &gist)
 	return
 }
 
-// Update a gist based on GistsService#URL
+// Update modifies a specific gist based on the url of the service
 func (g *GistsService) Update(params interface{}) (gist *Gist, result *Result) {
 	result = g.client.put(g.URL, params, &gist)
 	return
 }
 
-// Get a list of gists based on UserService#URL
+// All gets a list of all gists associated with the url of the service
 func (g *GistsService) All() (gists []Gist, result *Result) {
 	result = g.client.get(g.URL, &gists)
 	return
 }
 
-// Get raw contents of first file in a gist
+// Raw gets the raw contents of first file in a specific gist
 func (g *GistsService) Raw() (body io.ReadCloser, result *Result) {
 	var gist *Gist
 	var rawURL *url.URL
@@ -56,6 +57,7 @@ func (g *GistsService) Raw() (body io.ReadCloser, result *Result) {
 	return
 }
 
+// GistFile is a representation of the file stored in a gist
 type GistFile struct {
 	*hypermedia.HALResource
 
@@ -68,6 +70,8 @@ type GistFile struct {
 	Content   string `json:"content,omitempty"`
 }
 
+// Gist is a representation of a gist on github, a standalone file that acts as a
+// sole element of its own repository
 type Gist struct {
 	*hypermedia.HALResource
 

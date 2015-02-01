@@ -1,5 +1,7 @@
 package octokit
 
+// Organization is a representation of an organization on GitHub, containing
+// all identifying information related to the specific organization.
 type Organization struct {
 	AvatarURL        string `json:"avatar_url,omitempty"`
 	PublicMembersURL string `json:"public_member_url,omitempty"`
