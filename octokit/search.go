@@ -7,7 +7,7 @@ import (
 
 var SearchURL = Hyperlink("search{/type}?q={query}{&page,per_page,sort,order}")
 
-func (c *Client) Searches(url *url.URL) (searches *SearchService) {
+func (c *Client) Search(url *url.URL) (searches *SearchService) {
 	searches = &SearchService{client: c, URL: url}
 	return
 }

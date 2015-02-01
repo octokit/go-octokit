@@ -21,7 +21,7 @@ func TestUserSearchService_All(t *testing.T) {
 		"query": "dhruvsinghal"})
 	assert.NoError(t, err)
 
-	searchResults, result := client.Searches(url).UserSearch()
+	searchResults, result := client.Search(url).UserSearch()
 
 	assert.False(t, result.HasError())
 	assert.False(t, searchResults.IncompleteResults)
