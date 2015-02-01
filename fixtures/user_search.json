@@ -1,0 +1,46 @@
+{
+  "total_count": 2,
+  "incomplete_results": false,
+  "items": [
+    {
+      "login": "dhruvsinghal",
+      "id": 3338555,
+      "avatar_url": "https://avatars.githubusercontent.com/u/3338555?v=3",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dhruvsinghal",
+      "html_url": "https://github.com/dhruvsinghal",
+      "followers_url": "https://api.github.com/users/dhruvsinghal/followers",
+      "following_url": "https://api.github.com/users/dhruvsinghal/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dhruvsinghal/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dhruvsinghal/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dhruvsinghal/subscriptions",
+      "organizations_url": "https://api.github.com/users/dhruvsinghal/orgs",
+      "repos_url": "https://api.github.com/users/dhruvsinghal/repos",
+      "events_url": "https://api.github.com/users/dhruvsinghal/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dhruvsinghal/received_events",
+      "type": "User",
+      "site_admin": false,
+      "score": 31.37736
+    },
+    {
+      "login": "dhruvsinghal5",
+      "id": 9294878,
+      "avatar_url": "https://avatars.githubusercontent.com/u/9294878?v=3",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dhruvsinghal5",
+      "html_url": "https://github.com/dhruvsinghal5",
+      "followers_url": "https://api.github.com/users/dhruvsinghal5/followers",
+      "following_url": "https://api.github.com/users/dhruvsinghal5/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dhruvsinghal5/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dhruvsinghal5/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dhruvsinghal5/subscriptions",
+      "organizations_url": "https://api.github.com/users/dhruvsinghal5/orgs",
+      "repos_url": "https://api.github.com/users/dhruvsinghal5/repos",
+      "events_url": "https://api.github.com/users/dhruvsinghal5/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dhruvsinghal5/received_events",
+      "type": "User",
+      "site_admin": false,
+      "score": 8.130968
+    }
+  ]
+}
