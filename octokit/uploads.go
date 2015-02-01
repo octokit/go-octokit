@@ -6,8 +6,9 @@ import (
 )
 
 // Create an UploadsService with the base url.URL
-func (c *Client) Uploads(url *url.URL) *UploadsService {
-	return &UploadsService{client: c, URL: url}
+func (c *Client) Uploads(url *url.URL) (uploads *UploadsService) {
+	uploads = &UploadsService{client: c, URL: url}
+	return
 }
 
 type UploadsService struct {
