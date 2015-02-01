@@ -85,3 +85,39 @@ func TestSearchService_RepositorySearch(t *testing.T) {
 	assert.Equal(t, searchResults.Items[1].ID, 8511889)
 	assert.Equal(t, searchResults.Items[1].FullName, "ines949494/ikadasd")
 }
+
+func TestSearchService_CodeSearch(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/search/code", func(w http.ResponseWriter,
+		r *http.Request) {
+		testMethod(t, r, "GET")
+		respondWithJSON(w, loadFixture("code_search.json"))
+	})
+
+	url, err := SearchURL.Expand(map[string]interface{}{
+		"type":  "code",
+		"query": "addClass in:file language:js repo:jquery/jquery"})
+	assert.NoError(t, err)
+
+	searchResults, result := client.Search(url).CodeSearch()
+
+	assert.False(t, result.HasError())
+	assert.False(t, searchResults.IncompleteResults)
+	assert.Equal(t, searchResults.TotalCount, 7)
+	assert.Equal(t, len(searchResults.Items), 7)
+	assert.Equal(t, searchResults.Items[0].Name, "classes.js")
+	assert.Equal(t, searchResults.Items[0].Path, "src/attributes/classes.js")
+	assert.Equal(t, searchResults.Items[0].SHA,
+		"f9dba94f7de43d6b6b7256e05e0d17c4741a4cde")
+	assert.Equal(t, string(searchResults.Items[0].URL),
+		"https://api.github.com/repositories/167174/contents/src/attributes/classes.js?ref=53aa87f3bf4284763405f3eb8affff296e55ba4f")
+	assert.Equal(t, searchResults.Items[0].Git_URL,
+		"https://api.github.com/repositories/167174/git/blobs/f9dba94f7de43d6b6b7256e05e0d17c4741a4cde")
+	assert.Equal(t, searchResults.Items[0].HTML_URL,
+		"https://github.com/jquery/jquery/blob/53aa87f3bf4284763405f3eb8affff296e55ba4f/src/attributes/classes.js")
+	assert.Equal(t, searchResults.Items[0].Repository.ID, 167174)
+	assert.Equal(t, searchResults.Items[0].Repository.FullName,
+		"jquery/jquery")
+}
