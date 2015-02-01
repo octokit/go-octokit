@@ -32,6 +32,13 @@ func (g *SearchService) IssueSearch() (issueSearchResults IssueSearchResults,
 	return
 }
 
+// Get the repository search results based on SearchService#URL
+func (g *SearchService) RepositorySearch() (
+	repositorySearchResults RepositorySearchResults, result *Result) {
+	result = g.client.get(g.URL, &repositorySearchResults)
+	return
+}
+
 type UserSearchResults struct {
 	*hypermedia.HALResource
 
@@ -46,4 +53,12 @@ type IssueSearchResults struct {
 	TotalCount        int     `json:"total_count,omitempty"`
 	IncompleteResults bool    `json:"incomplete_results,omitempty"`
 	Items             []Issue `json:"items,omitempty"`
+}
+
+type RepositorySearchResults struct {
+	*hypermedia.HALResource
+
+	TotalCount        int          `json:"total_count,omitempty"`
+	IncompleteResults bool         `json:"incomplete_results,omitempty"`
+	Items             []Repository `json:"items,omitempty"`
 }
