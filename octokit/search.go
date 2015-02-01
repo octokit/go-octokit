@@ -18,10 +18,17 @@ type SearchService struct {
 	URL    *url.URL
 }
 
-// Get a list of search results based on SearchService#URL
+// Get the user search results based on SearchService#URL
 func (g *SearchService) UserSearch() (userSearchResults UserSearchResults,
 	result *Result) {
 	result = g.client.get(g.URL, &userSearchResults)
+	return
+}
+
+// Get the issue search results based on SearchService#URL
+func (g *SearchService) IssueSearch() (issueSearchResults IssueSearchResults,
+	result *Result) {
+	result = g.client.get(g.URL, &issueSearchResults)
 	return
 }
 
@@ -31,4 +38,12 @@ type UserSearchResults struct {
 	TotalCount        int    `json:"total_count,omitempty"`
 	IncompleteResults bool   `json:"incomplete_results,omitempty"`
 	Items             []User `json:"items,omitempty"`
+}
+
+type IssueSearchResults struct {
+	*hypermedia.HALResource
+
+	TotalCount        int     `json:"total_count,omitempty"`
+	IncompleteResults bool    `json:"incomplete_results,omitempty"`
+	Items             []Issue `json:"items,omitempty"`
 }
