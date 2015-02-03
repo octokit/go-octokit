@@ -34,6 +34,7 @@ func TestRepositoresService_One(t *testing.T) {
 	assert.Equal(t, "https://github.com/jingweno/octokat.git", repo.CloneURL)
 	assert.Equal(t, "git://github.com/jingweno/octokat.git", repo.GitURL)
 	assert.Equal(t, "git@github.com:jingweno/octokat.git", repo.SSHURL)
+	assert.Equal(t, 79, repo.StargazersCount)
 	assert.Equal(t, "master", repo.MasterBranch)
 	assert.False(t, repo.Permissions.Admin)
 	assert.False(t, repo.Permissions.Push)
@@ -59,6 +60,7 @@ func TestRepositoresService_All(t *testing.T) {
 
 	repos, result := client.Repositories(url).All()
 
+	fmt.Println(result.Error())
 	assert.False(t, result.HasError())
 	assert.Len(t, repos, 30)
 	assert.Equal(t, testURLStringOf("organizations/4223/repos?page=2"), string(*result.NextPage))
