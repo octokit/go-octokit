@@ -19,28 +19,28 @@ type SearchService struct {
 }
 
 // Get the user search results based on SearchService#URL
-func (g *SearchService) UserSearch() (userSearchResults UserSearchResults,
+func (g *SearchService) Users() (userSearchResults UserSearchResults,
 	result *Result) {
 	result = g.client.get(g.URL, &userSearchResults)
 	return
 }
 
 // Get the issue search results based on SearchService#URL
-func (g *SearchService) IssueSearch() (issueSearchResults IssueSearchResults,
+func (g *SearchService) Issues() (issueSearchResults IssueSearchResults,
 	result *Result) {
 	result = g.client.get(g.URL, &issueSearchResults)
 	return
 }
 
 // Get the repository search results based on SearchService#URL
-func (g *SearchService) RepositorySearch() (
+func (g *SearchService) Repositories() (
 	repositorySearchResults RepositorySearchResults, result *Result) {
 	result = g.client.get(g.URL, &repositorySearchResults)
 	return
 }
 
 // Get the code search results based on SearchService#URL
-func (g *SearchService) CodeSearch() (
+func (g *SearchService) Code() (
 	codeSearchResults CodeSearchResults, result *Result) {
 	result = g.client.get(g.URL, &codeSearchResults)
 	return
@@ -85,7 +85,7 @@ type CodeFile struct {
 	Path       string     `json:"path,omitempty"`
 	SHA        string     `json:"sha,omitempty"`
 	URL        Hyperlink  `json:"url,omitempty"`
-	Git_URL    Hyperlink  `json:"git_url,omitempty"`
-	HTML_URL   Hyperlink  `json:"html_url,omitempty"`
+	GitURL     Hyperlink  `json:"git_url,omitempty"`
+	HTMLURL    Hyperlink  `json:"html_url,omitempty"`
 	Repository Repository `json:"repository,omitempty"`
 }

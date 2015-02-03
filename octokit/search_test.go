@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSearchService_UserSearch(t *testing.T) {
+func TestSearchService_Users(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -21,7 +21,7 @@ func TestSearchService_UserSearch(t *testing.T) {
 		"query": "dhruvsinghal"})
 	assert.NoError(t, err)
 
-	searchResults, result := client.Search(url).UserSearch()
+	searchResults, result := client.Search(url).Users()
 
 	assert.False(t, result.HasError())
 	assert.False(t, searchResults.IncompleteResults)
@@ -33,7 +33,7 @@ func TestSearchService_UserSearch(t *testing.T) {
 	assert.Equal(t, searchResults.Items[1].Login, "dhruvsinghal5")
 }
 
-func TestSearchService_IssueSearch(t *testing.T) {
+func TestSearchService_Issues(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -48,7 +48,7 @@ func TestSearchService_IssueSearch(t *testing.T) {
 		"query": "color"})
 	assert.NoError(t, err)
 
-	searchResults, result := client.Search(url).IssueSearch()
+	searchResults, result := client.Search(url).Issues()
 
 	assert.False(t, result.HasError())
 	assert.False(t, searchResults.IncompleteResults)
@@ -59,7 +59,7 @@ func TestSearchService_IssueSearch(t *testing.T) {
 	assert.Equal(t, searchResults.Items[1].Title, "Colorizer")
 }
 
-func TestSearchService_RepositorySearch(t *testing.T) {
+func TestSearchService_Repositories(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -74,7 +74,7 @@ func TestSearchService_RepositorySearch(t *testing.T) {
 		"query": "asdfghjk"})
 	assert.NoError(t, err)
 
-	searchResults, result := client.Search(url).RepositorySearch()
+	searchResults, result := client.Search(url).Repositories()
 
 	assert.False(t, result.HasError())
 	assert.False(t, searchResults.IncompleteResults)
@@ -86,7 +86,7 @@ func TestSearchService_RepositorySearch(t *testing.T) {
 	assert.Equal(t, searchResults.Items[1].FullName, "ines949494/ikadasd")
 }
 
-func TestSearchService_CodeSearch(t *testing.T) {
+func TestSearchService_Code(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -101,7 +101,7 @@ func TestSearchService_CodeSearch(t *testing.T) {
 		"query": "addClass in:file language:js repo:jquery/jquery"})
 	assert.NoError(t, err)
 
-	searchResults, result := client.Search(url).CodeSearch()
+	searchResults, result := client.Search(url).Code()
 
 	assert.False(t, result.HasError())
 	assert.False(t, searchResults.IncompleteResults)
@@ -113,9 +113,9 @@ func TestSearchService_CodeSearch(t *testing.T) {
 		"f9dba94f7de43d6b6b7256e05e0d17c4741a4cde")
 	assert.Equal(t, string(searchResults.Items[0].URL),
 		"https://api.github.com/repositories/167174/contents/src/attributes/classes.js?ref=53aa87f3bf4284763405f3eb8affff296e55ba4f")
-	assert.Equal(t, searchResults.Items[0].Git_URL,
+	assert.Equal(t, searchResults.Items[0].GitURL,
 		"https://api.github.com/repositories/167174/git/blobs/f9dba94f7de43d6b6b7256e05e0d17c4741a4cde")
-	assert.Equal(t, searchResults.Items[0].HTML_URL,
+	assert.Equal(t, searchResults.Items[0].HTMLURL,
 		"https://github.com/jquery/jquery/blob/53aa87f3bf4284763405f3eb8affff296e55ba4f/src/attributes/classes.js")
 	assert.Equal(t, searchResults.Items[0].Repository.ID, 167174)
 	assert.Equal(t, searchResults.Items[0].Repository.FullName,
