@@ -71,7 +71,7 @@
     "releases_url": "https://api.github.com/repos/rails/rails/releases{/id}",
     "created_at": "2008-04-11T02:19:47Z",
     "updated_at": "2013-11-01T12:46:28Z",
-    "pushed_at": "2013-11-01T12:45:22Z",
+    "pushed_at": null,
     "git_url": "git://github.com/rails/rails.git",
     "ssh_url": "git@github.com:rails/rails.git",
     "clone_url": "https://github.com/rails/rails.git",
