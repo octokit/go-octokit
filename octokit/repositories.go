@@ -67,9 +67,9 @@ type Repository struct {
 	Size            int           `json:"size,omitempty"`
 	MasterBranch    string        `json:"master_branch,omitempty"`
 	OpenIssues      int           `json:"open_issues,omitempty"`
-	PushedAt        time.Time     `json:"pushed_at,omitempty"`
-	CreatedAt       time.Time     `json:"created_at,omitempty"`
-	UpdatedAt       time.Time     `json:"updated_at,omitempty"`
+	PushedAt        *time.Time    `json:"pushed_at,omitempty"`
+	CreatedAt       *time.Time    `json:"created_at,omitempty"`
+	UpdatedAt       *time.Time    `json:"updated_at,omitempty"`
 	Permissions     Permissions   `json:"permissions,omitempty"`
 	Organization    *Organization `json:"organization,omitempty"`
 	Parent          *Repository   `json:"parent,omitempty"`
