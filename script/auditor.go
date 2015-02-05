@@ -19,7 +19,7 @@ var sourceFolder = filepath.FromSlash(os.Getenv("GOPATH") +
 	"/src/github.com/octokit/go-octokit/octokit/")
 
 var URLDeclarationMatcher = regexp.MustCompile(
-	`[A-Za-z]+URL = Hyperlink\(\"([\/a-z0-9_{}]+)\"\)`)
+	`[A-Za-z]+URL\s*=\s*Hyperlink\(\"([\/a-z0-9_{}]+)\"\)`)
 
 func listSourceFiles(dirname string) []string {
 	var result []string
@@ -36,20 +36,32 @@ func listSourceFiles(dirname string) []string {
 	return result
 }
 
-func extractURLFromSourceFile(filename string) string {
+func extractURLsFromSourceFile(filename string) (results []string) {
 	file, err := os.Open(filename)
 	if err != nil {
 		panic(err)
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
+	varBlockPresent := false
 	for scanner.Scan() {
-		res := URLDeclarationMatcher.FindStringSubmatch(scanner.Text())
+		text := scanner.Text()
+		if text == "var (" {
+			varBlockPresent = true
+		}
+		res := URLDeclarationMatcher.FindStringSubmatch(text)
 		if len(res) > 1 {
-			return res[1]
+
+			results = append(results, res[1])
+			if !varBlockPresent {
+				return
+			}
+		}
+		if varBlockPresent && text == ")" {
+			return
 		}
 	}
-	return ""
+	return
 }
 
 func main() {
@@ -77,20 +89,31 @@ func main() {
 
 	for _, v := range dat {
 		v := v.(string)
-		existingValues[v[len(githubURL):]] = false
+		existingValues[v[strings.Index(v, ".com/")+5:]] = false
 	}
 
+	var apisFoundCount = 0
+
 	for _, f := range listSourceFiles(sourceFolder) {
-		url := extractURLFromSourceFile(sourceFolder +
+		urls := extractURLsFromSourceFile(sourceFolder +
 			string(os.PathSeparator) + f)
-		if url != "" {
-			if _, ok := existingValues[url]; ok {
-				existingValues[url] = true
-			} else {
-				extraValues[url] = true
+		for _, url := range urls {
+			if len(url) > 1 && url[0] == '/' {
+				url = url[1:]
+			}
+			if url != "" {
+				apisFoundCount += 1
+				if _, ok := existingValues[url]; ok {
+					existingValues[url] = true
+				} else {
+					extraValues[url] = true
+				}
 			}
 		}
 	}
+
+	fmt.Printf("%d APIs found on %s.\n", len(existingValues), githubURL)
+	fmt.Printf("%d APIs implementations found.\n", apisFoundCount)
 
 	fmt.Println("\nExisting APIs:")
 
