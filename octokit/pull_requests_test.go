@@ -13,10 +13,7 @@ func TestPullRequestService_One(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/octokit/go-octokit/pulls/1", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWithJSON(w, loadFixture("pull_request.json"))
-	})
+	stubGet(t, "/repos/octokit/go-octokit/pulls/1", "pull_request", nil)
 
 	url, err := PullRequestsURL.Expand(M{"owner": "octokit", "repo": "go-octokit", "number": 1})
 	assert.NoError(t, err)
@@ -101,13 +98,8 @@ func TestPullRequestService_All(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/rails/rails/pulls", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		header := w.Header()
-		link := fmt.Sprintf(`<%s>; rel="next", <%s>; rel="last"`, testURLOf("repositories/8514/pulls?page=2"), testURLOf("repositories/8514/pulls?page=14"))
-		header.Set("Link", link)
-		respondWithJSON(w, loadFixture("pull_requests.json"))
-	})
+	link := fmt.Sprintf(`<%s>; rel="next", <%s>; rel="last"`, testURLOf("repositories/8514/pulls?page=2"), testURLOf("repositories/8514/pulls?page=14"))
+	stubGet(t, "/repos/rails/rails/pulls", "pull_requests", map[string]string{"Link": link})
 
 	url, err := PullRequestsURL.Expand(M{"owner": "rails", "repo": "rails"})
 	assert.NoError(t, err)

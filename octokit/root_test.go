@@ -1,7 +1,6 @@
 package octokit
 
 import (
-	"net/http"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -11,10 +10,7 @@ func TestRootService_One(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWithJSON(w, loadFixture("root.json"))
-	})
+	stubGet(t, "/", "root", nil)
 
 	url, err := RootURL.Expand(nil)
 	assert.NoError(t, err)
@@ -28,10 +24,7 @@ func TestClientRel(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWithJSON(w, loadFixture("root.json"))
-	})
+	stubGet(t, "/", "root", nil)
 
 	u, err := client.Rel("user", M{"user": "root"})
 	assert.NoError(t, err)
