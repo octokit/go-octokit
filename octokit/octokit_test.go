@@ -122,3 +122,14 @@ func loadFixture(f string) string {
 	c, _ := ioutil.ReadFile(p)
 	return string(c)
 }
+
+func stubGet(t *testing.T, path, fixture string) {
+	stubRequest(t, "GET", path, fixture)
+}
+
+func stubRequest(t *testing.T, method string, path string, fixture string) {
+	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, method)
+		respondWithJSON(w, loadFixture(fixture+".json"))
+	})
+}
