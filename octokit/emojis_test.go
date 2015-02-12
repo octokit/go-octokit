@@ -10,7 +10,7 @@ func TestRootEmojisService_All(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	stubGet(t, "/emojis", "emojis")
+	stubGet(t, "/emojis", "emojis", nil)
 
 	url, err := EmojisURL.Expand(nil)
 	assert.NoError(t, err)
