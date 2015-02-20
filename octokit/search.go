@@ -3,25 +3,28 @@ package octokit
 import (
 	"github.com/jingweno/go-sawyer/hypermedia"
 	"net/url"
+	"regexp"
 )
 
-var SearchURL = Hyperlink("search{/type}?q={query}&page={page}&per_page={per_page}&sort={sort}&order={order}")
+var SearchURITemplate = "search{/type}?q={query}&page={page}&per_page={per_page}&sort={sort}&order={order}"
 
-func (c *Client) Search(uriTemplate *Hyperlink) (searches *SearchService) {
-	searches = &SearchService{client: c, uriTemplate: uriTemplate}
-	return
+var defaultOptions = M{"page": 0, "per_page": 30, "sort": "asc", "order": ""}
+
+func (c *Client) Search(uriTemplate string) *SearchService {
+	return &SearchService{client: c, uriTemplate: uriTemplate}
 }
 
 // A service to return search records
 type SearchService struct {
-	client      *Client
-	uriTemplate *Hyperlink
+	GenericService
 }
 
 // Get the user search results based on SearchService#URL
-func (g *SearchService) Users(options M) (userSearchResults UserSearchResults,
+func (g *SearchService) Users(params M) (userSearchResults UserSearchResults,
 	result *Result) {
-	result = g.client.get(g.uriTemplate.Expand(m), &userSearchResults)
+
+	result = g.client.get(g.SubstituteDefaultOptions(params, defaultOptions,
+		M{"type": "users"}), &userSearchResults)
 	return
 }
 
