@@ -5,44 +5,44 @@ import (
 	"net/url"
 )
 
-var SearchURL = Hyperlink("search{/type}?q={query}{&page,per_page,sort,order}")
+var SearchURL = Hyperlink("search{/type}?q={query}&page={page}&per_page={per_page}&sort={sort}&order={order}")
 
-func (c *Client) Search(url *url.URL) (searches *SearchService) {
-	searches = &SearchService{client: c, URL: url}
+func (c *Client) Search(uriTemplate *Hyperlink) (searches *SearchService) {
+	searches = &SearchService{client: c, uriTemplate: uriTemplate}
 	return
 }
 
 // A service to return search records
 type SearchService struct {
-	client *Client
-	URL    *url.URL
+	client      *Client
+	uriTemplate *Hyperlink
 }
 
 // Get the user search results based on SearchService#URL
-func (g *SearchService) Users() (userSearchResults UserSearchResults,
+func (g *SearchService) Users(options M) (userSearchResults UserSearchResults,
 	result *Result) {
-	result = g.client.get(g.URL, &userSearchResults)
+	result = g.client.get(g.uriTemplate.Expand(m), &userSearchResults)
 	return
 }
 
 // Get the issue search results based on SearchService#URL
-func (g *SearchService) Issues() (issueSearchResults IssueSearchResults,
+func (g *SearchService) Issues(options M) (issueSearchResults IssueSearchResults,
 	result *Result) {
-	result = g.client.get(g.URL, &issueSearchResults)
+	result = g.client.get(g.uriTemplate.Expand(m), &issueSearchResults)
 	return
 }
 
 // Get the repository search results based on SearchService#URL
-func (g *SearchService) Repositories() (
+func (g *SearchService) Repositories(options M) (
 	repositorySearchResults RepositorySearchResults, result *Result) {
-	result = g.client.get(g.URL, &repositorySearchResults)
+	result = g.client.get(g.uriTemplate.Expand(m), &repositorySearchResults)
 	return
 }
 
 // Get the code search results based on SearchService#URL
-func (g *SearchService) Code() (
+func (g *SearchService) Code(options M) (
 	codeSearchResults CodeSearchResults, result *Result) {
-	result = g.client.get(g.URL, &codeSearchResults)
+	result = g.client.get(g.uriTemplate.Expand(m), &codeSearchResults)
 	return
 }
 
