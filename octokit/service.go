@@ -1,34 +1,25 @@
 package octokit
 
-import "net/url"
+import (
+	"net/url"
+)
 
 type GenericService struct {
-	uriTemplate string
 	client      *Client
+	uriTemplate string
 }
 
-func (s *GenericService) SubstituteDefaultOptions(input M, defaultOptions M,
-	dynamicOptions M) url.URL {
-	for _, opt := range s.FindOptions() {
-		if val, ok := input[opt]; ok {
-			combinedMap[opt] = val
-		} else if val, ok := dynamicOptions[opt]; ok {
-			combinedMap[opt] = val
-		} else {
-			val, _ := defaultOptions[opt]
-			combinedMap[opt] = val
-		}
+func mergeMaps(first M, second M) M {
+	combinedMap := make(M)
+	for k, v := range second {
+		combinedMap[k] = v
 	}
-	return Hyperlink(g.uriTemplate).Expand(combinedMap)
+	for k, v := range first {
+		combinedMap[k] = v
+	}
+	return combinedMap
 }
 
-var queryParamRegex = regex.MustCompile("\\{[a-zA-Z0-9_]+\\}")
-
-func (s *GenericService) FindOptions() []string {
-	nestedMatches := queryParamRegex.FindAllStringSubmatch(s.uriTemplate, -1)
-	matches := make([]string, len(nestedMatches))
-	for i, e := range nestedMatches {
-		matches[i] = e[1]
-	}
-	return matches
+func (g *GenericService) getURL(params M, staticParams M) (*url.URL, error) {
+	return Hyperlink(g.uriTemplate).Expand(mergeMaps(params, staticParams))
 }

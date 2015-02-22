@@ -2,50 +2,60 @@ package octokit
 
 import (
 	"github.com/jingweno/go-sawyer/hypermedia"
-	"net/url"
-	"regexp"
 )
 
 var SearchURITemplate = "search{/type}?q={query}&page={page}&per_page={per_page}&sort={sort}&order={order}"
 
-var defaultOptions = M{"page": 0, "per_page": 30, "sort": "asc", "order": ""}
-
 func (c *Client) Search(uriTemplate string) *SearchService {
-	return &SearchService{client: c, uriTemplate: uriTemplate}
+	return &SearchService{&GenericService{client: c, uriTemplate: uriTemplate}}
 }
 
 // A service to return search records
 type SearchService struct {
-	GenericService
+	*GenericService
 }
 
 // Get the user search results based on SearchService#URL
 func (g *SearchService) Users(params M) (userSearchResults UserSearchResults,
 	result *Result) {
-
-	result = g.client.get(g.SubstituteDefaultOptions(params, defaultOptions,
-		M{"type": "users"}), &userSearchResults)
+	url, e := g.getURL(params, M{"type": "users"})
+	if e != nil {
+		return UserSearchResults{}, &Result{Err: e}
+	}
+	result = g.GenericService.client.get(url, &userSearchResults)
 	return
 }
 
 // Get the issue search results based on SearchService#URL
-func (g *SearchService) Issues(options M) (issueSearchResults IssueSearchResults,
+func (g *SearchService) Issues(params M) (issueSearchResults IssueSearchResults,
 	result *Result) {
-	result = g.client.get(g.uriTemplate.Expand(m), &issueSearchResults)
+	url, e := g.getURL(params, M{"type": "issues"})
+	if e != nil {
+		return IssueSearchResults{}, &Result{Err: e}
+	}
+	result = g.GenericService.client.get(url, &issueSearchResults)
 	return
 }
 
 // Get the repository search results based on SearchService#URL
-func (g *SearchService) Repositories(options M) (
+func (g *SearchService) Repositories(params M) (
 	repositorySearchResults RepositorySearchResults, result *Result) {
-	result = g.client.get(g.uriTemplate.Expand(m), &repositorySearchResults)
+	url, e := g.getURL(params, M{"type": "repositories"})
+	if e != nil {
+		return RepositorySearchResults{}, &Result{Err: e}
+	}
+	result = g.GenericService.client.get(url, &repositorySearchResults)
 	return
 }
 
 // Get the code search results based on SearchService#URL
-func (g *SearchService) Code(options M) (
-	codeSearchResults CodeSearchResults, result *Result) {
-	result = g.client.get(g.uriTemplate.Expand(m), &codeSearchResults)
+func (g *SearchService) Code(params M) (codeSearchResults CodeSearchResults,
+	result *Result) {
+	url, e := g.getURL(params, M{"type": "code"})
+	if e != nil {
+		return CodeSearchResults{}, &Result{Err: e}
+	}
+	result = g.GenericService.client.get(url, &codeSearchResults)
 	return
 }
 
