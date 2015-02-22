@@ -4,7 +4,7 @@ import (
 	"github.com/jingweno/go-sawyer/hypermedia"
 )
 
-var SearchURITemplate = "search{/type}?q={query}&page={page}&per_page={per_page}&sort={sort}&order={order}"
+var SearchURITemplate = "search{/type}?q={query}{&page,per_page,sort,order}"
 
 func (c *Client) Search(uriTemplate string) *SearchService {
 	return &SearchService{&GenericService{client: c, uriTemplate: uriTemplate}}
