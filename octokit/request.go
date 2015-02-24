@@ -39,7 +39,8 @@ func (r *Request) Put(input interface{}, output interface{}) (*Response, error) 
 	return r.createResponse(r.Request.Put(), output)
 }
 
-func (r *Request) Delete(output interface{}) (*Response, error) {
+func (r *Request) Delete(input interface{}, output interface{}) (*Response, error) {
+	r.setBody(input)
 	return r.createResponse(r.Request.Delete(), output)
 }
 

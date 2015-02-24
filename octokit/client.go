@@ -69,15 +69,15 @@ func (c *Client) post(url *url.URL, input interface{}, output interface{}) (resu
 	})
 }
 
-func (c *Client) put(url *url.URL, input interface{}, output interface{}) *Result {
+func (c *Client) put(url *url.URL, input interface{}, output interface{}) (result *Result) {
 	return sendRequest(c, url, func(req *Request) (*Response, error) {
 		return req.Put(input, output)
 	})
 }
 
-func (c *Client) delete(url *url.URL, output interface{}) (result *Result) {
+func (c *Client) delete(url *url.URL, input interface{}, output interface{}) (result *Result) {
 	return sendRequest(c, url, func(req *Request) (*Response, error) {
-		return req.Delete(output)
+		return req.Delete(input, output)
 	})
 }
 
