@@ -91,10 +91,11 @@ type PullRequestCommit struct {
 }
 
 type PullRequestParams struct {
-	Base  string `json:"base,omitempty"`
-	Head  string `json:"head,omitempty"`
-	Title string `json:"title,omitempty"`
-	Body  string `json:"body,omitempty"`
+	Base     string `json:"base,omitempty"`
+	Head     string `json:"head,omitempty"`
+	Title    string `json:"title,omitempty"`
+	Body     string `json:"body,omitempty"`
+	Assignee string `json:"assignee,omitempty"`
 }
 
 type PullRequestForIssueParams struct {
