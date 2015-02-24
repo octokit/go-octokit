@@ -22,9 +22,15 @@ type EmailsService struct {
 	URL    *url.URL
 }
 
-// Get a list of emails based on EmailsService#URL
+// Get a list of emails for the current user
 func (e *EmailsService) All() (emails []Email, result *Result) {
 	result = e.client.get(e.URL, &emails)
+	return
+}
+
+// Adds a list of emails for the current user
+func (e *EmailsService) Create(params interface{}) (emails []Email, result *Result) {
+	result = e.client.post(e.URL, params, &emails)
 	return
 }
 

@@ -43,3 +43,27 @@ func TestEmailsService_All(t *testing.T) {
 	assert.False(t, result.HasError())
 	assert.Len(t, allEmails, 1)
 }
+
+func TestEmailsService_Create(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/user/emails", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testBody(t, r, "[\"testEmail@gmail.com\",\"anotherEmail@gmail.com\"]\n")
+		respondWithJSON(w, loadFixture("emails.json"))
+	})
+
+	url, _ := EmailUrl.Expand(nil)
+
+	params := []string{"testEmail@gmail.com", "anotherEmail@gmail.com"}
+	allEmails, result := client.Emails(url).Create(params)
+
+	assert.False(t, result.HasError())
+	assert.Len(t, allEmails, 1)
+
+	email := allEmails[0]
+	assert.Equal(t, "rz99@cornell.edu", email.Email)
+	assert.Equal(t, true, email.Verified)
+	assert.Equal(t, true, email.Primary)
+}
