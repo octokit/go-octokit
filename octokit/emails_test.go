@@ -50,13 +50,13 @@ func TestEmailsService_Create(t *testing.T) {
 
 	mux.HandleFunc("/user/emails", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, "[\"testEmail@gmail.com\",\"anotherEmail@gmail.com\"]\n")
+		testBody(t, r, "[\"test@example.com\",\"otherTest@example.com\"]\n")
 		respondWithJSON(w, loadFixture("emails.json"))
 	})
 
 	url, _ := EmailUrl.Expand(nil)
 
-	params := []string{"testEmail@gmail.com", "anotherEmail@gmail.com"}
+	params := []string{"test@example.com", "otherTest@example.com"}
 	allEmails, result := client.Emails(url).Create(params)
 
 	assert.False(t, result.HasError())
@@ -66,4 +66,29 @@ func TestEmailsService_Create(t *testing.T) {
 	assert.Equal(t, "rz99@cornell.edu", email.Email)
 	assert.Equal(t, true, email.Verified)
 	assert.Equal(t, true, email.Primary)
+}
+
+func TestEmailsService_Delete(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/user/emails", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testBody(t, r, "[\"test@example.com\",\"otherTest@example.com\"]\n")
+
+		header := w.Header()
+		header.Set("Content-Type", "application/json")
+
+		respondWithStatus(w, 204)
+	})
+
+	url, _ := EmailUrl.Expand(nil)
+
+	params := []string{"test@example.com", "otherTest@example.com"}
+	result := client.Emails(url).Delete(params)
+
+	fmt.Println("TESTING " + result.Error())
+
+	assert.False(t, result.HasError())
+	assert.Equal(t, 204, result.Response.StatusCode)
 }

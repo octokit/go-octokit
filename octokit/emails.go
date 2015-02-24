@@ -34,6 +34,12 @@ func (e *EmailsService) Create(params interface{}) (emails []Email, result *Resu
 	return
 }
 
+// Deletes a list of emails for the current user
+func (e *EmailsService) Delete(params interface{}) (result *Result) {
+	result = e.client.delete(e.URL, params, nil)
+	return
+}
+
 type Email struct {
 	*hypermedia.HALResource
 
