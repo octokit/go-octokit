@@ -28,9 +28,9 @@ func (g *SearchService) Users(uri *Hyperlink, params M) (
 	if uri == nil {
 		uri = &UserSearchURL
 	}
-	url, e := uri.Expand(params)
+	url, err := uri.Expand(params)
 	if e != nil {
-		return UserSearchResults{}, &Result{Err: e}
+		return UserSearchResults{}, &Result{Err: err}
 	}
 	result = g.client.get(url, &userSearchResults)
 	return
@@ -42,9 +42,9 @@ func (g *SearchService) Issues(uri *Hyperlink, params M) (
 	if uri == nil {
 		uri = &IssueSearchURL
 	}
-	url, e := uri.Expand(params)
+	url, err := uri.Expand(params)
 	if e != nil {
-		return IssueSearchResults{}, &Result{Err: e}
+		return IssueSearchResults{}, &Result{Err: err}
 	}
 	result = g.client.get(url, &issueSearchResults)
 	return
@@ -56,9 +56,9 @@ func (g *SearchService) Repositories(uri *Hyperlink, params M) (
 	if uri == nil {
 		uri = &RepositorySearchURL
 	}
-	url, e := uri.Expand(params)
+	url, err := uri.Expand(params)
 	if e != nil {
-		return RepositorySearchResults{}, &Result{Err: e}
+		return RepositorySearchResults{}, &Result{Err: err}
 	}
 	result = g.client.get(url, &repositorySearchResults)
 	return
@@ -70,9 +70,9 @@ func (g *SearchService) Code(uri *Hyperlink, params M) (
 	if uri == nil {
 		uri = &CodeSearchURL
 	}
-	url, e := uri.Expand(params)
+	url, err := uri.Expand(params)
 	if e != nil {
-		return CodeSearchResults{}, &Result{Err: e}
+		return CodeSearchResults{}, &Result{Err: err}
 	}
 	result = g.client.get(url, &codeSearchResults)
 	return
