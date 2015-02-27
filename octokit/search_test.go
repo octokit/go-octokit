@@ -16,8 +16,7 @@ func TestSearchService_Users(t *testing.T) {
 		respondWithJSON(w, loadFixture("user_search.json"))
 	})
 
-	searchResults, result := client.Search(SearchURITemplate).Users(
-		M{"query": "dhruvsinghal"})
+	searchResults, result := client.Search().Users(M{"query": "dhruvsinghal"})
 
 	assert.False(t, result.HasError())
 	assert.False(t, searchResults.IncompleteResults)
@@ -39,8 +38,7 @@ func TestSearchService_Issues(t *testing.T) {
 		respondWithJSON(w, loadFixture("issue_search.json"))
 	})
 
-	searchResults, result := client.Search(SearchURITemplate).Issues(M{
-		"query": "color"})
+	searchResults, result := client.Search().Issues(M{"query": "color"})
 
 	assert.False(t, result.HasError())
 	assert.False(t, searchResults.IncompleteResults)
@@ -61,8 +59,7 @@ func TestSearchService_Repositories(t *testing.T) {
 		respondWithJSON(w, loadFixture("repository_search.json"))
 	})
 
-	searchResults, result := client.Search(SearchURITemplate).Repositories(M{
-		"query": "asdfghjk"})
+	searchResults, result := client.Search().Repositories(M{"query": "asdfghjk"})
 
 	assert.False(t, result.HasError())
 	assert.False(t, searchResults.IncompleteResults)
@@ -84,7 +81,7 @@ func TestSearchService_Code(t *testing.T) {
 		respondWithJSON(w, loadFixture("code_search.json"))
 	})
 
-	searchResults, result := client.Search(SearchURITemplate).Code(M{
+	searchResults, result := client.Search().Code(M{
 		"query": "addClass in:file language:js repo:jquery/jquery"})
 
 	assert.False(t, result.HasError())

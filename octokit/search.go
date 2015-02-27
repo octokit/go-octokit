@@ -4,58 +4,81 @@ import (
 	"github.com/jingweno/go-sawyer/hypermedia"
 )
 
+var (
+	CodeSearchURL       = Hyperlink("/search/code?q={query}{&page,per_page,sort,order}")
+	IssueSearchURL      = Hyperlink("/search/issues?q={query}{&page,per_page,sort,order}")
+	RepositorySearchURL = Hyperlink("/search/repositories?q={query}{&page,per_page,sort,order}")
+	UserSearchURL       = Hyperlink("/search/users?q={query}{&page,per_page,sort,order}")
+)
+
 var SearchURITemplate = "search{/type}?q={query}{&page,per_page,sort,order}"
 
-func (c *Client) Search(uriTemplate string) *SearchService {
-	return &SearchService{&GenericService{client: c, uriTemplate: uriTemplate}}
+func (c *Client) Search() *SearchService {
+	return &SearchService{client: c}
 }
 
 // A service to return search records
 type SearchService struct {
-	*GenericService
+	client *Client
 }
 
 // Get the user search results based on SearchService#URL
 func (g *SearchService) Users(params M) (userSearchResults UserSearchResults,
 	result *Result) {
-	url, e := g.getURL(params, M{"type": "users"})
+	link := UserSearchURL
+	if uri, ok := params["uri"]; ok {
+		link = Hyperlink(uri.(string))
+	}
+	url, e := link.Expand(params)
 	if e != nil {
 		return UserSearchResults{}, &Result{Err: e}
 	}
-	result = g.GenericService.client.get(url, &userSearchResults)
+	result = g.client.get(url, &userSearchResults)
 	return
 }
 
 // Get the issue search results based on SearchService#URL
 func (g *SearchService) Issues(params M) (issueSearchResults IssueSearchResults,
 	result *Result) {
-	url, e := g.getURL(params, M{"type": "issues"})
+	link := IssueSearchURL
+	if uri, ok := params["uri"]; ok {
+		link = Hyperlink(uri.(string))
+	}
+	url, e := link.Expand(params)
 	if e != nil {
 		return IssueSearchResults{}, &Result{Err: e}
 	}
-	result = g.GenericService.client.get(url, &issueSearchResults)
+	result = g.client.get(url, &issueSearchResults)
 	return
 }
 
 // Get the repository search results based on SearchService#URL
 func (g *SearchService) Repositories(params M) (
 	repositorySearchResults RepositorySearchResults, result *Result) {
-	url, e := g.getURL(params, M{"type": "repositories"})
+	link := RepositorySearchURL
+	if uri, ok := params["uri"]; ok {
+		link = Hyperlink(uri.(string))
+	}
+	url, e := link.Expand(params)
 	if e != nil {
 		return RepositorySearchResults{}, &Result{Err: e}
 	}
-	result = g.GenericService.client.get(url, &repositorySearchResults)
+	result = g.client.get(url, &repositorySearchResults)
 	return
 }
 
 // Get the code search results based on SearchService#URL
 func (g *SearchService) Code(params M) (codeSearchResults CodeSearchResults,
 	result *Result) {
-	url, e := g.getURL(params, M{"type": "code"})
+	link := CodeSearchURL
+	if uri, ok := params["uri"]; ok {
+		link = Hyperlink(uri.(string))
+	}
+	url, e := link.Expand(params)
 	if e != nil {
 		return CodeSearchResults{}, &Result{Err: e}
 	}
-	result = g.GenericService.client.get(url, &codeSearchResults)
+	result = g.client.get(url, &codeSearchResults)
 	return
 }
 
