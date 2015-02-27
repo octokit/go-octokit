@@ -7,41 +7,47 @@ import (
 	"github.com/jingweno/go-sawyer/hypermedia"
 )
 
-var (
-	RepoIssuesURL = Hyperlink("repos/{owner}/{repo}/issues{/number}")
-)
+// RepoIssuesURL is a template for accessing issues in a particular
+// repository for a particular owner that can be expanded to a full address.
+var RepoIssuesURL = Hyperlink("repos/{owner}/{repo}/issues{/number}")
 
-// Create a IssuesService with the base url.URL
+// Issues creates an IssuesService with a base url
 func (c *Client) Issues(url *url.URL) (issues *IssuesService) {
 	issues = &IssuesService{client: c, URL: url}
 	return
 }
 
+// IssuesService is a service providing access to issues from a particular url
 type IssuesService struct {
 	client *Client
 	URL    *url.URL
 }
 
+// One gets a specific issue based on the url of the service
 func (i *IssuesService) One() (issue *Issue, result *Result) {
 	result = i.client.get(i.URL, &issue)
 	return
 }
 
+// All gets a list of all issues associated with the url of the service
 func (i *IssuesService) All() (issues []Issue, result *Result) {
 	result = i.client.get(i.URL, &issues)
 	return
 }
 
+// Create posts a new issue with particular parameters to the issues service url
 func (i *IssuesService) Create(params interface{}) (issue *Issue, result *Result) {
 	result = i.client.post(i.URL, params, &issue)
 	return
 }
 
+// Update modifies a specific issue given parameters on the service url
 func (i *IssuesService) Update(params interface{}) (issue *Issue, result *Result) {
 	result = i.client.patch(i.URL, params, &issue)
 	return
 }
 
+// Issue represents an issue on GitHub with all associated fields
 type Issue struct {
 	*hypermedia.HALResource
 
@@ -81,6 +87,7 @@ type Issue struct {
 	UpdatedAt time.Time  `json:"updated_at,omitempty"`
 }
 
+// IssueParams represents the struture used to create or update an Issue
 type IssueParams struct {
 	Title     string   `json:"title,omitempty"`
 	Body      string   `json:"body,omitempty"`

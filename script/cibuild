@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Usage: script/cibuild
+#
+# Downloads dependencies and run tests
+
+set -e
+
+script/test
+script/cover
