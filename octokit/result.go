@@ -11,16 +11,23 @@ type pageable struct {
 	PrevPage  *Hyperlink
 }
 
+// Result is a pageable set of data, with hyperlinks to the first, last,
+// previous, and next pages, containing a response to some request and
+// associated error, if any
 type Result struct {
 	Response *Response
 	Err      error
 	pageable
 }
 
+// HasError returns true if the error field of the Result is not nil; false
+// otherwise
 func (r *Result) HasError() bool {
 	return r.Err != nil
 }
 
+// Error returns the string representation of the error if it exists; the
+// empty string is returned otherwise
 func (r *Result) Error() string {
 	if r.Err != nil {
 		return r.Err.Error()
