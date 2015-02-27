@@ -23,13 +23,12 @@ type SearchService struct {
 }
 
 // Get the user search results based on SearchService#URL
-func (g *SearchService) Users(params M) (userSearchResults UserSearchResults,
-	result *Result) {
-	link := UserSearchURL
-	if uri, ok := params["uri"]; ok {
-		link = Hyperlink(uri.(string))
+func (g *SearchService) Users(uri *Hyperlink, params M) (
+	userSearchResults UserSearchResults, result *Result) {
+	if uri == nil {
+		uri = &UserSearchURL
 	}
-	url, e := link.Expand(params)
+	url, e := uri.Expand(params)
 	if e != nil {
 		return UserSearchResults{}, &Result{Err: e}
 	}
@@ -38,13 +37,12 @@ func (g *SearchService) Users(params M) (userSearchResults UserSearchResults,
 }
 
 // Get the issue search results based on SearchService#URL
-func (g *SearchService) Issues(params M) (issueSearchResults IssueSearchResults,
-	result *Result) {
-	link := IssueSearchURL
-	if uri, ok := params["uri"]; ok {
-		link = Hyperlink(uri.(string))
+func (g *SearchService) Issues(uri *Hyperlink, params M) (
+	issueSearchResults IssueSearchResults, result *Result) {
+	if uri == nil {
+		uri = &IssueSearchURL
 	}
-	url, e := link.Expand(params)
+	url, e := uri.Expand(params)
 	if e != nil {
 		return IssueSearchResults{}, &Result{Err: e}
 	}
@@ -53,13 +51,12 @@ func (g *SearchService) Issues(params M) (issueSearchResults IssueSearchResults,
 }
 
 // Get the repository search results based on SearchService#URL
-func (g *SearchService) Repositories(params M) (
+func (g *SearchService) Repositories(uri *Hyperlink, params M) (
 	repositorySearchResults RepositorySearchResults, result *Result) {
-	link := RepositorySearchURL
-	if uri, ok := params["uri"]; ok {
-		link = Hyperlink(uri.(string))
+	if uri == nil {
+		uri = &RepositorySearchURL
 	}
-	url, e := link.Expand(params)
+	url, e := uri.Expand(params)
 	if e != nil {
 		return RepositorySearchResults{}, &Result{Err: e}
 	}
@@ -68,13 +65,12 @@ func (g *SearchService) Repositories(params M) (
 }
 
 // Get the code search results based on SearchService#URL
-func (g *SearchService) Code(params M) (codeSearchResults CodeSearchResults,
-	result *Result) {
-	link := CodeSearchURL
-	if uri, ok := params["uri"]; ok {
-		link = Hyperlink(uri.(string))
+func (g *SearchService) Code(uri *Hyperlink, params M) (
+	codeSearchResults CodeSearchResults, result *Result) {
+	if uri == nil {
+		uri = &CodeSearchURL
 	}
-	url, e := link.Expand(params)
+	url, e := uri.Expand(params)
 	if e != nil {
 		return CodeSearchResults{}, &Result{Err: e}
 	}
