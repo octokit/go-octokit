@@ -1,0 +1,21 @@
+[
+    {
+        "login": "harrisonzhao",
+        "id": 5186533,
+        "avatar_url": "https://avatars.githubusercontent.com/u/5186533?v=3",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/harrisonzhao",
+        "html_url": "https://github.com/harrisonzhao",
+        "followers_url": "https://api.github.com/users/harrisonzhao/followers",
+        "following_url": "https://api.github.com/users/harrisonzhao/following{/other_user}",
+        "gists_url": "https://api.github.com/users/harrisonzhao/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/harrisonzhao/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/harrisonzhao/subscriptions",
+        "organizations_url": "https://api.github.com/users/harrisonzhao/orgs",
+        "repos_url": "https://api.github.com/users/harrisonzhao/repos",
+        "events_url": "https://api.github.com/users/harrisonzhao/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/harrisonzhao/received_events",
+        "type": "User",
+        "site_admin": false
+    }
+]
