@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestFollowersService_All(t *testing.T) {
+func TestFollowersService_AllFollowers(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -35,7 +35,7 @@ func TestFollowersService_All(t *testing.T) {
 	validateNextPage(t, result)
 }
 
-func TestFollowersService_AllCurrent(t *testing.T) {
+func TestFollowersService_AllFollowersCurrent(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -58,6 +58,60 @@ func TestFollowersService_AllCurrent(t *testing.T) {
 
 	assert.Equal(t, testURLStringOf("/user/followers?page=2"), string(*result.NextPage))
 	assert.Equal(t, testURLStringOf("/user/followers?page=3"), string(*result.LastPage))
+
+	validateNextPage(t, result)
+}
+
+func TestFollowersService_AllFollowing(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/users/obsc/following", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+
+		header := w.Header()
+		link := fmt.Sprintf(`<%s>; rel="next", <%s>; rel="last"`, testURLOf("/users/obsc/following?page=2"), testURLOf("/users/obsc/following?page=3"))
+		header.Set("Link", link)
+
+		respondWithJSON(w, loadFixture("followers.json"))
+	})
+
+	url, _ := FollowingUrl.Expand(M{"user": "obsc"})
+	allFollowing, result := client.Followers(url).All()
+
+	assert.False(t, result.HasError())
+
+	validateUser(t, allFollowing)
+
+	assert.Equal(t, testURLStringOf("/users/obsc/following?page=2"), string(*result.NextPage))
+	assert.Equal(t, testURLStringOf("/users/obsc/following?page=3"), string(*result.LastPage))
+
+	validateNextPage(t, result)
+}
+
+func TestFollowersService_AllFollowingCurrent(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/user/following", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+
+		header := w.Header()
+		link := fmt.Sprintf(`<%s>; rel="next", <%s>; rel="last"`, testURLOf("/user/following?page=2"), testURLOf("/user/following?page=3"))
+		header.Set("Link", link)
+
+		respondWithJSON(w, loadFixture("followers.json"))
+	})
+
+	url, _ := CurrentFollowingUrl.Expand(nil)
+	allFollowing, result := client.Followers(url).All()
+
+	assert.False(t, result.HasError())
+
+	validateUser(t, allFollowing)
+
+	assert.Equal(t, testURLStringOf("/user/following?page=2"), string(*result.NextPage))
+	assert.Equal(t, testURLStringOf("/user/following?page=3"), string(*result.LastPage))
 
 	validateNextPage(t, result)
 }

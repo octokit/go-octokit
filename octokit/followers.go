@@ -5,8 +5,10 @@ import (
 )
 
 var (
-	FollowerUrl        = Hyperlink("users/{user}/followers")
-	CurrentFollowerUrl = Hyperlink("user/followers")
+	FollowerUrl         = Hyperlink("users/{user}/followers")
+	CurrentFollowerUrl  = Hyperlink("user/followers")
+	FollowingUrl        = Hyperlink("users/{user}/following")
+	CurrentFollowingUrl = Hyperlink("user/following")
 )
 
 // Create a FollowersService with the base url.URL
