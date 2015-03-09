@@ -131,7 +131,7 @@ func TestFollowersService_CheckFollowing(t *testing.T) {
 		respondWithStatus(w, 204)
 	})
 
-	url, err := CheckFollowingUrl.Expand(M{"user": "harrisonzhao", "target": "obsc"})
+	url, err := FollowingUrl.Expand(M{"user": "harrisonzhao", "target": "obsc"})
 	assert.NoError(t, err)
 
 	result := client.Followers(url).Check()
@@ -153,10 +153,54 @@ func TestFollowersService_CheckCurrentFollowing(t *testing.T) {
 		respondWithStatus(w, 204)
 	})
 
-	url, err := CheckCurrentFollowingUrl.Expand(M{"target": "obsc"})
+	url, err := CurrentFollowingUrl.Expand(M{"target": "obsc"})
 	assert.NoError(t, err)
 
 	result := client.Followers(url).Check()
+	assert.False(t, result.HasError())
+
+	assert.Equal(t, 204, result.Response.StatusCode)
+}
+
+func TestFollowersService_FollowUser(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/user/following/obsc", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+
+		header := w.Header()
+		header.Set("Content-Type", "application/json")
+
+		respondWithStatus(w, 204)
+	})
+
+	url, err := CurrentFollowingUrl.Expand(M{"target": "obsc"})
+	assert.NoError(t, err)
+
+	result := client.Followers(url).Follow()
+	assert.False(t, result.HasError())
+
+	assert.Equal(t, 204, result.Response.StatusCode)
+}
+
+func TestFollowersService_UnfollowUser(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/user/following/obsc", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+
+		header := w.Header()
+		header.Set("Content-Type", "application/json")
+
+		respondWithStatus(w, 204)
+	})
+
+	url, err := CurrentFollowingUrl.Expand(M{"target": "obsc"})
+	assert.NoError(t, err)
+
+	result := client.Followers(url).Unfollow()
 	assert.False(t, result.HasError())
 
 	assert.Equal(t, 204, result.Response.StatusCode)
