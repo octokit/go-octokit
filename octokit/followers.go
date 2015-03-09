@@ -30,19 +30,22 @@ func (f *FollowersService) All() (followers []User, result *Result) {
 }
 
 // Checks if a user is following a target user
-func (f *FollowersService) Check() (result *Result) {
+func (f *FollowersService) Check() (success bool, result *Result) {
 	result = f.client.get(f.URL, nil)
+	success = (result.Response.StatusCode == 204)
 	return
 }
 
 // Follows a target user
-func (f *FollowersService) Follow() (result *Result) {
+func (f *FollowersService) Follow() (success bool, result *Result) {
 	result = f.client.put(f.URL, nil, nil)
+	success = (result.Response.StatusCode == 204)
 	return
 }
 
 // Unfollows a target user
-func (f *FollowersService) Unfollow() (result *Result) {
+func (f *FollowersService) Unfollow() (success bool, result *Result) {
 	result = f.client.delete(f.URL, nil, nil)
+	success = (result.Response.StatusCode == 204)
 	return
 }

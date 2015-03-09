@@ -134,10 +134,9 @@ func TestFollowersService_CheckFollowing(t *testing.T) {
 	url, err := FollowingUrl.Expand(M{"user": "harrisonzhao", "target": "obsc"})
 	assert.NoError(t, err)
 
-	result := client.Followers(url).Check()
+	success, result := client.Followers(url).Check()
 	assert.False(t, result.HasError())
-
-	assert.Equal(t, 204, result.Response.StatusCode)
+	assert.True(t, success)
 }
 
 func TestFollowersService_CheckCurrentFollowing(t *testing.T) {
@@ -156,10 +155,9 @@ func TestFollowersService_CheckCurrentFollowing(t *testing.T) {
 	url, err := CurrentFollowingUrl.Expand(M{"target": "obsc"})
 	assert.NoError(t, err)
 
-	result := client.Followers(url).Check()
+	success, result := client.Followers(url).Check()
 	assert.False(t, result.HasError())
-
-	assert.Equal(t, 204, result.Response.StatusCode)
+	assert.True(t, success)
 }
 
 func TestFollowersService_FollowUser(t *testing.T) {
@@ -178,10 +176,10 @@ func TestFollowersService_FollowUser(t *testing.T) {
 	url, err := CurrentFollowingUrl.Expand(M{"target": "obsc"})
 	assert.NoError(t, err)
 
-	result := client.Followers(url).Follow()
+	success, result := client.Followers(url).Follow()
 	assert.False(t, result.HasError())
+	assert.True(t, success)
 
-	assert.Equal(t, 204, result.Response.StatusCode)
 }
 
 func TestFollowersService_UnfollowUser(t *testing.T) {
@@ -200,10 +198,9 @@ func TestFollowersService_UnfollowUser(t *testing.T) {
 	url, err := CurrentFollowingUrl.Expand(M{"target": "obsc"})
 	assert.NoError(t, err)
 
-	result := client.Followers(url).Unfollow()
+	success, result := client.Followers(url).Unfollow()
 	assert.False(t, result.HasError())
-
-	assert.Equal(t, 204, result.Response.StatusCode)
+	assert.True(t, success)
 }
 
 func validateUser(t *testing.T, followers []User) {
