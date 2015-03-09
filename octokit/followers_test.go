@@ -22,9 +22,10 @@ func TestFollowersService_AllFollowers(t *testing.T) {
 		respondWithJSON(w, loadFixture("followers.json"))
 	})
 
-	url, _ := FollowerUrl.Expand(M{"user": "obsc"})
-	followers, result := client.Followers(url).All()
+	url, err := FollowerUrl.Expand(M{"user": "obsc"})
+	assert.NoError(t, err)
 
+	followers, result := client.Followers(url).All()
 	assert.False(t, result.HasError())
 
 	validateUser(t, followers)
@@ -50,8 +51,8 @@ func TestFollowersService_AllFollowersCurrent(t *testing.T) {
 	})
 
 	url, _ := CurrentFollowerUrl.Expand(nil)
-	followers, result := client.Followers(url).All()
 
+	followers, result := client.Followers(url).All()
 	assert.False(t, result.HasError())
 
 	validateUser(t, followers)
@@ -76,9 +77,10 @@ func TestFollowersService_AllFollowing(t *testing.T) {
 		respondWithJSON(w, loadFixture("followers.json"))
 	})
 
-	url, _ := FollowingUrl.Expand(M{"user": "obsc"})
-	allFollowing, result := client.Followers(url).All()
+	url, err := FollowingUrl.Expand(M{"user": "obsc"})
+	assert.NoError(t, err)
 
+	allFollowing, result := client.Followers(url).All()
 	assert.False(t, result.HasError())
 
 	validateUser(t, allFollowing)
@@ -104,8 +106,8 @@ func TestFollowersService_AllFollowingCurrent(t *testing.T) {
 	})
 
 	url, _ := CurrentFollowingUrl.Expand(nil)
-	allFollowing, result := client.Followers(url).All()
 
+	allFollowing, result := client.Followers(url).All()
 	assert.False(t, result.HasError())
 
 	validateUser(t, allFollowing)
@@ -129,10 +131,12 @@ func TestFollowersService_CheckFollowing(t *testing.T) {
 		respondWithStatus(w, 204)
 	})
 
-	url, _ := CheckFollowingUrl.Expand(M{"user": "harrisonzhao", "target": "obsc"})
-	result := client.Followers(url).Check()
+	url, err := CheckFollowingUrl.Expand(M{"user": "harrisonzhao", "target": "obsc"})
+	assert.NoError(t, err)
 
+	result := client.Followers(url).Check()
 	assert.False(t, result.HasError())
+
 	assert.Equal(t, 204, result.Response.StatusCode)
 }
 
@@ -149,10 +153,12 @@ func TestFollowersService_CheckCurrentFollowing(t *testing.T) {
 		respondWithStatus(w, 204)
 	})
 
-	url, _ := CheckCurrentFollowingUrl.Expand(M{"target": "obsc"})
-	result := client.Followers(url).Check()
+	url, err := CheckCurrentFollowingUrl.Expand(M{"target": "obsc"})
+	assert.NoError(t, err)
 
+	result := client.Followers(url).Check()
 	assert.False(t, result.HasError())
+
 	assert.Equal(t, 204, result.Response.StatusCode)
 }
 
