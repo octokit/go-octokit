@@ -116,6 +116,46 @@ func TestFollowersService_AllFollowingCurrent(t *testing.T) {
 	validateNextPage(t, result)
 }
 
+func TestFollowersService_CheckFollowing(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/users/harrisonzhao/following/obsc", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+
+		header := w.Header()
+		header.Set("Content-Type", "application/json")
+
+		respondWithStatus(w, 204)
+	})
+
+	url, _ := CheckFollowingUrl.Expand(M{"user": "harrisonzhao", "target": "obsc"})
+	result := client.Followers(url).Check()
+
+	assert.False(t, result.HasError())
+	assert.Equal(t, 204, result.Response.StatusCode)
+}
+
+func TestFollowersService_CheckCurrentFollowing(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/user/following/obsc", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+
+		header := w.Header()
+		header.Set("Content-Type", "application/json")
+
+		respondWithStatus(w, 204)
+	})
+
+	url, _ := CheckCurrentFollowingUrl.Expand(M{"target": "obsc"})
+	result := client.Followers(url).Check()
+
+	assert.False(t, result.HasError())
+	assert.Equal(t, 204, result.Response.StatusCode)
+}
+
 func validateUser(t *testing.T, followers []User) {
 	assert.Len(t, followers, 1)
 	first := followers[0]

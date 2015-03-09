@@ -5,10 +5,12 @@ import (
 )
 
 var (
-	FollowerUrl         = Hyperlink("users/{user}/followers")
-	CurrentFollowerUrl  = Hyperlink("user/followers")
-	FollowingUrl        = Hyperlink("users/{user}/following")
-	CurrentFollowingUrl = Hyperlink("user/following")
+	FollowerUrl              = Hyperlink("users/{user}/followers")
+	CurrentFollowerUrl       = Hyperlink("user/followers")
+	FollowingUrl             = Hyperlink("users/{user}/following")
+	CurrentFollowingUrl      = Hyperlink("user/following")
+	CheckFollowingUrl        = Hyperlink("users/{user}/following/{target}")
+	CheckCurrentFollowingUrl = Hyperlink("user/following/{target}")
 )
 
 // Create a FollowersService with the base url.URL
@@ -23,8 +25,14 @@ type FollowersService struct {
 	URL    *url.URL
 }
 
-// Get a list of followers for the current user
+// Get a list of followers for the user
 func (f *FollowersService) All() (followers []User, result *Result) {
 	result = f.client.get(f.URL, &followers)
+	return
+}
+
+// Checks if a user is following a target user
+func (f *FollowersService) Check() (result *Result) {
+	result = f.client.get(f.URL, nil)
 	return
 }
