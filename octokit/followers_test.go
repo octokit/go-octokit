@@ -181,6 +181,28 @@ func TestFollowersService_UnfollowUser(t *testing.T) {
 	assert.True(t, success)
 }
 
+func TestFollowersService_Failure(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	url := Hyperlink("}")
+	followers, result := client.Followers().All(&url, nil)
+	assert.True(t, result.HasError())
+	assert.Len(t, followers, 0)
+
+	success, result := client.Followers().Check(&url, nil)
+	assert.True(t, result.HasError())
+	assert.False(t, success)
+
+	success, result = client.Followers().Follow(&url, nil)
+	assert.True(t, result.HasError())
+	assert.False(t, success)
+
+	success, result = client.Followers().Unfollow(&url, nil)
+	assert.True(t, result.HasError())
+	assert.False(t, success)
+}
+
 func validateUser(t *testing.T, followers []User) {
 	assert.Len(t, followers, 1)
 	first := followers[0]
