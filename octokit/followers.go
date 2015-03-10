@@ -1,51 +1,82 @@
 package octokit
 
-import (
-	"net/url"
-)
-
 var (
-	FollowerUrl         = Hyperlink("users/{user}/followers")
 	CurrentFollowerUrl  = Hyperlink("user/followers")
-	FollowingUrl        = Hyperlink("users/{user}/following{/target}")
+	FollowerUrl         = Hyperlink("users/{user}/followers")
 	CurrentFollowingUrl = Hyperlink("user/following{/target}")
+	FollowingUrl        = Hyperlink("users/{user}/following{/target}")
 )
 
-// Create a FollowersService with the base url.URL
-func (c *Client) Followers(url *url.URL) (followers *FollowersService) {
-	followers = &FollowersService{client: c, URL: url}
+// Create a FollowersService
+func (c *Client) Followers() (followers *FollowersService) {
+	followers = &FollowersService{client: c}
 	return
 }
 
 // A service to return user followers
 type FollowersService struct {
 	client *Client
-	URL    *url.URL
 }
 
 // Get a list of followers for the user
-func (f *FollowersService) All() (followers []User, result *Result) {
-	result = f.client.get(f.URL, &followers)
+func (f *FollowersService) All(uri *Hyperlink, params M) (followers []User, result *Result) {
+	if uri == nil {
+		uri = &CurrentFollowerUrl // Default url
+	}
+
+	url, err := uri.Expand(params)
+	if err != nil {
+		return nil, &Result{Err: err}
+	}
+
+	result = f.client.get(url, &followers)
 	return
 }
 
 // Checks if a user is following a target user
-func (f *FollowersService) Check() (success bool, result *Result) {
-	result = f.client.get(f.URL, nil)
+func (f *FollowersService) Check(uri *Hyperlink, params M) (success bool, result *Result) {
+	if uri == nil {
+		uri = &CurrentFollowingUrl // Default url
+	}
+
+	url, err := uri.Expand(params)
+	if err != nil {
+		return false, &Result{Err: err}
+	}
+
+	result = f.client.get(url, nil)
 	success = (result.Response.StatusCode == 204)
 	return
 }
 
 // Follows a target user
-func (f *FollowersService) Follow() (success bool, result *Result) {
-	result = f.client.put(f.URL, nil, nil)
+func (f *FollowersService) Follow(uri *Hyperlink, params M) (success bool, result *Result) {
+	if uri == nil {
+		uri = &CurrentFollowingUrl // Default url
+	}
+
+	url, err := uri.Expand(params)
+	if err != nil {
+		return false, &Result{Err: err}
+	}
+
+	result = f.client.put(url, nil, nil)
 	success = (result.Response.StatusCode == 204)
 	return
 }
 
 // Unfollows a target user
-func (f *FollowersService) Unfollow() (success bool, result *Result) {
-	result = f.client.delete(f.URL, nil, nil)
+func (f *FollowersService) Unfollow(uri *Hyperlink, params M) (success bool, result *Result) {
+	if uri == nil {
+		uri = &CurrentFollowingUrl // Default url
+	}
+
+	url, err := uri.Expand(params)
+	if err != nil {
+		return false, &Result{Err: err}
+	}
+
+	result = f.client.delete(url, nil, nil)
 	success = (result.Response.StatusCode == 204)
 	return
 }

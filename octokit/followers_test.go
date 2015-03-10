@@ -22,10 +22,7 @@ func TestFollowersService_AllFollowers(t *testing.T) {
 		respondWithJSON(w, loadFixture("followers.json"))
 	})
 
-	url, err := FollowerUrl.Expand(M{"user": "obsc"})
-	assert.NoError(t, err)
-
-	followers, result := client.Followers(url).All()
+	followers, result := client.Followers().All(&FollowerUrl, M{"user": "obsc"})
 	assert.False(t, result.HasError())
 
 	validateUser(t, followers)
@@ -50,9 +47,7 @@ func TestFollowersService_AllFollowersCurrent(t *testing.T) {
 		respondWithJSON(w, loadFixture("followers.json"))
 	})
 
-	url, _ := CurrentFollowerUrl.Expand(nil)
-
-	followers, result := client.Followers(url).All()
+	followers, result := client.Followers().All(nil, nil)
 	assert.False(t, result.HasError())
 
 	validateUser(t, followers)
@@ -77,10 +72,7 @@ func TestFollowersService_AllFollowing(t *testing.T) {
 		respondWithJSON(w, loadFixture("followers.json"))
 	})
 
-	url, err := FollowingUrl.Expand(M{"user": "obsc"})
-	assert.NoError(t, err)
-
-	allFollowing, result := client.Followers(url).All()
+	allFollowing, result := client.Followers().All(&FollowingUrl, M{"user": "obsc"})
 	assert.False(t, result.HasError())
 
 	validateUser(t, allFollowing)
@@ -105,9 +97,7 @@ func TestFollowersService_AllFollowingCurrent(t *testing.T) {
 		respondWithJSON(w, loadFixture("followers.json"))
 	})
 
-	url, _ := CurrentFollowingUrl.Expand(nil)
-
-	allFollowing, result := client.Followers(url).All()
+	allFollowing, result := client.Followers().All(&CurrentFollowingUrl, nil)
 	assert.False(t, result.HasError())
 
 	validateUser(t, allFollowing)
@@ -131,10 +121,7 @@ func TestFollowersService_CheckFollowing(t *testing.T) {
 		respondWithStatus(w, 204)
 	})
 
-	url, err := FollowingUrl.Expand(M{"user": "harrisonzhao", "target": "obsc"})
-	assert.NoError(t, err)
-
-	success, result := client.Followers(url).Check()
+	success, result := client.Followers().Check(&FollowingUrl, M{"user": "harrisonzhao", "target": "obsc"})
 	assert.False(t, result.HasError())
 	assert.True(t, success)
 }
@@ -152,10 +139,7 @@ func TestFollowersService_CheckCurrentFollowing(t *testing.T) {
 		respondWithStatus(w, 204)
 	})
 
-	url, err := CurrentFollowingUrl.Expand(M{"target": "obsc"})
-	assert.NoError(t, err)
-
-	success, result := client.Followers(url).Check()
+	success, result := client.Followers().Check(nil, M{"target": "obsc"})
 	assert.False(t, result.HasError())
 	assert.True(t, success)
 }
@@ -173,10 +157,7 @@ func TestFollowersService_FollowUser(t *testing.T) {
 		respondWithStatus(w, 204)
 	})
 
-	url, err := CurrentFollowingUrl.Expand(M{"target": "obsc"})
-	assert.NoError(t, err)
-
-	success, result := client.Followers(url).Follow()
+	success, result := client.Followers().Follow(nil, M{"target": "obsc"})
 	assert.False(t, result.HasError())
 	assert.True(t, success)
 
@@ -195,10 +176,7 @@ func TestFollowersService_UnfollowUser(t *testing.T) {
 		respondWithStatus(w, 204)
 	})
 
-	url, err := CurrentFollowingUrl.Expand(M{"target": "obsc"})
-	assert.NoError(t, err)
-
-	success, result := client.Followers(url).Unfollow()
+	success, result := client.Followers().Unfollow(nil, M{"target": "obsc"})
 	assert.False(t, result.HasError())
 	assert.True(t, success)
 }
@@ -227,10 +205,7 @@ func validateUser(t *testing.T, followers []User) {
 }
 
 func validateNextPage(t *testing.T, result *Result) {
-	nextPageURL, err := result.NextPage.Expand(nil)
-	assert.NoError(t, err)
-
-	followers, result := client.Followers(nextPageURL).All()
+	followers, result := client.Followers().All(result.NextPage, nil)
 	assert.False(t, result.HasError())
 	assert.Len(t, followers, 1)
 }
