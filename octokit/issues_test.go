@@ -12,15 +12,15 @@ func TestIssuesService_All(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/octocat/Hello-World/issues", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWithJSON(w, loadFixture("issues.json"))
-	})
+	mux.HandleFunc("/repos/octocat/Hello-World/issues",
+		func(w http.ResponseWriter, r *http.Request) {
+			testMethod(t, r, "GET")
+			respondWithJSON(w, loadFixture("issues.json"))
+		})
 
-	url, err := RepoIssuesURL.Expand(M{"owner": "octocat", "repo": "Hello-World"})
-	assert.NoError(t, err)
-
-	issues, result := client.Issues(url).All()
+	issuesService := client.Issues()
+	issues, result := issuesService.All(nil, M{"owner": "octocat",
+		"repo": "Hello-World"})
 	assert.False(t, result.HasError())
 	assert.Len(t, issues, 1)
 
@@ -32,16 +32,15 @@ func TestIssuesService_One(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/octocat/Hello-World/issues/1347", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWithJSON(w, loadFixture("issue.json"))
-	})
+	mux.HandleFunc("/repos/octocat/Hello-World/issues/1347",
+		func(w http.ResponseWriter, r *http.Request) {
+			testMethod(t, r, "GET")
+			respondWithJSON(w, loadFixture("issue.json"))
+		})
 
-	url, err := RepoIssuesURL.Expand(M{"owner": "octocat", "repo": "Hello-World", "number": 1347})
-	assert.NoError(t, err)
-
-	issue, result := client.Issues(url).One()
-
+	issues := client.Issues()
+	issue, result := issues.One(nil, M{"owner": "octocat",
+		"repo": "Hello-World", "number": 1347})
 	assert.False(t, result.HasError())
 	validateIssue(t, *issue)
 }
@@ -50,20 +49,22 @@ func TestIssuesService_Create(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/octocat/Hello-World/issues", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		testBody(t, r, "{\"title\":\"title\",\"body\":\"body\"}\n")
-		respondWithJSON(w, loadFixture("issue.json"))
-	})
-
-	url, err := RepoIssuesURL.Expand(M{"owner": "octocat", "repo": "Hello-World"})
-	assert.NoError(t, err)
+	mux.HandleFunc("/repos/octocat/Hello-World/issues",
+		func(w http.ResponseWriter, r *http.Request) {
+			testMethod(t, r, "POST")
+			testBody(t, r,
+				"{\"title\":\"title\",\"body\":\"body\"}\n")
+			respondWithJSON(w, loadFixture("issue.json"))
+		})
+	issuesService := client.Issues()
 
 	params := IssueParams{
 		Title: "title",
 		Body:  "body",
 	}
-	issue, result := client.Issues(url).Create(params)
+
+	issue, result := issuesService.Create(nil, M{"owner": "octocat",
+		"repo": "Hello-World"}, params)
 
 	assert.False(t, result.HasError())
 	validateIssue(t, *issue)
@@ -73,20 +74,23 @@ func TestIssuesService_Update(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/octocat/Hello-World/issues/1347", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PATCH")
-		testBody(t, r, "{\"title\":\"title\",\"body\":\"body\"}\n")
-		respondWithJSON(w, loadFixture("issue.json"))
-	})
+	mux.HandleFunc("/repos/octocat/Hello-World/issues/1347",
+		func(w http.ResponseWriter, r *http.Request) {
+			testMethod(t, r, "PATCH")
+			testBody(t, r,
+				"{\"title\":\"title\",\"body\":\"body\"}\n")
+			respondWithJSON(w, loadFixture("issue.json"))
+		})
 
-	url, err := RepoIssuesURL.Expand(M{"owner": "octocat", "repo": "Hello-World", "number": 1347})
-	assert.NoError(t, err)
+	issuesService := client.Issues()
 
 	params := IssueParams{
 		Title: "title",
 		Body:  "body",
 	}
-	issue, result := client.Issues(url).Update(params)
+
+	issue, result := issuesService.Update(nil, M{"owner": "octocat",
+		"repo": "Hello-World", "number": 1347}, params)
 
 	assert.False(t, result.HasError())
 	validateIssue(t, *issue)
