@@ -2,24 +2,24 @@ package main
 
 import (
 	"bufio"
-	"encoding/json"
-	"fmt"
-	//"github.com/octokit/go-octokit/octokit"
+	//"bytes"
+	//"fmt"
 	"io/ioutil"
-	"net/http"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
 )
 
-var githubURL = "https://api.github.com/"
+var octokitRoot = filepath.FromSlash(os.Getenv("GOPATH") +
+	"/src/github.com/octokit/go-octokit/")
 
-var sourceFolder = filepath.FromSlash(os.Getenv("GOPATH") +
-	"/src/github.com/octokit/go-octokit/octokit/")
+var sourceFolder = filepath.FromSlash(octokitRoot + "octokit/")
+
+var todoFile = filepath.FromSlash(octokitRoot + "TODO.md")
 
 var URLDeclarationMatcher = regexp.MustCompile(
-	`[A-Za-z]+URL\s*=\s*Hyperlink\(\"([\/a-z0-9_{}]+)\"\)`)
+	`// See ([\/a-z0-9_{}\.:]+)`)
 
 func listSourceFiles(dirname string) []string {
 	var result []string
@@ -43,46 +43,39 @@ func extractURLsFromSourceFile(filename string) (results []string) {
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
-	varBlockPresent := false
 	for scanner.Scan() {
 		text := scanner.Text()
-		if text == "var (" {
-			varBlockPresent = true
-		}
 		res := URLDeclarationMatcher.FindStringSubmatch(text)
 		if len(res) > 1 {
-
 			results = append(results, res[1])
-			if !varBlockPresent {
-				return
-			}
-		}
-		if varBlockPresent && text == ")" {
-			return
 		}
 	}
 	return
 }
 
-func main() {
+func findAllExistingApiUrls() (urls []string) {
+	for _, f := range listSourceFiles(sourceFolder) {
+		sourceUrls := extractURLsFromSourceFile(sourceFolder +
+			string(os.PathSeparator) + f)
+		urls = append(urls, sourceUrls...)
+	}
+	return urls
+}
 
-	resp, err := http.Get(githubURL)
+func main() {
+	/*file, err := os.Open(todoFile)
 	if err != nil {
-		fmt.Printf("Error opening %s\n", githubURL)
+		fmt.Printf("Error opening TODO file: %s\n", todoFile)
 		panic(err)
 	}
-	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Printf("Error fetching data from %s\n", githubURL)
-		panic(err)
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		url := line[4:]
+
 	}
 
 	var dat map[string]interface{}
-
-	if err := json.Unmarshal(body, &dat); err != nil {
-		panic(err)
-	}
 
 	existingValues := make(map[string]bool)
 	extraValues := make(map[string]bool)
@@ -94,25 +87,6 @@ func main() {
 
 	var apisFoundCount = 0
 
-	for _, f := range listSourceFiles(sourceFolder) {
-		urls := extractURLsFromSourceFile(sourceFolder +
-			string(os.PathSeparator) + f)
-		for _, url := range urls {
-			if len(url) > 1 && url[0] == '/' {
-				url = url[1:]
-			}
-			if url != "" {
-				apisFoundCount += 1
-				if _, ok := existingValues[url]; ok {
-					existingValues[url] = true
-				} else {
-					extraValues[url] = true
-				}
-			}
-		}
-	}
-
-	fmt.Printf("%d APIs found on %s.\n", len(existingValues), githubURL)
 	fmt.Printf("%d APIs implementations found.\n", apisFoundCount)
 
 	fmt.Println("\nExisting APIs:")
@@ -136,4 +110,5 @@ func main() {
 			fmt.Println(k)
 		}
 	}
+	*/
 }
