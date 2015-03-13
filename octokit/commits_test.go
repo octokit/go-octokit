@@ -12,10 +12,7 @@ func TestCommitsService_One(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/octokit/go-octokit/commits/4351fb69b8d5ed075e9cd844e67ad2114b335c82", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWithJSON(w, loadFixture("commit.json"))
-	})
+	stubGet(t, "/repos/octokit/go-octokit/commits/4351fb69b8d5ed075e9cd844e67ad2114b335c82", "commit", nil)
 
 	url, err := CommitsURL.Expand(M{
 		"owner": "octokit",

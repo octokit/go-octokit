@@ -11,10 +11,7 @@ func TestReleasesService_All(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/jingweno/gh/releases", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWithJSON(w, loadFixture("releases.json"))
-	})
+	stubGet(t, "/repos/jingweno/gh/releases", "releases", nil)
 
 	url, err := ReleasesURL.Expand(M{"owner": "jingweno", "repo": "gh"})
 	assert.NoError(t, err)
