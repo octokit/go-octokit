@@ -1,7 +1,6 @@
 package octokit
 
 import (
-	"net/http"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -11,10 +10,7 @@ func TestStatuses(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/jingweno/gh/statuses/740211b9c6cd8e526a7124fe2b33115602fbc637", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWithJSON(w, loadFixture("statuses.json"))
-	})
+	stubGet(t, "/repos/jingweno/gh/statuses/740211b9c6cd8e526a7124fe2b33115602fbc637", "statuses", nil)
 
 	sha := "740211b9c6cd8e526a7124fe2b33115602fbc637"
 	url, err := StatusesURL.Expand(M{"owner": "jingweno", "repo": "gh", "ref": sha})
