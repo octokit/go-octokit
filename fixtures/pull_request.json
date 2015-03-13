@@ -35,7 +35,13 @@
   "issue_url": "https://github.com/jingweno/octokat/pull/1",
   "number": 1,
   "state": "closed",
-  "assignee": null,
+  "assignee": {
+    "login": "octocat",
+    "id": 1,
+    "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+    "gravatar_id": "somehexcode",
+    "url": "https://api.github.com/users/octocat"
+  },
   "milestone": null,
   "commits_url": "https://github.com/jingweno/octokat/pull/1/commits",
   "review_comments_url": "https://github.com/jingweno/octokat/pull/1/comments",

@@ -42,7 +42,13 @@ func TestPullRequestService_One(t *testing.T) {
 	assert.Equal(t, "https://github.com/jingweno/octokat/pull/1", pr.IssueURL)
 	assert.Equal(t, 1, pr.Number)
 	assert.Equal(t, "closed", pr.State)
-	assert.Nil(t, pr.Assignee)
+
+	assert.Equal(t, "octocat", pr.Assignee.Login)
+	assert.Equal(t, 1, pr.Assignee.ID)
+	assert.Equal(t, "https://github.com/images/error/octocat_happy.gif", pr.Assignee.AvatarURL)
+	assert.Equal(t, "somehexcode", pr.Assignee.GravatarID)
+	assert.Equal(t, "https://api.github.com/users/octocat", pr.Assignee.URL)
+
 	assert.Equal(t, "https://github.com/jingweno/octokat/pull/1/commits", pr.CommitsURL)
 	assert.Equal(t, "https://github.com/jingweno/octokat/pull/1/comments", pr.ReviewCommentsURL)
 	assert.Equal(t, "/repos/jingweno/octokat/pulls/comments/{number}", pr.ReviewCommentURL)
@@ -56,7 +62,7 @@ func TestPullRequestService_Post(t *testing.T) {
 	mux.HandleFunc("/repos/octokit/go-octokit/pulls", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testBody(t, r,
-			"{\"base\":\"base\",\"head\":\"head\",\"title\":\"title\",\"body\":\"body\"}\n")
+			"{\"base\":\"base\",\"head\":\"head\",\"title\":\"title\",\"body\":\"body\",\"assignee\":\"assignee\"}\n")
 		respondWithJSON(w, loadFixture("pull_request.json"))
 	})
 
@@ -64,10 +70,11 @@ func TestPullRequestService_Post(t *testing.T) {
 	assert.NoError(t, err)
 
 	params := PullRequestParams{
-		Base:  "base",
-		Head:  "head",
-		Title: "title",
-		Body:  "body",
+		Base:     "base",
+		Head:     "head",
+		Title:    "title",
+		Body:     "body",
+		Assignee: "assignee",
 	}
 	pr, result := client.PullRequests(url).Create(params)
 
@@ -90,7 +97,13 @@ func TestPullRequestService_Post(t *testing.T) {
 	assert.Equal(t, "https://github.com/jingweno/octokat/pull/1", pr.IssueURL)
 	assert.Equal(t, 1, pr.Number)
 	assert.Equal(t, "closed", pr.State)
-	assert.Nil(t, pr.Assignee)
+
+	assert.Equal(t, "octocat", pr.Assignee.Login)
+	assert.Equal(t, 1, pr.Assignee.ID)
+	assert.Equal(t, "https://github.com/images/error/octocat_happy.gif", pr.Assignee.AvatarURL)
+	assert.Equal(t, "somehexcode", pr.Assignee.GravatarID)
+	assert.Equal(t, "https://api.github.com/users/octocat", pr.Assignee.URL)
+
 	assert.Equal(t, "https://github.com/jingweno/octokat/pull/1/commits", pr.CommitsURL)
 	assert.Equal(t, "https://github.com/jingweno/octokat/pull/1/comments", pr.ReviewCommentsURL)
 	assert.Equal(t, "/repos/jingweno/octokat/pulls/comments/{number}", pr.ReviewCommentURL)

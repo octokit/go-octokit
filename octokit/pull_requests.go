@@ -106,10 +106,11 @@ type PullRequestCommit struct {
 // PullRequestParams represent the set of parameters used to create a new
 // pull request
 type PullRequestParams struct {
-	Base  string `json:"base,omitempty"`
-	Head  string `json:"head,omitempty"`
-	Title string `json:"title,omitempty"`
-	Body  string `json:"body,omitempty"`
+	Base     string `json:"base,omitempty"`
+	Head     string `json:"head,omitempty"`
+	Title    string `json:"title,omitempty"`
+	Body     string `json:"body,omitempty"`
+	Assignee string `json:"assignee,omitempty"`
 }
 
 // PullRequestForIssueParams represent the set of parameters used to
