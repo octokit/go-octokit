@@ -12,15 +12,8 @@ func TestFollowersService_AllFollowers(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/users/obsc/followers", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-
-		header := w.Header()
-		link := fmt.Sprintf(`<%s>; rel="next", <%s>; rel="last"`, testURLOf("/users/obsc/followers?page=2"), testURLOf("/users/obsc/followers?page=3"))
-		header.Set("Link", link)
-
-		respondWithJSON(w, loadFixture("followers.json"))
-	})
+	link := fmt.Sprintf(`<%s>; rel="next", <%s>; rel="last"`, testURLOf("/users/obsc/followers?page=2"), testURLOf("/users/obsc/followers?page=3"))
+	stubGet(t, "/users/obsc/followers", "followers", map[string]string{"Link": link})
 
 	followers, result := client.Followers().All(&FollowerUrl, M{"user": "obsc"})
 	assert.False(t, result.HasError())
@@ -37,15 +30,8 @@ func TestFollowersService_AllFollowersCurrent(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/user/followers", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-
-		header := w.Header()
-		link := fmt.Sprintf(`<%s>; rel="next", <%s>; rel="last"`, testURLOf("/user/followers?page=2"), testURLOf("/user/followers?page=3"))
-		header.Set("Link", link)
-
-		respondWithJSON(w, loadFixture("followers.json"))
-	})
+	link := fmt.Sprintf(`<%s>; rel="next", <%s>; rel="last"`, testURLOf("/user/followers?page=2"), testURLOf("/user/followers?page=3"))
+	stubGet(t, "/user/followers", "followers", map[string]string{"Link": link})
 
 	followers, result := client.Followers().All(nil, nil)
 	assert.False(t, result.HasError())
@@ -62,15 +48,8 @@ func TestFollowersService_AllFollowing(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/users/obsc/following", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-
-		header := w.Header()
-		link := fmt.Sprintf(`<%s>; rel="next", <%s>; rel="last"`, testURLOf("/users/obsc/following?page=2"), testURLOf("/users/obsc/following?page=3"))
-		header.Set("Link", link)
-
-		respondWithJSON(w, loadFixture("followers.json"))
-	})
+	link := fmt.Sprintf(`<%s>; rel="next", <%s>; rel="last"`, testURLOf("/users/obsc/following?page=2"), testURLOf("/users/obsc/following?page=3"))
+	stubGet(t, "/users/obsc/following", "followers", map[string]string{"Link": link})
 
 	allFollowing, result := client.Followers().All(&FollowingUrl, M{"user": "obsc"})
 	assert.False(t, result.HasError())
@@ -87,15 +66,8 @@ func TestFollowersService_AllFollowingCurrent(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/user/following", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-
-		header := w.Header()
-		link := fmt.Sprintf(`<%s>; rel="next", <%s>; rel="last"`, testURLOf("/user/following?page=2"), testURLOf("/user/following?page=3"))
-		header.Set("Link", link)
-
-		respondWithJSON(w, loadFixture("followers.json"))
-	})
+	link := fmt.Sprintf(`<%s>; rel="next", <%s>; rel="last"`, testURLOf("/user/following?page=2"), testURLOf("/user/following?page=3"))
+	stubGet(t, "/user/following", "followers", map[string]string{"Link": link})
 
 	allFollowing, result := client.Followers().All(&CurrentFollowingUrl, nil)
 	assert.False(t, result.HasError())
