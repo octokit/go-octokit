@@ -87,8 +87,6 @@ func TestEmailsService_Delete(t *testing.T) {
 	params := []string{"test@example.com", "otherTest@example.com"}
 	result := client.Emails(url).Delete(params)
 
-	fmt.Println("TESTING " + result.Error())
-
 	assert.False(t, result.HasError())
 	assert.Equal(t, 204, result.Response.StatusCode)
 }
