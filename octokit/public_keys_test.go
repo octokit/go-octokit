@@ -1,0 +1,68 @@
+package octokit
+
+import (
+	"fmt"
+	"testing"
+	"time"
+
+	"github.com/stretchr/testify/assert"
+)
+
+func TestPublicKeysService_AllKeys(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	link := fmt.Sprintf(`<%s>; rel="next", <%s>; rel="last"`, testURLOf("/users/obsc/keys?page=2"), testURLOf("/users/obsc/keys?page=3"))
+	stubGet(t, "/users/obsc/keys", "public_keys", map[string]string{"Link": link})
+
+	keys, result := client.PublicKeys().All(&PublicKeyUrl, M{"user": "obsc"})
+	assert.False(t, result.HasError())
+	assert.Len(t, keys, 1)
+
+	key := keys[0]
+	assert.Equal(t, 8675080, key.Id)
+	assert.Equal(t, "ssh-rsa AAA...", key.Key)
+
+	assert.Equal(t, testURLStringOf("/users/obsc/keys?page=2"), string(*result.NextPage))
+	assert.Equal(t, testURLStringOf("/users/obsc/keys?page=3"), string(*result.LastPage))
+
+	validateNextPage(t, result)
+}
+
+func TestPublicKeysService_AllKeysCurrent(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	link := fmt.Sprintf(`<%s>; rel="next", <%s>; rel="last"`, testURLOf("/user/keys?page=2"), testURLOf("/user/keys?page=3"))
+	stubGet(t, "/user/keys", "keys", map[string]string{"Link": link})
+
+	keys, result := client.PublicKeys().All(nil, nil)
+	assert.False(t, result.HasError())
+
+	validateKey(t, keys)
+
+	assert.Equal(t, testURLStringOf("/user/keys?page=2"), string(*result.NextPage))
+	assert.Equal(t, testURLStringOf("/user/keys?page=3"), string(*result.LastPage))
+
+	validateNextPage(t, result)
+}
+
+func validateKey(t *testing.T, keys []Key) {
+	assert.Len(t, keys, 1)
+
+	key := keys[0]
+	testTime, _ := time.Parse("2006-01-02T15:04:05Z", "2014-07-23T08:42:44Z")
+
+	assert.Equal(t, 8675080, key.Id)
+	assert.Equal(t, "ssh-rsa AAA...", key.Key)
+	assert.Equal(t, "https://api.github.com/user/keys/8675080", key.URL)
+	assert.Equal(t, "aKey", key.Title)
+	assert.Equal(t, true, key.Verified)
+	assert.Equal(t, &testTime, key.CreatedAt)
+}
+
+func validateNextPage(t *testing.T, result *Result) {
+	keys, result := client.PublicKeys().All(result.NextPage, nil)
+	assert.False(t, result.HasError())
+	assert.Len(t, keys, 1)
+}

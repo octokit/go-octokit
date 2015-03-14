@@ -1,0 +1,10 @@
+[
+    {
+        "id": 8675080,
+        "key": "ssh-rsa AAA...",
+        "url": "https://api.github.com/user/keys/8675080",
+        "title": "aKey",
+        "verified": true,
+        "created_at": "2014-07-23T08:42:44Z"
+    }
+]
