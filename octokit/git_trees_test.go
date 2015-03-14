@@ -1,7 +1,6 @@
 package octokit
 
 import (
-	"net/http"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -11,10 +10,7 @@ func TestGitTreesService_One(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/pengwynn/flint/git/trees/master", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWithJSON(w, loadFixture("tree.json"))
-	})
+	stubGet(t, "/repos/pengwynn/flint/git/trees/master", "tree", nil)
 
 	url, err := GitTreesURL.Expand(M{
 		"owner": "pengwynn",
@@ -36,10 +32,7 @@ func TestGitTreesService_One_Recursive(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/pengwynn/flint/git/trees/master", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWithJSON(w, loadFixture("tree_recursive.json"))
-	})
+	stubGet(t, "/repos/pengwynn/flint/git/trees/master", "tree_recursive", nil)
 
 	url, err := GitTreesURL.Expand(M{
 		"owner":     "pengwynn",
