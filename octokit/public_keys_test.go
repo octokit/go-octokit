@@ -38,8 +38,9 @@ func TestPublicKeysService_AllKeysCurrent(t *testing.T) {
 
 	keys, result := client.PublicKeys().All(nil, nil)
 	assert.False(t, result.HasError())
+	assert.Len(t, keys, 1)
 
-	validateKey(t, keys)
+	validateKey(t, keys[0])
 
 	assert.Equal(t, testURLStringOf("/user/keys?page=2"), string(*result.NextPage))
 	assert.Equal(t, testURLStringOf("/user/keys?page=3"), string(*result.LastPage))
@@ -47,10 +48,19 @@ func TestPublicKeysService_AllKeysCurrent(t *testing.T) {
 	validateNextPage(t, result)
 }
 
-func validateKey(t *testing.T, keys []Key) {
-	assert.Len(t, keys, 1)
+func TestPublicKeysService_OneKey(t *testing.T) {
+	setup()
+	defer tearDown()
 
-	key := keys[0]
+	stubGet(t, "/user/keys/8675080", "key", nil)
+
+	key, result := client.PublicKeys().One(nil, M{"id": 8675080})
+	assert.False(t, result.HasError())
+
+	validateKey(t, *key)
+}
+
+func validateKey(t *testing.T, key Key) {
 	testTime, _ := time.Parse("2006-01-02T15:04:05Z", "2014-07-23T08:42:44Z")
 
 	assert.Equal(t, 8675080, key.Id)

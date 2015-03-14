@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	CurrentPublicKeyUrl = Hyperlink("/user/keys")
+	CurrentPublicKeyUrl = Hyperlink("/user/keys{/id}")
 	PublicKeyUrl        = Hyperlink("/users/{user}/keys")
 )
 
@@ -34,6 +34,21 @@ func (k *PublicKeysService) All(uri *Hyperlink, params M) (keys []Key, result *R
 	}
 
 	result = k.client.get(url, &keys)
+	return
+}
+
+// Get a the data for one key for the current user
+func (k *PublicKeysService) One(uri *Hyperlink, params M) (key *Key, result *Result) {
+	if uri == nil {
+		uri = &CurrentPublicKeyUrl // Default url
+	}
+
+	url, err := uri.Expand(params)
+	if err != nil {
+		return nil, &Result{Err: err}
+	}
+
+	result = k.client.get(url, &key)
 	return
 }
 
