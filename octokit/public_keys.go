@@ -24,11 +24,7 @@ type PublicKeysService struct {
 
 // Get a list of keys for the user
 func (k *PublicKeysService) All(uri *Hyperlink, params M) (keys []Key, result *Result) {
-	if uri == nil {
-		uri = &CurrentPublicKeyUrl // Default url
-	}
-
-	url, err := uri.Expand(params)
+	url, err := ExpandWithDefault(uri, &CurrentPublicKeyUrl, params)
 	if err != nil {
 		return nil, &Result{Err: err}
 	}
@@ -39,11 +35,7 @@ func (k *PublicKeysService) All(uri *Hyperlink, params M) (keys []Key, result *R
 
 // Get a the data for one key for the current user
 func (k *PublicKeysService) One(uri *Hyperlink, params M) (key *Key, result *Result) {
-	if uri == nil {
-		uri = &CurrentPublicKeyUrl // Default url
-	}
-
-	url, err := uri.Expand(params)
+	url, err := ExpandWithDefault(uri, &CurrentPublicKeyUrl, params)
 	if err != nil {
 		return nil, &Result{Err: err}
 	}
@@ -54,11 +46,7 @@ func (k *PublicKeysService) One(uri *Hyperlink, params M) (key *Key, result *Res
 
 // Creates a new public key for the current user
 func (k *PublicKeysService) Create(uri *Hyperlink, uriParams M, inputParams interface{}) (key *Key, result *Result) {
-	if uri == nil {
-		uri = &CurrentPublicKeyUrl
-	}
-
-	url, err := uri.Expand(uriParams)
+	url, err := ExpandWithDefault(uri, &CurrentPublicKeyUrl, uriParams)
 	if err != nil {
 		return nil, &Result{Err: err}
 	}
@@ -69,11 +57,7 @@ func (k *PublicKeysService) Create(uri *Hyperlink, uriParams M, inputParams inte
 
 // Removes a public key for the current user
 func (k *PublicKeysService) Delete(uri *Hyperlink, params M) (success bool, result *Result) {
-	if uri == nil {
-		uri = &CurrentPublicKeyUrl
-	}
-
-	url, err := uri.Expand(params)
+	url, err := ExpandWithDefault(uri, &CurrentPublicKeyUrl, params)
 	if err != nil {
 		return false, &Result{Err: err}
 	}
