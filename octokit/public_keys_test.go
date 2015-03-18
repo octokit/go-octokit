@@ -2,6 +2,7 @@ package octokit
 
 import (
 	"fmt"
+	"net/http"
 	"testing"
 	"time"
 
@@ -58,6 +59,43 @@ func TestPublicKeysService_OneKey(t *testing.T) {
 	assert.False(t, result.HasError())
 
 	validateKey(t, *key)
+}
+
+func TestPublicKeysService_Create(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/user/keys", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testBody(t, r, "{\"key\":\"ssh-rsa AAA...\",\"title\":\"aKey\"}\n")
+
+		respondWithJSON(w, loadFixture("key.json"))
+	})
+
+	params := Key{Title: "aKey", Key: "ssh-rsa AAA..."}
+	key, result := client.PublicKeys().Create(nil, nil, params)
+	assert.False(t, result.HasError())
+
+	validateKey(t, *key)
+}
+
+func TestPublicKeysService_Delete(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/user/keys/8675080", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+
+		header := w.Header()
+		header.Set("Content-Type", "application/json")
+
+		respondWithStatus(w, 204)
+	})
+
+	success, result := client.PublicKeys().Delete(nil, M{"id": 8675080})
+	assert.False(t, result.HasError())
+
+	assert.True(t, success)
 }
 
 func validateKey(t *testing.T, key Key) {

@@ -52,6 +52,37 @@ func (k *PublicKeysService) One(uri *Hyperlink, params M) (key *Key, result *Res
 	return
 }
 
+// Creates a new public key for the current user
+func (k *PublicKeysService) Create(uri *Hyperlink, uriParams M, inputParams interface{}) (key *Key, result *Result) {
+	if uri == nil {
+		uri = &CurrentPublicKeyUrl
+	}
+
+	url, err := uri.Expand(uriParams)
+	if err != nil {
+		return nil, &Result{Err: err}
+	}
+
+	result = k.client.post(url, inputParams, &key)
+	return
+}
+
+// Removes a public key for the current user
+func (k *PublicKeysService) Delete(uri *Hyperlink, params M) (success bool, result *Result) {
+	if uri == nil {
+		uri = &CurrentPublicKeyUrl
+	}
+
+	url, err := uri.Expand(params)
+	if err != nil {
+		return false, &Result{Err: err}
+	}
+
+	result = k.client.delete(url, nil, nil)
+	success = (result.Response.StatusCode == 204)
+	return
+}
+
 type Key struct {
 	*hypermedia.HALResource
 
