@@ -98,6 +98,28 @@ func TestPublicKeysService_Delete(t *testing.T) {
 	assert.True(t, success)
 }
 
+func TestPublicKeysService_Failure(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	url := Hyperlink("}")
+	keys, result := client.PublicKeys().All(&url, nil)
+	assert.True(t, result.HasError())
+	assert.Len(t, keys, 0)
+
+	key, result := client.PublicKeys().One(&url, nil)
+	assert.True(t, result.HasError())
+	assert.Nil(t, key)
+
+	key, result = client.PublicKeys().Create(&url, nil, nil)
+	assert.True(t, result.HasError())
+	assert.Nil(t, key)
+
+	success, result := client.PublicKeys().Delete(&url, nil)
+	assert.True(t, result.HasError())
+	assert.False(t, success)
+}
+
 func validateKey(t *testing.T, key Key) {
 	testTime, _ := time.Parse("2006-01-02T15:04:05Z", "2014-07-23T08:42:44Z")
 
