@@ -4,37 +4,65 @@ package octokit
 // all identifying information related to the specific organization.
 
 var (
-	OrgReposURL = Hyperlink("/orgs/{org}/repos{?type,page,per_page,sort}")
-	OrgURL      = Hyperlink("/orgs/{org}")
-	YourOrgsURL = Hyperlink("/user/orgs")
-	UserOrgsURL = Hyperlink("/users/{username}/orgs")
+	OrganizationReposURL = Hyperlink("/orgs/{org}/repos{?type,page,per_page,sort}")
+	OrganizationURL      = Hyperlink("/orgs/{org}")
+	YourOrganizationsURL = Hyperlink("/user/orgs")
+	UserOrganizationsURL = Hyperlink("/users/{username}/orgs")
 )
 
 // A service to return organization information
-type OrgsService struct {
+type OrganizationsService struct {
 	client *Client
 	URL    *url.URL
 }
 
-// Get the user search results based on OrgService#URL
-func (g *OrgService) Users(uri *Hyperlink, params M) (
-	userSearchResults UserSearchResults, result *Result) {
+// Get the user search results based on OrganizationService#URL
+func (g *OrganizationService) OrganizationRepos(uri *Hyperlink, params M) (
+	repos []Repository, result *Result) {
 	if uri == nil {
-		uri = &UserSearchURL
+		uri = &OrganizationReposURL
 	}
 	url, err := uri.Expand(params)
 	if err != nil {
-		return UserSearchResults{}, &Result{Err: err}
+		return make([]Organization, 0), &Result{Err: err}
 	}
-	result = g.client.get(url, &userSearchResults)
+	result = g.client.get(url, &repos)
 	return
 }
 
-// Get the issue search results based on OrgService#URL
-func (g *OrgService) UserOrgs(uri *Hyperlink, params M) (
+// Get the user search results based on OrganizationService#URL
+func (g *OrganizationService) Organization(uri *Hyperlink, params M) (
+	organization Organization, result *Result) {
+	if uri == nil {
+		uri = &OrganizationURL
+	}
+	url, err := uri.Expand(params)
+	if err != nil {
+		return Organization{}, &Result{Err: err}
+	}
+	result = g.client.get(url, &Organization)
+	return
+}
+
+// Get the issue search results based on OrganizationService#URL
+func (g *OrganizationService) YourOrganizations(uri *Hyperlink, params M) (
 	organizations []Organization, result *Result) {
 	if uri == nil {
-		uri = &UserOrgsURL
+		uri = &YourOrganizationsURL
+	}
+	url, err := uri.Expand(params)
+	if err != nil {
+		return make([]Organization, 0), &Result{Err: err}
+	}
+	result = g.client.get(url, &organizations)
+	return
+}
+
+// Get the issue search results based on OrganizationService#URL
+func (g *OrganizationService) UserOrganizations(uri *Hyperlink, params M) (
+	organizations []Organization, result *Result) {
+	if uri == nil {
+		uri = &UserOrganizationsURL
 	}
 	url, err := uri.Expand(params)
 	if err != nil {
@@ -45,6 +73,7 @@ func (g *OrgService) UserOrgs(uri *Hyperlink, params M) (
 }
 
 type Organization struct {
+	Description      string    `json:"description, omitempty"`
 	AvatarURL        string    `json:"avatar_url,omitempty"`
 	PublicMembersURL Hyperlink `json:"public_member_url,omitempty"`
 	MembersURL       Hyperlink `json:"members_url,omitempty"`
@@ -53,11 +82,7 @@ type Organization struct {
 	URL              string    `json:"url,omitempty"`
 	ID               int       `json:"id,omitempty"`
 	Login            string    `json:"login,omitempty"`
-}
 
-type Org struct {
-	*Organization
-	Description string     `json:"description, omitempty"`
 	Name        string     `json:"name, omitempty"`
 	Company     string     `json:"company, omitempty"`
 	Blog        string     `json:"blog, omitempty"`
@@ -71,7 +96,4 @@ type Org struct {
 	CreatedAt   *time.Time `json:"created_at,omitempty"`
 	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
 	Type        string     `json:"type,omitempty"`
-}
-type UserOrgResults struct {
-	Orgs []Organization `json:"items,omitempty"`
 }
