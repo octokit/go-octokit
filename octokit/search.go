@@ -11,8 +11,6 @@ var (
 	UserSearchURL       = Hyperlink("/search/users?q={query}{&page,per_page,sort,order}")
 )
 
-var SearchURITemplate = "search{/type}?q={query}{&page,per_page,sort,order}"
-
 func (c *Client) Search() *SearchService {
 	return &SearchService{client: c}
 }
