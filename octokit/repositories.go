@@ -22,7 +22,6 @@ var (
 	OrgRepositoriesURL  = Hyperlink("orgs/{org}/repos")
 	CollaboratorsURL    = Hyperlink(
 		"repos/{owner}/{repo}/collaborators/{username}")
-	UserRepositoriesURL = Hyperlink("/user/repos")
 )
 
 // Repositories creates a RepositoriesService with a base url
