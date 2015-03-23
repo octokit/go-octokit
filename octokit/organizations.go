@@ -3,6 +3,10 @@ package octokit
 // Organization is a representation of an organization on GitHub, containing
 // all identifying information related to the specific organization.
 
+import (
+	"time"
+)
+
 var (
 	OrganizationReposURL = Hyperlink("/orgs/{org}/repos{?type,page,per_page,sort}")
 	OrganizationURL      = Hyperlink("/orgs/{org}")
@@ -11,9 +15,8 @@ var (
 )
 
 // A service to return organization information
-type OrganizationsService struct {
+type OrganizationService struct {
 	client *Client
-	URL    *url.URL
 }
 
 // Get the user search results based on OrganizationService#URL
@@ -24,7 +27,7 @@ func (g *OrganizationService) OrganizationRepos(uri *Hyperlink, params M) (
 	}
 	url, err := uri.Expand(params)
 	if err != nil {
-		return make([]Organization, 0), &Result{Err: err}
+		return make([]Repository, 0), &Result{Err: err}
 	}
 	result = g.client.get(url, &repos)
 	return
@@ -40,7 +43,7 @@ func (g *OrganizationService) Organization(uri *Hyperlink, params M) (
 	if err != nil {
 		return Organization{}, &Result{Err: err}
 	}
-	result = g.client.get(url, &Organization)
+	result = g.client.get(url, &organization)
 	return
 }
 
