@@ -12,10 +12,7 @@ func TestIssuesService_All(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/octocat/Hello-World/issues", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWithJSON(w, loadFixture("issues.json"))
-	})
+	stubGet(t, "/repos/octocat/Hello-World/issues", "issues", nil)
 
 	url, err := RepoIssuesURL.Expand(M{"owner": "octocat", "repo": "Hello-World"})
 	assert.NoError(t, err)
@@ -32,10 +29,7 @@ func TestIssuesService_One(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/octocat/Hello-World/issues/1347", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWithJSON(w, loadFixture("issue.json"))
-	})
+	stubGet(t, "/repos/octocat/Hello-World/issues/1347", "issue", nil)
 
 	url, err := RepoIssuesURL.Expand(M{"owner": "octocat", "repo": "Hello-World", "number": 1347})
 	assert.NoError(t, err)

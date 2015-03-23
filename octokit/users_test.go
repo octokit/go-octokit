@@ -13,10 +13,7 @@ func TestUsersService_GetCurrentUser(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWithJSON(w, loadFixture("user.json"))
-	})
+	stubGet(t, "/user", "user", nil)
 
 	url, _ := CurrentUserURL.Expand(nil)
 	user, result := client.Users(url).One()
@@ -59,10 +56,7 @@ func TestUsersService_GetUser(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/users/jingweno", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWithJSON(w, loadFixture("user.json"))
-	})
+	stubGet(t, "/users/jingweno", "user", nil)
 
 	url, err := UserURL.Expand(M{"user": "jingweno"})
 	assert.NoError(t, err)

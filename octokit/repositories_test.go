@@ -13,10 +13,7 @@ func TestRepositoresService_One(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/jingweno/octokat", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWithJSON(w, loadFixture("repository.json"))
-	})
+	stubGet(t, "/repos/jingweno/octokat", "repository", nil)
 
 	url, err := RepositoryURL.Expand(M{"owner": "jingweno", "repo": "octokat"})
 	assert.NoError(t, err)
@@ -45,15 +42,8 @@ func TestRepositoresService_All(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/orgs/rails/repos", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-
-		header := w.Header()
-		link := fmt.Sprintf(`<%s>; rel="next", <%s>; rel="last"`, testURLOf("organizations/4223/repos?page=2"), testURLOf("organizations/4223/repos?page=3"))
-		header.Set("Link", link)
-
-		respondWithJSON(w, loadFixture("repositories.json"))
-	})
+	link := fmt.Sprintf(`<%s>; rel="next", <%s>; rel="last"`, testURLOf("organizations/4223/repos?page=2"), testURLOf("organizations/4223/repos?page=3"))
+	stubGet(t, "/orgs/rails/repos", "repositories", map[string]string{"Link": link})
 
 	url, err := OrgRepositoriesURL.Expand(M{"org": "rails"})
 	assert.NoError(t, err)

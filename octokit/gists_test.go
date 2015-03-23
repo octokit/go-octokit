@@ -12,10 +12,7 @@ func TestGistsService_One(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/gists/a6bea192debdbec0d4ab", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWithJSON(w, loadFixture("gist.json"))
-	})
+	stubGet(t, "/gists/a6bea192debdbec0d4ab", "gist", nil)
 
 	url, _ := GistsURL.Expand(M{"gist_id": "a6bea192debdbec0d4ab"})
 	gist, result := client.Gists(url).One()
@@ -37,10 +34,7 @@ func TestGistsService_Raw(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/gists/a6bea192debdbec0d4ab", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWithJSON(w, loadFixture("gist.json"))
-	})
+	stubGet(t, "/gists/a6bea192debdbec0d4ab", "gist", nil)
 
 	mux.HandleFunc("/jingweno/a6bea192debdbec0d4ab/raw/80757419d2bd4cfddf7c6be24308eca11b3c330e/grep_cellar", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")

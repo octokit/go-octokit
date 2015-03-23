@@ -1,7 +1,6 @@
 package octokit
 
 import (
-	"net/http"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -11,10 +10,7 @@ func TestSearchService_Users(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/search/users", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWithJSON(w, loadFixture("user_search.json"))
-	})
+	stubGet(t, "/search/users", "user_search", nil)
 
 	searchResults, result := client.Search().Users(nil, M{"query": "dhruvsinghal"})
 
@@ -32,11 +28,7 @@ func TestSearchService_Issues(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/search/issues", func(w http.ResponseWriter,
-		r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWithJSON(w, loadFixture("issue_search.json"))
-	})
+	stubGet(t, "/search/issues", "issue_search", nil)
 
 	searchResults, result := client.Search().Issues(nil, M{"query": "color"})
 
@@ -53,11 +45,7 @@ func TestSearchService_Repositories(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/search/repositories", func(w http.ResponseWriter,
-		r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWithJSON(w, loadFixture("repository_search.json"))
-	})
+	stubGet(t, "/search/repositories", "repository_search", nil)
 
 	searchResults, result := client.Search().Repositories(nil,
 		M{"query": "asdfghjk"})
@@ -76,11 +64,7 @@ func TestSearchService_Code(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/search/code", func(w http.ResponseWriter,
-		r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWithJSON(w, loadFixture("code_search.json"))
-	})
+	stubGet(t, "/search/code", "code_search", nil)
 
 	searchResults, result := client.Search().Code(nil, M{
 		"query": "addClass in:file language:js repo:jquery/jquery"})
