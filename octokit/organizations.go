@@ -2,6 +2,14 @@ package octokit
 
 // Organization is a representation of an organization on GitHub, containing
 // all identifying information related to the specific organization.
+
+var (
+	OrgReposURL = Hyperlink("/orgs/{org}/repos{?type,page,per_page,sort}")
+	OrgURL      = Hyperlink("/orgs/{org}")
+	YourOrgsURL = Hyperlink("/user/orgs")
+	UserOrgsURL = Hyperlink("/users/{username}/orgs")
+)
+
 type Organization struct {
 	AvatarURL        string `json:"avatar_url,omitempty"`
 	PublicMembersURL string `json:"public_member_url,omitempty"`
