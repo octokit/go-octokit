@@ -12,15 +12,11 @@ import (
 // UserRepositoriesURL is the address for all user repositories.
 // OrgRepositoriesUrl is the template for repositories within a
 // particular organization.
-// CollaboratorsURL is the template for accessing the collaborators
-// of a particular repository.
 var (
 	RepositoryURL       = Hyperlink("repos/{owner}/{repo}")
 	ForksURL            = Hyperlink("repos/{owner}/{repo}/forks")
 	UserRepositoriesURL = Hyperlink("user/repos")
 	OrgRepositoriesURL  = Hyperlink("orgs/{org}/repos")
-	CollaboratorsURL    = Hyperlink(
-		"repos/{owner}/{repo}/collaborators/{username}")
 )
 
 // Repositories creates a RepositoriesService with a base url
@@ -76,20 +72,6 @@ func (r *RepositoriesService) Create(uri *Hyperlink, uriParams M,
 		return nil, &Result{Err: err}
 	}
 	result = r.client.post(url, params, &repo)
-	return
-}
-
-// ListCollaborators lists all the collaborating users on the given repository
-func (r *RepositoriesService) ListCollaborators(uri *Hyperlink, params M) (
-	users []User, result *Result) {
-	if uri == nil {
-		uri = &CollaboratorsURL
-	}
-	url, err := uri.Expand(params)
-	if err != nil {
-		return nil, &Result{Err: err}
-	}
-	result = r.client.get(url, &users)
 	return
 }
 
