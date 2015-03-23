@@ -22,6 +22,7 @@ var (
 	OrgRepositoriesURL  = Hyperlink("orgs/{org}/repos")
 	CollaboratorsURL    = Hyperlink(
 		"repos/{owner}/{repo}/collaborators/{username}")
+	UserRepositoriesURL = Hyperlink("/user/repos")
 )
 
 // Repositories creates a RepositoriesService with a base url
@@ -53,7 +54,9 @@ func (r *RepositoriesService) One(uri *Hyperlink, params M) (repo *Repository,
 // All gets a list of all repositories associated with the url of the service
 func (r *RepositoriesService) All(uri *Hyperlink, params M) (repos []Repository,
 	result *Result) {
-	if uri == nil {
+	if uri == nil && len(params) == 0 {
+		uri = &UserRepositoriesURL
+	} else if uri == nil {
 		uri = &RepositoryURL
 	}
 	url, err := uri.Expand(params)
