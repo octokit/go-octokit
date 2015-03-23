@@ -7,24 +7,20 @@ import (
 )
 
 // Hyperlinks to the various repository locations on github.
+// RepositoryURL is a template for a particular repository for a
+// particular owner.
+// ForksURL is a template for the forks of a user's repository.
+// UserRepositoriesURL is the address for all user repositories.
+// OrgRepositoriesUrl is the template for repositories within a
+// particular organization.
+// CollaboratorsURL is the template for accessing the collaborators
+// of a particular repository.
 var (
-	// RepositoryURL is a template for a particular repository for a
-	// particular owner.
-	RepositoryURL = Hyperlink("repos/{owner}/{repo}")
-
-	// ForksURL is a template for the forks of a user's repository.
-	ForksURL = Hyperlink("repos/{owner}/{repo}/forks")
-
-	// UserRepositoriesURL is the address for all user repositories.
+	RepositoryURL       = Hyperlink("repos/{owner}/{repo}")
+	ForksURL            = Hyperlink("repos/{owner}/{repo}/forks")
 	UserRepositoriesURL = Hyperlink("user/repos")
-
-	// OrgRepositoriesUrl is the template for repositories within a
-	// particular organization.
-	OrgRepositoriesURL = Hyperlink("orgs/{org}/repos")
-
-	// CollaboratorsURL is the template for accessing the collaborators
-	// of a particular repository.
-	CollaboratorsURL = Hyperlink(
+	OrgRepositoriesURL  = Hyperlink("orgs/{org}/repos")
+	CollaboratorsURL    = Hyperlink(
 		"repos/{owner}/{repo}/collaborators/{username}")
 )
 

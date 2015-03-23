@@ -24,9 +24,11 @@ func TestRepositoresService_One(t *testing.T) {
 	assert.Equal(t, "jingweno/octokat", repo.FullName)
 	assert.False(t, repo.Private)
 	assert.False(t, repo.Fork)
-	assert.Equal(t, "https://api.github.com/repos/jingweno/octokat", repo.URL)
+	assert.Equal(t, "https://api.github.com/repos/jingweno/octokat",
+		repo.URL)
 	assert.Equal(t, "https://github.com/jingweno/octokat", repo.HTMLURL)
-	assert.Equal(t, "https://github.com/jingweno/octokat.git", repo.CloneURL)
+	assert.Equal(t, "https://github.com/jingweno/octokat.git",
+		repo.CloneURL)
 	assert.Equal(t, "git://github.com/jingweno/octokat.git", repo.GitURL)
 	assert.Equal(t, "git@github.com:jingweno/octokat.git", repo.SSHURL)
 	assert.Equal(t, 79, repo.StargazersCount)
