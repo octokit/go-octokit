@@ -12,12 +12,7 @@ func TestSearchService_Users(t *testing.T) {
 
 	stubGet(t, "/search/users", "user_search", nil)
 
-	url, err := SearchURL.Expand(map[string]interface{}{
-		"type":  "users",
-		"query": "dhruvsinghal"})
-	assert.NoError(t, err)
-
-	searchResults, result := client.Search(url).Users()
+	searchResults, result := client.Search().Users(nil, M{"query": "dhruvsinghal"})
 
 	assert.False(t, result.HasError())
 	assert.False(t, searchResults.IncompleteResults)
@@ -35,12 +30,7 @@ func TestSearchService_Issues(t *testing.T) {
 
 	stubGet(t, "/search/issues", "issue_search", nil)
 
-	url, err := SearchURL.Expand(map[string]interface{}{
-		"type":  "issues",
-		"query": "color"})
-	assert.NoError(t, err)
-
-	searchResults, result := client.Search(url).Issues()
+	searchResults, result := client.Search().Issues(nil, M{"query": "color"})
 
 	assert.False(t, result.HasError())
 	assert.False(t, searchResults.IncompleteResults)
@@ -57,12 +47,8 @@ func TestSearchService_Repositories(t *testing.T) {
 
 	stubGet(t, "/search/repositories", "repository_search", nil)
 
-	url, err := SearchURL.Expand(map[string]interface{}{
-		"type":  "repositories",
-		"query": "asdfghjk"})
-	assert.NoError(t, err)
-
-	searchResults, result := client.Search(url).Repositories()
+	searchResults, result := client.Search().Repositories(nil,
+		M{"query": "asdfghjk"})
 
 	assert.False(t, result.HasError())
 	assert.False(t, searchResults.IncompleteResults)
@@ -80,12 +66,8 @@ func TestSearchService_Code(t *testing.T) {
 
 	stubGet(t, "/search/code", "code_search", nil)
 
-	url, err := SearchURL.Expand(map[string]interface{}{
-		"type":  "code",
+	searchResults, result := client.Search().Code(nil, M{
 		"query": "addClass in:file language:js repo:jquery/jquery"})
-	assert.NoError(t, err)
-
-	searchResults, result := client.Search(url).Code()
 
 	assert.False(t, result.HasError())
 	assert.False(t, searchResults.IncompleteResults)
