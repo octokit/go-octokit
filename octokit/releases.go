@@ -9,6 +9,8 @@ import (
 
 // ReleasesURL is a template for accessing releases in a particular repository
 // for a particular owner that can be expanded to a full address.
+//
+// https://developer.github.com/v3/repos/releases/
 var ReleasesURL = Hyperlink("repos/{owner}/{repo}/releases{/id}")
 
 // Release is a representation of a release on GitHub. Published releases are
@@ -48,6 +50,8 @@ type Asset struct {
 }
 
 // Releases creates a ReleasesService with a base url
+//
+// https://developer.github.com/v3/repos/releases/
 func (c *Client) Releases(url *url.URL) (releases *ReleasesService) {
 	releases = &ReleasesService{client: c, URL: url}
 	return
@@ -59,19 +63,25 @@ type ReleasesService struct {
 	URL    *url.URL
 }
 
-// One gets a specific release based on the url of the service
+// All gets all releases for a given repository based on the URL of the service
+//
+// https://developer.github.com/v3/repos/releases/#list-releases-for-a-repository
 func (r *ReleasesService) All() (releases []Release, result *Result) {
 	result = r.client.get(r.URL, &releases)
 	return
 }
 
 // Create posts a new release based on the relase parameters to the releases service url
+//
+// https://developer.github.com/v3/repos/releases/#create-a-release
 func (r *ReleasesService) Create(params interface{}) (release *Release, result *Result) {
 	result = r.client.post(r.URL, params, &release)
 	return
 }
 
 // Update modifies a release based on the release parameters on the service url
+//
+// https://developer.github.com/v3/repos/releases/#edit-a-release
 func (r *ReleasesService) Update(params interface{}) (release *Release, result *Result) {
 	result = r.client.patch(r.URL, params, &release)
 	return

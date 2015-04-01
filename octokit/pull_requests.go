@@ -10,9 +10,13 @@ import (
 
 // PullRequestsURL is a template for accessing pull requests in a particular
 // repository for a particular owner that can be expanded to a full address.
+//
+// https://developer.github.com/v3/pulls/
 var PullRequestsURL = Hyperlink("repos/{owner}/{repo}/pulls{/number}")
 
 // PullRequests creates a PullRequestsService with a base url
+//
+// https://developer.github.com/v3/pulls/
 func (c *Client) PullRequests(url *url.URL) (pullRequests *PullRequestsService) {
 	pullRequests = &PullRequestsService{client: c, URL: url}
 	return
@@ -26,6 +30,8 @@ type PullRequestsService struct {
 }
 
 // One gets a specific pull request based on the url of the service
+//
+// https://developer.github.com/v3/pulls/#get-a-single-pull-request
 func (p *PullRequestsService) One() (pull *PullRequest, result *Result) {
 	result = p.client.get(p.URL, &pull)
 	return
@@ -33,12 +39,16 @@ func (p *PullRequestsService) One() (pull *PullRequest, result *Result) {
 
 // Create posts a new pull request based on the parameters given to the
 // pull request service url
+//
+// https://developer.github.com/v3/pulls/#create-a-pull-request
 func (p *PullRequestsService) Create(params interface{}) (pull *PullRequest, result *Result) {
 	result = p.client.post(p.URL, params, &pull)
 	return
 }
 
 // All gets a list of all pull requests associated with the url of the service
+//
+// https://developer.github.com/v3/pulls/#list-pull-requests
 func (p *PullRequestsService) All() (pulls []PullRequest, result *Result) {
 	result = p.client.get(p.URL, &pulls)
 	return
@@ -46,12 +56,16 @@ func (p *PullRequestsService) All() (pulls []PullRequest, result *Result) {
 
 // Diff gets the difference of the data in the specific pull request to the branch
 // that the pull request is out to be merged with
+//
+// https://developer.github.com/v3/pulls/#get-a-single-pull-request
 func (p *PullRequestsService) Diff() (diff io.ReadCloser, result *Result) {
 	return p.client.getBody(p.URL, diffMediaType)
 }
 
 // Patch gets all the patches made to the specific pull request associated with
 // the url given to the service
+//
+// https://developer.github.com/v3/pulls/#update-a-pull-request
 func (p *PullRequestsService) Patch() (patch io.ReadCloser, result *Result) {
 	return p.client.getBody(p.URL, patchMediaType)
 }

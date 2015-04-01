@@ -5,8 +5,10 @@ import (
 	"net/url"
 )
 
+// https://developer.github.com/v3/search/
 var SearchURL = Hyperlink("search{/type}?q={query}{&page,per_page,sort,order}")
 
+// https://developer.github.com/v3/search/
 func (c *Client) Search(url *url.URL) (searches *SearchService) {
 	searches = &SearchService{client: c, URL: url}
 	return
@@ -19,6 +21,8 @@ type SearchService struct {
 }
 
 // Get the user search results based on SearchService#URL
+//
+// https://developer.github.com/v3/search/#search-users
 func (g *SearchService) Users() (userSearchResults UserSearchResults,
 	result *Result) {
 	result = g.client.get(g.URL, &userSearchResults)
@@ -26,6 +30,8 @@ func (g *SearchService) Users() (userSearchResults UserSearchResults,
 }
 
 // Get the issue search results based on SearchService#URL
+//
+// https://developer.github.com/v3/search/#search-issues
 func (g *SearchService) Issues() (issueSearchResults IssueSearchResults,
 	result *Result) {
 	result = g.client.get(g.URL, &issueSearchResults)
@@ -33,6 +39,8 @@ func (g *SearchService) Issues() (issueSearchResults IssueSearchResults,
 }
 
 // Get the repository search results based on SearchService#URL
+//
+// https://developer.github.com/v3/search/#search-repositories
 func (g *SearchService) Repositories() (
 	repositorySearchResults RepositorySearchResults, result *Result) {
 	result = g.client.get(g.URL, &repositorySearchResults)
@@ -40,6 +48,8 @@ func (g *SearchService) Repositories() (
 }
 
 // Get the code search results based on SearchService#URL
+//
+// https://developer.github.com/v3/search/#search-code
 func (g *SearchService) Code() (
 	codeSearchResults CodeSearchResults, result *Result) {
 	result = g.client.get(g.URL, &codeSearchResults)

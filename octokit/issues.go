@@ -9,9 +9,13 @@ import (
 
 // RepoIssuesURL is a template for accessing issues in a particular
 // repository for a particular owner that can be expanded to a full address.
+//
+// https://developer.github.com/v3/issues/
 var RepoIssuesURL = Hyperlink("repos/{owner}/{repo}/issues{/number}")
 
 // Issues creates an IssuesService with a base url
+//
+// https://developer.github.com/v3/issues/
 func (c *Client) Issues(url *url.URL) (issues *IssuesService) {
 	issues = &IssuesService{client: c, URL: url}
 	return
@@ -24,24 +28,32 @@ type IssuesService struct {
 }
 
 // One gets a specific issue based on the url of the service
+//
+// https://developer.github.com/v3/issues/#get-a-single-issue
 func (i *IssuesService) One() (issue *Issue, result *Result) {
 	result = i.client.get(i.URL, &issue)
 	return
 }
 
 // All gets a list of all issues associated with the url of the service
+//
+// https://developer.github.com/v3/issues/#list-issues-for-a-repository
 func (i *IssuesService) All() (issues []Issue, result *Result) {
 	result = i.client.get(i.URL, &issues)
 	return
 }
 
 // Create posts a new issue with particular parameters to the issues service url
+//
+// https://developer.github.com/v3/issues/#create-an-issue
 func (i *IssuesService) Create(params interface{}) (issue *Issue, result *Result) {
 	result = i.client.post(i.URL, params, &issue)
 	return
 }
 
 // Update modifies a specific issue given parameters on the service url
+//
+// https://developer.github.com/v3/issues/#edit-an-issue
 func (i *IssuesService) Update(params interface{}) (issue *Issue, result *Result) {
 	result = i.client.patch(i.URL, params, &issue)
 	return

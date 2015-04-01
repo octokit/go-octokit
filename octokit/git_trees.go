@@ -8,9 +8,13 @@ import (
 // of a particular repository of a particular owner. The request may be set to be
 // recursive for a particular level of depth (0 is no recursion) to follow sub-trees from
 // the primary repository.
+//
+// https://developer.github.com/v3/git/trees/
 var GitTreesURL = Hyperlink("repos/{owner}/{repo}/git/trees/{sha}{?recursive}")
 
 // GitTrees creates a GitTreesService with a base url
+//
+// https://developer.github.com/v3/git/trees/
 func (c *Client) GitTrees(url *url.URL) (trees *GitTreesService) {
 	trees = &GitTreesService{client: c, URL: url}
 	return
@@ -22,7 +26,11 @@ type GitTreesService struct {
 	URL    *url.URL
 }
 
-// One gets a specific GitTree based on the url of the service
+// One gets a specific GitTree based on the url of the service. May specify
+// to get the tree recursively
+//
+// https://developer.github.com/v3/git/trees/#get-a-tree
+// https://developer.github.com/v3/git/trees/#get-a-tree-recursively
 func (c *GitTreesService) One() (tree *GitTree, result *Result) {
 	result = c.client.get(c.URL, &tree)
 	return
