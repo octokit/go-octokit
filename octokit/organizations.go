@@ -14,6 +14,11 @@ var (
 	UserOrganizationsURL = Hyperlink("/users/{username}/orgs")
 )
 
+func (c *Client) Organization(url *url.URL) (organization *OrganizationService) {
+	organization = &OrganizationService{client: c}
+	return
+}
+
 // A service to return organization information
 type OrganizationService struct {
 	client *Client
