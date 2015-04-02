@@ -19,6 +19,6 @@ func TestRootEmojisService_All(t *testing.T) {
 	assert.False(t, result.HasError())
 	var penguin = "https://github.global.ssl.fastly.net/images/icons/emoji/penguin.png?v5"
 	var metal = "https://github.global.ssl.fastly.net/images/icons/emoji/metal.png?v5"
-	assert.Equal(t, emojis["penguin"], penguin)
-	assert.Equal(t, emojis["metal"], metal)
+	assert.Equal(t, penguin, emojis["penguin"])
+	assert.Equal(t, metal, emojis["metal"])
 }
