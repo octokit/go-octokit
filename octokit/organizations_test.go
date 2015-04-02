@@ -35,7 +35,7 @@ func TestOrganizationService_Info(t *testing.T) {
 	assert.Equal(t, 3430433, organizationResults.ID)
 }
 
-func TestFollowersService_Failure(t *testing.T) {
+func TestOrganizationService_Failure(t *testing.T) {
 	setup()
 	defer tearDown()
 	url := Hyperlink("}")
