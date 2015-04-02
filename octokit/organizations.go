@@ -14,7 +14,7 @@ var (
 	UserOrganizationsURL = Hyperlink("/users/{username}/orgs")
 )
 
-func (c *Client) Organization(url *url.URL) (organization *OrganizationService) {
+func (c *Client) Organization() (organization *OrganizationService) {
 	organization = &OrganizationService{client: c}
 	return
 }
@@ -39,7 +39,7 @@ func (g *OrganizationService) OrganizationRepos(uri *Hyperlink, params M) (
 }
 
 // Get the user search results based on OrganizationService#URL
-func (g *OrganizationService) Organization(uri *Hyperlink, params M) (
+func (g *OrganizationService) OrganizationInfo(uri *Hyperlink, params M) (
 	organization Organization, result *Result) {
 	if uri == nil {
 		uri = &OrganizationURL
