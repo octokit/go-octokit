@@ -80,6 +80,12 @@ func (g *OrganizationService) UserOrganizations(uri *Hyperlink, params M) (
 	return
 }
 
+type Plan struct {
+	Name         string `json:"name,omitempty"`
+	Space        int    `json:"space,omitempty"`
+	PrivateRepos int    `json:"private_repos,omitempty"`
+}
+
 type Organization struct {
 	Description      string    `json:"description, omitempty"`
 	AvatarURL        string    `json:"avatar_url,omitempty"`
@@ -104,4 +110,5 @@ type Organization struct {
 	CreatedAt   *time.Time `json:"created_at,omitempty"`
 	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
 	Type        string     `json:"type,omitempty"`
+	Plan        Plan       `json:"plan,omitempty"`
 }
