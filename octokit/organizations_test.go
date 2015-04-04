@@ -1,9 +1,11 @@
 package octokit
 
 import (
-	"testing"
-
 	"github.com/stretchr/testify/assert"
+
+	"fmt"
+	"net/http"
+	"testing"
 )
 
 func TestOrganizationService_Repos(t *testing.T) {
@@ -22,17 +24,52 @@ func TestOrganizationService_Repos(t *testing.T) {
 	assert.Equal(t, "docrails", organizationResults[1].Name)
 }
 
-func TestOrganizationService_Info(t *testing.T) {
+func TestOrganizationService_Get(t *testing.T) {
 	setup()
 	defer tearDown()
 
 	stubGet(t, "/orgs/octokit", "organization", nil)
 
-	organizationResults, result := client.Organization().OrganizationInfo(nil, M{"org": "octokit"})
+	organizationResults, result := client.Organization().OrganizationGet(nil, M{"org": "octokit"})
 
 	assert.False(t, result.HasError())
 	assert.Equal(t, "octokit", organizationResults.Login)
 	assert.Equal(t, 3430433, organizationResults.ID)
+}
+
+func TestOrganizationService_Update(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	wantBodyParams := fmt.Sprintf(`{"%s":"%s","%s":"%s","%s":"%s","%s":"%s","%s":"%s","%s":"%s","%s":"%s"}`+"\n",
+		"billing_email", "support@github.com",
+		"blog", "https://github.com/blog",
+		"company", "GitHub",
+		"email", "support@github.com",
+		"location", "San Francisco",
+		"name", "github",
+		"description", "GitHub, the company.")
+
+	mux.HandleFunc("/orgs/github", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testBody(t, r, wantBodyParams)
+		respondWithJSON(w, loadFixture("organization_updated.json"))
+	})
+
+	input := OrganizationParams{
+		BillingEmail: "support@github.com",
+		Blog:         "https://github.com/blog",
+		Company:      "GitHub",
+		Email:        "support@github.com",
+		Location:     "San Francisco",
+		Name:         "github",
+		Description:  "GitHub, the company.",
+	}
+	organizationResults, result := client.Organization().OrganizationUpdate(nil, input, M{"org": "github"})
+
+	assert.False(t, result.HasError())
+	assert.Equal(t, "github", organizationResults.Login)
+	assert.Equal(t, 1, organizationResults.ID)
 }
 
 func TestOrganizationService_Yours(t *testing.T) {
@@ -75,7 +112,11 @@ func TestOrganizationService_Failure(t *testing.T) {
 	assert.True(t, result.HasError())
 	assert.Equal(t, make([]Repository, 0), organizationResultsRepo)
 
-	organizationResult, result := client.Organization().OrganizationInfo(&url, nil)
+	organizationResult, result := client.Organization().OrganizationGet(&url, nil)
+	assert.True(t, result.HasError())
+	assert.Equal(t, Organization{}, organizationResult)
+
+	organizationResult, result = client.Organization().OrganizationUpdate(&url, OrganizationParams{}, nil)
 	assert.True(t, result.HasError())
 	assert.Equal(t, Organization{}, organizationResult)
 
