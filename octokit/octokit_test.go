@@ -124,23 +124,29 @@ func loadFixture(f string) string {
 }
 
 func stubGet(t *testing.T, path, fixture string, respHeaderParams map[string]string) {
-	stubRequest(t, "GET", path, fixture, nil, respHeaderParams, 0)
+	stubRequest(t, path, fixture, "GET", nil, "", respHeaderParams, 0)
 }
 
-func stubRequest(t *testing.T, method string, path string, fixture string,
-	wantReqHeader map[string]string, respHeaderParams map[string]string,
-	respStatusCode int) {
+func stubRequest(t *testing.T, path string, fixture string,
+	wantReqMethod string, wantReqHeader map[string]string, wantReqBody string,
+	respHeaderParams map[string]string, respStatusCode int) {
 	if mux == nil {
 		panic(fmt.Errorf("test HTTP server has not been set up"))
 	}
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, method)
+		// Testing the incoming request
+		testMethod(t, r, wantReqMethod)
 		if wantReqHeader != nil {
 			for k, v := range wantReqHeader {
 				testHeader(t, r, k, v)
 			}
 		}
+		if wantReqBody != "" {
+			testBody(t, r, wantReqBody)
+		}
+
+		// Construct the outgoing response
 		if respHeaderParams != nil {
 			header := w.Header()
 			for k, v := range respHeaderParams {
