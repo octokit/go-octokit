@@ -8,22 +8,6 @@ import (
 	"testing"
 )
 
-func TestOrganizationService_Repos(t *testing.T) {
-	setup()
-	defer tearDown()
-
-	stubGet(t, "/orgs/rails/repos", "repositories", nil)
-
-	organizationResults, result := client.Organization().OrganizationRepos(nil, M{"org": "rails"})
-
-	assert.False(t, result.HasError())
-	assert.Equal(t, 30, len(organizationResults))
-	assert.Equal(t, 8514, organizationResults[0].ID)
-	assert.Equal(t, "rails", organizationResults[0].Name)
-	assert.Equal(t, 13992, organizationResults[1].ID)
-	assert.Equal(t, "docrails", organizationResults[1].Name)
-}
-
 func TestOrganizationService_Get(t *testing.T) {
 	setup()
 	defer tearDown()
@@ -70,6 +54,22 @@ func TestOrganizationService_Update(t *testing.T) {
 	assert.False(t, result.HasError())
 	assert.Equal(t, "github", organizationResults.Login)
 	assert.Equal(t, 1, organizationResults.ID)
+}
+
+func TestOrganizationService_Repos(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	stubGet(t, "/orgs/rails/repos", "repositories", nil)
+
+	organizationResults, result := client.Organization().OrganizationRepos(nil, M{"org": "rails"})
+
+	assert.False(t, result.HasError())
+	assert.Equal(t, 30, len(organizationResults))
+	assert.Equal(t, 8514, organizationResults[0].ID)
+	assert.Equal(t, "rails", organizationResults[0].Name)
+	assert.Equal(t, 13992, organizationResults[1].ID)
+	assert.Equal(t, "docrails", organizationResults[1].Name)
 }
 
 func TestOrganizationService_Yours(t *testing.T) {

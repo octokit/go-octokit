@@ -8,8 +8,8 @@ import (
 )
 
 var (
-	OrganizationReposURL = Hyperlink("/orgs/{org}/repos{?type,page,per_page,sort}")
 	OrganizationURL      = Hyperlink("/orgs/{org}")
+	OrganizationReposURL = Hyperlink("/orgs/{org}/repos{?type,page,per_page,sort}")
 	YourOrganizationsURL = Hyperlink("/user/orgs")
 	UserOrganizationsURL = Hyperlink("/users/{username}/orgs")
 )
@@ -19,26 +19,12 @@ func (c *Client) Organization() (organization *OrganizationService) {
 	return
 }
 
-// A service to return organization information
+// A service for getting as well as updating organization information
 type OrganizationService struct {
 	client *Client
 }
 
-// Get the user search results based on OrganizationService#URL
-func (g *OrganizationService) OrganizationRepos(uri *Hyperlink, params M) (
-	repos []Repository, result *Result) {
-	if uri == nil {
-		uri = &OrganizationReposURL
-	}
-	url, err := uri.Expand(params)
-	if err != nil {
-		return make([]Repository, 0), &Result{Err: err}
-	}
-	result = g.client.get(url, &repos)
-	return
-}
-
-// Get the user search results based on OrganizationService#URL
+// Get the specified organization's information
 func (g *OrganizationService) OrganizationGet(uri *Hyperlink, params M) (
 	organization Organization, result *Result) {
 	if uri == nil {
@@ -52,7 +38,7 @@ func (g *OrganizationService) OrganizationGet(uri *Hyperlink, params M) (
 	return
 }
 
-// Update the issue search results based on OrganizationService#URL
+// Update specified organization's information
 func (g *OrganizationService) OrganizationUpdate(uri *Hyperlink,
 	input OrganizationParams, URLParams M) (organization Organization,
 	result *Result) {
@@ -67,7 +53,21 @@ func (g *OrganizationService) OrganizationUpdate(uri *Hyperlink,
 	return
 }
 
-// Get the issue search results based on OrganizationService#URL
+// Get the list of repository information of an organization
+func (g *OrganizationService) OrganizationRepos(uri *Hyperlink, params M) (
+	repos []Repository, result *Result) {
+	if uri == nil {
+		uri = &OrganizationReposURL
+	}
+	url, err := uri.Expand(params)
+	if err != nil {
+		return make([]Repository, 0), &Result{Err: err}
+	}
+	result = g.client.get(url, &repos)
+	return
+}
+
+// Get information for the list of organizations the current user belongs to
 func (g *OrganizationService) YourOrganizations(uri *Hyperlink, params M) (
 	organizations []Organization, result *Result) {
 	if uri == nil {
@@ -81,7 +81,7 @@ func (g *OrganizationService) YourOrganizations(uri *Hyperlink, params M) (
 	return
 }
 
-// Get the issue search results based on OrganizationService#URL
+// Get the information for the list of organizations the specified user belongs to
 func (g *OrganizationService) UserOrganizations(uri *Hyperlink, params M) (
 	organizations []Organization, result *Result) {
 	if uri == nil {
@@ -93,12 +93,6 @@ func (g *OrganizationService) UserOrganizations(uri *Hyperlink, params M) (
 	}
 	result = g.client.get(url, &organizations)
 	return
-}
-
-type Plan struct {
-	Name         string `json:"name,omitempty"`
-	Space        int    `json:"space,omitempty"`
-	PrivateRepos int    `json:"private_repos,omitempty"`
 }
 
 type Organization struct {
@@ -133,6 +127,12 @@ type Organization struct {
 	Collaborators       int    `json:"collaborators,omitempty"`
 	BillingEmail        string `json:"billing_email,omitempty"`
 	Plan                Plan   `json:"plan,omitempty"`
+}
+
+type Plan struct {
+	Name         string `json:"name,omitempty"`
+	Space        int    `json:"space,omitempty"`
+	PrivateRepos int    `json:"private_repos,omitempty"`
 }
 
 // IssueParams represents the struture used to create or update an Issue
