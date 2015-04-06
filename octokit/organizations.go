@@ -61,7 +61,7 @@ func (g *OrganizationService) OrganizationRepos(uri *Hyperlink, params M) (
 	}
 	url, err := uri.Expand(params)
 	if err != nil {
-		return make([]Repository, 0), &Result{Err: err}
+		return nil, &Result{Err: err}
 	}
 	result = g.client.get(url, &repos)
 	return
@@ -75,7 +75,7 @@ func (g *OrganizationService) YourOrganizations(uri *Hyperlink, params M) (
 	}
 	url, err := uri.Expand(params)
 	if err != nil {
-		return make([]Organization, 0), &Result{Err: err}
+		return nil, &Result{Err: err}
 	}
 	result = g.client.get(url, &organizations)
 	return
@@ -89,7 +89,7 @@ func (g *OrganizationService) UserOrganizations(uri *Hyperlink, params M) (
 	}
 	url, err := uri.Expand(params)
 	if err != nil {
-		return make([]Organization, 0), &Result{Err: err}
+		return nil, &Result{Err: err}
 	}
 	result = g.client.get(url, &organizations)
 	return

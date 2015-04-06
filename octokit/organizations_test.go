@@ -110,7 +110,7 @@ func TestOrganizationService_Failure(t *testing.T) {
 	url := Hyperlink("}")
 	organizationResultsRepo, result := client.Organization().OrganizationRepos(&url, nil)
 	assert.True(t, result.HasError())
-	assert.Equal(t, make([]Repository, 0), organizationResultsRepo)
+	assert.Equal(t, []Repository(nil), organizationResultsRepo)
 
 	organizationResult, result := client.Organization().OrganizationGet(&url, nil)
 	assert.True(t, result.HasError())
@@ -122,9 +122,9 @@ func TestOrganizationService_Failure(t *testing.T) {
 
 	organizationResults, result := client.Organization().YourOrganizations(&url, nil)
 	assert.True(t, result.HasError())
-	assert.Equal(t, make([]Organization, 0), organizationResults)
+	assert.Equal(t, []Organization(nil), organizationResults)
 
 	organizationResults, result = client.Organization().UserOrganizations(&url, nil)
 	assert.True(t, result.HasError())
-	assert.Equal(t, make([]Organization, 0), organizationResults)
+	assert.Equal(t, []Organization(nil), organizationResults)
 }
