@@ -1,14 +1,15 @@
 package octokit
 
 import (
-	"time"
-
 	"github.com/jingweno/go-sawyer/hypermedia"
+	"time"
 )
 
 // RepoIssuesURL is a template for accessing issues in a particular
 // repository for a particular owner that can be expanded to a full address.
-var RepoIssuesURL = Hyperlink("repos/{owner}/{repo}/issues{/number}")
+var RepoIssuesURL = Hyperlink("repos/{owner}/{repo}/issues{/number}?" +
+	"filter={filter}&state={state}&labels={labels}&sort={sort}&" +
+	"direction={direction}&since={since}")
 
 // Issues creates an IssuesService with a base url
 func (c *Client) Issues() (issues *IssuesService) {
