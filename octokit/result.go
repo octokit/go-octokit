@@ -1,7 +1,16 @@
 package octokit
 
 import (
+	"strconv"
+	"strings"
+
 	"github.com/jingweno/go-sawyer/mediaheader"
+)
+
+const (
+	oauthScopes         = "X-OAuth-Scopes"
+	oauthAcceptedScopes = "X-OAuth-Accepted-Scopes"
+	rateLimitRemaining  = "X-RateLimit-Remaining"
 )
 
 type pageable struct {
@@ -34,6 +43,40 @@ func (r *Result) Error() string {
 	}
 
 	return ""
+}
+
+
+func (r *Result) RateLimitRemaining() int {
+	rate, err := strconv.Atoi(r.Response.Header.Get(rateLimitRemaining))
+	if err != nil {
+		rate = 60
+	}
+	return rate
+}
+
+func (r *Result) RawScopes() string {
+	return r.Response.Header.Get(oauthScopes)
+}
+
+func (r *Result) Scopes() []string {
+	return strings.Split(r.RawScopes(), ",")
+}
+
+func (r *Result) RawAcceptedScopes() {
+	return r.Response.Header.Get(oauthAcceptedScopes)
+}
+
+func (r *Result) AcceptedScopes() []string {
+	return strings.Split(r.RawAcceptedScopes(), ",")
+}
+
+func (r *Result) ValidScope(scope string) bool {
+	for _, s := range r.Scopes() {
+		if strings.TrimSpace(s) == scope {
+			return true
+		}
+	}
+	return false
 }
 
 func newResult(resp *Response, err error) *Result {
