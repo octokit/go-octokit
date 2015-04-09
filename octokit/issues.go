@@ -51,8 +51,8 @@ func (i *IssuesService) Update(params interface{}) (issue *Issue, result *Result
 type Issue struct {
 	*hypermedia.HALResource
 
-	URL     string `json:"url,omitempty,omitempty"`
-	HTMLURL string `json:"html_url,omitempty,omitempty"`
+	URL     string `json:"url,omitempty"`
+	HTMLURL string `json:"html_url,omitempty"`
 	Number  int    `json:"number,omitempty"`
 	State   string `json:"state,omitempty"`
 	Title   string `json:"title,omitempty"`
