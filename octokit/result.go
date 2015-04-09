@@ -62,7 +62,7 @@ func (r *Result) Scopes() []string {
 	return strings.Split(r.RawScopes(), ",")
 }
 
-func (r *Result) RawAcceptedScopes() {
+func (r *Result) RawAcceptedScopes() string {
 	return r.Response.Header.Get(oauthAcceptedScopes)
 }
 
