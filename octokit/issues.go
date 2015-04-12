@@ -44,7 +44,7 @@ func (i *IssuesService) All(uri *Hyperlink, uriParams M) (issues []Issue,
 	}
 	url, err := uri.Expand(uriParams)
 	if err != nil {
-		return make([]Issue, 0), &Result{Err: err}
+		return nil, &Result{Err: err}
 	}
 	result = i.client.get(url, &issues)
 	return
