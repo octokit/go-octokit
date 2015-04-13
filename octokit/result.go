@@ -3,6 +3,7 @@ package octokit
 import (
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/jingweno/go-sawyer/mediaheader"
 )
@@ -11,6 +12,7 @@ const (
 	oauthScopes         = "X-OAuth-Scopes"
 	oauthAcceptedScopes = "X-OAuth-Accepted-Scopes"
 	rateLimitRemaining  = "X-RateLimit-Remaining"
+	rateLimitReset      = "X-RateLimit-Reset"
 )
 
 type pageable struct {
@@ -45,11 +47,25 @@ func (r *Result) Error() string {
 	return ""
 }
 
+func (r *Result) RateLimitReset() *time.Time {
+	epoc := r.Response.Header.Get(rateLimitReset)
+	if epoc == "" {
+		return nil
+	}
+
+	reset, err := strconv.ParseInt(epoc, 10, 64)
+	if err != nil {
+		return nil
+	}
+
+	t := time.Unix(reset, 0)
+	return &t
+}
 
 func (r *Result) RateLimitRemaining() int {
 	rate, err := strconv.Atoi(r.Response.Header.Get(rateLimitRemaining))
 	if err != nil {
-		rate = 60
+		rate = defaultRateLimit(r.Response)
 	}
 	return rate
 }
@@ -59,7 +75,7 @@ func (r *Result) RawScopes() string {
 }
 
 func (r *Result) Scopes() []string {
-	return strings.Split(r.RawScopes(), ",")
+	return strings.Split(r.RawScopes(), ", ")
 }
 
 func (r *Result) RawAcceptedScopes() string {
@@ -67,12 +83,12 @@ func (r *Result) RawAcceptedScopes() string {
 }
 
 func (r *Result) AcceptedScopes() []string {
-	return strings.Split(r.RawAcceptedScopes(), ",")
+	return strings.Split(r.RawAcceptedScopes(), ", ")
 }
 
 func (r *Result) ValidScope(scope string) bool {
 	for _, s := range r.Scopes() {
-		if strings.TrimSpace(s) == scope {
+		if s == scope {
 			return true
 		}
 	}
@@ -108,4 +124,14 @@ func fillPageable(pageable *pageable, header *mediaheader.MediaHeader) {
 		l := Hyperlink(link)
 		pageable.LastPage = &l
 	}
+}
+
+func defaultRateLimit(r *Response) int {
+	if r.Request != nil {
+		h := r.Request.URL.Host
+		if !strings.HasSuffix(gitHubAPIURL, h) {
+			return -1
+		}
+	}
+	return 60
 }
