@@ -2,6 +2,7 @@ package octokit
 
 import (
 	"fmt"
+	"net/http"
 	"testing"
 	"time"
 
@@ -60,6 +61,66 @@ func TestCommentsService_OneRepoComment(t *testing.T) {
 	validateComment(t, *comment)
 }
 
+func TestCommentsService_CreateCommitComment(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/repos/octokit/go-octokit/commits/8b8347dc11c81b64fdd9938d34dc4ef6a07dbf09/comments", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testBody(t, r, "{\"body\":\"I am a comment\",\"path\":\"root.go\",\"position\":46}\n")
+
+		respondWithJSON(w, loadFixture("comment.json"))
+	})
+
+	input := M{
+		"body":     "I am a comment",
+		"path":     "root.go",
+		"position": 46,
+	}
+
+	comment, result := client.Comments().Create(nil, M{"owner": "octokit", "repo": "go-octokit", "sha": "8b8347dc11c81b64fdd9938d34dc4ef6a07dbf09"}, input)
+	assert.False(t, result.HasError())
+
+	validateComment(t, *comment)
+}
+
+func TestCommentsService_UpdateCommitComment(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/repos/octokit/go-octokit/comments/4236029", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testBody(t, r, "{\"body\":\"I am a comment\"}\n")
+
+		respondWithJSON(w, loadFixture("comment.json"))
+	})
+
+	input := M{"body": "I am a comment"}
+
+	comment, result := client.Comments().Update(nil, M{"owner": "octokit", "repo": "go-octokit", "id": 4236029}, input)
+	assert.False(t, result.HasError())
+
+	validateComment(t, *comment)
+}
+
+func TestCommentsService_DeleteCommitComment(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	mux.HandleFunc("/repos/octokit/go-octokit/comments/4236029", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		header := w.Header()
+		header.Set("Content-Type", "application/json")
+
+		respondWithStatus(w, 204)
+	})
+
+	success, result := client.Comments().Delete(nil, M{"owner": "octokit", "repo": "go-octokit", "id": 4236029})
+	assert.False(t, result.HasError())
+
+	assert.True(t, success)
+}
+
 func TestPublicKeysService_Failure(t *testing.T) {
 	setup()
 	defer tearDown()
@@ -72,6 +133,18 @@ func TestPublicKeysService_Failure(t *testing.T) {
 	comment, result := client.Comments().One(&url, nil)
 	assert.True(t, result.HasError())
 	assert.Nil(t, comment)
+
+	comment, result = client.Comments().Create(&url, nil, nil)
+	assert.True(t, result.HasError())
+	assert.Nil(t, comment)
+
+	comment, result = client.Comments().Update(&url, nil, nil)
+	assert.True(t, result.HasError())
+	assert.Nil(t, comment)
+
+	success, result := client.Comments().Delete(&url, nil)
+	assert.True(t, result.HasError())
+	assert.False(t, success)
 }
 
 func validateComment(t *testing.T, comment Comment) {

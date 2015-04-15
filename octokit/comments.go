@@ -54,6 +54,52 @@ func (c *CommentsService) One(uri *Hyperlink, params M) (comment *Comment, resul
 	return
 }
 
+// Creates a comment on a commit
+func (c *CommentsService) Create(uri *Hyperlink, params M, input interface{}) (comment *Comment, result *Result) {
+	if uri == nil {
+		uri = &CommitCommentsURL
+	}
+
+	url, err := uri.Expand(params)
+	if err != nil {
+		return nil, &Result{Err: err}
+	}
+
+	result = c.client.post(url, input, &comment)
+	return
+}
+
+// Updates a comment on a commit
+func (c *CommentsService) Update(uri *Hyperlink, params M, input interface{}) (comment *Comment, result *Result) {
+	if uri == nil {
+		uri = &RepoCommentsURL
+	}
+
+	url, err := uri.Expand(params)
+	if err != nil {
+		return nil, &Result{Err: err}
+	}
+
+	result = c.client.patch(url, input, &comment)
+	return
+}
+
+// Deletes a comment on a commit
+func (c *CommentsService) Delete(uri *Hyperlink, params M) (success bool, result *Result) {
+	if uri == nil {
+		uri = &RepoCommentsURL
+	}
+
+	url, err := uri.Expand(params)
+	if err != nil {
+		return false, &Result{Err: err}
+	}
+
+	result = c.client.delete(url, nil, nil)
+	success = (result.Response.StatusCode == 204)
+	return
+}
+
 type Comment struct {
 	*hypermedia.HALResource
 
