@@ -91,6 +91,7 @@ type PullRequest struct {
 	Additions         int               `json:"additions,omitempty"`
 	Deletions         int               `json:"deletions,omitempty"`
 	ChangedFiles      int               `json:"changed_files,omitempty"`
+	Mergeable         *bool             `json:"mergeable,omitempty"`
 }
 
 // PullRequestCommit represents one of the commits associated with the given
