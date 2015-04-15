@@ -10,44 +10,76 @@ import (
 
 // GistsURL is a template for accessing gists from GitHub possibly with
 // a specific identification code that can be expanded to a full address.
+//
+// https://developer.github.com/v3/gists
 var GistsURL = Hyperlink("gists{/gist_id}")
 
-// Gists creates a GistsService with a base url
-func (c *Client) Gists(url *url.URL) (gists *GistsService) {
-	gists = &GistsService{client: c, URL: url}
+// Gists creates a GistsService to be used with any proper URL
+//
+// https://developer.github.com/v3/gists/
+func (c *Client) Gists() (gists *GistsService) {
+	gists = &GistsService{client: c}
 	return
 }
 
 // GistsService is a service providing access to gists from a particular url
 type GistsService struct {
 	client *Client
-	URL    *url.URL
 }
 
 // One gets a specific gist based on the url of the service
-func (g *GistsService) One() (gist *Gist, result *Result) {
-	result = g.client.get(g.URL, &gist)
+//
+// https://developer.github.com/v3/gists/#get-a-single-gist
+func (g *GistsService) One(uri *Hyperlink, params M) (gist Gist, result *Result) {
+	if uri == nil {
+		uri = &GistsURL
+	}
+	url, err := uri.Expand(params)
+	if err != nil {
+		return Gist{}, &Result{Err: err}
+	}
+	result = g.client.get(url, &gist)
 	return
 }
 
 // Update modifies a specific gist based on the url of the service
-func (g *GistsService) Update(params interface{}) (gist *Gist, result *Result) {
-	result = g.client.put(g.URL, params, &gist)
+//
+// https://developer.github.com/v3/gists/#edit-a-gist
+func (g *GistsService) Update(uri *Hyperlink, params M, edits interface{}) (gist Gist, result *Result) {
+	if uri == nil {
+		uri = &GistsURL
+	}
+	url, err := uri.Expand(params)
+	if err != nil {
+		return Gist{}, &Result{Err: err}
+	}
+	result = g.client.patch(url, params, &gist)
 	return
 }
 
 // All gets a list of all gists associated with the url of the service
-func (g *GistsService) All() (gists []Gist, result *Result) {
-	result = g.client.get(g.URL, &gists)
+//
+// https://developer.github.com/v3/gists/#list-gists
+func (g *GistsService) All(uri *Hyperlink, params M) (gists []Gist, result *Result) {
+	if uri == nil {
+		uri = &GistsURL
+	}
+	url, err := uri.Expand(params)
+	if err != nil {
+		return make([]Gist, 0), &Result{Err: err}
+	}
+	result = g.client.get(url, &gists)
 	return
 }
 
 // Raw gets the raw contents of first file in a specific gist
-func (g *GistsService) Raw() (body io.ReadCloser, result *Result) {
-	var gist *Gist
+//
+// https://developer.github.com/v3/gists/#get-a-single-gist
+func (g *GistsService) Raw(uri *Hyperlink, params M) (body io.ReadCloser, result *Result) {
+	var gist Gist
 	var rawURL *url.URL
 
-	gist, result = g.One()
+	gist, result = g.One(uri, params)
 	for _, file := range gist.Files {
 		rawURL, _ = url.Parse(file.RawURL)
 		break

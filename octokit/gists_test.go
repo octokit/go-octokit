@@ -14,8 +14,7 @@ func TestGistsService_One(t *testing.T) {
 
 	stubGet(t, "/gists/a6bea192debdbec0d4ab", "gist", nil)
 
-	url, _ := GistsURL.Expand(M{"gist_id": "a6bea192debdbec0d4ab"})
-	gist, result := client.Gists(url).One()
+	gist, result := client.Gists().One(&GistsURL, M{"gist_id": "a6bea192debdbec0d4ab"})
 
 	assert.False(t, result.HasError())
 	assert.Equal(t, "a6bea192debdbec0d4ab", gist.ID)
@@ -43,8 +42,7 @@ func TestGistsService_Raw(t *testing.T) {
 		respondWith(w, "hello")
 	})
 
-	url, _ := GistsURL.Expand(M{"gist_id": "a6bea192debdbec0d4ab"})
-	body, result := client.Gists(url).Raw()
+	body, result := client.Gists().Raw(&GistsURL, M{"gist_id": "a6bea192debdbec0d4ab"})
 
 	assert.False(t, result.HasError())
 	content, err := ioutil.ReadAll(body)
