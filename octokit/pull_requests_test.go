@@ -182,6 +182,7 @@ func TestPullRequestService_Unmergeable(t *testing.T) {
 	assert.False(t, result.HasError())
 	assert.NotNil(t, pr.Mergeable)
 	assert.False(t, *pr.Mergeable)
+	assert.Equal(t, MergeStateUnknown, pr.MergeableState)
 }
 
 func TestPullRequestService_Mergeable(t *testing.T) {
@@ -198,4 +199,5 @@ func TestPullRequestService_Mergeable(t *testing.T) {
 	assert.False(t, result.HasError())
 	assert.NotNil(t, pr.Mergeable)
 	assert.True(t, *pr.Mergeable)
+	assert.Equal(t, MergeStateClean, pr.MergeableState)
 }

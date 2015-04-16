@@ -8,6 +8,13 @@ import (
 	"github.com/jingweno/go-sawyer/hypermedia"
 )
 
+const (
+	MergeStateClean    = "clean"
+	MergeStateUnstable = "unstable"
+	MergeStateDirty    = "dirty"
+	MergeStateUnknown  = "unknown"
+)
+
 // PullRequestsURL is a template for accessing pull requests in a particular
 // repository for a particular owner that can be expanded to a full address.
 var PullRequestsURL = Hyperlink("repos/{owner}/{repo}/pulls{/number}")
@@ -92,6 +99,7 @@ type PullRequest struct {
 	Deletions         int               `json:"deletions,omitempty"`
 	ChangedFiles      int               `json:"changed_files,omitempty"`
 	Mergeable         *bool             `json:"mergeable,omitempty"`
+	MergeableState    string            `json:"mergeable_state,omitempty"`
 }
 
 // PullRequestCommit represents one of the commits associated with the given

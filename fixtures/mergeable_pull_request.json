@@ -280,7 +280,7 @@
   },
   "merged": false,
   "mergeable": true,
-  "mergeable_state": "unknown",
+  "mergeable_state": "clean",
   "merged_by": {
     "type": "User",
     "received_events_url": "https://api.github.com/users/jingweno/received_events",
