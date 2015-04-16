@@ -13,10 +13,9 @@ func TestRepositoresService_One(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	stubGet(t, "/repos/jingweno/octokat", "repository", nil)
+	stubGet(t, "/repositories", "repository", nil)
 
-	repo, result := client.Repositories().One(nil,
-		M{"owner": "jingweno", "repo": "octokat"})
+	repo, result := client.Repositories().One(nil, nil)
 
 	assert.False(t, result.HasError())
 	assert.Equal(t, 10575811, repo.ID)
