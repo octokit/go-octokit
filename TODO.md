@@ -68,9 +68,9 @@
 - [ ] https://developer.github.com/v3/git/trees/#create-a-tree
 - [ ] https://developer.github.com/v3/git/trees/#get-a-tree
 - [ ] https://developer.github.com/v3/git/trees/#get-a-tree-recursively
-- [ ] https://developer.github.com/v3/gitignore/
-- [ ] https://developer.github.com/v3/gitignore/#get-a-single-template
-- [ ] https://developer.github.com/v3/gitignore/#listing-available-templates
+- [x] https://developer.github.com/v3/gitignore/
+- [x] https://developer.github.com/v3/gitignore/#get-a-single-template
+- [x] https://developer.github.com/v3/gitignore/#listing-available-templates
 - [ ] https://developer.github.com/v3/issues/
 - [ ] https://developer.github.com/v3/issues/#create-an-issue
 - [ ] https://developer.github.com/v3/issues/#edit-an-issue
