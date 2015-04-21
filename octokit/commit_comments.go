@@ -13,19 +13,19 @@ var (
 	CommitCommentsURL = Hyperlink("/repos/{owner}/{repo}/commits/{sha}/comments")
 )
 
-// Create a CommentsService
-func (c *Client) Comments() (k *CommentsService) {
-	k = &CommentsService{client: c}
+// Create a CommitCommentsService
+func (c *Client) CommitComments() (k *CommitCommentsService) {
+	k = &CommitCommentsService{client: c}
 	return
 }
 
-// A service to return comments
-type CommentsService struct {
+// A service to return comments for commits
+type CommitCommentsService struct {
 	client *Client
 }
 
 // Get a list of all comments
-func (c *CommentsService) All(uri *Hyperlink, params M) (comments []Comment, result *Result) {
+func (c *CommitCommentsService) All(uri *Hyperlink, params M) (comments []CommitComment, result *Result) {
 	if uri == nil {
 		uri = &RepoCommentsURL
 	}
@@ -40,7 +40,7 @@ func (c *CommentsService) All(uri *Hyperlink, params M) (comments []Comment, res
 }
 
 // Get a single comment by id
-func (c *CommentsService) One(uri *Hyperlink, params M) (comment *Comment, result *Result) {
+func (c *CommitCommentsService) One(uri *Hyperlink, params M) (comment *CommitComment, result *Result) {
 	if uri == nil {
 		uri = &RepoCommentsURL
 	}
@@ -55,7 +55,7 @@ func (c *CommentsService) One(uri *Hyperlink, params M) (comment *Comment, resul
 }
 
 // Creates a comment on a commit
-func (c *CommentsService) Create(uri *Hyperlink, params M, input interface{}) (comment *Comment, result *Result) {
+func (c *CommitCommentsService) Create(uri *Hyperlink, params M, input interface{}) (comment *CommitComment, result *Result) {
 	if uri == nil {
 		uri = &CommitCommentsURL
 	}
@@ -70,7 +70,7 @@ func (c *CommentsService) Create(uri *Hyperlink, params M, input interface{}) (c
 }
 
 // Updates a comment on a commit
-func (c *CommentsService) Update(uri *Hyperlink, params M, input interface{}) (comment *Comment, result *Result) {
+func (c *CommitCommentsService) Update(uri *Hyperlink, params M, input interface{}) (comment *CommitComment, result *Result) {
 	if uri == nil {
 		uri = &RepoCommentsURL
 	}
@@ -85,7 +85,7 @@ func (c *CommentsService) Update(uri *Hyperlink, params M, input interface{}) (c
 }
 
 // Deletes a comment on a commit
-func (c *CommentsService) Delete(uri *Hyperlink, params M) (success bool, result *Result) {
+func (c *CommitCommentsService) Delete(uri *Hyperlink, params M) (success bool, result *Result) {
 	if uri == nil {
 		uri = &RepoCommentsURL
 	}
@@ -100,18 +100,18 @@ func (c *CommentsService) Delete(uri *Hyperlink, params M) (success bool, result
 	return
 }
 
-type Comment struct {
+type CommitComment struct {
 	*hypermedia.HALResource
 
 	ID        int        `json:"id,omitempty"`
 	URL       string     `json:"url,omitempty"`
-	HTMLURL   string     `json:"html_url,omitempty"`
 	User      User       `json:"user,omitempty"`
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+	Body      string     `json:"body,omitempty"`
+	HTMLURL   string     `json:"html_url,omitempty"`
 	Position  int        `json:"position,omitempty"`
 	Line      int        `json:"line,omitempty"`
 	Path      string     `json:"path,omitempty"`
 	CommitID  string     `json:"commit_id,omitempty"`
-	CreatedAt *time.Time `json:"created_at,omitempty"`
-	UpdatedAt *time.Time `json:"updated_at,omitempty"`
-	Body      string     `json:"body,omitempty"`
 }
