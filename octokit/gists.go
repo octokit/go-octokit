@@ -8,11 +8,26 @@ import (
 	"github.com/jingweno/go-sawyer/hypermedia"
 )
 
-// GistsURL is a template for accessing gists from GitHub possibly with
-// a specific identification code that can be expanded to a full address.
+// URLs for accessing specific endpoints on the gists API. The most general
+// is GistsURL, used to list, get, create, edit and delete a gist. GistsUserURL,
+// GistsPublicURL and GistsStarredURL are used for listing certain sets of gists.
+// GistsRevisionURL can be used to access a specific revision of a gist.
+// GistsCommitsURL can be used to access all the commits on a specific gist.
+// GistsStarURL is used for starring and unstarring gists, and checking if a gist
+// is starred. GistsForksURL is used to fork or delete a fork of a gist, and to
+// list a gist's forks.
 //
 // https://developer.github.com/v3/gists
-var GistsURL = Hyperlink("gists{/gist_id}")
+var (
+	GistsUserURL     = Hyperlink("users/{username}/gists")
+	GistsURL         = Hyperlink("gists{/gist_id}")
+	GistsPublicURL   = Hyperlink("gists/public")
+	GistsStarredURL  = Hyperlink("gists/starred")
+	GistsRevisionURL = Hyperlink("gists/{gist_id}/{commit_sha}")
+	GistsCommitsURL  = Hyperlink("gists/{gist_id}/commits")
+	GistsStarURL     = Hyperlink("gists/{gist_id}/star")
+	GistsForksURL    = Hyperlink("gists/{gist_id}/forks")
+)
 
 // Gists creates a GistsService to be used with any proper URL
 //
@@ -25,36 +40,6 @@ func (c *Client) Gists() (gists *GistsService) {
 // GistsService is a service providing access to gists from a particular url
 type GistsService struct {
 	client *Client
-}
-
-// One gets a specific gist based on the url of the service
-//
-// https://developer.github.com/v3/gists/#get-a-single-gist
-func (g *GistsService) One(uri *Hyperlink, params M) (gist Gist, result *Result) {
-	if uri == nil {
-		uri = &GistsURL
-	}
-	url, err := uri.Expand(params)
-	if err != nil {
-		return Gist{}, &Result{Err: err}
-	}
-	result = g.client.get(url, &gist)
-	return
-}
-
-// Update modifies a specific gist based on the url of the service
-//
-// https://developer.github.com/v3/gists/#edit-a-gist
-func (g *GistsService) Update(uri *Hyperlink, params M, edits interface{}) (gist Gist, result *Result) {
-	if uri == nil {
-		uri = &GistsURL
-	}
-	url, err := uri.Expand(params)
-	if err != nil {
-		return Gist{}, &Result{Err: err}
-	}
-	result = g.client.patch(url, params, &gist)
-	return
 }
 
 // All gets a list of all gists associated with the url of the service
@@ -72,9 +57,25 @@ func (g *GistsService) All(uri *Hyperlink, params M) (gists []Gist, result *Resu
 	return
 }
 
-// Raw gets the raw contents of first file in a specific gist
+// One gets a specific gist based on the url of the service
 //
 // https://developer.github.com/v3/gists/#get-a-single-gist
+// https://developer.github.com/v3/gists/#get-a-specific-revision-of-a-gist
+func (g *GistsService) One(uri *Hyperlink, params M) (gist Gist, result *Result) {
+	if uri == nil {
+		uri = &GistsURL
+	}
+	url, err := uri.Expand(params)
+	if err != nil {
+		return Gist{}, &Result{Err: err}
+	}
+	result = g.client.get(url, &gist)
+	return
+}
+
+// Raw gets the raw contents of first file in a specific gist
+//
+// https://developer.github.com/v3/gists/#truncation
 func (g *GistsService) Raw(uri *Hyperlink, params M) (body io.ReadCloser, result *Result) {
 	var gist Gist
 	var rawURL *url.URL
@@ -86,6 +87,146 @@ func (g *GistsService) Raw(uri *Hyperlink, params M) (body io.ReadCloser, result
 	}
 
 	body, result = g.client.getBody(rawURL, textMediaType)
+	return
+}
+
+// Create posts a new gist based on parameters in a Gist struct to
+// the specified URL
+//
+// https://developer.github.com/v3/gists/#create-a-gist
+func (g *GistsService) Create(uri *Hyperlink, params M, creating interface{}) (gist Gist, result *Result) {
+	if uri == nil {
+		uri = &GistsURL
+	}
+	url, err := uri.Expand(params)
+	if err != nil {
+		return Gist{}, &Result{Err: err}
+	}
+	result = g.client.post(url, creating, &gist)
+	return
+}
+
+// Update modifies a specific gist based on the url of the service
+//
+// https://developer.github.com/v3/gists/#edit-a-gist
+func (g *GistsService) Update(uri *Hyperlink, params M, edits interface{}) (gist Gist, result *Result) {
+	if uri == nil {
+		uri = &GistsURL
+	}
+	url, err := uri.Expand(params)
+	if err != nil {
+		return Gist{}, &Result{Err: err}
+	}
+	result = g.client.patch(url, edits, &gist)
+	return
+}
+
+// Commits gets a list of all commits to the given gist
+//
+// https://developer.github.com/v3/gists/#list-gists
+func (g *GistsService) Commits(uri *Hyperlink, params M) (gistCommits []GistCommit, result *Result) {
+	if uri == nil {
+		uri = &GistsCommitsURL
+	}
+	url, err := uri.Expand(params)
+	if err != nil {
+		return make([]GistCommit, 0), &Result{Err: err}
+	}
+	result = g.client.get(url, &gistCommits)
+	return
+}
+
+// Star stars a gist
+//
+// https://developer.github.com/v3/gists/#star-a-gist
+func (g *GistsService) Star(uri *Hyperlink, params M) (success bool, result *Result) {
+	if uri == nil {
+		uri = &GistsStarURL // Default url
+	}
+	url, err := uri.Expand(params)
+	if err != nil {
+		return false, &Result{Err: err}
+	}
+	result = g.client.put(url, nil, nil)
+	success = (!result.HasError() && result.Response.StatusCode == 204)
+	return
+}
+
+// Unstar unstars a gist
+//
+// https://developer.github.com/v3/gists/#unstar-a-gist
+func (g *GistsService) Unstar(uri *Hyperlink, params M) (success bool, result *Result) {
+	if uri == nil {
+		uri = &GistsStarURL // Default url
+	}
+	url, err := uri.Expand(params)
+	if err != nil {
+		return false, &Result{Err: err}
+	}
+	result = g.client.delete(url, nil, nil)
+	success = (!result.HasError() && result.Response.StatusCode == 204)
+	return
+}
+
+// CheckStar checks if a gist is starred
+//
+// https://developer.github.com/v3/gists/#check-if-a-gist-is-starred
+func (g *GistsService) CheckStar(uri *Hyperlink, params M) (success bool, result *Result) {
+	if uri == nil {
+		uri = &GistsStarURL // Default url
+	}
+	url, err := uri.Expand(params)
+	if err != nil {
+		return false, &Result{Err: err}
+	}
+	result = g.client.get(url, nil)
+	success = (!result.HasError() && result.Response.StatusCode == 204)
+	return
+}
+
+// Fork forks a gist
+//
+// https://developer.github.com/v3/gists/#fork-a-gist
+func (g *GistsService) Fork(uri *Hyperlink, params M) (gist Gist, result *Result) {
+	if uri == nil {
+		uri = &GistsForksURL
+	}
+	url, err := uri.Expand(params)
+	if err != nil {
+		return Gist{}, &Result{Err: err}
+	}
+	result = g.client.post(url, nil, &gist)
+	return
+}
+
+// ListForks lists all the forks of a gist
+//
+// https://developer.github.com/v3/gists/#list-gist-forks
+func (g *GistsService) ListForks(uri *Hyperlink, params M) (gistForks []GistFork, result *Result) {
+	if uri == nil {
+		uri = &GistsForksURL
+	}
+	url, err := uri.Expand(params)
+	if err != nil {
+		return make([]GistFork, 0), &Result{Err: err}
+	}
+	result = g.client.get(url, &gistForks)
+	return
+}
+
+// Delete deletes a gist by its id
+//
+// https://developer.github.com/v3/gists/#delete-a-gist
+func (g *GistsService) Delete(uri *Hyperlink, params M) (success bool, result *Result) {
+	if uri == nil {
+		uri = &GistsURL // Default url
+	}
+	url, err := uri.Expand(params)
+	if err != nil {
+		return false, &Result{Err: err}
+	}
+	result = g.client.delete(url, nil, nil)
+	success = (!result.HasError() && result.Response.StatusCode == 204)
 	return
 }
 
@@ -111,11 +252,13 @@ type Gist struct {
 	Comments    float64              `json:"comments,omitempty"`
 	CommentsURL string               `json:"comments_url,omitempty"`
 	CommitsURL  string               `json:"commits_url,omitempty"`
-	CreatedAt   string               `json:"created_at,omitempty"`
+	CreatedAt   *time.Time           `json:"created_at,omitempty"`
 	Description string               `json:"description,omitempty"`
 	Files       map[string]*GistFile `json:"files,omitempty"`
+	Forks       []GistFork           `json:"forks,omitempty"`
 	ForksURL    Hyperlink            `json:"forks_url,omitempty"`
 	GitPullURL  Hyperlink            `json:"git_pull_url,omitempty"`
+	History     []GistCommit         `json:"history,omitempty"`
 	GitPushURL  Hyperlink            `json:"git_push_url,omitempty"`
 	HtmlURL     Hyperlink            `json:"html_url,omitempty"`
 	Owner       *User                `json:"owner,omitempty"`
@@ -123,4 +266,33 @@ type Gist struct {
 	UpdatedAt   *time.Time           `json:"updated_at,omitempty"`
 	URL         string               `json:"url,omitempty"`
 	User        *User                `json:"user,omitempty"`
+}
+
+//GistFork represents information about a fork of a gist
+type GistFork struct {
+	*hypermedia.HALResource
+
+	ID        string     `json:"id,omitempty"`
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+	URL       string     `json:"url,omitempty"`
+	User      *User      `json:"user,omitempty"`
+}
+
+// GistCommit is a representation of one of the commits to a gist
+type GistCommit struct {
+	*hypermedia.HALResource
+
+	ChangeStatus *GistChangeStatus `json:"change_status,omitempty"`
+	CommittedAt  *time.Time        `json:"committed_at,omitempty"`
+	URL          string            `json:"url,omitempty"`
+	User         *User             `json:"user,omitempty"`
+	Version      string            `json:"version,omitempty"`
+}
+
+// GistChangeStatus represents all changes on a given Gist
+type GistChangeStatus struct {
+	Additions int `json:"additions,omitempty"`
+	Deletions int `json:"deletions,omitempty"`
+	Total     int `json:"total,omitempty"`
 }
