@@ -23,8 +23,8 @@ func TestCommitsService_One(t *testing.T) {
 	commit, result := client.Commits(url).One()
 
 	assert.False(t, result.HasError())
-	assert.Equal(t, "4351fb69b8d5ed075e9cd844e67ad2114b335c82", commit.Sha)
-	assert.Equal(t, "https://api.github.com/repos/octokit/go-octokit/commits/4351fb69b8d5ed075e9cd844e67ad2114b335c82", commit.URL)
+	assert.EqualValues(t, "4351fb69b8d5ed075e9cd844e67ad2114b335c82", commit.Sha)
+	assert.EqualValues(t, "https://api.github.com/repos/octokit/go-octokit/commits/4351fb69b8d5ed075e9cd844e67ad2114b335c82", commit.URL)
 
 	files := commit.Files
 	assert.Len(t, files, 35)
@@ -45,7 +45,7 @@ func TestCommitsService_Patch(t *testing.T) {
 		"repo":  "go-octokit",
 		"sha":   "b6d21008bf7553a29ad77ee0a8bb3b66e6f11aa2",
 	})
-	assert.Equal(t, nil, err)
+	assert.EqualValues(t, nil, err)
 	patch, result := client.Commits(url).Patch()
 
 	assert.False(t, result.HasError())

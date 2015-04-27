@@ -81,16 +81,16 @@ func tearDown() {
 }
 
 func testMethod(t *testing.T, r *http.Request, want string) {
-	assert.Equal(t, want, r.Method)
+	assert.EqualValues(t, want, r.Method)
 }
 
 func testHeader(t *testing.T, r *http.Request, header string, want string) {
-	assert.Equal(t, want, r.Header.Get(header))
+	assert.EqualValues(t, want, r.Header.Get(header))
 }
 
 func testBody(t *testing.T, r *http.Request, want string) {
 	body, _ := ioutil.ReadAll(r.Body)
-	assert.Equal(t, want, string(body))
+	assert.EqualValues(t, want, string(body))
 }
 
 func respondWithJSON(w http.ResponseWriter, s string) {

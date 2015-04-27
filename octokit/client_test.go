@@ -25,7 +25,7 @@ func TestSuccessfulGet(t *testing.T) {
 	var output map[string]interface{}
 	_, err = req.Get(&output)
 	assert.NoError(t, err)
-	assert.Equal(t, "octokit", output["login"])
+	assert.EqualValues(t, "octokit", output["login"])
 }
 
 func TestSuccessfulGet_BasicAuth(t *testing.T) {
@@ -56,7 +56,7 @@ func TestSuccessfulGet_BasicAuth(t *testing.T) {
 	var output map[string]interface{}
 	_, err = req.Get(&output)
 	assert.NoError(t, err)
-	assert.Equal(t, "octokit", output["login"])
+	assert.EqualValues(t, "octokit", output["login"])
 }
 
 func TestGetWithoutDecoder(t *testing.T) {
@@ -97,8 +97,8 @@ func TestGetResponseError(t *testing.T) {
 	assert.Error(t, err)
 	respErr, ok := err.(*ResponseError)
 	assert.True(t, ok, "should be able to convert to *ResponseError")
-	assert.Equal(t, "not found", respErr.Message)
-	assert.Equal(t, ErrorNotFound, respErr.Type)
+	assert.EqualValues(t, "not found", respErr.Message)
+	assert.EqualValues(t, ErrorNotFound, respErr.Type)
 }
 
 func TestSuccessfulPost(t *testing.T) {
@@ -122,7 +122,7 @@ func TestSuccessfulPost(t *testing.T) {
 	var output map[string]interface{}
 	_, err = req.Post(input, &output)
 	assert.NoError(t, err)
-	assert.Equal(t, "octokit", output["login"])
+	assert.EqualValues(t, "octokit", output["login"])
 }
 
 func TestAddHeader(t *testing.T) {
@@ -132,7 +132,7 @@ func TestAddHeader(t *testing.T) {
 	mux.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Foo", "Bar")
-		assert.Equal(t, "example.com", r.Host)
+		assert.EqualValues(t, "example.com", r.Host)
 		respondWithJSON(w, `{"login": "octokit"}`)
 	})
 

@@ -25,7 +25,7 @@ func TestUploadsService_UploadAsset(t *testing.T) {
 	mux.HandleFunc("/repos/octokit/Hello-World/releases/123/assets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Content-Type", "text/plain")
-		assert.Equal(t, fi.Size(), r.ContentLength)
+		assert.EqualValues(t, fi.Size(), r.ContentLength)
 		respondWithStatus(w, 201)
 	})
 
@@ -38,5 +38,5 @@ func TestUploadsService_UploadAsset(t *testing.T) {
 	fmt.Println(result)
 	assert.False(t, result.HasError())
 
-	assert.Equal(t, 201, result.Response.StatusCode)
+	assert.EqualValues(t, 201, result.Response.StatusCode)
 }

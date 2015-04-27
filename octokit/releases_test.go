@@ -21,34 +21,34 @@ func TestReleasesService_All(t *testing.T) {
 	assert.Len(t, releases, 1)
 
 	firstRelease := releases[0]
-	assert.Equal(t, 50013, firstRelease.ID)
-	assert.Equal(t, "v0.23.0", firstRelease.TagName)
-	assert.Equal(t, "master", firstRelease.TargetCommitish)
-	assert.Equal(t, "v0.23.0", firstRelease.Name)
+	assert.EqualValues(t, 50013, firstRelease.ID)
+	assert.EqualValues(t, "v0.23.0", firstRelease.TagName)
+	assert.EqualValues(t, "master", firstRelease.TargetCommitish)
+	assert.EqualValues(t, "v0.23.0", firstRelease.Name)
 	assert.False(t, firstRelease.Draft)
 	assert.False(t, firstRelease.Prerelease)
-	assert.Equal(t, "* Windows works!: https://github.com/jingweno/gh/commit/6cb80cb09fd9f624a64d85438157955751a9ac70", firstRelease.Body)
-	assert.Equal(t, "https://api.github.com/repos/jingweno/gh/releases/50013", firstRelease.URL)
-	assert.Equal(t, "https://api.github.com/repos/jingweno/gh/releases/50013/assets", firstRelease.AssetsURL)
-	assert.Equal(t, "https://uploads.github.com/repos/jingweno/gh/releases/50013/assets{?name}", string(firstRelease.UploadURL))
-	assert.Equal(t, "https://github.com/jingweno/gh/releases/v0.23.0", firstRelease.HTMLURL)
-	assert.Equal(t, "2013-09-23 00:59:10 +0000 UTC", firstRelease.CreatedAt.String())
-	assert.Equal(t, "2013-09-23 01:07:56 +0000 UTC", firstRelease.PublishedAt.String())
+	assert.EqualValues(t, "* Windows works!: https://github.com/jingweno/gh/commit/6cb80cb09fd9f624a64d85438157955751a9ac70", firstRelease.Body)
+	assert.EqualValues(t, "https://api.github.com/repos/jingweno/gh/releases/50013", firstRelease.URL)
+	assert.EqualValues(t, "https://api.github.com/repos/jingweno/gh/releases/50013/assets", firstRelease.AssetsURL)
+	assert.EqualValues(t, "https://uploads.github.com/repos/jingweno/gh/releases/50013/assets{?name}", string(firstRelease.UploadURL))
+	assert.EqualValues(t, "https://github.com/jingweno/gh/releases/v0.23.0", firstRelease.HTMLURL)
+	assert.EqualValues(t, "2013-09-23 00:59:10 +0000 UTC", firstRelease.CreatedAt.String())
+	assert.EqualValues(t, "2013-09-23 01:07:56 +0000 UTC", firstRelease.PublishedAt.String())
 
 	firstReleaseAssets := firstRelease.Assets
 	assert.Len(t, firstReleaseAssets, 8)
 
 	firstAsset := firstReleaseAssets[0]
-	assert.Equal(t, 20428, firstAsset.ID)
-	assert.Equal(t, "gh_0.23.0-snapshot_amd64.deb", firstAsset.Name)
-	assert.Equal(t, "gh_0.23.0-snapshot_amd64.deb", firstAsset.Label)
-	assert.Equal(t, "application/x-deb", firstAsset.ContentType)
-	assert.Equal(t, "uploaded", firstAsset.State)
-	assert.Equal(t, 1562984, firstAsset.Size)
-	assert.Equal(t, 0, firstAsset.DownloadCount)
-	assert.Equal(t, "https://api.github.com/repos/jingweno/gh/releases/assets/20428", firstAsset.URL)
-	assert.Equal(t, "2013-09-23 01:05:20 +0000 UTC", firstAsset.CreatedAt.String())
-	assert.Equal(t, "2013-09-23 01:07:56 +0000 UTC", firstAsset.UpdatedAt.String())
+	assert.EqualValues(t, 20428, firstAsset.ID)
+	assert.EqualValues(t, "gh_0.23.0-snapshot_amd64.deb", firstAsset.Name)
+	assert.EqualValues(t, "gh_0.23.0-snapshot_amd64.deb", firstAsset.Label)
+	assert.EqualValues(t, "application/x-deb", firstAsset.ContentType)
+	assert.EqualValues(t, "uploaded", firstAsset.State)
+	assert.EqualValues(t, 1562984, firstAsset.Size)
+	assert.EqualValues(t, 0, firstAsset.DownloadCount)
+	assert.EqualValues(t, "https://api.github.com/repos/jingweno/gh/releases/assets/20428", firstAsset.URL)
+	assert.EqualValues(t, "2013-09-23 01:05:20 +0000 UTC", firstAsset.CreatedAt.String())
+	assert.EqualValues(t, "2013-09-23 01:07:56 +0000 UTC", firstAsset.UpdatedAt.String())
 }
 
 func TestCreateRelease(t *testing.T) {
@@ -71,7 +71,7 @@ func TestCreateRelease(t *testing.T) {
 	release, result := client.Releases(url).Create(params)
 
 	assert.False(t, result.HasError())
-	assert.Equal(t, "v1.0.0", release.TagName)
+	assert.EqualValues(t, "v1.0.0", release.TagName)
 }
 
 func TestUpdateRelease(t *testing.T) {
@@ -94,5 +94,5 @@ func TestUpdateRelease(t *testing.T) {
 	release, result := client.Releases(url).Update(params)
 
 	assert.False(t, result.HasError())
-	assert.Equal(t, "v1.0.0", release.TagName)
+	assert.EqualValues(t, "v1.0.0", release.TagName)
 }

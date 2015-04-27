@@ -15,7 +15,7 @@ func TestNewResult_Pageable(t *testing.T) {
 	resp := newTestResponse()
 	result := newResult(resp, nil)
 
-	assert.Equal(t, "/path", string(*result.NextPage))
+	assert.EqualValues(t, "/path", string(*result.NextPage))
 	assert.Nil(t, result.PrevPage)
 	assert.Nil(t, result.LastPage)
 	assert.Nil(t, result.FirstPage)
@@ -40,7 +40,7 @@ func TestRateLimitReset(t *testing.T) {
 		resp.Header = headers
 
 		result := newResult(resp, nil)
-		assert.Equal(t, c.expected, result.RateLimitReset())
+		assert.EqualValues(t, c.expected, result.RateLimitReset())
 	}
 }
 
@@ -68,7 +68,7 @@ func TestRateLimitRemaining(t *testing.T) {
 		resp.Header = headers
 
 		result := newResult(resp, nil)
-		assert.Equal(t, c.expected, result.RateLimitRemaining())
+		assert.EqualValues(t, c.expected, result.RateLimitRemaining())
 	}
 }
 
@@ -89,8 +89,8 @@ func TestScopes(t *testing.T) {
 		resp.Header = headers
 
 		result := newResult(resp, nil)
-		assert.Equal(t, c.expected, result.Scopes())
-		assert.Equal(t, c.actual, result.RawScopes())
+		assert.EqualValues(t, c.expected, result.Scopes())
+		assert.EqualValues(t, c.actual, result.RawScopes())
 	}
 }
 
@@ -111,8 +111,8 @@ func TestAcceptedScopes(t *testing.T) {
 		resp.Header = headers
 
 		result := newResult(resp, nil)
-		assert.Equal(t, c.expected, result.AcceptedScopes())
-		assert.Equal(t, c.actual, result.RawAcceptedScopes())
+		assert.EqualValues(t, c.expected, result.AcceptedScopes())
+		assert.EqualValues(t, c.actual, result.RawAcceptedScopes())
 	}
 }
 

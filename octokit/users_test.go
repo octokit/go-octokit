@@ -19,15 +19,15 @@ func TestUsersService_GetCurrentUser(t *testing.T) {
 	user, result := client.Users(url).One()
 
 	assert.False(t, result.HasError())
-	assert.Equal(t, 169064, user.ID)
-	assert.Equal(t, "jingweno", user.Login)
-	assert.Equal(t, "jingweno@gmail.com", user.Email)
-	assert.Equal(t, "User", user.Type)
-	assert.Equal(t, 17, user.Following)
-	assert.Equal(t, 28, user.Followers)
-	assert.Equal(t, 90, user.PublicRepos)
-	assert.Equal(t, false, user.SiteAdmin)
-	assert.Equal(t, "https://api.github.com/users/jingweno/repos", string(user.ReposURL))
+	assert.EqualValues(t, 169064, user.ID)
+	assert.EqualValues(t, "jingweno", user.Login)
+	assert.EqualValues(t, "jingweno@gmail.com", user.Email)
+	assert.EqualValues(t, "User", user.Type)
+	assert.EqualValues(t, 17, user.Following)
+	assert.EqualValues(t, 28, user.Followers)
+	assert.EqualValues(t, 90, user.PublicRepos)
+	assert.EqualValues(t, false, user.SiteAdmin)
+	assert.EqualValues(t, "https://api.github.com/users/jingweno/repos", string(user.ReposURL))
 }
 
 func TestUsersService_UpdateCurrentUser(t *testing.T) {
@@ -45,11 +45,11 @@ func TestUsersService_UpdateCurrentUser(t *testing.T) {
 	user, result := client.Users(url).Update(userToUpdate)
 
 	assert.False(t, result.HasError())
-	assert.Equal(t, 169064, user.ID)
-	assert.Equal(t, "jingweno", user.Login)
-	assert.Equal(t, "jingweno@gmail.com", user.Email)
-	assert.Equal(t, "User", user.Type)
-	assert.Equal(t, "https://api.github.com/users/jingweno/repos", string(user.ReposURL))
+	assert.EqualValues(t, 169064, user.ID)
+	assert.EqualValues(t, "jingweno", user.Login)
+	assert.EqualValues(t, "jingweno@gmail.com", user.Email)
+	assert.EqualValues(t, "User", user.Type)
+	assert.EqualValues(t, "https://api.github.com/users/jingweno/repos", string(user.ReposURL))
 }
 
 func TestUsersService_GetUser(t *testing.T) {
@@ -63,11 +63,11 @@ func TestUsersService_GetUser(t *testing.T) {
 	user, result := client.Users(url).One()
 
 	assert.False(t, result.HasError())
-	assert.Equal(t, 169064, user.ID)
-	assert.Equal(t, "jingweno", user.Login)
-	assert.Equal(t, "jingweno@gmail.com", user.Email)
-	assert.Equal(t, "User", user.Type)
-	assert.Equal(t, "https://api.github.com/users/jingweno/repos", string(user.ReposURL))
+	assert.EqualValues(t, 169064, user.ID)
+	assert.EqualValues(t, "jingweno", user.Login)
+	assert.EqualValues(t, "jingweno@gmail.com", user.Email)
+	assert.EqualValues(t, "User", user.Type)
+	assert.EqualValues(t, "https://api.github.com/users/jingweno/repos", string(user.ReposURL))
 }
 
 func TestUsersService_All(t *testing.T) {
@@ -96,7 +96,7 @@ func TestUsersService_All(t *testing.T) {
 
 	assert.False(t, result.HasError())
 	assert.Len(t, allUsers, 1)
-	assert.Equal(t, testURLStringOf("users?since=135"), string(*result.NextPage))
+	assert.EqualValues(t, testURLStringOf("users?since=135"), string(*result.NextPage))
 
 	nextPageURL, err := result.NextPage.Expand(nil)
 	assert.NoError(t, err)
