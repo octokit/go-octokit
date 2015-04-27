@@ -10,9 +10,13 @@ import (
 
 // GistsURL is a template for accessing gists from GitHub possibly with
 // a specific identification code that can be expanded to a full address.
+//
+// https://developer.github.com/v3/gists/
 var GistsURL = Hyperlink("gists{/gist_id}")
 
 // Gists creates a GistsService with a base url
+//
+// https://developer.github.com/v3/gists/
 func (c *Client) Gists(url *url.URL) (gists *GistsService) {
 	gists = &GistsService{client: c, URL: url}
 	return
@@ -25,6 +29,8 @@ type GistsService struct {
 }
 
 // One gets a specific gist based on the url of the service
+//
+// https://developer.github.com/v3/gists/#get-a-single-gist
 func (g *GistsService) One() (gist *Gist, result *Result) {
 	result = g.client.get(g.URL, &gist)
 	return
@@ -37,12 +43,16 @@ func (g *GistsService) Update(params interface{}) (gist *Gist, result *Result) {
 }
 
 // All gets a list of all gists associated with the url of the service
+//
+// https://developer.github.com/v3/gists/#list-gists
 func (g *GistsService) All() (gists []Gist, result *Result) {
 	result = g.client.get(g.URL, &gists)
 	return
 }
 
 // Raw gets the raw contents of first file in a specific gist
+//
+// https://developer.github.com/v3/gists/#get-a-single-gist
 func (g *GistsService) Raw() (body io.ReadCloser, result *Result) {
 	var gist *Gist
 	var rawURL *url.URL

@@ -12,6 +12,8 @@ import (
 // ForksURL is a template for the forks of a user's repository.
 // UserRepositoriesURL is the address for all user repositories.
 // OrgRepositoriesUrl is the template for repositories within a particular organization.
+//
+// https://developer.github.com/v3/repos/
 var (
 	RepositoryURL       = Hyperlink("repos/{owner}/{repo}")
 	ForksURL            = Hyperlink("repos/{owner}/{repo}/forks")
@@ -20,6 +22,8 @@ var (
 )
 
 // Repositories creates a RepositoriesService with a base url
+//
+// https://developer.github.com/v3/repos/
 func (c *Client) Repositories(url *url.URL) (repos *RepositoriesService) {
 	repos = &RepositoriesService{client: c, URL: url}
 	return
@@ -32,12 +36,16 @@ type RepositoriesService struct {
 }
 
 // One gets a specific repository based on the url of the service
+//
+// https://developer.github.com/v3/repos/#get
 func (r *RepositoriesService) One() (repo *Repository, result *Result) {
 	result = r.client.get(r.URL, &repo)
 	return
 }
 
 // All gets a list of all repositories associated with the url of the service
+//
+// https://developer.github.com/v3/repos/#list-your-repositories
 func (r *RepositoriesService) All() (repos []Repository, result *Result) {
 	result = r.client.get(r.URL, &repos)
 	return
@@ -45,6 +53,8 @@ func (r *RepositoriesService) All() (repos []Repository, result *Result) {
 
 // Create posts a new repository based on parameters in a Repository struct to
 // the respository service url
+//
+// https://developer.github.com/v3/repos/#create
 func (r *RepositoriesService) Create(params interface{}) (repo *Repository, result *Result) {
 	result = r.client.post(r.URL, params, &repo)
 	return

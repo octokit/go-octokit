@@ -8,9 +8,11 @@ import (
 
 // RootURL is simply the root GitHub address. Accessing this address provides all
 // other accessible templates and addresses as hypermedia relations.
+//
+// https://api.github.com/
 var RootURL = Hyperlink("")
 
-// Rel fetches and expands the given name in the the Hyperling map m
+// Rel fetches and expands the given name in the the Hyperlink map m
 func (c *Client) Rel(name string, m map[string]interface{}) (*url.URL, error) {
 	if c.rootRels == nil || len(c.rootRels) == 0 {
 		u, _ := url.Parse("/")
@@ -25,6 +27,8 @@ func (c *Client) Rel(name string, m map[string]interface{}) (*url.URL, error) {
 }
 
 // Root creates a RootService with a base url
+//
+// https://api.github.com/
 func (c *Client) Root(url *url.URL) (root *RootService) {
 	root = &RootService{client: c, URL: url}
 	return
@@ -50,6 +54,8 @@ func (r *RootService) One() (root *Root, result *Result) {
 }
 
 // Root represents the base with hyperlinks in template form to all API calls
+//
+// https://api.github.com/
 type Root struct {
 	*hypermedia.HALResource
 

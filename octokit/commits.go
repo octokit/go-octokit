@@ -10,9 +10,13 @@ import (
 
 // CommitsURL is a template for accessing commits in a specific owner's
 // repository with a particular sha hash that can be expanded to a full address.
+//
+// https://developer.github.com/v3/repos/commits/
 var CommitsURL = Hyperlink("repos/{owner}/{repo}/commits{/sha}")
 
 // Commits creates a CommitsService with a base url.
+//
+// https://developer.github.com/v3/repos/commits/
 func (c *Client) Commits(url *url.URL) (commits *CommitsService) {
 	commits = &CommitsService{client: c, URL: url}
 	return
@@ -25,18 +29,24 @@ type CommitsService struct {
 }
 
 // All gets a list of all commits associated with the URL of the service
+//
+// https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository
 func (c *CommitsService) All() (commits []Commit, result *Result) {
 	result = c.client.get(c.URL, &commits)
 	return
 }
 
 // One gets a specific commit based on the url of the service
+//
+// https://developer.github.com/v3/repos/commits/#get-a-single-commit
 func (c *CommitsService) One() (commit *Commit, result *Result) {
 	result = c.client.get(c.URL, &commit)
 	return
 }
 
 // Patch gets a specific commit patch based on the url of the service
+//
+// https://developer.github.com/v3/repos/commits/#get-a-single-commit
 func (c *CommitsService) Patch() (patch io.ReadCloser, result *Result) {
 	patch, result = c.client.getBody(c.URL, patchMediaType)
 	return

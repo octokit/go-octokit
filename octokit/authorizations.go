@@ -9,9 +9,13 @@ import (
 
 // AuthorizationsURL is a template for accessing authorizations possibly associated with a
 // given identification number that can be expanded to a full address.
+//
+// https://developer.github.com/v3/oauth_authorizations/
 var AuthorizationsURL = Hyperlink("authorizations{/id}")
 
 // Authorizations creates a AuthorizationsService with a base url.
+//
+// https://developer.github.com/v3/oauth_authorizations/
 func (c *Client) Authorizations(url *url.URL) (auths *AuthorizationsService) {
 	auths = &AuthorizationsService{client: c, URL: url}
 	return
@@ -24,19 +28,25 @@ type AuthorizationsService struct {
 	URL    *url.URL
 }
 
-// One gets a specific authorization based on the url of the service
+// One gets a specific authorization based on the url of the service.
+//
+// https://developer.github.com/v3/oauth_authorizations/#get-a-single-authorization
 func (a *AuthorizationsService) One() (auth *Authorization, result *Result) {
 	result = a.client.get(a.URL, &auth)
 	return
 }
 
-// All gets a list of all authorizations associated with the url of the service
+// All gets a list of all authorizations associated with the url of the service.
+//
+// https://developer.github.com/v3/oauth_authorizations/#list-your-authorizations
 func (a *AuthorizationsService) All() (auths []Authorization, result *Result) {
 	result = a.client.get(a.URL, &auths)
 	return
 }
 
-// Create posts a new authorization to the authorizations service url
+// Create posts a new authorization to the authorizations service url.
+//
+// https://developer.github.com/v3/oauth_authorizations/#create-a-new-authorization
 func (a *AuthorizationsService) Create(params interface{}) (auth *Authorization, result *Result) {
 	result = a.client.post(a.URL, params, &auth)
 	return
