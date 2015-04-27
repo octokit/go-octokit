@@ -278,8 +278,8 @@
       "href": "https://api.github.com/repos/jingweno/octokat/pulls/1"
     }
   },
-  "merged": true,
-  "mergeable": null,
+  "merged": false,
+  "mergeable": false,
   "mergeable_state": "unknown",
   "merged_by": {
     "type": "User",

@@ -13,10 +13,7 @@ func TestAuthorizationsService_One(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/authorizations/1", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWithJSON(w, loadFixture("authorization.json"))
-	})
+	stubGet(t, "/authorizations/1", "authorization", nil)
 
 	url, err := AuthorizationsURL.Expand(M{"id": 1})
 	assert.NoError(t, err)
@@ -44,10 +41,7 @@ func TestAuthorizationsService_All(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/authorizations", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWithJSON(w, loadFixture("authorizations.json"))
-	})
+	stubGet(t, "/authorizations", "authorizations", nil)
 
 	url, err := AuthorizationsURL.Expand(nil)
 	assert.NoError(t, err)

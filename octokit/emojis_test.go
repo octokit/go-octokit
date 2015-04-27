@@ -1,7 +1,6 @@
 package octokit
 
 import (
-	"net/http"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -11,10 +10,7 @@ func TestRootEmojisService_All(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/emojis", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWithJSON(w, loadFixture("emojis.json"))
-	})
+	stubGet(t, "/emojis", "emojis", nil)
 
 	url, err := EmojisURL.Expand(nil)
 	assert.NoError(t, err)
