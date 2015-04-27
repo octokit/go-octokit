@@ -23,7 +23,7 @@ func TestResponseError_empty_body(t *testing.T) {
 	assert.Contains(t, err.Error(), "400 - Problems parsing error message: EOF")
 
 	e := err.(*ResponseError)
-	assert.Equal(t, ErrorBadRequest, e.Type)
+	assert.EqualValues(t, ErrorBadRequest, e.Type)
 }
 
 func TestResponseError_Error_400(t *testing.T) {
@@ -42,7 +42,7 @@ func TestResponseError_Error_400(t *testing.T) {
 	assert.Contains(t, err.Error(), "400 - Problems parsing JSON")
 
 	e := err.(*ResponseError)
-	assert.Equal(t, ErrorBadRequest, e.Type)
+	assert.EqualValues(t, ErrorBadRequest, e.Type)
 }
 
 func TestResponseError_Error_401(t *testing.T) {
@@ -61,7 +61,7 @@ func TestResponseError_Error_401(t *testing.T) {
 	assert.Contains(t, err.Error(), "401 - Unauthorized")
 
 	e := err.(*ResponseError)
-	assert.Equal(t, ErrorUnauthorized, e.Type)
+	assert.EqualValues(t, ErrorUnauthorized, e.Type)
 
 	mux.HandleFunc("/error_2fa", func(w http.ResponseWriter, r *http.Request) {
 		head := w.Header()
@@ -76,7 +76,7 @@ func TestResponseError_Error_401(t *testing.T) {
 	assert.Contains(t, err.Error(), "401 - Unauthorized")
 
 	e = err.(*ResponseError)
-	assert.Equal(t, ErrorOneTimePasswordRequired, e.Type)
+	assert.EqualValues(t, ErrorOneTimePasswordRequired, e.Type)
 }
 
 func TestResponseError_Error_422_error(t *testing.T) {
@@ -95,7 +95,7 @@ func TestResponseError_Error_422_error(t *testing.T) {
 	assert.Contains(t, err.Error(), "Error: No repository found for hubtopic")
 
 	e := err.(*ResponseError)
-	assert.Equal(t, ErrorUnprocessableEntity, e.Type)
+	assert.EqualValues(t, ErrorUnprocessableEntity, e.Type)
 }
 
 func TestResponseError_Error_422_error_summary(t *testing.T) {
@@ -115,7 +115,7 @@ func TestResponseError_Error_422_error_summary(t *testing.T) {
 	assert.Contains(t, err.Error(), "missing_field error caused by title field on Issue resource")
 
 	e := err.(*ResponseError)
-	assert.Equal(t, ErrorUnprocessableEntity, e.Type)
+	assert.EqualValues(t, ErrorUnprocessableEntity, e.Type)
 }
 
 func TestResponseError_Error_415(t *testing.T) {
@@ -135,7 +135,7 @@ func TestResponseError_Error_415(t *testing.T) {
 	assert.Contains(t, err.Error(), "// See: http://developer.github.com/v3")
 
 	e := err.(*ResponseError)
-	assert.Equal(t, ErrorUnsupportedMediaType, e.Type)
+	assert.EqualValues(t, ErrorUnsupportedMediaType, e.Type)
 }
 
 func TestResponseError_403_BadCredentials(t *testing.T) {
@@ -155,7 +155,7 @@ func TestResponseError_403_BadCredentials(t *testing.T) {
 	assert.Contains(t, err.Error(), "// See: https://developer.github.com/v3/")
 
 	e := err.(*ResponseError)
-	assert.Equal(t, ErrorForbidden, e.Type)
+	assert.EqualValues(t, ErrorForbidden, e.Type)
 }
 
 func TestResponseError_403_RateLimit(t *testing.T) {
@@ -175,7 +175,7 @@ func TestResponseError_403_RateLimit(t *testing.T) {
 	assert.Contains(t, err.Error(), "// See: https://developer.github.com/v3/#rate-limiting")
 
 	e := err.(*ResponseError)
-	assert.Equal(t, ErrorTooManyRequests, e.Type)
+	assert.EqualValues(t, ErrorTooManyRequests, e.Type)
 }
 
 func TestResponseError_403_LoginLimit(t *testing.T) {
@@ -195,5 +195,5 @@ func TestResponseError_403_LoginLimit(t *testing.T) {
 	assert.Contains(t, err.Error(), "// See: https://developer.github.com/v3/")
 
 	e := err.(*ResponseError)
-	assert.Equal(t, ErrorTooManyLoginAttempts, e.Type)
+	assert.EqualValues(t, ErrorTooManyLoginAttempts, e.Type)
 }

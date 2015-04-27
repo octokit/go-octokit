@@ -29,12 +29,12 @@ func TestEmailsService_All(t *testing.T) {
 	assert.Len(t, allEmails, 1)
 
 	email := allEmails[0]
-	assert.Equal(t, "rz99@cornell.edu", email.Email)
-	assert.Equal(t, true, email.Verified)
-	assert.Equal(t, true, email.Primary)
+	assert.EqualValues(t, "rz99@cornell.edu", email.Email)
+	assert.EqualValues(t, true, email.Verified)
+	assert.EqualValues(t, true, email.Primary)
 
-	assert.Equal(t, testURLStringOf("/user/emails?page=2"), string(*result.NextPage))
-	assert.Equal(t, testURLStringOf("/user/emails?page=3"), string(*result.LastPage))
+	assert.EqualValues(t, testURLStringOf("/user/emails?page=2"), string(*result.NextPage))
+	assert.EqualValues(t, testURLStringOf("/user/emails?page=3"), string(*result.LastPage))
 
 	nextPageURL, err := result.NextPage.Expand(nil)
 	assert.NoError(t, err)
@@ -63,9 +63,9 @@ func TestEmailsService_Create(t *testing.T) {
 	assert.Len(t, allEmails, 1)
 
 	email := allEmails[0]
-	assert.Equal(t, "rz99@cornell.edu", email.Email)
-	assert.Equal(t, true, email.Verified)
-	assert.Equal(t, true, email.Primary)
+	assert.EqualValues(t, "rz99@cornell.edu", email.Email)
+	assert.EqualValues(t, true, email.Verified)
+	assert.EqualValues(t, true, email.Primary)
 }
 
 func TestEmailsService_Delete(t *testing.T) {
@@ -88,5 +88,5 @@ func TestEmailsService_Delete(t *testing.T) {
 	result := client.Emails(url).Delete(params)
 
 	assert.False(t, result.HasError())
-	assert.Equal(t, 204, result.Response.StatusCode)
+	assert.EqualValues(t, 204, result.Response.StatusCode)
 }
