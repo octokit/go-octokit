@@ -1,4 +1,4 @@
-- [x] https://developer.github.com/v3/#authentication
+- [*] https://developer.github.com/v3/#authentication
 - [ ] https://developer.github.com/v3/#rate-limiting
 - [ ] https://developer.github.com/v3/#unauthenticated-rate-limited-requests
 - [ ] https://developer.github.com/v3/activity/events/
@@ -68,9 +68,9 @@
 - [ ] https://developer.github.com/v3/git/trees/#create-a-tree
 - [ ] https://developer.github.com/v3/git/trees/#get-a-tree
 - [ ] https://developer.github.com/v3/git/trees/#get-a-tree-recursively
-- [x] https://developer.github.com/v3/gitignore/
-- [x] https://developer.github.com/v3/gitignore/#get-a-single-template
-- [x] https://developer.github.com/v3/gitignore/#listing-available-templates
+- [*] https://developer.github.com/v3/gitignore/
+- [*] https://developer.github.com/v3/gitignore/#get-a-single-template
+- [*] https://developer.github.com/v3/gitignore/#listing-available-templates
 - [ ] https://developer.github.com/v3/issues/
 - [ ] https://developer.github.com/v3/issues/#create-an-issue
 - [ ] https://developer.github.com/v3/issues/#edit-an-issue
@@ -117,11 +117,11 @@
 - [ ] https://developer.github.com/v3/oauth/#scopes for available scopes
 - [ ] https://developer.github.com/v3/oauth/#web-application-flow
 - [ ] https://developer.github.com/v3/oauth_authorizations/#check-an-authorization
-- [x] https://developer.github.com/v3/oauth_authorizations/#create-a-new-authorization
+- [*] https://developer.github.com/v3/oauth_authorizations/#create-a-new-authorization
 - [ ] https://developer.github.com/v3/oauth_authorizations/#delete-an-authorization
-- [x] https://developer.github.com/v3/oauth_authorizations/#get-a-single-authorization
+- [*] https://developer.github.com/v3/oauth_authorizations/#get-a-single-authorization
 - [ ] https://developer.github.com/v3/oauth_authorizations/#get-or-create-an-authorization-for-a-specific-app
-- [x] https://developer.github.com/v3/oauth_authorizations/#list-your-authorizations
+- [*] https://developer.github.com/v3/oauth_authorizations/#list-your-authorizations
 - [ ] https://developer.github.com/v3/oauth_authorizations/#oauth-authorizations-api
 - [ ] https://developer.github.com/v3/oauth_authorizations/#reset-an-authorization
 - [ ] https://developer.github.com/v3/oauth_authorizations/#revoke-all-authorizations-for-an-application
