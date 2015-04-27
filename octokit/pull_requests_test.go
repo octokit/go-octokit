@@ -50,6 +50,8 @@ func TestPullRequestService_One(t *testing.T) {
 	assert.Equal(t, "https://github.com/jingweno/octokat/pull/1/comments", pr.ReviewCommentsURL)
 	assert.Equal(t, "/repos/jingweno/octokat/pulls/comments/{number}", pr.ReviewCommentURL)
 	assert.Equal(t, "https://api.github.com/repos/jingweno/octokat/issues/1/comments", pr.CommentsURL)
+
+	assert.Nil(t, pr.Mergeable)
 }
 
 func TestPullRequestService_Post(t *testing.T) {
@@ -164,4 +166,38 @@ func TestPullRequestService_Patch(t *testing.T) {
 	content, err := ioutil.ReadAll(patch)
 	assert.NoError(t, err)
 	assert.Equal(t, "patches galore", string(content))
+}
+
+func TestPullRequestService_Unmergeable(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	stubGet(t, "/repos/octokit/go-octokit/pulls/1", "unmergeable_pull_request", nil)
+
+	url, err := PullRequestsURL.Expand(M{"owner": "octokit", "repo": "go-octokit", "number": 1})
+	assert.NoError(t, err)
+
+	pr, result := client.PullRequests(url).One()
+
+	assert.False(t, result.HasError())
+	assert.NotNil(t, pr.Mergeable)
+	assert.False(t, *pr.Mergeable)
+	assert.Equal(t, MergeStateUnknown, pr.MergeableState)
+}
+
+func TestPullRequestService_Mergeable(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	stubGet(t, "/repos/octokit/go-octokit/pulls/1", "mergeable_pull_request", nil)
+
+	url, err := PullRequestsURL.Expand(M{"owner": "octokit", "repo": "go-octokit", "number": 1})
+	assert.NoError(t, err)
+
+	pr, result := client.PullRequests(url).One()
+
+	assert.False(t, result.HasError())
+	assert.NotNil(t, pr.Mergeable)
+	assert.True(t, *pr.Mergeable)
+	assert.Equal(t, MergeStateClean, pr.MergeableState)
 }
