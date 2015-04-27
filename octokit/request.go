@@ -35,6 +35,12 @@ func (r *Request) Get(output interface{}) (*Response, error) {
 	return r.createResponse(r.Request.Get(), output)
 }
 
+// Get sends a GET request through the given client and returns the response
+// and any associated errors. It does not fill in a response body.
+func (r *Request) GetBodyless() (*Response, error) {
+	return r.createBodylessResponse(r.Request.Get())
+}
+
 // Post sends a POST request through the given client and returns the response
 // and any associated errors
 func (r *Request) Post(input interface{}, output interface{}) (*Response, error) {
@@ -80,5 +86,10 @@ func (r *Request) createResponse(sawyerResp *sawyer.Response, output interface{}
 		err = sawyerResp.Decode(output)
 	}
 
+	return
+}
+
+func (r *Request) createBodylessResponse(sawyerResp *sawyer.Response) (resp *Response, err error) {
+	resp, err = NewResponse(sawyerResp)
 	return
 }

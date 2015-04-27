@@ -3,7 +3,8 @@ package octokit
 // CollaboratorsURL is the template for accessing the collaborators
 // of a particular repository.
 var (
-	CollaboratorsURL = Hyperlink("repos/{owner}/{repo}/collaborators")
+	CollaboratorsURL = Hyperlink(
+		"repos/{owner}/{repo}/collaborators{/username}")
 )
 
 // Collaborators creates a CollaboratorsService with a base url
@@ -26,8 +27,25 @@ func (r *CollaboratorsService) All(uri *Hyperlink, params M) (users []User,
 	}
 	url, err := uri.Expand(params)
 	if err != nil {
-		return make([]User, 0), &Result{Err: err}
+		return nil, &Result{Err: err}
 	}
 	result = r.client.get(url, &users)
+	return
+}
+
+func (r *CollaboratorsService) IsCollaborator(uri *Hyperlink,
+	params M) (collabStatus bool, result *Result) {
+	if uri == nil {
+		uri = &CollaboratorsURL
+	}
+	url, err := uri.Expand(params)
+	if err != nil {
+		return false, &Result{Err: err}
+	}
+	result = r.client.getBodyless(url)
+	collabStatus = false
+	if result.Err == nil && result.Response.Response.StatusCode == 204 {
+		collabStatus = true
+	}
 	return
 }

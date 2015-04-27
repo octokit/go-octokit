@@ -127,6 +127,17 @@ func stubGet(t *testing.T, path, fixture string, params map[string]string) {
 	stubRequest(t, "GET", path, fixture, params)
 }
 
+func stubGetWithStatusCode(t *testing.T, path string, statusCode int) {
+	if mux == nil {
+		panic(fmt.Errorf("test HTTP server has not been set up"))
+	}
+
+	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		respondWithStatus(w, statusCode)
+	})
+}
+
 func stubRequest(t *testing.T, method string, path string, fixture string, params map[string]string) {
 	if mux == nil {
 		panic(fmt.Errorf("test HTTP server has not been set up"))
