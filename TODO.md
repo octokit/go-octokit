@@ -37,7 +37,7 @@
 - [ ] https://developer.github.com/v3/activity/watching/#stop-watching-a-repository-legacy
 - [ ] https://developer.github.com/v3/activity/watching/#watch-a-repository-legacy
 - [ ] https://developer.github.com/v3/emojis/#emojis
-- [ ] https://developer.github.com/v3/gists/
+- [*] https://developer.github.com/v3/gists/
 - [ ] https://developer.github.com/v3/gists/#check-if-a-gist-is-starred
 - [ ] https://developer.github.com/v3/gists/#create-a-gist
 - [ ] https://developer.github.com/v3/gists/#delete-a-gist
@@ -71,7 +71,7 @@
 - [*] https://developer.github.com/v3/gitignore/
 - [*] https://developer.github.com/v3/gitignore/#get-a-single-template
 - [*] https://developer.github.com/v3/gitignore/#listing-available-templates
-- [ ] https://developer.github.com/v3/issues/
+- [*] https://developer.github.com/v3/issues/
 - [ ] https://developer.github.com/v3/issues/#create-an-issue
 - [ ] https://developer.github.com/v3/issues/#edit-an-issue
 - [ ] https://developer.github.com/v3/issues/#get-a-single-issue
@@ -164,7 +164,7 @@
 - [ ] https://developer.github.com/v3/orgs/teams/#remove-team-member
 - [ ] https://developer.github.com/v3/orgs/teams/#remove-team-membership
 - [ ] https://developer.github.com/v3/orgs/teams/#remove-team-repo
-- [ ] https://developer.github.com/v3/pulls/
+- [*] https://developer.github.com/v3/pulls/
 - [ ] https://developer.github.com/v3/pulls/#alternative-input
 - [ ] https://developer.github.com/v3/pulls/#create-a-pull-request
 - [ ] https://developer.github.com/v3/pulls/#get-a-single-pull-request
@@ -181,7 +181,7 @@
 - [ ] https://developer.github.com/v3/pulls/comments/#list-comments-in-a-repository
 - [ ] https://developer.github.com/v3/pulls/comments/#list-comments-on-a-pull-request
 - [ ] https://developer.github.com/v3/rate_limit/#rate-limit
-- [ ] https://developer.github.com/v3/repos/
+- [*] https://developer.github.com/v3/repos/
 - [ ] https://developer.github.com/v3/repos/#create
 - [ ] https://developer.github.com/v3/repos/#delete-a-repository
 - [ ] https://developer.github.com/v3/repos/#edit
@@ -207,7 +207,7 @@
 - [ ] https://developer.github.com/v3/repos/comments/#list-comments-for-a-single-commit
 - [ ] https://developer.github.com/v3/repos/comments/#list-commit-comments-for-a-repository
 - [ ] https://developer.github.com/v3/repos/comments/#update-a-commit-comment
-- [ ] https://developer.github.com/v3/repos/commits/
+- [*] https://developer.github.com/v3/repos/commits/
 - [ ] https://developer.github.com/v3/repos/commits/#compare-two-commits
 - [ ] https://developer.github.com/v3/repos/commits/#get-a-single-commit
 - [ ] https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository
@@ -248,7 +248,7 @@
 - [ ] https://developer.github.com/v3/repos/pages/#get-information-about-a-pages-site
 - [ ] https://developer.github.com/v3/repos/pages/#list-latest-pages-build
 - [ ] https://developer.github.com/v3/repos/pages/#list-pages-builds
-- [ ] https://developer.github.com/v3/repos/releases/
+- [*] https://developer.github.com/v3/repos/releases/
 - [ ] https://developer.github.com/v3/repos/releases/#create-a-release
 - [ ] https://developer.github.com/v3/repos/releases/#delete-a-release
 - [ ] https://developer.github.com/v3/repos/releases/#delete-a-release-asset
@@ -265,17 +265,17 @@
 - [ ] https://developer.github.com/v3/repos/statistics/#get-the-last-year-of-commit-activity-data
 - [ ] https://developer.github.com/v3/repos/statistics/#participation
 - [ ] https://developer.github.com/v3/repos/statistics/#punch-card
-- [ ] https://developer.github.com/v3/repos/statuses/
+- [*] https://developer.github.com/v3/repos/statuses/
 - [ ] https://developer.github.com/v3/repos/statuses/#create-a-status
 - [ ] https://developer.github.com/v3/repos/statuses/#get-the-combined-status-for-a-specific-ref
 - [ ] https://developer.github.com/v3/repos/statuses/#list-statuses-for-a-specific-ref
 - [ ] https://developer.github.com/v3/repos/watching/#list-watchers
-- [ ] https://developer.github.com/v3/search/
+- [*] https://developer.github.com/v3/search/
 - [ ] https://developer.github.com/v3/search/#search-code
 - [ ] https://developer.github.com/v3/search/#search-issues
 - [ ] https://developer.github.com/v3/search/#search-repositories
 - [ ] https://developer.github.com/v3/search/#search-users
-- [ ] https://developer.github.com/v3/users/
+- [*] https://developer.github.com/v3/users/
 - [ ] https://developer.github.com/v3/users/#get-a-single-user
 - [ ] https://developer.github.com/v3/users/#get-all-users
 - [ ] https://developer.github.com/v3/users/#get-the-authenticated-user
