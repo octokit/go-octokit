@@ -2,8 +2,7 @@ package main
 
 import (
 	"bufio"
-	//"bytes"
-	//"fmt"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -11,16 +10,22 @@ import (
 	"strings"
 )
 
+// The root of go-octokit by traversing the go directory structure
 var octokitRoot = filepath.FromSlash(os.Getenv("GOPATH") +
 	"/src/github.com/octokit/go-octokit/")
 
+// The octokit package folder within the octokit source folder
 var sourceFolder = filepath.FromSlash(octokitRoot + "octokit/")
 
+// The path to the TODO file that store the list of implemented and
+// unimplemented APIs
 var todoFile = filepath.FromSlash(octokitRoot + "TODO.md")
 
+// The pattern to look for that matches the documentation URLs
 var URLDeclarationMatcher = regexp.MustCompile(
-	`// See ([\/a-z0-9_{}\.:]+)`)
+	`//[\t ]+(http[s]?://[\/a-z0-9_{}\.:]+)`)
 
+// List all non-test Go source files
 func listSourceFiles(dirname string) []string {
 	var result []string
 	files, err := ioutil.ReadDir(dirname)
@@ -36,6 +41,7 @@ func listSourceFiles(dirname string) []string {
 	return result
 }
 
+// List all documentation URLs from the specified source file
 func extractURLsFromSourceFile(filename string) (results []string) {
 	file, err := os.Open(filename)
 	if err != nil {
@@ -53,62 +59,50 @@ func extractURLsFromSourceFile(filename string) (results []string) {
 	return
 }
 
-func findAllExistingApiUrls() (urls []string) {
-	for _, f := range listSourceFiles(sourceFolder) {
-		sourceUrls := extractURLsFromSourceFile(sourceFolder +
-			string(os.PathSeparator) + f)
-		urls = append(urls, sourceUrls...)
-	}
-	return urls
-}
-
 func main() {
-	/*file, err := os.Open(todoFile)
+	file, err := os.Open(todoFile)
 	if err != nil {
 		fmt.Printf("Error opening TODO file: %s\n", todoFile)
 		panic(err)
 	}
+
+	var todoUrls []string
+	todoMap := make(map[string]bool)
+
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := scanner.Text()
-		url := line[4:]
-
-	}
-
-	var dat map[string]interface{}
-
-	existingValues := make(map[string]bool)
-	extraValues := make(map[string]bool)
-
-	for _, v := range dat {
-		v := v.(string)
-		existingValues[v[strings.Index(v, ".com/")+5:]] = false
-	}
-
-	var apisFoundCount = 0
-
-	fmt.Printf("%d APIs implementations found.\n", apisFoundCount)
-
-	fmt.Println("\nExisting APIs:")
-
-	for k, v := range existingValues {
-		if v {
-			fmt.Println(k)
+		url := line[6:]
+		todoUrls = append(todoUrls, url)
+		if line[3] == '*' {
+			todoMap[url] = true
+		} else {
+			todoMap[url] = false
 		}
 	}
 
-	fmt.Println("\nUnaccounted APIs:")
+	file.Close()
 
-	for k, _ := range extraValues {
-		fmt.Println(k)
-	}
-
-	fmt.Println("\nMissing APIs:")
-
-	for k, v := range existingValues {
-		if !v {
-			fmt.Println(k)
+	for _, sourceFile := range listSourceFiles(sourceFolder) {
+		for _, url := range extractURLsFromSourceFile(sourceFile) {
+			todoMap[url] = true
 		}
 	}
-	*/
+
+	var outString string
+
+	for _, url := range todoUrls {
+		status := " "
+		if todoMap[url] {
+			status = "*"
+		}
+
+		outString += fmt.Sprintf("- [%s] %s\n", status, url)
+	}
+
+	err = ioutil.WriteFile(todoFile, []byte(outString), 0644)
+	if err != nil {
+		fmt.Printf("Error opening TODO file: %s\n", todoFile)
+		panic(err)
+	}
 }
