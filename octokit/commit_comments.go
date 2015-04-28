@@ -24,7 +24,7 @@ type CommitCommentsService struct {
 	client *Client
 }
 
-// Get a list of all comments
+// Get a list of all commit comments
 func (c *CommitCommentsService) All(uri *Hyperlink, params M) (comments []CommitComment, result *Result) {
 	if uri == nil {
 		uri = &RepoCommentsURL
