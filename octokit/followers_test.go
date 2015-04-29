@@ -23,7 +23,7 @@ func TestFollowersService_AllFollowers(t *testing.T) {
 	assert.Equal(t, testURLStringOf("/users/obsc/followers?page=2"), string(*result.NextPage))
 	assert.Equal(t, testURLStringOf("/users/obsc/followers?page=3"), string(*result.LastPage))
 
-	validateNextPage(t, result)
+	validateNextPage_Followers(t, result)
 }
 
 func TestFollowersService_AllFollowersCurrent(t *testing.T) {
@@ -41,7 +41,7 @@ func TestFollowersService_AllFollowersCurrent(t *testing.T) {
 	assert.Equal(t, testURLStringOf("/user/followers?page=2"), string(*result.NextPage))
 	assert.Equal(t, testURLStringOf("/user/followers?page=3"), string(*result.LastPage))
 
-	validateNextPage(t, result)
+	validateNextPage_Followers(t, result)
 }
 
 func TestFollowersService_AllFollowing(t *testing.T) {
@@ -59,7 +59,7 @@ func TestFollowersService_AllFollowing(t *testing.T) {
 	assert.Equal(t, testURLStringOf("/users/obsc/following?page=2"), string(*result.NextPage))
 	assert.Equal(t, testURLStringOf("/users/obsc/following?page=3"), string(*result.LastPage))
 
-	validateNextPage(t, result)
+	validateNextPage_Followers(t, result)
 }
 
 func TestFollowersService_AllFollowingCurrent(t *testing.T) {
@@ -77,7 +77,7 @@ func TestFollowersService_AllFollowingCurrent(t *testing.T) {
 	assert.Equal(t, testURLStringOf("/user/following?page=2"), string(*result.NextPage))
 	assert.Equal(t, testURLStringOf("/user/following?page=3"), string(*result.LastPage))
 
-	validateNextPage(t, result)
+	validateNextPage_Followers(t, result)
 }
 
 func TestFollowersService_CheckFollowing(t *testing.T) {
@@ -198,7 +198,7 @@ func validateUser(t *testing.T, followers []User) {
 	assert.EqualValues(t, false, first.SiteAdmin)
 }
 
-func validateNextPage(t *testing.T, result *Result) {
+func validateNextPage_Followers(t *testing.T, result *Result) {
 	followers, result := client.Followers().All(result.NextPage, nil)
 	assert.False(t, result.HasError())
 	assert.Len(t, followers, 1)

@@ -21,3 +21,12 @@ func (l Hyperlink) Expand(m M) (u *url.URL, err error) {
 	u, err = sawyerHyperlink.Expand(hypermedia.M(m))
 	return
 }
+
+// Expands a link with possible, otherwise it expands the default link
+func ExpandWithDefault(link *Hyperlink, defaultLink *Hyperlink, params M) (u *url.URL, err error) {
+	if link == nil {
+		link = defaultLink
+	}
+
+	return link.Expand(params)
+}
