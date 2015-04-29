@@ -27,7 +27,7 @@ func TestPublicKeysService_AllKeys(t *testing.T) {
 	assert.Equal(t, testURLStringOf("/users/obsc/keys?page=2"), string(*result.NextPage))
 	assert.Equal(t, testURLStringOf("/users/obsc/keys?page=3"), string(*result.LastPage))
 
-	validateNextPage(t, result)
+	validateNextPage_PublicKeys(t, result)
 }
 
 func TestPublicKeysService_AllKeysCurrent(t *testing.T) {
@@ -46,7 +46,7 @@ func TestPublicKeysService_AllKeysCurrent(t *testing.T) {
 	assert.Equal(t, testURLStringOf("/user/keys?page=2"), string(*result.NextPage))
 	assert.Equal(t, testURLStringOf("/user/keys?page=3"), string(*result.LastPage))
 
-	validateNextPage(t, result)
+	validateNextPage_PublicKeys(t, result)
 }
 
 func TestPublicKeysService_OneKey(t *testing.T) {
@@ -131,7 +131,7 @@ func validateKey(t *testing.T, key Key) {
 	assert.Equal(t, &testTime, key.CreatedAt)
 }
 
-func validateNextPage(t *testing.T, result *Result) {
+func validateNextPage_PublicKeys(t *testing.T, result *Result) {
 	keys, result := client.PublicKeys().All(result.NextPage, nil)
 	assert.False(t, result.HasError())
 	assert.Len(t, keys, 1)
