@@ -1,0 +1,31 @@
+{
+  "url": "https://api.github.com/repos/octokit/go-octokit/comments/4236029",
+  "html_url": "https://github.com/octokit/go-octokit/commit/8b8347dc11c81b64fdd9938d34dc4ef6a07dbf09#commitcomment-4236029",
+  "id": 4236029,
+  "user": {
+    "login": "pengwynn",
+    "id": 865,
+    "avatar_url": "https://avatars.githubusercontent.com/u/865?v=3",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/pengwynn",
+    "html_url": "https://github.com/pengwynn",
+    "followers_url": "https://api.github.com/users/pengwynn/followers",
+    "following_url": "https://api.github.com/users/pengwynn/following{/other_user}",
+    "gists_url": "https://api.github.com/users/pengwynn/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/pengwynn/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/pengwynn/subscriptions",
+    "organizations_url": "https://api.github.com/users/pengwynn/orgs",
+    "repos_url": "https://api.github.com/users/pengwynn/repos",
+    "events_url": "https://api.github.com/users/pengwynn/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/pengwynn/received_events",
+    "type": "User",
+    "site_admin": true
+  },
+  "position": 46,
+  "line": 46,
+  "path": "root.go",
+  "commit_id": "8b8347dc11c81b64fdd9938d34dc4ef6a07dbf09",
+  "created_at": "2013-10-02T19:32:40Z",
+  "updated_at": "2013-10-02T19:32:40Z",
+  "body": ":heart:\r\n\r\nAre you handling plain `url`, too? In Octokit.rb, we parse those as a `self` relation."
+}
