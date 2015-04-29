@@ -19,12 +19,8 @@ type FollowersService struct {
 }
 
 // Get a list of followers for the user
-func (f *FollowersService) All(uri *Hyperlink, params M) (followers []User, result *Result) {
-	if uri == nil {
-		uri = &CurrentFollowerUrl // Default url
-	}
-
-	url, err := uri.Expand(params)
+func (f *FollowersService) All(uri *Hyperlink, uriParams M) (followers []User, result *Result) {
+	url, err := ExpandWithDefault(uri, &CurrentFollowerUrl, uriParams)
 	if err != nil {
 		return nil, &Result{Err: err}
 	}
@@ -34,12 +30,8 @@ func (f *FollowersService) All(uri *Hyperlink, params M) (followers []User, resu
 }
 
 // Checks if a user is following a target user
-func (f *FollowersService) Check(uri *Hyperlink, params M) (success bool, result *Result) {
-	if uri == nil {
-		uri = &CurrentFollowingUrl // Default url
-	}
-
-	url, err := uri.Expand(params)
+func (f *FollowersService) Check(uri *Hyperlink, uriParams M) (success bool, result *Result) {
+	url, err := ExpandWithDefault(uri, &CurrentFollowingUrl, uriParams)
 	if err != nil {
 		return false, &Result{Err: err}
 	}
@@ -50,12 +42,8 @@ func (f *FollowersService) Check(uri *Hyperlink, params M) (success bool, result
 }
 
 // Follows a target user
-func (f *FollowersService) Follow(uri *Hyperlink, params M) (success bool, result *Result) {
-	if uri == nil {
-		uri = &CurrentFollowingUrl // Default url
-	}
-
-	url, err := uri.Expand(params)
+func (f *FollowersService) Follow(uri *Hyperlink, uriParams M) (success bool, result *Result) {
+	url, err := ExpandWithDefault(uri, &CurrentFollowingUrl, uriParams)
 	if err != nil {
 		return false, &Result{Err: err}
 	}
@@ -66,12 +54,8 @@ func (f *FollowersService) Follow(uri *Hyperlink, params M) (success bool, resul
 }
 
 // Unfollows a target user
-func (f *FollowersService) Unfollow(uri *Hyperlink, params M) (success bool, result *Result) {
-	if uri == nil {
-		uri = &CurrentFollowingUrl // Default url
-	}
-
-	url, err := uri.Expand(params)
+func (f *FollowersService) Unfollow(uri *Hyperlink, uriParams M) (success bool, result *Result) {
+	url, err := ExpandWithDefault(uri, &CurrentFollowingUrl, uriParams)
 	if err != nil {
 		return false, &Result{Err: err}
 	}

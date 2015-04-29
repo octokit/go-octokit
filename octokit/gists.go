@@ -45,14 +45,12 @@ type GistsService struct {
 // All gets a list of all gists associated with the url of the service
 //
 // https://developer.github.com/v3/gists/#list-gists
-func (g *GistsService) All(uri *Hyperlink, params M) (gists []Gist, result *Result) {
-	if uri == nil {
-		uri = &GistsURL
-	}
-	url, err := uri.Expand(params)
+func (g *GistsService) All(uri *Hyperlink, uriParams M) (gists []Gist, result *Result) {
+	url, err := ExpandWithDefault(uri, &GistsURL, uriParams)
 	if err != nil {
-		return make([]Gist, 0), &Result{Err: err}
+		return nil, &Result{Err: err}
 	}
+
 	result = g.client.get(url, &gists)
 	return
 }
@@ -61,14 +59,12 @@ func (g *GistsService) All(uri *Hyperlink, params M) (gists []Gist, result *Resu
 //
 // https://developer.github.com/v3/gists/#get-a-single-gist
 // https://developer.github.com/v3/gists/#get-a-specific-revision-of-a-gist
-func (g *GistsService) One(uri *Hyperlink, params M) (gist Gist, result *Result) {
-	if uri == nil {
-		uri = &GistsURL
-	}
-	url, err := uri.Expand(params)
+func (g *GistsService) One(uri *Hyperlink, uriParams M) (gist *Gist, result *Result) {
+	url, err := ExpandWithDefault(uri, &GistsURL, uriParams)
 	if err != nil {
-		return Gist{}, &Result{Err: err}
+		return nil, &Result{Err: err}
 	}
+
 	result = g.client.get(url, &gist)
 	return
 }
@@ -76,11 +72,10 @@ func (g *GistsService) One(uri *Hyperlink, params M) (gist Gist, result *Result)
 // Raw gets the raw contents of first file in a specific gist
 //
 // https://developer.github.com/v3/gists/#truncation
-func (g *GistsService) Raw(uri *Hyperlink, params M) (body io.ReadCloser, result *Result) {
-	var gist Gist
+func (g *GistsService) Raw(uri *Hyperlink, uriParams M) (body io.ReadCloser, result *Result) {
 	var rawURL *url.URL
 
-	gist, result = g.One(uri, params)
+	gist, result := g.One(uri, uriParams)
 	for _, file := range gist.Files {
 		rawURL, _ = url.Parse(file.RawURL)
 		break
@@ -94,44 +89,38 @@ func (g *GistsService) Raw(uri *Hyperlink, params M) (body io.ReadCloser, result
 // the specified URL
 //
 // https://developer.github.com/v3/gists/#create-a-gist
-func (g *GistsService) Create(uri *Hyperlink, params M, creating interface{}) (gist Gist, result *Result) {
-	if uri == nil {
-		uri = &GistsURL
-	}
-	url, err := uri.Expand(params)
+func (g *GistsService) Create(uri *Hyperlink, uriParams M, requestParams interface{}) (gist *Gist, result *Result) {
+	url, err := ExpandWithDefault(uri, &GistsURL, uriParams)
 	if err != nil {
-		return Gist{}, &Result{Err: err}
+		return nil, &Result{Err: err}
 	}
-	result = g.client.post(url, creating, &gist)
+
+	result = g.client.post(url, requestParams, &gist)
 	return
 }
 
 // Update modifies a specific gist based on the url of the service
 //
 // https://developer.github.com/v3/gists/#edit-a-gist
-func (g *GistsService) Update(uri *Hyperlink, params M, edits interface{}) (gist Gist, result *Result) {
-	if uri == nil {
-		uri = &GistsURL
-	}
-	url, err := uri.Expand(params)
+func (g *GistsService) Update(uri *Hyperlink, uriParams M, requestParams interface{}) (gist *Gist, result *Result) {
+	url, err := ExpandWithDefault(uri, &GistsURL, uriParams)
 	if err != nil {
-		return Gist{}, &Result{Err: err}
+		return nil, &Result{Err: err}
 	}
-	result = g.client.patch(url, edits, &gist)
+
+	result = g.client.patch(url, requestParams, &gist)
 	return
 }
 
 // Commits gets a list of all commits to the given gist
 //
 // https://developer.github.com/v3/gists/#list-gists
-func (g *GistsService) Commits(uri *Hyperlink, params M) (gistCommits []GistCommit, result *Result) {
-	if uri == nil {
-		uri = &GistsCommitsURL
-	}
-	url, err := uri.Expand(params)
+func (g *GistsService) Commits(uri *Hyperlink, uriParams M) (gistCommits []GistCommit, result *Result) {
+	url, err := ExpandWithDefault(uri, &GistsCommitsURL, uriParams)
 	if err != nil {
-		return make([]GistCommit, 0), &Result{Err: err}
+		return nil, &Result{Err: err}
 	}
+
 	result = g.client.get(url, &gistCommits)
 	return
 }
@@ -139,14 +128,12 @@ func (g *GistsService) Commits(uri *Hyperlink, params M) (gistCommits []GistComm
 // Star stars a gist
 //
 // https://developer.github.com/v3/gists/#star-a-gist
-func (g *GistsService) Star(uri *Hyperlink, params M) (success bool, result *Result) {
-	if uri == nil {
-		uri = &GistsStarURL // Default url
-	}
-	url, err := uri.Expand(params)
+func (g *GistsService) Star(uri *Hyperlink, uriParams M) (success bool, result *Result) {
+	url, err := ExpandWithDefault(uri, &GistsStarURL, uriParams)
 	if err != nil {
 		return false, &Result{Err: err}
 	}
+
 	result = g.client.put(url, nil, nil)
 	success = (!result.HasError() && result.Response.StatusCode == 204)
 	return
@@ -155,14 +142,12 @@ func (g *GistsService) Star(uri *Hyperlink, params M) (success bool, result *Res
 // Unstar unstars a gist
 //
 // https://developer.github.com/v3/gists/#unstar-a-gist
-func (g *GistsService) Unstar(uri *Hyperlink, params M) (success bool, result *Result) {
-	if uri == nil {
-		uri = &GistsStarURL // Default url
-	}
-	url, err := uri.Expand(params)
+func (g *GistsService) Unstar(uri *Hyperlink, uriParams M) (success bool, result *Result) {
+	url, err := ExpandWithDefault(uri, &GistsStarURL, uriParams)
 	if err != nil {
 		return false, &Result{Err: err}
 	}
+
 	result = g.client.delete(url, nil, nil)
 	success = (!result.HasError() && result.Response.StatusCode == 204)
 	return
@@ -171,14 +156,12 @@ func (g *GistsService) Unstar(uri *Hyperlink, params M) (success bool, result *R
 // CheckStar checks if a gist is starred
 //
 // https://developer.github.com/v3/gists/#check-if-a-gist-is-starred
-func (g *GistsService) CheckStar(uri *Hyperlink, params M) (success bool, result *Result) {
-	if uri == nil {
-		uri = &GistsStarURL // Default url
-	}
-	url, err := uri.Expand(params)
+func (g *GistsService) CheckStar(uri *Hyperlink, uriParams M) (success bool, result *Result) {
+	url, err := ExpandWithDefault(uri, &GistsStarURL, uriParams)
 	if err != nil {
 		return false, &Result{Err: err}
 	}
+
 	result = g.client.get(url, nil)
 	success = (!result.HasError() && result.Response.StatusCode == 204)
 	return
@@ -187,14 +170,12 @@ func (g *GistsService) CheckStar(uri *Hyperlink, params M) (success bool, result
 // Fork forks a gist
 //
 // https://developer.github.com/v3/gists/#fork-a-gist
-func (g *GistsService) Fork(uri *Hyperlink, params M) (gist Gist, result *Result) {
-	if uri == nil {
-		uri = &GistsForksURL
-	}
-	url, err := uri.Expand(params)
+func (g *GistsService) Fork(uri *Hyperlink, uriParams M) (gist *Gist, result *Result) {
+	url, err := ExpandWithDefault(uri, &GistsForksURL, uriParams)
 	if err != nil {
-		return Gist{}, &Result{Err: err}
+		return nil, &Result{Err: err}
 	}
+
 	result = g.client.post(url, nil, &gist)
 	return
 }
@@ -202,14 +183,12 @@ func (g *GistsService) Fork(uri *Hyperlink, params M) (gist Gist, result *Result
 // ListForks lists all the forks of a gist
 //
 // https://developer.github.com/v3/gists/#list-gist-forks
-func (g *GistsService) ListForks(uri *Hyperlink, params M) (gistForks []GistFork, result *Result) {
-	if uri == nil {
-		uri = &GistsForksURL
-	}
-	url, err := uri.Expand(params)
+func (g *GistsService) ListForks(uri *Hyperlink, uriParams M) (gistForks []GistFork, result *Result) {
+	url, err := ExpandWithDefault(uri, &GistsForksURL, uriParams)
 	if err != nil {
-		return make([]GistFork, 0), &Result{Err: err}
+		return nil, &Result{Err: err}
 	}
+
 	result = g.client.get(url, &gistForks)
 	return
 }
@@ -217,14 +196,12 @@ func (g *GistsService) ListForks(uri *Hyperlink, params M) (gistForks []GistFork
 // Delete deletes a gist by its id
 //
 // https://developer.github.com/v3/gists/#delete-a-gist
-func (g *GistsService) Delete(uri *Hyperlink, params M) (success bool, result *Result) {
-	if uri == nil {
-		uri = &GistsURL // Default url
-	}
-	url, err := uri.Expand(params)
+func (g *GistsService) Delete(uri *Hyperlink, uriParams M) (success bool, result *Result) {
+	url, err := ExpandWithDefault(uri, &GistsURL, uriParams)
 	if err != nil {
 		return false, &Result{Err: err}
 	}
+
 	result = g.client.delete(url, nil, nil)
 	success = (!result.HasError() && result.Response.StatusCode == 204)
 	return

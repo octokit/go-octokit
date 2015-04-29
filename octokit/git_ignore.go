@@ -16,26 +16,22 @@ type GitIgnoreService struct {
 
 // All gets a list all the available templates
 func (s *GitIgnoreService) All(uri *Hyperlink) (templates []string, result *Result) {
-	if uri == nil {
-		uri = &GitIgnoreURL
-	}
-	url, err := uri.Expand(nil)
+	url, err := ExpandWithDefault(uri, &GitIgnoreURL, nil)
 	if err != nil {
-		return make([]string, 0), &Result{Err: err}
+		return nil, &Result{Err: err}
 	}
+
 	result = s.client.get(url, &templates)
 	return
 }
 
 // One gets a specific gitignore template based on the passed url
-func (s *GitIgnoreService) One(uri *Hyperlink, params M) (template GitIgnoreTemplate, result *Result) {
-	if uri == nil {
-		uri = &GitIgnoreURL
-	}
-	url, err := uri.Expand(params)
+func (s *GitIgnoreService) One(uri *Hyperlink, uriParams M) (template *GitIgnoreTemplate, result *Result) {
+	url, err := ExpandWithDefault(uri, &GitIgnoreURL, uriParams)
 	if err != nil {
-		return GitIgnoreTemplate{}, &Result{Err: err}
+		return nil, &Result{Err: err}
 	}
+
 	result = s.client.get(url, &template)
 	return
 }

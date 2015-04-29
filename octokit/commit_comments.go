@@ -25,12 +25,8 @@ type CommitCommentsService struct {
 }
 
 // Get a list of all commit comments
-func (c *CommitCommentsService) All(uri *Hyperlink, params M) (comments []CommitComment, result *Result) {
-	if uri == nil {
-		uri = &RepoCommentsURL
-	}
-
-	url, err := uri.Expand(params)
+func (c *CommitCommentsService) All(uri *Hyperlink, uriParams M) (comments []CommitComment, result *Result) {
+	url, err := ExpandWithDefault(uri, &RepoCommentsURL, uriParams)
 	if err != nil {
 		return nil, &Result{Err: err}
 	}
@@ -40,12 +36,8 @@ func (c *CommitCommentsService) All(uri *Hyperlink, params M) (comments []Commit
 }
 
 // Get a single comment by id
-func (c *CommitCommentsService) One(uri *Hyperlink, params M) (comment *CommitComment, result *Result) {
-	if uri == nil {
-		uri = &RepoCommentsURL
-	}
-
-	url, err := uri.Expand(params)
+func (c *CommitCommentsService) One(uri *Hyperlink, uriParams M) (comment *CommitComment, result *Result) {
+	url, err := ExpandWithDefault(uri, &RepoCommentsURL, uriParams)
 	if err != nil {
 		return nil, &Result{Err: err}
 	}
@@ -55,42 +47,30 @@ func (c *CommitCommentsService) One(uri *Hyperlink, params M) (comment *CommitCo
 }
 
 // Creates a comment on a commit
-func (c *CommitCommentsService) Create(uri *Hyperlink, params M, input interface{}) (comment *CommitComment, result *Result) {
-	if uri == nil {
-		uri = &CommitCommentsURL
-	}
-
-	url, err := uri.Expand(params)
+func (c *CommitCommentsService) Create(uri *Hyperlink, uriParams M, requestParams interface{}) (comment *CommitComment, result *Result) {
+	url, err := ExpandWithDefault(uri, &CommitCommentsURL, uriParams)
 	if err != nil {
 		return nil, &Result{Err: err}
 	}
 
-	result = c.client.post(url, input, &comment)
+	result = c.client.post(url, requestParams, &comment)
 	return
 }
 
 // Updates a comment on a commit
-func (c *CommitCommentsService) Update(uri *Hyperlink, params M, input interface{}) (comment *CommitComment, result *Result) {
-	if uri == nil {
-		uri = &RepoCommentsURL
-	}
-
-	url, err := uri.Expand(params)
+func (c *CommitCommentsService) Update(uri *Hyperlink, uriParams M, requestParams interface{}) (comment *CommitComment, result *Result) {
+	url, err := ExpandWithDefault(uri, &RepoCommentsURL, uriParams)
 	if err != nil {
 		return nil, &Result{Err: err}
 	}
 
-	result = c.client.patch(url, input, &comment)
+	result = c.client.patch(url, requestParams, &comment)
 	return
 }
 
 // Deletes a comment on a commit
-func (c *CommitCommentsService) Delete(uri *Hyperlink, params M) (success bool, result *Result) {
-	if uri == nil {
-		uri = &RepoCommentsURL
-	}
-
-	url, err := uri.Expand(params)
+func (c *CommitCommentsService) Delete(uri *Hyperlink, uriParams M) (success bool, result *Result) {
+	url, err := ExpandWithDefault(uri, &RepoCommentsURL, uriParams)
 	if err != nil {
 		return false, &Result{Err: err}
 	}

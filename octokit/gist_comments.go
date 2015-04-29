@@ -20,12 +20,8 @@ type GistCommentsService struct {
 }
 
 // Get a list of all gist comments
-func (c *GistCommentsService) All(uri *Hyperlink, params M) (comments []GistComment, result *Result) {
-	if uri == nil {
-		uri = &GistCommentsURL
-	}
-
-	url, err := uri.Expand(params)
+func (c *GistCommentsService) All(uri *Hyperlink, uriParams M) (comments []GistComment, result *Result) {
+	url, err := ExpandWithDefault(uri, &GistCommentsURL, uriParams)
 	if err != nil {
 		return nil, &Result{Err: err}
 	}
@@ -35,12 +31,8 @@ func (c *GistCommentsService) All(uri *Hyperlink, params M) (comments []GistComm
 }
 
 // Get a single comment by id
-func (c *GistCommentsService) One(uri *Hyperlink, params M) (comment *GistComment, result *Result) {
-	if uri == nil {
-		uri = &GistCommentsURL
-	}
-
-	url, err := uri.Expand(params)
+func (c *GistCommentsService) One(uri *Hyperlink, uriParams M) (comment *GistComment, result *Result) {
+	url, err := ExpandWithDefault(uri, &GistCommentsURL, uriParams)
 	if err != nil {
 		return nil, &Result{Err: err}
 	}
@@ -50,42 +42,30 @@ func (c *GistCommentsService) One(uri *Hyperlink, params M) (comment *GistCommen
 }
 
 // Creates a comment on a gist
-func (c *GistCommentsService) Create(uri *Hyperlink, params M, input interface{}) (comment *GistComment, result *Result) {
-	if uri == nil {
-		uri = &GistCommentsURL
-	}
-
-	url, err := uri.Expand(params)
+func (c *GistCommentsService) Create(uri *Hyperlink, uriParams M, requestParams interface{}) (comment *GistComment, result *Result) {
+	url, err := ExpandWithDefault(uri, &GistCommentsURL, uriParams)
 	if err != nil {
 		return nil, &Result{Err: err}
 	}
 
-	result = c.client.post(url, input, &comment)
+	result = c.client.post(url, requestParams, &comment)
 	return
 }
 
 // Updates a comment on a gist
-func (c *GistCommentsService) Update(uri *Hyperlink, params M, input interface{}) (comment *GistComment, result *Result) {
-	if uri == nil {
-		uri = &GistCommentsURL
-	}
-
-	url, err := uri.Expand(params)
+func (c *GistCommentsService) Update(uri *Hyperlink, uriParams M, requestParams interface{}) (comment *GistComment, result *Result) {
+	url, err := ExpandWithDefault(uri, &GistCommentsURL, uriParams)
 	if err != nil {
 		return nil, &Result{Err: err}
 	}
 
-	result = c.client.patch(url, input, &comment)
+	result = c.client.patch(url, requestParams, &comment)
 	return
 }
 
 // Deletes a comment on a gist
-func (c *GistCommentsService) Delete(uri *Hyperlink, params M) (success bool, result *Result) {
-	if uri == nil {
-		uri = &GistCommentsURL
-	}
-
-	url, err := uri.Expand(params)
+func (c *GistCommentsService) Delete(uri *Hyperlink, uriParams M) (success bool, result *Result) {
+	url, err := ExpandWithDefault(uri, &GistCommentsURL, uriParams)
 	if err != nil {
 		return false, &Result{Err: err}
 	}

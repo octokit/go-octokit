@@ -21,58 +21,46 @@ type IssuesService struct {
 }
 
 // One gets a specific issue based on the url of the service
-func (i *IssuesService) One(uri *Hyperlink, params M) (issue *Issue,
-	result *Result) {
-	if uri == nil {
-		uri = &RepoIssuesURL
-	}
-	url, err := uri.Expand(params)
+func (i *IssuesService) One(uri *Hyperlink, uriParams M) (issue *Issue, result *Result) {
+	url, err := ExpandWithDefault(uri, &RepoIssuesURL, uriParams)
 	if err != nil {
 		return nil, &Result{Err: err}
 	}
+
 	result = i.client.get(url, &issue)
 	return
 }
 
 // All gets a list of all issues associated with the url of the service
-func (i *IssuesService) All(uri *Hyperlink, uriParams M) (issues []Issue,
-	result *Result) {
-	if uri == nil {
-		uri = &RepoIssuesURL
-	}
-	url, err := uri.Expand(uriParams)
+func (i *IssuesService) All(uri *Hyperlink, uriParams M) (issues []Issue, result *Result) {
+	url, err := ExpandWithDefault(uri, &RepoIssuesURL, uriParams)
 	if err != nil {
 		return nil, &Result{Err: err}
 	}
+
 	result = i.client.get(url, &issues)
 	return
 }
 
 // Create posts a new issue with particular parameters to the issues service url
-func (i *IssuesService) Create(uri *Hyperlink, uriParams M,
-	params interface{}) (issue *Issue, result *Result) {
-	if uri == nil {
-		uri = &RepoIssuesURL
-	}
-	url, err := uri.Expand(uriParams)
+func (i *IssuesService) Create(uri *Hyperlink, uriParams M, requestParams interface{}) (issue *Issue, result *Result) {
+	url, err := ExpandWithDefault(uri, &RepoIssuesURL, uriParams)
 	if err != nil {
 		return nil, &Result{Err: err}
 	}
-	result = i.client.post(url, params, &issue)
+
+	result = i.client.post(url, requestParams, &issue)
 	return
 }
 
 // Update modifies a specific issue given parameters on the service url
-func (i *IssuesService) Update(uri *Hyperlink, uriParams M,
-	params interface{}) (issue *Issue, result *Result) {
-	if uri == nil {
-		uri = &RepoIssuesURL
-	}
-	url, err := uri.Expand(uriParams)
+func (i *IssuesService) Update(uri *Hyperlink, uriParams M, requestParams interface{}) (issue *Issue, result *Result) {
+	url, err := ExpandWithDefault(uri, &RepoIssuesURL, uriParams)
 	if err != nil {
 		return nil, &Result{Err: err}
 	}
-	result = i.client.patch(url, params, &issue)
+
+	result = i.client.patch(url, requestParams, &issue)
 	return
 }
 
