@@ -1,49 +1,78 @@
 package octokit
 
 import (
-	"net/url"
-	"time"
-
 	"github.com/jingweno/go-sawyer/hypermedia"
+	"time"
 )
 
 // RepoIssuesURL is a template for accessing issues in a particular
 // repository for a particular owner that can be expanded to a full address.
-var RepoIssuesURL = Hyperlink("repos/{owner}/{repo}/issues{/number}")
+var RepoIssuesURL = Hyperlink("repos/{owner}/{repo}/issues{/number}{?filter,state,labels,sort}")
 
 // Issues creates an IssuesService with a base url
-func (c *Client) Issues(url *url.URL) (issues *IssuesService) {
-	issues = &IssuesService{client: c, URL: url}
+func (c *Client) Issues() (issues *IssuesService) {
+	issues = &IssuesService{client: c}
 	return
 }
 
 // IssuesService is a service providing access to issues from a particular url
 type IssuesService struct {
 	client *Client
-	URL    *url.URL
 }
 
 // One gets a specific issue based on the url of the service
-func (i *IssuesService) One() (issue *Issue, result *Result) {
-	result = i.client.get(i.URL, &issue)
+func (i *IssuesService) One(uri *Hyperlink, params M) (issue *Issue,
+	result *Result) {
+	if uri == nil {
+		uri = &RepoIssuesURL
+	}
+	url, err := uri.Expand(params)
+	if err != nil {
+		return nil, &Result{Err: err}
+	}
+	result = i.client.get(url, &issue)
 	return
 }
 
 // All gets a list of all issues associated with the url of the service
-func (i *IssuesService) All() (issues []Issue, result *Result) {
-	result = i.client.get(i.URL, &issues)
+func (i *IssuesService) All(uri *Hyperlink, uriParams M) (issues []Issue,
+	result *Result) {
+	if uri == nil {
+		uri = &RepoIssuesURL
+	}
+	url, err := uri.Expand(uriParams)
+	if err != nil {
+		return nil, &Result{Err: err}
+	}
+	result = i.client.get(url, &issues)
 	return
 }
 
 // Create posts a new issue with particular parameters to the issues service url
-func (i *IssuesService) Create(params interface{}) (issue *Issue, result *Result) {
-	result = i.client.post(i.URL, params, &issue)
+func (i *IssuesService) Create(uri *Hyperlink, uriParams M,
+	params interface{}) (issue *Issue, result *Result) {
+	if uri == nil {
+		uri = &RepoIssuesURL
+	}
+	url, err := uri.Expand(uriParams)
+	if err != nil {
+		return nil, &Result{Err: err}
+	}
+	result = i.client.post(url, params, &issue)
 	return
 }
 
 // Update modifies a specific issue given parameters on the service url
-func (i *IssuesService) Update(params interface{}) (issue *Issue, result *Result) {
-	result = i.client.patch(i.URL, params, &issue)
+func (i *IssuesService) Update(uri *Hyperlink, uriParams M,
+	params interface{}) (issue *Issue, result *Result) {
+	if uri == nil {
+		uri = &RepoIssuesURL
+	}
+	url, err := uri.Expand(uriParams)
+	if err != nil {
+		return nil, &Result{Err: err}
+	}
+	result = i.client.patch(url, params, &issue)
 	return
 }
 
@@ -51,8 +80,8 @@ func (i *IssuesService) Update(params interface{}) (issue *Issue, result *Result
 type Issue struct {
 	*hypermedia.HALResource
 
-	URL     string `json:"url,omitempty,omitempty"`
-	HTMLURL string `json:"html_url,omitempty,omitempty"`
+	URL     string `json:"url,omitempty"`
+	HTMLURL string `json:"html_url,omitempty"`
 	Number  int    `json:"number,omitempty"`
 	State   string `json:"state,omitempty"`
 	Title   string `json:"title,omitempty"`
