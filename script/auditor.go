@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -35,7 +36,7 @@ func listSourceFiles(dirname string) []string {
 	for _, f := range files {
 		if strings.HasSuffix(f.Name(), ".go") &&
 			!strings.HasSuffix(f.Name(), "_test.go") {
-			result = append(result, f.Name())
+			result = append(result, path.Join(dirname, f.Name()))
 		}
 	}
 	return result
