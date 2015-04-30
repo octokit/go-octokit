@@ -74,6 +74,11 @@ func (r *Request) setBody(input interface{}) {
 	r.Request.SetBody(mtype, input)
 }
 
+func (r *Request) createResponseRaw(sawyerResp *sawyer.Response) (resp *Response, err error) {
+	resp, err = NewResponse(sawyerResp)
+	return
+}
+
 func (r *Request) createResponse(sawyerResp *sawyer.Response, output interface{}) (resp *Response, err error) {
 	resp, err = NewResponse(sawyerResp)
 	if err == nil {
