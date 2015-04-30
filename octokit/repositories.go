@@ -41,7 +41,7 @@ type RepositoriesService struct {
 func (r *RepositoriesService) One(uri *Hyperlink, params M) (repo *Repository,
 	result *Result) {
 	if uri == nil {
-		uri = &AllRepositoriesURL
+		uri = &RepositoryURL
 	}
 	url, err := uri.Expand(params)
 	if err != nil {
