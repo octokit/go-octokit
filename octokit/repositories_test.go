@@ -21,18 +21,21 @@ func TestRepositoresService_One(t *testing.T) {
 	assert.False(t, result.HasError())
 	assert.Equal(t, 10575811, repo.ID)
 	assert.Equal(t, "octokat", repo.Name)
-	assert.Equal(t, "jingweno/octokat", repo.FullName)
+	assert.EqualValues(t, "jingweno/octokat", repo.FullName)
 	assert.False(t, repo.Private)
 	assert.False(t, repo.Fork)
-	assert.Equal(t, "https://api.github.com/repos/jingweno/octokat",
+	assert.EqualValues(t, "https://api.github.com/repos/jingweno/octokat",
 		repo.URL)
-	assert.Equal(t, "https://github.com/jingweno/octokat", repo.HTMLURL)
-	assert.Equal(t, "https://github.com/jingweno/octokat.git",
+	assert.EqualValues(t, "https://github.com/jingweno/octokat",
+		repo.HTMLURL)
+	assert.EqualValues(t, "https://github.com/jingweno/octokat.git",
 		repo.CloneURL)
-	assert.Equal(t, "git://github.com/jingweno/octokat.git", repo.GitURL)
-	assert.Equal(t, "git@github.com:jingweno/octokat.git", repo.SSHURL)
+	assert.EqualValues(t, "git://github.com/jingweno/octokat.git",
+		repo.GitURL)
+	assert.EqualValues(t, "git@github.com:jingweno/octokat.git",
+		repo.SSHURL)
 	assert.Equal(t, 79, repo.StargazersCount)
-	assert.Equal(t, "master", repo.MasterBranch)
+	assert.EqualValues(t, "master", repo.MasterBranch)
 	assert.False(t, repo.Permissions.Admin)
 	assert.False(t, repo.Permissions.Push)
 	assert.True(t, repo.Permissions.Pull)
@@ -94,19 +97,22 @@ func TestRepositoresService_Create(t *testing.T) {
 
 	assert.False(t, result.HasError())
 	assert.Equal(t, 1296269, repo.ID)
-	assert.Equal(t, "Hello-World", repo.Name)
-	assert.Equal(t, "octocat/Hello-World", repo.FullName)
-	assert.Equal(t, "This is your first repo", repo.Description)
+	assert.EqualValues(t, "Hello-World", repo.Name)
+	assert.EqualValues(t, "octocat/Hello-World", repo.FullName)
+	assert.EqualValues(t, "This is your first repo", repo.Description)
 	assert.False(t, repo.Private)
 	assert.True(t, repo.Fork)
-	assert.Equal(t, "https://api.github.com/repos/octocat/Hello-World",
-		repo.URL)
-	assert.Equal(t, "https://github.com/octocat/Hello-World", repo.HTMLURL)
-	assert.Equal(t, "https://github.com/octocat/Hello-World.git",
+	assert.EqualValues(t,
+		"https://api.github.com/repos/octocat/Hello-World", repo.URL)
+	assert.EqualValues(t, "https://github.com/octocat/Hello-World",
+		repo.HTMLURL)
+	assert.EqualValues(t, "https://github.com/octocat/Hello-World.git",
 		repo.CloneURL)
-	assert.Equal(t, "git://github.com/octocat/Hello-World.git", repo.GitURL)
-	assert.Equal(t, "git@github.com:octocat/Hello-World.git", repo.SSHURL)
-	assert.Equal(t, "master", repo.MasterBranch)
+	assert.EqualValues(t, "git://github.com/octocat/Hello-World.git",
+		repo.GitURL)
+	assert.EqualValues(t, "git@github.com:octocat/Hello-World.git",
+		repo.SSHURL)
+	assert.EqualValues(t, "master", repo.MasterBranch)
 }
 
 func TestRepositoresService_CreateFork(t *testing.T) {
@@ -127,17 +133,20 @@ func TestRepositoresService_CreateFork(t *testing.T) {
 
 	assert.False(t, result.HasError())
 	assert.Equal(t, 1296269, repo.ID)
-	assert.Equal(t, "Hello-World", repo.Name)
-	assert.Equal(t, "octocat/Hello-World", repo.FullName)
-	assert.Equal(t, "This is your first repo", repo.Description)
+	assert.EqualValues(t, "Hello-World", repo.Name)
+	assert.EqualValues(t, "octocat/Hello-World", repo.FullName)
+	assert.EqualValues(t, "This is your first repo", repo.Description)
 	assert.False(t, repo.Private)
 	assert.True(t, repo.Fork)
-	assert.Equal(t, "https://api.github.com/repos/octocat/Hello-World",
-		repo.URL)
-	assert.Equal(t, "https://github.com/octocat/Hello-World", repo.HTMLURL)
-	assert.Equal(t, "https://github.com/octocat/Hello-World.git",
+	assert.EqualValues(t,
+		"https://api.github.com/repos/octocat/Hello-World", repo.URL)
+	assert.EqualValues(t, "https://github.com/octocat/Hello-World",
+		repo.HTMLURL)
+	assert.EqualValues(t, "https://github.com/octocat/Hello-World.git",
 		repo.CloneURL)
-	assert.Equal(t, "git://github.com/octocat/Hello-World.git", repo.GitURL)
-	assert.Equal(t, "git@github.com:octocat/Hello-World.git", repo.SSHURL)
-	assert.Equal(t, "master", repo.MasterBranch)
+	assert.EqualValues(t, "git://github.com/octocat/Hello-World.git",
+		repo.GitURL)
+	assert.EqualValues(t, "git@github.com:octocat/Hello-World.git",
+		repo.SSHURL)
+	assert.EqualValues(t, "master", repo.MasterBranch)
 }
