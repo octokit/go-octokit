@@ -46,7 +46,6 @@ func TestGistsService_Raw(t *testing.T) {
 	defer tearDown()
 
 	stubGet(t, "/gists/a6bea192debdbec0d4ab", "gist", nil)
-
 	mux.HandleFunc("/jingweno/a6bea192debdbec0d4ab/raw/80757419d2bd4cfddf7c6be24308eca11b3c330e/grep_cellar", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		assert.Equal(t, "gist.githubusercontent.com", r.Host)
@@ -161,6 +160,9 @@ func TestGistsService_Update(t *testing.T) {
 		"new_file.txt": &gistFile3, "delete_this_file.txt": nil}
 
 	mux.HandleFunc("/gists", func(w http.ResponseWriter, r *http.Request) {
+
+		// body, _ := ioutil.ReadAll(r.Body)
+		// fmt.Printf(string(body))
 		var gistParams Gist
 		json.NewDecoder(r.Body).Decode(&gistParams)
 		assert.Equal(t, params.Description, gistParams.Description)
@@ -229,14 +231,8 @@ func TestGistsService_Star(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/gists/aa5a315d61ae9438b18d/star", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-
-		header := w.Header()
-		header.Set("Content-Type", "application/json")
-
-		respondWithStatus(w, 204)
-	})
+	var respHeaderParams = map[string]string{"Content-Type": "application/json"}
+	stubPutwCode(t, "/gists/aa5a315d61ae9438b18d/star", "gist", nil, "", respHeaderParams, 204)
 
 	success, result := client.Gists().Star(&GistsStarURL, M{"gist_id": "aa5a315d61ae9438b18d"})
 	assert.False(t, result.HasError())
@@ -257,14 +253,8 @@ func TestGistsService_Unstar(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/gists/aa5a315d61ae9438b18d/star", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "DELETE")
-
-		header := w.Header()
-		header.Set("Content-Type", "application/json")
-
-		respondWithStatus(w, 204)
-	})
+	var respHeaderParams = map[string]string{"Content-Type": "application/json"}
+	stubDeletewCode(t, "/gists/aa5a315d61ae9438b18d/star", respHeaderParams, 204)
 
 	success, result := client.Gists().Unstar(&GistsStarURL, M{"gist_id": "aa5a315d61ae9438b18d"})
 	assert.False(t, result.HasError())
@@ -287,15 +277,15 @@ func TestGistsService_CheckStar(t *testing.T) {
 
 	// Starred
 
-	var respHeaderParams = map[string]string{"Content-Type", "application/json"}
-	stubGet(t, "/gists/aa5a315d61ae9438b18d/star", "gist", respHeaderParams)
+	var respHeaderParams = map[string]string{"Content-Type": "application/json"}
+	stubGetwCode(t, "/gists/aa5a315d61ae9438b18d/star", "gist", respHeaderParams, 204)
 
 	success, result := client.Gists().CheckStar(&GistsStarURL, M{"gist_id": "aa5a315d61ae9438b18d"})
 	assert.False(t, result.HasError())
 	assert.True(t, success)
 
 	// Not starred
-	stubGetError(t, "/gists/a6bea192debdbec0d4ab/star", "gist", respHeaderParams, 404)
+	stubGetwCode(t, "/gists/a6bea192debdbec0d4ab/star", "gist", respHeaderParams, 404)
 
 	successNil, resultNil := client.Gists().CheckStar(nil, M{"gist_id": "a6bea192debdbec0d4ab"})
 	assert.True(t, resultNil.HasError()) //404 counts as an error...
@@ -374,7 +364,7 @@ func TestGistsService_Delete(t *testing.T) {
 	defer tearDown()
 
 	var respHeaderParams = map[string]string{"Content-Type": "application/json"}
-	stubDelete(t, "/gists/aa5a315d61ae9438b18d", respHeaderParams, 204)
+	stubDeletewCode(t, "/gists/aa5a315d61ae9438b18d", respHeaderParams, 204)
 
 	success, result := client.Gists().Delete(&GistsURL, M{"gist_id": "aa5a315d61ae9438b18d"})
 	assert.False(t, result.HasError())

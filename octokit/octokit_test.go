@@ -123,28 +123,49 @@ func loadFixture(f string) string {
 	return string(c)
 }
 
-func stubGet(t *testing.T, path string, fixture string, respHeaderParams map[string]string) {
+func stubGet(t *testing.T, path string, fixture string,
+	respHeaderParams map[string]string) {
 	httpTestHelper(t, path, fixture, "GET", nil, "", respHeaderParams, 0)
 }
 
-func stubGetError(t *testing.T, path string, fixture string,
+func stubGetwCode(t *testing.T, path string, fixture string,
 	respHeaderParams map[string]string, respStatusCode int) {
-	httpTestHelper(t, path, fixture, "GET", nil, "", respHeaderParams, respStatusCode)
+	httpTestHelper(t, path, fixture, "GET",
+		nil, "", respHeaderParams, respStatusCode)
 }
 
 func stubPost(t *testing.T, path string, fixture string,
 	wantReqHeader map[string]string, wantReqBody string,
 	respHeaderParams map[string]string) {
-	httpTestHelper(t, path, fixture, "POST", wantReqHeader, wantReqBody, respHeaderParams, 0)
+	httpTestHelper(t, path, fixture, "POST",
+		wantReqHeader, wantReqBody, respHeaderParams, 0)
 }
 
-func stubPatch(t *testing.T, path string, fixture string, wantReqHeader map[string]string, wantReqBody string,
+func stubPostwCode(t *testing.T, path string, fixture string,
+	wantReqHeader map[string]string, wantReqBody string,
+	respHeaderParams map[string]string, respStatusCode int) {
+	httpTestHelper(t, path, fixture, "POST",
+		wantReqHeader, wantReqBody, respHeaderParams, respStatusCode)
+}
+
+func stubPutwCode(t *testing.T, path string, fixture string,
+	wantReqHeader map[string]string, wantReqBody string,
+	respHeaderParams map[string]string, respStatusCode int) {
+	httpTestHelper(t, path, fixture, "PUT",
+		wantReqHeader, wantReqBody, respHeaderParams, respStatusCode)
+}
+
+func stubPatch(t *testing.T, path string, fixture string,
+	wantReqHeader map[string]string, wantReqBody string,
 	respHeaderParams map[string]string) {
-	httpTestHelper(t, path, fixture, "PATCH", wantReqHeader, wantReqBody, respHeaderParams, 0)
+	httpTestHelper(t, path, fixture, "PATCH",
+		wantReqHeader, wantReqBody, respHeaderParams, 0)
 }
 
-func stubDelete(t *testing.T, path string, respHeaderParams map[string]string, respStatusCode int) {
-	httpTestHelper(t, path, "", "DELETE", nil, "", respHeaderParams, respStatusCode)
+func stubDeletewCode(t *testing.T, path string,
+	respHeaderParams map[string]string, respStatusCode int) {
+	httpTestHelper(t, path, "", "DELETE",
+		nil, "", respHeaderParams, respStatusCode)
 }
 
 func httpTestHelper(t *testing.T, path string, fixture string,
