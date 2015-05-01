@@ -42,7 +42,7 @@ func (r *CollaboratorsService) IsCollaborator(uri *Hyperlink,
 	if err != nil {
 		return false, &Result{Err: err}
 	}
-	result = r.client.getBodyless(url)
+	result = r.client.get(url, nil)
 	collabStatus = false
 	if result.Err == nil && result.Response.Response.StatusCode == 204 {
 		collabStatus = true

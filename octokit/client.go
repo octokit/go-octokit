@@ -74,12 +74,6 @@ func (c *Client) get(url *url.URL, output interface{}) (result *Result) {
 	})
 }
 
-func (c *Client) getBodyless(url *url.URL) (result *Result) {
-	return sendRequest(c, url, func(req *Request) (*Response, error) {
-		return req.GetBodyless()
-	})
-}
-
 func (c *Client) post(url *url.URL, input interface{}, output interface{}) (result *Result) {
 	return sendRequest(c, url, func(req *Request) (*Response, error) {
 		return req.Post(input, output)
