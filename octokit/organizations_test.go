@@ -53,7 +53,7 @@ func TestOrganizationService_Update(t *testing.T) {
 
 	assert.False(t, result.HasError())
 	assert.Equal(t, "github", organizationResults.Login)
-	assert.Equal(t, 1, organizationResults.ID)
+	assert.Equal(t, 9919, organizationResults.ID)
 }
 
 func TestOrganizationService_Repos(t *testing.T) {
