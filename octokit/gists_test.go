@@ -1,7 +1,6 @@
 package octokit
 
 import (
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -103,7 +102,9 @@ func TestGistsService_Create(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	wantReqBody := fmt.Sprintf(`{"%s":"%s","%s":{"%s":{"%s":"%s"}},"%s":%s}`+"\n",
+	wantReqBody := fmt.Sprintf(`{"%s":"%s",`+
+		`"%s":{"%s":{"%s":"%s"}},`+
+		`"%s":%s}`+"\n",
 		"description", "the description for this gist",
 		"files", "file1.txt", "content", "String file contents",
 		"public", "true")
@@ -144,37 +145,31 @@ func TestGistsService_Update(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	params := Gist{}
-	params.Description = "the description for this gist"
-	params.Public = true
+	wantReqBody := fmt.Sprintf(`{"%s":"%s",`+
+		`"%s":{"%s":null,`+
+		`"%s":{"%s":"%s"},`+
+		`"%s":{"%s":"%s"},`+
+		`"%s":{"%s":"%s","%s":"%s"}},`+
+		`"%s":%s}`+"\n",
+		"description", "the description for this gist",
+		"files", "delete_this_file.txt",
+		"file1.txt", "content", "updated file contents",
+		"new_file.txt", "content", "a new file",
+		"old_name.txt", "filename", "new_name.txt", "content", "modified contents",
+		"public", "true")
 
-	var gistFile1 = GistFile{}
-	gistFile1.Content = "updated file contents"
-	var gistFile2 = GistFile{}
-	gistFile2.FileName = "new_name.txt"
-	gistFile2.Content = "modified contents"
-	var gistFile3 = GistFile{}
-	gistFile3.Content = "a new file"
+	stubPatch(t, "/gists", "gist", nil, wantReqBody, nil)
 
-	params.Files = map[string]*GistFile{"file1.txt": &gistFile1, "old_name.txt": &gistFile2,
-		"new_file.txt": &gistFile3, "delete_this_file.txt": nil}
-
-	mux.HandleFunc("/gists", func(w http.ResponseWriter, r *http.Request) {
-
-		// body, _ := ioutil.ReadAll(r.Body)
-		// fmt.Printf(string(body))
-		var gistParams Gist
-		json.NewDecoder(r.Body).Decode(&gistParams)
-		assert.Equal(t, params.Description, gistParams.Description)
-		assert.Equal(t, params.Public, gistParams.Public)
-		assert.Equal(t, params.Files, gistParams.Files)
-
-		assert.Len(t, params.Files, 4)
-
-		testMethod(t, r, "PATCH")
-		respondWithJSON(w, loadFixture("gist.json"))
-	})
-
+	params := Gist{
+		Description: "the description for this gist",
+		Files: map[string]*GistFile{
+			"delete_this_file.txt": nil,
+			"file1.txt":            {Content: "updated file contents"},
+			"new_file.txt":         {Content: "a new file"},
+			"old_name.txt":         {FileName: "new_name.txt", Content: "modified contents"},
+		},
+		Public: true,
+	}
 	gist, result := client.Gists().Update(&GistsURL, M{}, params)
 
 	assert.False(t, result.HasError())
