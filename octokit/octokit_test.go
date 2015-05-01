@@ -90,7 +90,7 @@ func testHeader(t *testing.T, r *http.Request, header string, want string) {
 
 func testBody(t *testing.T, r *http.Request, want string) {
 	body, _ := ioutil.ReadAll(r.Body)
-	assert.Equal(t, want, string(body))
+	assert.EqualValues(t, want, string(body))
 }
 
 func respondWithJSON(w http.ResponseWriter, s string) {
@@ -123,11 +123,26 @@ func loadFixture(f string) string {
 	return string(c)
 }
 
-func stubGet(t *testing.T, path, fixture string, respHeaderParams map[string]string) {
-	stubRequest(t, path, fixture, "GET", nil, "", respHeaderParams, 0)
+func stubGet(t *testing.T, path string, fixture string, respHeaderParams map[string]string) {
+	httpTestHelper(t, path, fixture, "GET", nil, "", respHeaderParams, 0)
 }
 
-func stubRequest(t *testing.T, path string, fixture string,
+func stubPost(t *testing.T, path string, fixture string,
+	wantReqHeader map[string]string, wantReqBody string,
+	respHeaderParams map[string]string) {
+	httpTestHelper(t, path, fixture, "POST", wantReqHeader, wantReqBody, respHeaderParams, 0)
+}
+
+func stubPatch(t *testing.T, path string, fixture string, wantReqHeader map[string]string, wantReqBody string,
+	respHeaderParams map[string]string) {
+	httpTestHelper(t, path, fixture, "PATCH", wantReqHeader, wantReqBody, respHeaderParams, 0)
+}
+
+func stubDelete(t *testing.T, path string, respHeaderParams map[string]string, respStatusCode int) {
+	httpTestHelper(t, path, "", "DELETE", nil, "", respHeaderParams, respStatusCode)
+}
+
+func httpTestHelper(t *testing.T, path string, fixture string,
 	wantReqMethod string, wantReqHeader map[string]string, wantReqBody string,
 	respHeaderParams map[string]string, respStatusCode int) {
 	if mux == nil {
@@ -156,6 +171,8 @@ func stubRequest(t *testing.T, path string, fixture string,
 		if respStatusCode > 0 {
 			w.WriteHeader(respStatusCode)
 		}
-		respondWithJSON(w, loadFixture(fixture+".json"))
+		if fixture != "" {
+			respondWithJSON(w, loadFixture(fixture+".json"))
+		}
 	})
 }

@@ -2,6 +2,7 @@ package octokit
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"testing"
@@ -103,25 +104,18 @@ func TestGistsService_Create(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	params := Gist{}
-	params.Description = "the description for this gist"
-	params.Public = true
+	wantReqBody := fmt.Sprintf(`{"%s":"%s","%s":{"%s":{"%s":"%s"}},"%s":%s}`+"\n",
+		"description", "the description for this gist",
+		"files", "file1.txt", "content", "String file contents",
+		"public", "true")
 
-	var gistFile = GistFile{}
-	gistFile.Content = "String file contents"
-	params.Files = map[string]*GistFile{"file1.txt": &gistFile}
+	stubPost(t, "/gists", "gist", nil, wantReqBody, nil)
 
-	mux.HandleFunc("/gists", func(w http.ResponseWriter, r *http.Request) {
-		var gistParams Gist
-		json.NewDecoder(r.Body).Decode(&gistParams)
-		assert.Equal(t, params.Description, gistParams.Description)
-		assert.Equal(t, params.Public, gistParams.Public)
-		assert.Equal(t, params.Files, gistParams.Files)
-
-		testMethod(t, r, "POST")
-		respondWithJSON(w, loadFixture("gist.json"))
-	})
-
+	params := Gist{
+		Description: "the description for this gist",
+		Files:       map[string]*GistFile{"file1.txt": {Content: "String file contents"}},
+		Public:      true,
+	}
 	gist, result := client.Gists().Create(&GistsURL, M{}, params)
 
 	assert.False(t, result.HasError())
@@ -330,7 +324,11 @@ func TestGistsService_Fork(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	stubRequest(t, "POST", "/gists/a6bea192debdbec0d4ab/forks", "gist", nil)
+	var wantReqHeader map[string]string
+	var wantReqBody = ""
+	var respHeaderParams map[string]string
+
+	stubPost(t, "/gists/a6bea192debdbec0d4ab/forks", "gist", wantReqHeader, wantReqBody, respHeaderParams)
 
 	gist, result := client.Gists().Fork(&GistsForksURL, M{"gist_id": "a6bea192debdbec0d4ab"})
 
@@ -387,14 +385,8 @@ func TestGistsService_Delete(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/gists/aa5a315d61ae9438b18d", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "DELETE")
-
-		header := w.Header()
-		header.Set("Content-Type", "application/json")
-
-		respondWithStatus(w, 204)
-	})
+	var respHeaderParams = map[string]string{"Content-Type": "application/json"}
+	stubDelete(t, "/gists/aa5a315d61ae9438b18d", respHeaderParams, 204)
 
 	success, result := client.Gists().Delete(&GistsURL, M{"gist_id": "aa5a315d61ae9438b18d"})
 	assert.False(t, result.HasError())
