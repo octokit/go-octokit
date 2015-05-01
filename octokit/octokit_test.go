@@ -127,6 +127,11 @@ func stubGet(t *testing.T, path string, fixture string, respHeaderParams map[str
 	httpTestHelper(t, path, fixture, "GET", nil, "", respHeaderParams, 0)
 }
 
+func stubGetError(t *testing.T, path string, fixture string,
+	respHeaderParams map[string]string, respStatusCode int) {
+	httpTestHelper(t, path, fixture, "GET", nil, "", respHeaderParams, respStatusCode)
+}
+
 func stubPost(t *testing.T, path string, fixture string,
 	wantReqHeader map[string]string, wantReqBody string,
 	respHeaderParams map[string]string) {

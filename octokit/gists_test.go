@@ -286,28 +286,16 @@ func TestGistsService_CheckStar(t *testing.T) {
 	defer tearDown()
 
 	// Starred
-	mux.HandleFunc("/gists/aa5a315d61ae9438b18d/star", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
 
-		header := w.Header()
-		header.Set("Content-Type", "application/json")
-
-		respondWithStatus(w, 204)
-	})
+	var respHeaderParams = map[string]string{"Content-Type", "application/json"}
+	stubGet(t, "/gists/aa5a315d61ae9438b18d/star", "gist", respHeaderParams)
 
 	success, result := client.Gists().CheckStar(&GistsStarURL, M{"gist_id": "aa5a315d61ae9438b18d"})
 	assert.False(t, result.HasError())
 	assert.True(t, success)
 
 	// Not starred
-	mux.HandleFunc("/gists/a6bea192debdbec0d4ab/star", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-
-		header := w.Header()
-		header.Set("Content-Type", "application/json")
-
-		respondWithStatus(w, 404)
-	})
+	stubGetError(t, "/gists/a6bea192debdbec0d4ab/star", "gist", respHeaderParams, 404)
 
 	successNil, resultNil := client.Gists().CheckStar(nil, M{"gist_id": "a6bea192debdbec0d4ab"})
 	assert.True(t, resultNil.HasError()) //404 counts as an error...
