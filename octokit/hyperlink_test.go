@@ -21,3 +21,16 @@ func TestHyperlink_Expand(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "https://api.github.com/user", url.String())
 }
+
+func TestHyperlink_DefaultExpand(t *testing.T) {
+	defaultLink := Hyperlink("https://api.github.com/users/{user}")
+
+	url, err := ExpandWithDefault(nil, &defaultLink, M{"user": "jingweno"})
+	assert.NoError(t, err)
+	assert.Equal(t, "https://api.github.com/users/jingweno", url.String())
+
+	link := Hyperlink("https://api.github.com/user")
+	url, err = ExpandWithDefault(&link, &defaultLink, M{"user": "jingweno"})
+	assert.NoError(t, err)
+	assert.Equal(t, "https://api.github.com/user", url.String())
+}

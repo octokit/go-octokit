@@ -2,57 +2,87 @@ package octokit
 
 import (
 	"github.com/jingweno/go-sawyer/hypermedia"
-	"net/url"
 )
 
 // https://developer.github.com/v3/search/
-var SearchURL = Hyperlink("search{/type}?q={query}{&page,per_page,sort,order}")
+var (
+	CodeSearchURL       = Hyperlink("/search/code?q={query}{&page,per_page,sort,order}")
+	IssueSearchURL      = Hyperlink("/search/issues?q={query}{&page,per_page,sort,order}")
+	RepositorySearchURL = Hyperlink("/search/repositories?q={query}{&page,per_page,sort,order}")
+	UserSearchURL       = Hyperlink("/search/users?q={query}{&page,per_page,sort,order}")
+)
 
 // https://developer.github.com/v3/search/
-func (c *Client) Search(url *url.URL) (searches *SearchService) {
-	searches = &SearchService{client: c, URL: url}
-	return
+func (c *Client) Search() *SearchService {
+	return &SearchService{client: c}
 }
 
 // A service to return search records
 type SearchService struct {
 	client *Client
-	URL    *url.URL
 }
 
 // Get the user search results based on SearchService#URL
 //
 // https://developer.github.com/v3/search/#search-users
-func (g *SearchService) Users() (userSearchResults UserSearchResults,
-	result *Result) {
-	result = g.client.get(g.URL, &userSearchResults)
+func (g *SearchService) Users(uri *Hyperlink, params M) (
+	userSearchResults UserSearchResults, result *Result) {
+	if uri == nil {
+		uri = &UserSearchURL
+	}
+	url, err := uri.Expand(params)
+	if err != nil {
+		return UserSearchResults{}, &Result{Err: err}
+	}
+	result = g.client.get(url, &userSearchResults)
 	return
 }
 
 // Get the issue search results based on SearchService#URL
 //
 // https://developer.github.com/v3/search/#search-issues
-func (g *SearchService) Issues() (issueSearchResults IssueSearchResults,
-	result *Result) {
-	result = g.client.get(g.URL, &issueSearchResults)
+func (g *SearchService) Issues(uri *Hyperlink, params M) (
+	issueSearchResults IssueSearchResults, result *Result) {
+	if uri == nil {
+		uri = &IssueSearchURL
+	}
+	url, err := uri.Expand(params)
+	if err != nil {
+		return IssueSearchResults{}, &Result{Err: err}
+	}
+	result = g.client.get(url, &issueSearchResults)
 	return
 }
 
 // Get the repository search results based on SearchService#URL
 //
 // https://developer.github.com/v3/search/#search-repositories
-func (g *SearchService) Repositories() (
+func (g *SearchService) Repositories(uri *Hyperlink, params M) (
 	repositorySearchResults RepositorySearchResults, result *Result) {
-	result = g.client.get(g.URL, &repositorySearchResults)
+	if uri == nil {
+		uri = &RepositorySearchURL
+	}
+	url, err := uri.Expand(params)
+	if err != nil {
+		return RepositorySearchResults{}, &Result{Err: err}
+	}
+	result = g.client.get(url, &repositorySearchResults)
 	return
 }
 
 // Get the code search results based on SearchService#URL
 //
 // https://developer.github.com/v3/search/#search-code
-func (g *SearchService) Code() (
+func (g *SearchService) Code(uri *Hyperlink, params M) (
 	codeSearchResults CodeSearchResults, result *Result) {
-	result = g.client.get(g.URL, &codeSearchResults)
+	if uri == nil {
+		uri = &CodeSearchURL
+	}
+	url, err := uri.Expand(params)
+	if err != nil {
+		return CodeSearchResults{}, &Result{Err: err}
+	}
+	result = g.client.get(url, &codeSearchResults)
 	return
 }
 
