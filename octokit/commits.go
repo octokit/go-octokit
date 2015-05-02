@@ -2,7 +2,6 @@ package octokit
 
 import (
 	"io"
-	"net/url"
 	"time"
 
 	"github.com/jingweno/go-sawyer/hypermedia"
@@ -10,35 +9,65 @@ import (
 
 // CommitsURL is a template for accessing commits in a specific owner's
 // repository with a particular sha hash that can be expanded to a full address.
+//
+// https://developer.github.com/v3/repos/commits/
 var CommitsURL = Hyperlink("repos/{owner}/{repo}/commits{/sha}")
 
 // Commits creates a CommitsService with a base url.
-func (c *Client) Commits(url *url.URL) (commits *CommitsService) {
-	commits = &CommitsService{client: c, URL: url}
+//
+// https://developer.github.com/v3/repos/commits/
+func (c *Client) Commits() (commits *CommitsService) {
+	commits = &CommitsService{client: c}
 	return
 }
 
 // CommitsService is a service providing access to commits from a particular url
 type CommitsService struct {
 	client *Client
-	URL    *url.URL
 }
 
 // All gets a list of all commits associated with the URL of the service
-func (c *CommitsService) All() (commits []Commit, result *Result) {
-	result = c.client.get(c.URL, &commits)
+//
+// https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository
+func (c *CommitsService) All(uri *Hyperlink, params M) (commits []Commit, result *Result) {
+	if uri == nil {
+		uri = &CommitsURL
+	}
+	url, err := uri.Expand(params)
+	if err != nil {
+		return make([]Commit, 0), &Result{Err: err}
+	}
+	result = c.client.get(url, &commits)
 	return
 }
 
 // One gets a specific commit based on the url of the service
-func (c *CommitsService) One() (commit *Commit, result *Result) {
-	result = c.client.get(c.URL, &commit)
+//
+// https://developer.github.com/v3/repos/commits/#get-a-single-commit
+func (c *CommitsService) One(uri *Hyperlink, params M) (commit Commit, result *Result) {
+	if uri == nil {
+		uri = &CommitsURL
+	}
+	url, err := uri.Expand(params)
+	if err != nil {
+		return Commit{}, &Result{Err: err}
+	}
+	result = c.client.get(url, &commit)
 	return
 }
 
 // Patch gets a specific commit patch based on the url of the service
-func (c *CommitsService) Patch() (patch io.ReadCloser, result *Result) {
-	patch, result = c.client.getBody(c.URL, patchMediaType)
+//
+// https://developer.github.com/v3/repos/commits/#get-a-single-commit
+func (c *CommitsService) Patch(uri *Hyperlink, params M) (patch io.ReadCloser, result *Result) {
+	if uri == nil {
+		uri = &CommitsURL
+	}
+	url, err := uri.Expand(params)
+	if err != nil {
+		return nil, &Result{Err: err}
+	}
+	patch, result = c.client.getBody(url, patchMediaType)
 	return
 }
 
