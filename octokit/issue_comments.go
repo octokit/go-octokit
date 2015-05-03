@@ -20,12 +20,8 @@ type IssueCommentsService struct {
 }
 
 // Get a list of all issue comments
-func (c *IssueCommentsService) All(uri *Hyperlink, params M) (comments []IssueComment, result *Result) {
-	if uri == nil {
-		uri = &IssueCommentsURL
-	}
-
-	url, err := uri.Expand(params)
+func (c *IssueCommentsService) All(uri *Hyperlink, uriParams M) (comments []IssueComment, result *Result) {
+	url, err := ExpandWithDefault(uri, &IssueCommentsURL, uriParams)
 	if err != nil {
 		return nil, &Result{Err: err}
 	}
@@ -35,12 +31,8 @@ func (c *IssueCommentsService) All(uri *Hyperlink, params M) (comments []IssueCo
 }
 
 // Get a single comment by id
-func (c *IssueCommentsService) One(uri *Hyperlink, params M) (comment *IssueComment, result *Result) {
-	if uri == nil {
-		uri = &IssueCommentsURL
-	}
-
-	url, err := uri.Expand(params)
+func (c *IssueCommentsService) One(uri *Hyperlink, uriParams M) (comment *IssueComment, result *Result) {
+	url, err := ExpandWithDefault(uri, &IssueCommentsURL, uriParams)
 	if err != nil {
 		return nil, &Result{Err: err}
 	}
@@ -50,42 +42,30 @@ func (c *IssueCommentsService) One(uri *Hyperlink, params M) (comment *IssueComm
 }
 
 // Creates a comment on an issue
-func (c *IssueCommentsService) Create(uri *Hyperlink, params M, input interface{}) (comment *IssueComment, result *Result) {
-	if uri == nil {
-		uri = &IssueCommentsURL
-	}
-
-	url, err := uri.Expand(params)
+func (c *IssueCommentsService) Create(uri *Hyperlink, uriParams M, requestParams interface{}) (comment *IssueComment, result *Result) {
+	url, err := ExpandWithDefault(uri, &IssueCommentsURL, uriParams)
 	if err != nil {
 		return nil, &Result{Err: err}
 	}
 
-	result = c.client.post(url, input, &comment)
+	result = c.client.post(url, requestParams, &comment)
 	return
 }
 
 // Updates a comment on an issue
-func (c *IssueCommentsService) Update(uri *Hyperlink, params M, input interface{}) (comment *IssueComment, result *Result) {
-	if uri == nil {
-		uri = &IssueCommentsURL
-	}
-
-	url, err := uri.Expand(params)
+func (c *IssueCommentsService) Update(uri *Hyperlink, uriParams M, requestParams interface{}) (comment *IssueComment, result *Result) {
+	url, err := ExpandWithDefault(uri, &IssueCommentsURL, uriParams)
 	if err != nil {
 		return nil, &Result{Err: err}
 	}
 
-	result = c.client.patch(url, input, &comment)
+	result = c.client.patch(url, requestParams, &comment)
 	return
 }
 
 // Deletes a comment on an issue
-func (c *IssueCommentsService) Delete(uri *Hyperlink, params M) (success bool, result *Result) {
-	if uri == nil {
-		uri = &IssueCommentsURL
-	}
-
-	url, err := uri.Expand(params)
+func (c *IssueCommentsService) Delete(uri *Hyperlink, uriParams M) (success bool, result *Result) {
+	url, err := ExpandWithDefault(uri, &IssueCommentsURL, uriParams)
 	if err != nil {
 		return false, &Result{Err: err}
 	}

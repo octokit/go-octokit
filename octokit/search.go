@@ -25,15 +25,12 @@ type SearchService struct {
 // Get the user search results based on SearchService#URL
 //
 // https://developer.github.com/v3/search/#search-users
-func (g *SearchService) Users(uri *Hyperlink, params M) (
-	userSearchResults UserSearchResults, result *Result) {
-	if uri == nil {
-		uri = &UserSearchURL
-	}
-	url, err := uri.Expand(params)
+func (g *SearchService) Users(uri *Hyperlink, uriParams M) (userSearchResults *UserSearchResults, result *Result) {
+	url, err := ExpandWithDefault(uri, &UserSearchURL, uriParams)
 	if err != nil {
-		return UserSearchResults{}, &Result{Err: err}
+		return nil, &Result{Err: err}
 	}
+
 	result = g.client.get(url, &userSearchResults)
 	return
 }
@@ -41,15 +38,12 @@ func (g *SearchService) Users(uri *Hyperlink, params M) (
 // Get the issue search results based on SearchService#URL
 //
 // https://developer.github.com/v3/search/#search-issues
-func (g *SearchService) Issues(uri *Hyperlink, params M) (
-	issueSearchResults IssueSearchResults, result *Result) {
-	if uri == nil {
-		uri = &IssueSearchURL
-	}
-	url, err := uri.Expand(params)
+func (g *SearchService) Issues(uri *Hyperlink, uriParams M) (issueSearchResults *IssueSearchResults, result *Result) {
+	url, err := ExpandWithDefault(uri, &IssueSearchURL, uriParams)
 	if err != nil {
-		return IssueSearchResults{}, &Result{Err: err}
+		return nil, &Result{Err: err}
 	}
+
 	result = g.client.get(url, &issueSearchResults)
 	return
 }
@@ -57,15 +51,12 @@ func (g *SearchService) Issues(uri *Hyperlink, params M) (
 // Get the repository search results based on SearchService#URL
 //
 // https://developer.github.com/v3/search/#search-repositories
-func (g *SearchService) Repositories(uri *Hyperlink, params M) (
-	repositorySearchResults RepositorySearchResults, result *Result) {
-	if uri == nil {
-		uri = &RepositorySearchURL
-	}
-	url, err := uri.Expand(params)
+func (g *SearchService) Repositories(uri *Hyperlink, uriParams M) (repositorySearchResults *RepositorySearchResults, result *Result) {
+	url, err := ExpandWithDefault(uri, &RepositorySearchURL, uriParams)
 	if err != nil {
-		return RepositorySearchResults{}, &Result{Err: err}
+		return nil, &Result{Err: err}
 	}
+
 	result = g.client.get(url, &repositorySearchResults)
 	return
 }
@@ -73,15 +64,12 @@ func (g *SearchService) Repositories(uri *Hyperlink, params M) (
 // Get the code search results based on SearchService#URL
 //
 // https://developer.github.com/v3/search/#search-code
-func (g *SearchService) Code(uri *Hyperlink, params M) (
-	codeSearchResults CodeSearchResults, result *Result) {
-	if uri == nil {
-		uri = &CodeSearchURL
-	}
-	url, err := uri.Expand(params)
+func (g *SearchService) Code(uri *Hyperlink, uriParams M) (codeSearchResults *CodeSearchResults, result *Result) {
+	url, err := ExpandWithDefault(uri, &CodeSearchURL, uriParams)
 	if err != nil {
-		return CodeSearchResults{}, &Result{Err: err}
+		return nil, &Result{Err: err}
 	}
+
 	result = g.client.get(url, &codeSearchResults)
 	return
 }

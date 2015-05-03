@@ -37,7 +37,7 @@ func TestGistsService_One(t *testing.T) {
 	var invalid = Hyperlink("{")
 	gistErr, resultErr := client.Gists().One(&invalid, M{})
 	assert.True(t, resultErr.HasError())
-	assert.Equal(t, gistErr, Gist{})
+	assert.Nil(t, gistErr)
 }
 
 func TestGistsService_Raw(t *testing.T) {
@@ -96,7 +96,7 @@ func TestGistsService_All(t *testing.T) {
 	var invalid = Hyperlink("{")
 	gistsErr, resultErr := client.Gists().All(&invalid, M{})
 	assert.True(t, resultErr.HasError())
-	assert.Equal(t, gistsErr, make([]Gist, 0))
+	assert.Len(t, gistsErr, 0)
 }
 
 func TestGistsService_Create(t *testing.T) {
@@ -144,7 +144,7 @@ func TestGistsService_Create(t *testing.T) {
 	var invalid = Hyperlink("{")
 	gistErr, resultErr := client.Gists().Create(&invalid, M{}, params)
 	assert.True(t, resultErr.HasError())
-	assert.Equal(t, gistErr, Gist{})
+	assert.Nil(t, gistErr)
 }
 
 func TestGistsService_Update(t *testing.T) {
@@ -201,7 +201,7 @@ func TestGistsService_Update(t *testing.T) {
 	var invalid = Hyperlink("{")
 	gistErr, resultErr := client.Gists().Update(&invalid, M{}, params)
 	assert.True(t, resultErr.HasError())
-	assert.Equal(t, gistErr, Gist{})
+	assert.Nil(t, gistErr)
 }
 
 func TestGistsService_Commits(t *testing.T) {
@@ -228,7 +228,7 @@ func TestGistsService_Commits(t *testing.T) {
 	var invalid = Hyperlink("{")
 	commitsErr, resultErr := client.Gists().Commits(&invalid, M{})
 	assert.True(t, resultErr.HasError())
-	assert.Equal(t, commitsErr, make([]GistCommit, 0))
+	assert.Len(t, commitsErr, 0)
 }
 
 func TestGistsService_Star(t *testing.T) {
@@ -354,7 +354,7 @@ func TestGistsService_Fork(t *testing.T) {
 	var invalid = Hyperlink("{")
 	gistErr, resultErr := client.Gists().Fork(&invalid, M{})
 	assert.True(t, resultErr.HasError())
-	assert.Equal(t, gistErr, Gist{})
+	assert.Nil(t, gistErr)
 }
 
 func TestGistsService_ListForks(t *testing.T) {
@@ -380,7 +380,7 @@ func TestGistsService_ListForks(t *testing.T) {
 	var invalid = Hyperlink("{")
 	forksErr, resultErr := client.Gists().ListForks(&invalid, M{})
 	assert.True(t, resultErr.HasError())
-	assert.Equal(t, forksErr, make([]GistFork, 0))
+	assert.Len(t, forksErr, 0)
 }
 
 func TestGistsService_Delete(t *testing.T) {
