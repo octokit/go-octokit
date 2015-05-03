@@ -38,15 +38,15 @@
 - [ ] https://developer.github.com/v3/activity/watching/#watch-a-repository-legacy
 - [ ] https://developer.github.com/v3/emojis/#emojis
 - [*] https://developer.github.com/v3/gists/
-- [ ] https://developer.github.com/v3/gists/#check-if-a-gist-is-starred
-- [ ] https://developer.github.com/v3/gists/#create-a-gist
-- [ ] https://developer.github.com/v3/gists/#delete-a-gist
-- [ ] https://developer.github.com/v3/gists/#edit-a-gist
-- [ ] https://developer.github.com/v3/gists/#fork-a-gist
-- [ ] https://developer.github.com/v3/gists/#get-a-single-gist
-- [ ] https://developer.github.com/v3/gists/#list-gists
-- [ ] https://developer.github.com/v3/gists/#star-a-gist
-- [ ] https://developer.github.com/v3/gists/#unstar-a-gist
+- [*] https://developer.github.com/v3/gists/#check-if-a-gist-is-starred
+- [*] https://developer.github.com/v3/gists/#create-a-gist
+- [*] https://developer.github.com/v3/gists/#delete-a-gist
+- [*] https://developer.github.com/v3/gists/#edit-a-gist
+- [*] https://developer.github.com/v3/gists/#fork-a-gist
+- [*] https://developer.github.com/v3/gists/#get-a-single-gist
+- [*] https://developer.github.com/v3/gists/#list-gists
+- [*] https://developer.github.com/v3/gists/#star-a-gist
+- [*] https://developer.github.com/v3/gists/#unstar-a-gist
 - [ ] https://developer.github.com/v3/gists/comments/#create-a-comment
 - [ ] https://developer.github.com/v3/gists/comments/#delete-a-comment
 - [ ] https://developer.github.com/v3/gists/comments/#edit-a-comment
@@ -66,17 +66,17 @@
 - [ ] https://developer.github.com/v3/git/tags/#create-a-tag-object
 - [ ] https://developer.github.com/v3/git/tags/#get-a-tag
 - [ ] https://developer.github.com/v3/git/trees/#create-a-tree
-- [ ] https://developer.github.com/v3/git/trees/#get-a-tree
-- [ ] https://developer.github.com/v3/git/trees/#get-a-tree-recursively
+- [*] https://developer.github.com/v3/git/trees/#get-a-tree
+- [*] https://developer.github.com/v3/git/trees/#get-a-tree-recursively
 - [*] https://developer.github.com/v3/gitignore/
 - [*] https://developer.github.com/v3/gitignore/#get-a-single-template
 - [*] https://developer.github.com/v3/gitignore/#listing-available-templates
 - [*] https://developer.github.com/v3/issues/
-- [ ] https://developer.github.com/v3/issues/#create-an-issue
-- [ ] https://developer.github.com/v3/issues/#edit-an-issue
-- [ ] https://developer.github.com/v3/issues/#get-a-single-issue
+- [*] https://developer.github.com/v3/issues/#create-an-issue
+- [*] https://developer.github.com/v3/issues/#edit-an-issue
+- [*] https://developer.github.com/v3/issues/#get-a-single-issue
 - [ ] https://developer.github.com/v3/issues/#list-issues
-- [ ] https://developer.github.com/v3/issues/#list-issues-for-a-repository
+- [*] https://developer.github.com/v3/issues/#list-issues-for-a-repository
 - [ ] https://developer.github.com/v3/issues/assignees/#check-assignee
 - [ ] https://developer.github.com/v3/issues/assignees/#list-assignees
 - [ ] https://developer.github.com/v3/issues/comments/#create-a-comment
@@ -166,14 +166,14 @@
 - [ ] https://developer.github.com/v3/orgs/teams/#remove-team-repo
 - [*] https://developer.github.com/v3/pulls/
 - [ ] https://developer.github.com/v3/pulls/#alternative-input
-- [ ] https://developer.github.com/v3/pulls/#create-a-pull-request
-- [ ] https://developer.github.com/v3/pulls/#get-a-single-pull-request
+- [*] https://developer.github.com/v3/pulls/#create-a-pull-request
+- [*] https://developer.github.com/v3/pulls/#get-a-single-pull-request
 - [ ] https://developer.github.com/v3/pulls/#get-if-a-pull-request-has-been-merged
 - [ ] https://developer.github.com/v3/pulls/#list-commits-on-a-pull-request
-- [ ] https://developer.github.com/v3/pulls/#list-pull-requests
+- [*] https://developer.github.com/v3/pulls/#list-pull-requests
 - [ ] https://developer.github.com/v3/pulls/#list-pull-requests-files
 - [ ] https://developer.github.com/v3/pulls/#merge-a-pull-request-merge-buttontrade
-- [ ] https://developer.github.com/v3/pulls/#update-a-pull-request
+- [*] https://developer.github.com/v3/pulls/#update-a-pull-request
 - [ ] https://developer.github.com/v3/pulls/comments/#create-a-comment
 - [ ] https://developer.github.com/v3/pulls/comments/#delete-a-comment
 - [ ] https://developer.github.com/v3/pulls/comments/#edit-a-comment
@@ -182,10 +182,10 @@
 - [ ] https://developer.github.com/v3/pulls/comments/#list-comments-on-a-pull-request
 - [ ] https://developer.github.com/v3/rate_limit/#rate-limit
 - [*] https://developer.github.com/v3/repos/
-- [ ] https://developer.github.com/v3/repos/#create
+- [*] https://developer.github.com/v3/repos/#create
 - [ ] https://developer.github.com/v3/repos/#delete-a-repository
 - [ ] https://developer.github.com/v3/repos/#edit
-- [ ] https://developer.github.com/v3/repos/#get
+- [*] https://developer.github.com/v3/repos/#get
 - [ ] https://developer.github.com/v3/repos/#get-branch
 - [ ] https://developer.github.com/v3/repos/#list-all-public-repositories
 - [ ] https://developer.github.com/v3/repos/#list-branches
@@ -195,7 +195,7 @@
 - [ ] https://developer.github.com/v3/repos/#list-tags
 - [ ] https://developer.github.com/v3/repos/#list-teams
 - [ ] https://developer.github.com/v3/repos/#list-user-repositories
-- [ ] https://developer.github.com/v3/repos/#list-your-repositories
+- [*] https://developer.github.com/v3/repos/#list-your-repositories
 - [ ] https://developer.github.com/v3/repos/collaborators/#add-collaborator
 - [ ] https://developer.github.com/v3/repos/collaborators/#get
 - [ ] https://developer.github.com/v3/repos/collaborators/#list
@@ -209,8 +209,8 @@
 - [ ] https://developer.github.com/v3/repos/comments/#update-a-commit-comment
 - [*] https://developer.github.com/v3/repos/commits/
 - [ ] https://developer.github.com/v3/repos/commits/#compare-two-commits
-- [ ] https://developer.github.com/v3/repos/commits/#get-a-single-commit
-- [ ] https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository
+- [*] https://developer.github.com/v3/repos/commits/#get-a-single-commit
+- [*] https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository
 - [ ] https://developer.github.com/v3/repos/commits/deployments/
 - [ ] https://developer.github.com/v3/repos/contents/
 - [ ] https://developer.github.com/v3/repos/contents/#create-a-file
@@ -249,15 +249,15 @@
 - [ ] https://developer.github.com/v3/repos/pages/#list-latest-pages-build
 - [ ] https://developer.github.com/v3/repos/pages/#list-pages-builds
 - [*] https://developer.github.com/v3/repos/releases/
-- [ ] https://developer.github.com/v3/repos/releases/#create-a-release
+- [*] https://developer.github.com/v3/repos/releases/#create-a-release
 - [ ] https://developer.github.com/v3/repos/releases/#delete-a-release
 - [ ] https://developer.github.com/v3/repos/releases/#delete-a-release-asset
-- [ ] https://developer.github.com/v3/repos/releases/#edit-a-release
+- [*] https://developer.github.com/v3/repos/releases/#edit-a-release
 - [ ] https://developer.github.com/v3/repos/releases/#edit-a-release-asset
 - [ ] https://developer.github.com/v3/repos/releases/#get-a-single-release
 - [ ] https://developer.github.com/v3/repos/releases/#get-a-single-release-asset
 - [ ] https://developer.github.com/v3/repos/releases/#list-assets-for-a-release
-- [ ] https://developer.github.com/v3/repos/releases/#list-releases-for-a-repository
+- [*] https://developer.github.com/v3/repos/releases/#list-releases-for-a-repository
 - [ ] https://developer.github.com/v3/repos/releases/#upload-a-release-asset
 - [ ] https://developer.github.com/v3/repos/statistics/
 - [ ] https://developer.github.com/v3/repos/statistics/#code-frequency
@@ -268,27 +268,27 @@
 - [*] https://developer.github.com/v3/repos/statuses/
 - [ ] https://developer.github.com/v3/repos/statuses/#create-a-status
 - [ ] https://developer.github.com/v3/repos/statuses/#get-the-combined-status-for-a-specific-ref
-- [ ] https://developer.github.com/v3/repos/statuses/#list-statuses-for-a-specific-ref
+- [*] https://developer.github.com/v3/repos/statuses/#list-statuses-for-a-specific-ref
 - [ ] https://developer.github.com/v3/repos/watching/#list-watchers
 - [*] https://developer.github.com/v3/search/
-- [ ] https://developer.github.com/v3/search/#search-code
-- [ ] https://developer.github.com/v3/search/#search-issues
-- [ ] https://developer.github.com/v3/search/#search-repositories
-- [ ] https://developer.github.com/v3/search/#search-users
+- [*] https://developer.github.com/v3/search/#search-code
+- [*] https://developer.github.com/v3/search/#search-issues
+- [*] https://developer.github.com/v3/search/#search-repositories
+- [*] https://developer.github.com/v3/search/#search-users
 - [*] https://developer.github.com/v3/users/
-- [ ] https://developer.github.com/v3/users/#get-a-single-user
-- [ ] https://developer.github.com/v3/users/#get-all-users
-- [ ] https://developer.github.com/v3/users/#get-the-authenticated-user
-- [ ] https://developer.github.com/v3/users/#update-the-authenticated-user
-- [ ] https://developer.github.com/v3/users/emails/#add-email-addresses
-- [ ] https://developer.github.com/v3/users/emails/#delete-email-addresses
-- [ ] https://developer.github.com/v3/users/emails/#list-email-addresses-for-a-user
+- [*] https://developer.github.com/v3/users/#get-a-single-user
+- [*] https://developer.github.com/v3/users/#get-all-users
+- [*] https://developer.github.com/v3/users/#get-the-authenticated-user
+- [*] https://developer.github.com/v3/users/#update-the-authenticated-user
+- [*] https://developer.github.com/v3/users/emails/#add-email-addresses
+- [*] https://developer.github.com/v3/users/emails/#delete-email-addresses
+- [*] https://developer.github.com/v3/users/emails/#list-email-addresses-for-a-user
 - [ ] https://developer.github.com/v3/users/followers/#check-if-one-user-follows-another
-- [ ] https://developer.github.com/v3/users/followers/#check-if-you-are-following-a-user
-- [ ] https://developer.github.com/v3/users/followers/#follow-a-user
-- [ ] https://developer.github.com/v3/users/followers/#list-followers-of-a-user
+- [*] https://developer.github.com/v3/users/followers/#check-if-you-are-following-a-user
+- [*] https://developer.github.com/v3/users/followers/#follow-a-user
+- [*] https://developer.github.com/v3/users/followers/#list-followers-of-a-user
 - [ ] https://developer.github.com/v3/users/followers/#list-users-followed-by-another-user
-- [ ] https://developer.github.com/v3/users/followers/#unfollow-a-user
+- [*] https://developer.github.com/v3/users/followers/#unfollow-a-user
 - [ ] https://developer.github.com/v3/users/keys/#create-a-public-key
 - [ ] https://developer.github.com/v3/users/keys/#delete-a-public-key
 - [ ] https://developer.github.com/v3/users/keys/#get-a-single-public-key

@@ -24,7 +24,7 @@ var todoFile = filepath.FromSlash(octokitRoot + "TODO.md")
 
 // The pattern to look for that matches the documentation URLs
 var URLDeclarationMatcher = regexp.MustCompile(
-	`//[\t ]+(http[s]?://[\/a-z0-9_{}\.:]+)`)
+	`//[\t ]+(http[s]?://[\/a-z0-9\-_{}\.:#]+)`)
 
 // List all non-test Go source files
 func listSourceFiles(dirname string) []string {
