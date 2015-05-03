@@ -1,8 +1,10 @@
 package octokit
 
 import (
+	"bytes"
 	"github.com/jingweno/go-sawyer"
 	"github.com/jingweno/go-sawyer/mediatype"
+	"io/ioutil"
 )
 
 func newRequest(client *Client, urlStr string) (req *Request, err error) {
@@ -74,9 +76,12 @@ func (r *Request) setBody(input interface{}) {
 	r.Request.SetBody(mtype, input)
 }
 
-func (r *Request) createResponseRaw(sawyerResp *sawyer.Response) (resp *Response, err error) {
-	resp, err = NewResponse(sawyerResp)
-	return
+func (r *Request) setBodyText(input string) {
+	mtype, _ := mediatype.Parse(textMediaType)
+	buf := bytes.NewBufferString(input)
+	r.Header.Set("Content-Type", mtype.String())
+	r.ContentLength = int64(buf.Len())
+	r.Body = ioutil.NopCloser(buf)
 }
 
 func (r *Request) createResponse(sawyerResp *sawyer.Response, output interface{}) (resp *Response, err error) {
@@ -85,5 +90,15 @@ func (r *Request) createResponse(sawyerResp *sawyer.Response, output interface{}
 		err = sawyerResp.Decode(output)
 	}
 
+	return
+}
+
+func (r *Request) createResponseRaw(sawyerResp *sawyer.Response, output *string) (resp *Response, err error) {
+	resp, err = NewResponse(sawyerResp)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return resp, err
+	}
+	*output = string(body)
 	return
 }

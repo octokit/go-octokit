@@ -1,9 +1,5 @@
 package octokit
 
-import (
-	"io/ioutil"
-)
-
 // MardownURL is for rendering an arbitrary markdown document
 // MarkdownRawURL is for rendering raw markdown
 var (
@@ -22,22 +18,28 @@ type MarkdownService struct {
 	client *Client
 }
 
-// Renders a markdown document
+// Renders a markdown document with json input
 func (m *MarkdownService) Render(uri *Hyperlink, requestParams interface{}) (renderedHTML string, result *Result) {
 	url, err := ExpandWithDefault(uri, &MarkdownURL, nil)
 	if err != nil {
 		return "", &Result{Err: err}
 	}
-
 	result = sendRequest(m.client, url, func(req *Request) (*Response, error) {
 		req.setBody(requestParams)
-		return req.createResponseRaw(req.Request.Post())
+		return req.createResponseRaw(req.Request.Post(), &renderedHTML)
 	})
+	return
+}
 
-	body, err := ioutil.ReadAll(result.Response.Body)
+// Renders a markdown document with string input
+func (m *MarkdownService) RenderRaw(uri *Hyperlink, markdownText string) (renderedHTML string, result *Result) {
+	url, err := ExpandWithDefault(uri, &MarkdownURL, nil)
 	if err != nil {
 		return "", &Result{Err: err}
 	}
-	renderedHTML = string(body)
+	result = sendRequest(m.client, url, func(req *Request) (*Response, error) {
+		req.setBodyText(markdownText)
+		return req.createResponseRaw(req.Request.Post(), &renderedHTML)
+	})
 	return
 }

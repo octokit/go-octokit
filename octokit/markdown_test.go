@@ -41,14 +41,14 @@ func TestMarkdownService_RAW(t *testing.T) {
 
 	mux.HandleFunc("/markdown/raw", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, "\"Hello world github/linguist#1 **cool**, and #1!\"\n")
+		testBody(t, r, "Hello world github/linguist#1 **cool**, and #1!")
 
 		respondWith(w, loadFixture("markdown_raw.html"))
 	})
 
 	input := "Hello world github/linguist#1 **cool**, and #1!"
 
-	markdown, result := client.Markdown().Render(&MarkdownRawURL, input)
+	markdown, result := client.Markdown().RenderRaw(&MarkdownRawURL, input)
 	assert.False(t, result.HasError())
 
 	expected := "<p>Hello world github/linguist#1 \n" +
