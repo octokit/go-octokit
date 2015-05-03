@@ -14,10 +14,11 @@ import (
 //
 // https://developer.github.com/v3/repos/
 var (
-	RepositoryURL       = Hyperlink("repos/{owner}/{repo}")
+	AllRepositoriesURL  = Hyperlink("repositories")
 	ForksURL            = Hyperlink("repos/{owner}/{repo}/forks")
-	UserRepositoriesURL = Hyperlink("user/repos")
 	OrgRepositoriesURL  = Hyperlink("orgs/{org}/repos")
+	RepositoryURL       = Hyperlink("repos/{owner}/{repo}")
+	UserRepositoriesURL = Hyperlink("user/repos")
 )
 
 // Repositories creates a RepositoriesService with a base url
@@ -55,8 +56,10 @@ func (r *RepositoriesService) One(uri *Hyperlink, params M) (repo *Repository,
 // https://developer.github.com/v3/repos/#list-your-repositories
 func (r *RepositoriesService) All(uri *Hyperlink, params M) (repos []Repository,
 	result *Result) {
-	if uri == nil {
-		uri = &RepositoryURL
+	if uri == nil && len(params) == 0 {
+		uri = &UserRepositoriesURL
+	} else if uri == nil {
+		uri = &AllRepositoriesURL
 	}
 	url, err := uri.Expand(params)
 	if err != nil {
