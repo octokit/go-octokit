@@ -1,7 +1,7 @@
 package octokit
 
 import (
-	"fmt"
+	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"testing"
@@ -102,20 +102,15 @@ func TestGistsService_Create(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	wantReqBody := fmt.Sprintf(`{"%s":"%s",`+
-		`"%s":{"%s":{"%s":"%s"}},`+
-		`"%s":%s}`+"\n",
-		"description", "the description for this gist",
-		"files", "file1.txt", "content", "String file contents",
-		"public", "true")
-
-	stubPost(t, "/gists", "gist", nil, wantReqBody, nil)
-
 	params := Gist{
 		Description: "the description for this gist",
 		Files:       map[string]*GistFile{"file1.txt": {Content: "String file contents"}},
 		Public:      true,
 	}
+
+	wantReqBody, _ := json.Marshal(params)
+	stubPost(t, "/gists", "gist", nil, string(wantReqBody)+"\n", nil)
+
 	gist, result := client.Gists().Create(&GistsURL, M{}, params)
 
 	assert.False(t, result.HasError())
@@ -144,22 +139,6 @@ func TestGistsService_Create(t *testing.T) {
 func TestGistsService_Update(t *testing.T) {
 	setup()
 	defer tearDown()
-
-	wantReqBody := fmt.Sprintf(`{"%s":"%s",`+
-		`"%s":{"%s":null,`+
-		`"%s":{"%s":"%s"},`+
-		`"%s":{"%s":"%s"},`+
-		`"%s":{"%s":"%s","%s":"%s"}},`+
-		`"%s":%s}`+"\n",
-		"description", "the description for this gist",
-		"files", "delete_this_file.txt",
-		"file1.txt", "content", "updated file contents",
-		"new_file.txt", "content", "a new file",
-		"old_name.txt", "filename", "new_name.txt", "content", "modified contents",
-		"public", "true")
-
-	stubPatch(t, "/gists", "gist", nil, wantReqBody, nil)
-
 	params := Gist{
 		Description: "the description for this gist",
 		Files: map[string]*GistFile{
@@ -170,6 +149,10 @@ func TestGistsService_Update(t *testing.T) {
 		},
 		Public: true,
 	}
+
+	wantReqBody, _ := json.Marshal(params)
+	stubPatch(t, "/gists", "gist", nil, string(wantReqBody)+"\n", nil)
+
 	gist, result := client.Gists().Update(&GistsURL, M{}, params)
 
 	assert.False(t, result.HasError())
