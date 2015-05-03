@@ -32,6 +32,9 @@ func (r *Request) Head(output interface{}) (*Response, error) {
 // Get sends a GET request through the given client and returns the response
 // and any associated errors
 func (r *Request) Get(output interface{}) (*Response, error) {
+	if output == nil {
+		return NewResponse(r.Request.Get())
+	}
 	return r.createResponse(r.Request.Get(), output)
 }
 
