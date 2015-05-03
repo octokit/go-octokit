@@ -4,6 +4,7 @@ import (
 	"github.com/jingweno/go-sawyer/hypermedia"
 )
 
+// https://developer.github.com/v3/search/
 var (
 	CodeSearchURL       = Hyperlink("/search/code?q={query}{&page,per_page,sort,order}")
 	IssueSearchURL      = Hyperlink("/search/issues?q={query}{&page,per_page,sort,order}")
@@ -11,6 +12,7 @@ var (
 	UserSearchURL       = Hyperlink("/search/users?q={query}{&page,per_page,sort,order}")
 )
 
+// https://developer.github.com/v3/search/
 func (c *Client) Search() *SearchService {
 	return &SearchService{client: c}
 }
@@ -21,6 +23,8 @@ type SearchService struct {
 }
 
 // Get the user search results based on SearchService#URL
+//
+// https://developer.github.com/v3/search/#search-users
 func (g *SearchService) Users(uri *Hyperlink, params M) (
 	userSearchResults UserSearchResults, result *Result) {
 	if uri == nil {
@@ -35,6 +39,8 @@ func (g *SearchService) Users(uri *Hyperlink, params M) (
 }
 
 // Get the issue search results based on SearchService#URL
+//
+// https://developer.github.com/v3/search/#search-issues
 func (g *SearchService) Issues(uri *Hyperlink, params M) (
 	issueSearchResults IssueSearchResults, result *Result) {
 	if uri == nil {
@@ -49,6 +55,8 @@ func (g *SearchService) Issues(uri *Hyperlink, params M) (
 }
 
 // Get the repository search results based on SearchService#URL
+//
+// https://developer.github.com/v3/search/#search-repositories
 func (g *SearchService) Repositories(uri *Hyperlink, params M) (
 	repositorySearchResults RepositorySearchResults, result *Result) {
 	if uri == nil {
@@ -63,6 +71,8 @@ func (g *SearchService) Repositories(uri *Hyperlink, params M) (
 }
 
 // Get the code search results based on SearchService#URL
+//
+// https://developer.github.com/v3/search/#search-code
 func (g *SearchService) Code(uri *Hyperlink, params M) (
 	codeSearchResults CodeSearchResults, result *Result) {
 	if uri == nil {

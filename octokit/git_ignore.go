@@ -2,9 +2,13 @@ package octokit
 
 // GitIgnoreURL is an address for accessing various templates to apply
 // to a repository upon creation.
+//
+// https://developer.github.com/v3/gitignore/
 var GitIgnoreURL = Hyperlink("/gitignore/templates{/name}")
 
 // GitIgnore creates a GitIgnoreService to access gitignore templates
+//
+// https://developer.github.com/v3/gitignore/
 func (c *Client) GitIgnore() *GitIgnoreService {
 	return &GitIgnoreService{client: c}
 }
@@ -15,6 +19,8 @@ type GitIgnoreService struct {
 }
 
 // All gets a list all the available templates
+//
+// https://developer.github.com/v3/gitignore/#listing-available-templates
 func (s *GitIgnoreService) All(uri *Hyperlink) (templates []string, result *Result) {
 	if uri == nil {
 		uri = &GitIgnoreURL
@@ -28,6 +34,8 @@ func (s *GitIgnoreService) All(uri *Hyperlink) (templates []string, result *Resu
 }
 
 // One gets a specific gitignore template based on the passed url
+//
+// https://developer.github.com/v3/gitignore/#get-a-single-template
 func (s *GitIgnoreService) One(uri *Hyperlink, params M) (template GitIgnoreTemplate, result *Result) {
 	if uri == nil {
 		uri = &GitIgnoreURL

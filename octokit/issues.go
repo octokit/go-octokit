@@ -7,6 +7,8 @@ import (
 
 // RepoIssuesURL is a template for accessing issues in a particular
 // repository for a particular owner that can be expanded to a full address.
+//
+// https://developer.github.com/v3/issues/
 var RepoIssuesURL = Hyperlink("repos/{owner}/{repo}/issues{/number}{?filter,state,labels,sort}")
 
 // Issues creates an IssuesService with a base url
@@ -21,6 +23,8 @@ type IssuesService struct {
 }
 
 // One gets a specific issue based on the url of the service
+//
+// https://developer.github.com/v3/issues/#get-a-single-issue
 func (i *IssuesService) One(uri *Hyperlink, params M) (issue *Issue,
 	result *Result) {
 	if uri == nil {
@@ -35,6 +39,8 @@ func (i *IssuesService) One(uri *Hyperlink, params M) (issue *Issue,
 }
 
 // All gets a list of all issues associated with the url of the service
+//
+// https://developer.github.com/v3/issues/#list-issues-for-a-repository
 func (i *IssuesService) All(uri *Hyperlink, uriParams M) (issues []Issue,
 	result *Result) {
 	if uri == nil {
@@ -49,6 +55,8 @@ func (i *IssuesService) All(uri *Hyperlink, uriParams M) (issues []Issue,
 }
 
 // Create posts a new issue with particular parameters to the issues service url
+//
+// https://developer.github.com/v3/issues/#create-an-issue
 func (i *IssuesService) Create(uri *Hyperlink, uriParams M,
 	params interface{}) (issue *Issue, result *Result) {
 	if uri == nil {
@@ -63,6 +71,8 @@ func (i *IssuesService) Create(uri *Hyperlink, uriParams M,
 }
 
 // Update modifies a specific issue given parameters on the service url
+//
+// https://developer.github.com/v3/issues/#edit-an-issue
 func (i *IssuesService) Update(uri *Hyperlink, uriParams M,
 	params interface{}) (issue *Issue, result *Result) {
 	if uri == nil {

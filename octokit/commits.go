@@ -38,6 +38,7 @@ func (c *CommitsService) All(uri *Hyperlink, params M) (commits []Commit, result
 		return make([]Commit, 0), &Result{Err: err}
 	}
 	result = c.client.get(url, &commits)
+
 	return
 }
 
@@ -53,6 +54,7 @@ func (c *CommitsService) One(uri *Hyperlink, params M) (commit Commit, result *R
 		return Commit{}, &Result{Err: err}
 	}
 	result = c.client.get(url, &commit)
+
 	return
 }
 
@@ -68,6 +70,7 @@ func (c *CommitsService) Patch(uri *Hyperlink, params M) (patch io.ReadCloser, r
 		return nil, &Result{Err: err}
 	}
 	patch, result = c.client.getBody(url, patchMediaType)
+
 	return
 }
 

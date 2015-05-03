@@ -1,5 +1,8 @@
 package octokit
 
+// URL templates for actions taken on the followers of users
+//
+// https://developer.github.com/v3/users/followers/
 var (
 	CurrentFollowerUrl  = Hyperlink("user/followers")
 	FollowerUrl         = Hyperlink("users/{user}/followers")
@@ -8,6 +11,8 @@ var (
 )
 
 // Create a FollowersService
+//
+// https://developer.github.com/v3/users/followers/
 func (c *Client) Followers() (followers *FollowersService) {
 	followers = &FollowersService{client: c}
 	return
@@ -19,6 +24,8 @@ type FollowersService struct {
 }
 
 // Get a list of followers for the user
+//
+// https://developer.github.com/v3/users/followers/#list-followers-of-a-user
 func (f *FollowersService) All(uri *Hyperlink, params M) (followers []User, result *Result) {
 	if uri == nil {
 		uri = &CurrentFollowerUrl // Default url
@@ -33,7 +40,9 @@ func (f *FollowersService) All(uri *Hyperlink, params M) (followers []User, resu
 	return
 }
 
-// Checks if a user is following a target user
+// Checks if you are following a target user
+//
+// https://developer.github.com/v3/users/followers/#check-if-you-are-following-a-user
 func (f *FollowersService) Check(uri *Hyperlink, params M) (success bool, result *Result) {
 	if uri == nil {
 		uri = &CurrentFollowingUrl // Default url
@@ -50,6 +59,8 @@ func (f *FollowersService) Check(uri *Hyperlink, params M) (success bool, result
 }
 
 // Follows a target user
+//
+// https://developer.github.com/v3/users/followers/#follow-a-user
 func (f *FollowersService) Follow(uri *Hyperlink, params M) (success bool, result *Result) {
 	if uri == nil {
 		uri = &CurrentFollowingUrl // Default url
@@ -66,6 +77,8 @@ func (f *FollowersService) Follow(uri *Hyperlink, params M) (success bool, resul
 }
 
 // Unfollows a target user
+//
+// https://developer.github.com/v3/users/followers/#unfollow-a-user
 func (f *FollowersService) Unfollow(uri *Hyperlink, params M) (success bool, result *Result) {
 	if uri == nil {
 		uri = &CurrentFollowingUrl // Default url
