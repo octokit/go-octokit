@@ -76,9 +76,9 @@ func (r *Request) setBody(input interface{}) {
 	r.Request.SetBody(mtype, input)
 }
 
-func (r *Request) setBodyText(input string) {
+func (r *Request) setBodyText(input *string) {
 	mtype, _ := mediatype.Parse(textMediaType)
-	buf := bytes.NewBufferString(input)
+	buf := bytes.NewBufferString(*input)
 	r.Header.Set("Content-Type", mtype.String())
 	r.ContentLength = int64(buf.Len())
 	r.Body = ioutil.NopCloser(buf)
