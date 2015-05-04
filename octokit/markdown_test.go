@@ -41,7 +41,6 @@ func TestMarkdownService_RAW(t *testing.T) {
 
 	mux.HandleFunc("/markdown/raw", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", textMediaType)
 		testBody(t, r, "Hello world github/linguist#1 **cool**, and #1!")
 
 		respondWith(w, loadFixture("markdown_raw.html"))

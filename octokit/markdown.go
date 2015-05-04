@@ -38,7 +38,6 @@ func (m *MarkdownService) RenderRaw(uri *Hyperlink, markdownText *string) (rende
 		return "", &Result{Err: err}
 	}
 	result = sendRequest(m.client, url, func(req *Request) (*Response, error) {
-		req.Header.Set("Accept", textMediaType)
 		req.setBodyText(markdownText)
 		return req.createResponseRaw(req.Request.Post(), &renderedHTML)
 	})
