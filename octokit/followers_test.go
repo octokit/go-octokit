@@ -84,14 +84,8 @@ func TestFollowersService_CheckFollowing(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/users/harrisonzhao/following/obsc", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-
-		header := w.Header()
-		header.Set("Content-Type", "application/json")
-
-		respondWithStatus(w, 204)
-	})
+	respHeaderParams := map[string]string{"Content-Type": "application/json"}
+	stubGetwCode(t, "/users/harrisonzhao/following/obsc", "", respHeaderParams, 204)
 
 	success, result := client.Followers().Check(&FollowingUrl, M{"user": "harrisonzhao", "target": "obsc"})
 	assert.False(t, result.HasError())
