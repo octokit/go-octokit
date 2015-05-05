@@ -1,8 +1,8 @@
 package octokit
 
 import (
+	"encoding/json"
 	"fmt"
-	"net/http"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -12,15 +12,9 @@ func TestEmailsService_All(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/user/emails", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-
-		header := w.Header()
-		link := fmt.Sprintf(`<%s>; rel="next", <%s>; rel="last"`, testURLOf("/user/emails?page=2"), testURLOf("/user/emails?page=3"))
-		header.Set("Link", link)
-
-		respondWithJSON(w, loadFixture("emails.json"))
-	})
+	link := fmt.Sprintf(`<%s>; rel="next", <%s>; rel="last"`, testURLOf("/user/emails?page=2"), testURLOf("/user/emails?page=3"))
+	respHeaderParams := map[string]string{"Link": link}
+	stubGet(t, "/user/emails", "emails", respHeaderParams)
 
 	url, _ := EmailUrl.Expand(nil)
 	allEmails, result := client.Emails(url).All()
@@ -48,15 +42,12 @@ func TestEmailsService_Create(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/user/emails", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		testBody(t, r, "[\"test@example.com\",\"otherTest@example.com\"]\n")
-		respondWithJSON(w, loadFixture("emails.json"))
-	})
-
 	url, _ := EmailUrl.Expand(nil)
 
 	params := []string{"test@example.com", "otherTest@example.com"}
+	wantReqBody, _ := json.Marshal(params)
+	stubPost(t, "/user/emails", "emails", nil, string(wantReqBody)+"\n", nil)
+
 	allEmails, result := client.Emails(url).Create(params)
 
 	assert.False(t, result.HasError())
@@ -72,19 +63,12 @@ func TestEmailsService_Delete(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/user/emails", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "DELETE")
-		testBody(t, r, "[\"test@example.com\",\"otherTest@example.com\"]\n")
-
-		header := w.Header()
-		header.Set("Content-Type", "application/json")
-
-		respondWithStatus(w, 204)
-	})
-
 	url, _ := EmailUrl.Expand(nil)
 
 	params := []string{"test@example.com", "otherTest@example.com"}
+	wantReqBody, _ := json.Marshal(params)
+	respHeaderParams := map[string]string{"Content-Type": "application/json"}
+	stubDeletewCodewBody(t, "/user/emails", string(wantReqBody)+"\n", respHeaderParams, 204)
 	result := client.Emails(url).Delete(params)
 
 	assert.False(t, result.HasError())

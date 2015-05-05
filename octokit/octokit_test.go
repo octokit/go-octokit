@@ -168,6 +168,12 @@ func stubDeletewCode(t *testing.T, path string,
 		nil, "", respHeaderParams, respStatusCode)
 }
 
+func stubDeletewCodewBody(t *testing.T, path string, wantReqBody string,
+	respHeaderParams map[string]string, respStatusCode int) {
+	httpTestHelper(t, path, "", "DELETE",
+		nil, wantReqBody, respHeaderParams, respStatusCode)
+}
+
 func httpTestHelper(t *testing.T, path string, fixture string,
 	wantReqMethod string, wantReqHeader map[string]string, wantReqBody string,
 	respHeaderParams map[string]string, respStatusCode int) {
