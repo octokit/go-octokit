@@ -1,18 +1,17 @@
 package octokit
 
 import (
-	"time"
-
 	"github.com/jingweno/go-sawyer/hypermedia"
+	"time"
 )
 
 // URL templates for actions taken on the pages in repositories
 //
 // https://developer.github.com/v3/repos/pages/
 var (
-	PagesURL            = Hyperlink("/repos/{/owner}/{/repo}/pages")
-	PagesBuildsURL      = Hyperlink("/repos/{/owner}/{/repo}/pages/builds")
-	PagesLatestBuildURL = Hyperlink("/repos/{/owner}/{/repo}/pages/builds/latest")
+	PagesURL            = Hyperlink("/repos/{owner}/{repo}/pages")
+	PagesBuildsURL      = Hyperlink("/repos/{owner}/{repo}/pages/builds")
+	PagesLatestBuildURL = Hyperlink("/repos/{owner}/{repo}/pages/builds/latest")
 )
 
 // Pages creates a PagesService to access page information including various
