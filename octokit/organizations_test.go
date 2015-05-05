@@ -3,8 +3,7 @@ package octokit
 import (
 	"github.com/stretchr/testify/assert"
 
-	"fmt"
-	"net/http"
+	"encoding/json"
 	"testing"
 )
 
@@ -25,21 +24,6 @@ func TestOrganizationService_Update(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	wantBodyParams := fmt.Sprintf(`{"%s":"%s","%s":"%s","%s":"%s","%s":"%s","%s":"%s","%s":"%s","%s":"%s"}`+"\n",
-		"billing_email", "support@github.com",
-		"blog", "https://github.com/blog",
-		"company", "GitHub",
-		"email", "support@github.com",
-		"location", "San Francisco",
-		"name", "github",
-		"description", "GitHub, the company.")
-
-	mux.HandleFunc("/orgs/github", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PATCH")
-		testBody(t, r, wantBodyParams)
-		respondWithJSON(w, loadFixture("organization_updated.json"))
-	})
-
 	input := OrganizationParams{
 		BillingEmail: "support@github.com",
 		Blog:         "https://github.com/blog",
@@ -49,6 +33,9 @@ func TestOrganizationService_Update(t *testing.T) {
 		Name:         "github",
 		Description:  "GitHub, the company.",
 	}
+	wantReqBody, _ := json.Marshal(input)
+	stubPatch(t, "/orgs/github", "organization_updated", nil, string(wantReqBody)+"\n", nil)
+
 	organizationResults, result := client.Organization().OrganizationUpdate(nil, input, M{"org": "github"})
 
 	assert.False(t, result.HasError())

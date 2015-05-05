@@ -209,7 +209,7 @@ func TestGistsService_Star(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	var respHeaderParams = map[string]string{"Content-Type": "application/json"}
+	respHeaderParams := map[string]string{"Content-Type": "application/json"}
 	stubPutwCode(t, "/gists/aa5a315d61ae9438b18d/star", "gist", nil, "", respHeaderParams, 204)
 
 	success, result := client.Gists().Star(&GistsStarURL, M{"gist_id": "aa5a315d61ae9438b18d"})
@@ -231,7 +231,7 @@ func TestGistsService_Unstar(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	var respHeaderParams = map[string]string{"Content-Type": "application/json"}
+	respHeaderParams := map[string]string{"Content-Type": "application/json"}
 	stubDeletewCode(t, "/gists/aa5a315d61ae9438b18d/star", respHeaderParams, 204)
 
 	success, result := client.Gists().Unstar(&GistsStarURL, M{"gist_id": "aa5a315d61ae9438b18d"})
