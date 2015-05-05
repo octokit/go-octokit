@@ -1,8 +1,8 @@
 package octokit
 
 import (
+	"encoding/json"
 	"fmt"
-	"net/http"
 	"testing"
 	"time"
 
@@ -65,14 +65,9 @@ func TestIssueCommentsService_CreateComment(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/octokit/go-octokit/issues/1/comments", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		testBody(t, r, "{\"body\":\"I am a comment\"}\n")
-
-		respondWithJSON(w, loadFixture("issue_comment.json"))
-	})
-
 	input := M{"body": "I am a comment"}
+	wantReqBody, _ := json.Marshal(input)
+	stubPost(t, "/repos/octokit/go-octokit/issues/1/comments", "issue_comment", nil, string(wantReqBody)+"\n", nil)
 
 	comment, result := client.IssueComments().Create(nil, M{"owner": "octokit", "repo": "go-octokit", "number": 1}, input)
 	assert.False(t, result.HasError())
@@ -84,14 +79,9 @@ func TestIssueCommentsService_UpdateComment(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/octokit/go-octokit/issues/comments/19158753", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PATCH")
-		testBody(t, r, "{\"body\":\"I am a comment\"}\n")
-
-		respondWithJSON(w, loadFixture("issue_comment.json"))
-	})
-
 	input := M{"body": "I am a comment"}
+	wantReqBody, _ := json.Marshal(input)
+	stubPatch(t, "/repos/octokit/go-octokit/issues/comments/19158753", "issue_comment", nil, string(wantReqBody)+"\n", nil)
 
 	comment, result := client.IssueComments().Update(nil, M{"owner": "octokit", "repo": "go-octokit", "id": 19158753}, input)
 	assert.False(t, result.HasError())
@@ -103,13 +93,8 @@ func TestIssueCommentsService_DeleteComment(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/octokit/go-octokit/issues/comments/19158753", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "DELETE")
-		header := w.Header()
-		header.Set("Content-Type", "application/json")
-
-		respondWithStatus(w, 204)
-	})
+	var respHeaderParams = map[string]string{"Content-Type": "application/json"}
+	stubDeletewCode(t, "/repos/octokit/go-octokit/issues/comments/19158753", respHeaderParams, 204)
 
 	success, result := client.IssueComments().Delete(nil, M{"owner": "octokit", "repo": "go-octokit", "id": 19158753})
 	assert.False(t, result.HasError())

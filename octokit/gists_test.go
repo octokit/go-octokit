@@ -341,7 +341,7 @@ func TestGistsService_Delete(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	var respHeaderParams = map[string]string{"Content-Type": "application/json"}
+	respHeaderParams := map[string]string{"Content-Type": "application/json"}
 	stubDeletewCode(t, "/gists/aa5a315d61ae9438b18d", respHeaderParams, 204)
 
 	success, result := client.Gists().Delete(&GistsURL, M{"gist_id": "aa5a315d61ae9438b18d"})

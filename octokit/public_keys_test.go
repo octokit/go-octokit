@@ -1,8 +1,8 @@
 package octokit
 
 import (
+	"encoding/json"
 	"fmt"
-	"net/http"
 	"testing"
 	"time"
 
@@ -65,14 +65,10 @@ func TestPublicKeysService_Create(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/user/keys", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		testBody(t, r, "{\"key\":\"ssh-rsa AAA...\",\"title\":\"aKey\"}\n")
-
-		respondWithJSON(w, loadFixture("key.json"))
-	})
-
 	params := Key{Title: "aKey", Key: "ssh-rsa AAA..."}
+	wantReqBody, _ := json.Marshal(params)
+	stubPost(t, "/user/keys", "key", nil, string(wantReqBody)+"\n", nil)
+
 	key, result := client.PublicKeys().Create(nil, nil, params)
 	assert.False(t, result.HasError())
 
@@ -83,14 +79,8 @@ func TestPublicKeysService_Delete(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/user/keys/8675080", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "DELETE")
-
-		header := w.Header()
-		header.Set("Content-Type", "application/json")
-
-		respondWithStatus(w, 204)
-	})
+	respHeaderParams := map[string]string{"Content-Type": "application/json"}
+	stubDeletewCode(t, "/user/keys/8675080", respHeaderParams, 204)
 
 	success, result := client.PublicKeys().Delete(nil, M{"id": 8675080})
 	assert.False(t, result.HasError())
