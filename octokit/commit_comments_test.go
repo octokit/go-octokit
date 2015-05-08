@@ -1,8 +1,8 @@
 package octokit
 
 import (
+	"encoding/json"
 	"fmt"
-	"net/http"
 	"testing"
 	"time"
 
@@ -65,18 +65,15 @@ func TestCommitCommentsService_CreateComment(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/octokit/go-octokit/commits/8b8347dc11c81b64fdd9938d34dc4ef6a07dbf09/comments", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		testBody(t, r, "{\"body\":\"I am a comment\",\"path\":\"root.go\",\"position\":46}\n")
-
-		respondWithJSON(w, loadFixture("commit_comment.json"))
-	})
-
 	input := M{
 		"body":     "I am a comment",
 		"path":     "root.go",
 		"position": 46,
 	}
+
+	wantReqBody, _ := json.Marshal(input)
+	stubPost(t, "/repos/octokit/go-octokit/commits/8b8347dc11c81b64fdd9938d34dc4ef6a07dbf09/comments",
+		"commit_comment", nil, string(wantReqBody)+"\n", nil)
 
 	comment, result := client.CommitComments().Create(nil, M{"owner": "octokit", "repo": "go-octokit", "sha": "8b8347dc11c81b64fdd9938d34dc4ef6a07dbf09"}, input)
 	assert.False(t, result.HasError())
@@ -88,14 +85,9 @@ func TestCommitCommentsService_UpdateComment(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/octokit/go-octokit/comments/4236029", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PATCH")
-		testBody(t, r, "{\"body\":\"I am a comment\"}\n")
-
-		respondWithJSON(w, loadFixture("commit_comment.json"))
-	})
-
 	input := M{"body": "I am a comment"}
+	wantReqBody, _ := json.Marshal(input)
+	stubPatch(t, "/repos/octokit/go-octokit/comments/4236029", "commit_comment", nil, string(wantReqBody)+"\n", nil)
 
 	comment, result := client.CommitComments().Update(nil, M{"owner": "octokit", "repo": "go-octokit", "id": 4236029}, input)
 	assert.False(t, result.HasError())
@@ -107,13 +99,8 @@ func TestCommitCommentsService_DeleteComment(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/octokit/go-octokit/comments/4236029", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "DELETE")
-		header := w.Header()
-		header.Set("Content-Type", "application/json")
-
-		respondWithStatus(w, 204)
-	})
+	var respHeaderParams = map[string]string{"Content-Type": "application/json"}
+	stubDeletewCode(t, "/repos/octokit/go-octokit/comments/4236029", respHeaderParams, 204)
 
 	success, result := client.CommitComments().Delete(nil, M{"owner": "octokit", "repo": "go-octokit", "id": 4236029})
 	assert.False(t, result.HasError())

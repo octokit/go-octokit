@@ -1,7 +1,7 @@
 package octokit
 
 import (
-	"net/http"
+	"encoding/json"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -55,12 +55,6 @@ func TestCreateRelease(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/octokit/Hello-World/releases", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		testBody(t, r, "{\"tag_name\":\"v1.0.0\",\"target_commitish\":\"master\"}\n")
-		respondWithJSON(w, loadFixture("create_release.json"))
-	})
-
 	url, err := ReleasesURL.Expand(M{"owner": "octokit", "repo": "Hello-World"})
 	assert.NoError(t, err)
 
@@ -68,6 +62,9 @@ func TestCreateRelease(t *testing.T) {
 		TagName:         "v1.0.0",
 		TargetCommitish: "master",
 	}
+	wantReqBody, _ := json.Marshal(params)
+	stubPost(t, "/repos/octokit/Hello-World/releases", "create_release", nil, string(wantReqBody)+"\n", nil)
+
 	release, result := client.Releases(url).Create(params)
 
 	assert.False(t, result.HasError())
@@ -78,12 +75,6 @@ func TestUpdateRelease(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/octokit/Hello-World/releases/123", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PATCH")
-		testBody(t, r, "{\"tag_name\":\"v1.0.0\",\"target_commitish\":\"master\"}\n")
-		respondWithJSON(w, loadFixture("create_release.json"))
-	})
-
 	url, err := ReleasesURL.Expand(M{"owner": "octokit", "repo": "Hello-World", "id": "123"})
 	assert.NoError(t, err)
 
@@ -91,6 +82,9 @@ func TestUpdateRelease(t *testing.T) {
 		TagName:         "v1.0.0",
 		TargetCommitish: "master",
 	}
+	wantReqBody, _ := json.Marshal(params)
+	stubPatch(t, "/repos/octokit/Hello-World/releases/123", "create_release", nil, string(wantReqBody)+"\n", nil)
+
 	release, result := client.Releases(url).Update(params)
 
 	assert.False(t, result.HasError())

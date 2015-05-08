@@ -26,8 +26,7 @@ func TestCollaboratorsService_IsCollaborator(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	stubGetWithStatusCode(t,
-		"/repos/octokit/go-octokit/collaborators/dhruvsinghal", 204)
+	stubGetwCode(t, "/repos/octokit/go-octokit/collaborators/dhruvsinghal", "", nil, 204)
 
 	isCollaborator, result := client.Collaborators().IsCollaborator(nil,
 		M{"owner": "octokit", "repo": "go-octokit",

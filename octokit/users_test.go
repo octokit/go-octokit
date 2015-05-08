@@ -1,6 +1,7 @@
 package octokit
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"regexp"
@@ -34,14 +35,11 @@ func TestUsersService_UpdateCurrentUser(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-		testBody(t, r, "{\"email\":\"jingweno@gmail.com\"}\n")
-		respondWithJSON(w, loadFixture("user.json"))
-	})
-
 	url, _ := CurrentUserURL.Expand(nil)
 	userToUpdate := User{Email: "jingweno@gmail.com"}
+	wantReqBody, _ := json.Marshal(userToUpdate)
+	stubPutwCode(t, "/user", "user", nil, string(wantReqBody)+"\n", nil, 0)
+
 	user, result := client.Users(url).Update(userToUpdate)
 
 	assert.False(t, result.HasError())

@@ -128,17 +128,6 @@ func stubGet(t *testing.T, path string, fixture string,
 	httpTestHelper(t, path, fixture, "GET", nil, "", respHeaderParams, 0)
 }
 
-func stubGetWithStatusCode(t *testing.T, path string, statusCode int) {
-	if mux == nil {
-		panic(fmt.Errorf("test HTTP server has not been set up"))
-	}
-
-	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		respondWithStatus(w, statusCode)
-	})
-}
-
 func stubGetwCode(t *testing.T, path string, fixture string,
 	respHeaderParams map[string]string, respStatusCode int) {
 	httpTestHelper(t, path, fixture, "GET",
@@ -177,6 +166,12 @@ func stubDeletewCode(t *testing.T, path string,
 	respHeaderParams map[string]string, respStatusCode int) {
 	httpTestHelper(t, path, "", "DELETE",
 		nil, "", respHeaderParams, respStatusCode)
+}
+
+func stubDeletewCodewBody(t *testing.T, path string, wantReqBody string,
+	respHeaderParams map[string]string, respStatusCode int) {
+	httpTestHelper(t, path, "", "DELETE",
+		nil, wantReqBody, respHeaderParams, respStatusCode)
 }
 
 func httpTestHelper(t *testing.T, path string, fixture string,

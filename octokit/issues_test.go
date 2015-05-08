@@ -1,7 +1,7 @@
 package octokit
 
 import (
-	"net/http"
+	"encoding/json"
 	"testing"
 	"time"
 
@@ -40,17 +40,13 @@ func TestIssuesService_Create(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/octocat/Hello-World/issues", func(
-		w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		testBody(t, r, "{\"title\":\"title\",\"body\":\"body\"}\n")
-		respondWithJSON(w, loadFixture("issue.json"))
-	})
-
 	params := IssueParams{
 		Title: "title",
 		Body:  "body",
 	}
+	wantReqBody, _ := json.Marshal(params)
+	stubPost(t, "/repos/octocat/Hello-World/issues", "issue", nil, string(wantReqBody)+"\n", nil)
+
 	issue, result := client.Issues().Create(nil, M{"owner": "octocat",
 		"repo": "Hello-World"}, params)
 
@@ -62,17 +58,13 @@ func TestIssuesService_Update(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/octocat/Hello-World/issues/1347", func(
-		w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PATCH")
-		testBody(t, r, "{\"title\":\"title\",\"body\":\"body\"}\n")
-		respondWithJSON(w, loadFixture("issue.json"))
-	})
-
 	params := IssueParams{
 		Title: "title",
 		Body:  "body",
 	}
+	wantReqBody, _ := json.Marshal(params)
+	stubPatch(t, "/repos/octocat/Hello-World/issues/1347", "issue", nil, string(wantReqBody)+"\n", nil)
+
 	issue, result := client.Issues().Update(nil, M{"owner": "octocat",
 		"repo": "Hello-World", "number": 1347}, params)
 

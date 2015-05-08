@@ -2,7 +2,6 @@ package octokit
 
 import (
 	"encoding/json"
-	"net/http"
 	"reflect"
 	"testing"
 
@@ -72,14 +71,8 @@ func TestAuthorizationsService_Create(t *testing.T) {
 
 	params := AuthorizationParams{Scopes: []string{"public_repo"}}
 
-	mux.HandleFunc("/authorizations", func(w http.ResponseWriter, r *http.Request) {
-		var authParams AuthorizationParams
-		json.NewDecoder(r.Body).Decode(&authParams)
-		assert.True(t, reflect.DeepEqual(authParams, params))
-
-		testMethod(t, r, "POST")
-		respondWithJSON(w, loadFixture("create_authorization.json"))
-	})
+	wantReqBody, _ := json.Marshal(params)
+	stubPost(t, "/authorizations", "create_authorization", nil, string(wantReqBody)+"\n", nil)
 
 	url, err := AuthorizationsURL.Expand(nil)
 	assert.NoError(t, err)

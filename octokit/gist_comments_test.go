@@ -1,8 +1,8 @@
 package octokit
 
 import (
+	"encoding/json"
 	"fmt"
-	"net/http"
 	"testing"
 	"time"
 
@@ -46,14 +46,9 @@ func TestGistCommentsService_CreateComment(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/gists/1721489/comments", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		testBody(t, r, "{\"body\":\"I am a comment\"}\n")
-
-		respondWithJSON(w, loadFixture("gist_comment.json"))
-	})
-
 	input := M{"body": "I am a comment"}
+	wantReqBody, _ := json.Marshal(input)
+	stubPost(t, "/gists/1721489/comments", "gist_comment", nil, string(wantReqBody)+"\n", nil)
 
 	comment, result := client.GistComments().Create(nil, M{"gist_id": 1721489}, input)
 	assert.False(t, result.HasError())
@@ -65,14 +60,9 @@ func TestGistCommentsService_UpdateComment(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/gists/1721489/comments/1199157", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PATCH")
-		testBody(t, r, "{\"body\":\"I am a comment\"}\n")
-
-		respondWithJSON(w, loadFixture("gist_comment.json"))
-	})
-
 	input := M{"body": "I am a comment"}
+	wantReqBody, _ := json.Marshal(input)
+	stubPatch(t, "/gists/1721489/comments/1199157", "gist_comment", nil, string(wantReqBody)+"\n", nil)
 
 	comment, result := client.GistComments().Update(nil, M{"gist_id": 1721489, "id": 1199157}, input)
 	assert.False(t, result.HasError())
@@ -84,13 +74,8 @@ func TestGistCommentsService_DeleteComment(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/gists/1721489/comments/1199157", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "DELETE")
-		header := w.Header()
-		header.Set("Content-Type", "application/json")
-
-		respondWithStatus(w, 204)
-	})
+	respHeaderParams := map[string]string{"Content-Type": "application/json"}
+	stubDeletewCode(t, "/gists/1721489/comments/1199157", respHeaderParams, 204)
 
 	success, result := client.GistComments().Delete(nil, M{"gist_id": 1721489, "id": 1199157})
 	assert.False(t, result.HasError())

@@ -2,7 +2,6 @@ package octokit
 
 import (
 	"fmt"
-	"net/http"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -84,14 +83,8 @@ func TestFollowersService_CheckFollowing(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/users/harrisonzhao/following/obsc", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-
-		header := w.Header()
-		header.Set("Content-Type", "application/json")
-
-		respondWithStatus(w, 204)
-	})
+	respHeaderParams := map[string]string{"Content-Type": "application/json"}
+	stubGetwCode(t, "/users/harrisonzhao/following/obsc", "", respHeaderParams, 204)
 
 	success, result := client.Followers().Check(&FollowingUrl, M{"user": "harrisonzhao", "target": "obsc"})
 	assert.False(t, result.HasError())
@@ -102,14 +95,8 @@ func TestFollowersService_CheckCurrentFollowing(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/user/following/obsc", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-
-		header := w.Header()
-		header.Set("Content-Type", "application/json")
-
-		respondWithStatus(w, 204)
-	})
+	respHeaderParams := map[string]string{"Content-Type": "application/json"}
+	stubGetwCode(t, "/user/following/obsc", "", respHeaderParams, 204)
 
 	success, result := client.Followers().Check(nil, M{"target": "obsc"})
 	assert.False(t, result.HasError())
@@ -120,14 +107,8 @@ func TestFollowersService_FollowUser(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/user/following/obsc", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-
-		header := w.Header()
-		header.Set("Content-Type", "application/json")
-
-		respondWithStatus(w, 204)
-	})
+	respHeaderParams := map[string]string{"Content-Type": "application/json"}
+	stubPutwCode(t, "/user/following/obsc", "", nil, "", respHeaderParams, 204)
 
 	success, result := client.Followers().Follow(nil, M{"target": "obsc"})
 	assert.False(t, result.HasError())
@@ -139,14 +120,8 @@ func TestFollowersService_UnfollowUser(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/user/following/obsc", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "DELETE")
-
-		header := w.Header()
-		header.Set("Content-Type", "application/json")
-
-		respondWithStatus(w, 204)
-	})
+	respHeaderParams := map[string]string{"Content-Type": "application/json"}
+	stubDeletewCode(t, "/user/following/obsc", respHeaderParams, 204)
 
 	success, result := client.Followers().Unfollow(nil, M{"target": "obsc"})
 	assert.False(t, result.HasError())

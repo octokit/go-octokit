@@ -1,6 +1,7 @@
 package octokit
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -58,13 +59,6 @@ func TestPullRequestService_Post(t *testing.T) {
 	setup()
 	defer tearDown()
 
-	mux.HandleFunc("/repos/octokit/go-octokit/pulls", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		testBody(t, r,
-			"{\"base\":\"base\",\"head\":\"head\",\"title\":\"title\",\"body\":\"body\",\"assignee\":\"assignee\"}\n")
-		respondWithJSON(w, loadFixture("pull_request.json"))
-	})
-
 	url, err := PullRequestsURL.Expand(M{"owner": "octokit", "repo": "go-octokit"})
 	assert.NoError(t, err)
 
@@ -75,6 +69,9 @@ func TestPullRequestService_Post(t *testing.T) {
 		Body:     "body",
 		Assignee: "assignee",
 	}
+	wantReqBody, _ := json.Marshal(params)
+	stubPost(t, "/repos/octokit/go-octokit/pulls", "pull_request", nil, string(wantReqBody)+"\n", nil)
+
 	pr, result := client.PullRequests(url).Create(params)
 
 	assert.False(t, result.HasError())
