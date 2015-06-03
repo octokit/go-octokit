@@ -2,10 +2,24 @@ package octokit
 
 import (
 	"encoding/json"
-	"testing"
-
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
+
+func TestReleasesService_Latest(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	stubGet(t, "/repos/jingweno/gh/releases/latest", "latest_release", nil)
+
+	url, err := ReleasesLatestURL.Expand(M{"owner": "jingweno", "repo": "gh"})
+	assert.NoError(t, err)
+
+	release, result := client.Releases(url).Latest()
+	assert.False(t, result.HasError())
+	assert.Equal(t, 295009, release.ID)
+	assert.Equal(t, "v2.1.0", release.TagName)
+}
 
 func TestReleasesService_All(t *testing.T) {
 	setup()
