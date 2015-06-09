@@ -11,7 +11,10 @@ import (
 // for a particular owner that can be expanded to a full address.
 //
 // https://developer.github.com/v3/repos/releases/
-var ReleasesURL = Hyperlink("repos/{owner}/{repo}/releases{/id}")
+var (
+	ReleasesURL       = Hyperlink("repos/{owner}/{repo}/releases{/id}")
+	ReleasesLatestURL = Hyperlink("repos/{owner}/{repo}/releases/latest")
+)
 
 // Release is a representation of a release on GitHub. Published releases are
 // available to everyone.
@@ -68,6 +71,11 @@ type ReleasesService struct {
 // https://developer.github.com/v3/repos/releases/#list-releases-for-a-repository
 func (r *ReleasesService) All() (releases []Release, result *Result) {
 	result = r.client.get(r.URL, &releases)
+	return
+}
+
+func (r *ReleasesService) Latest() (release *Release, result *Result) {
+	result = r.client.get(r.URL, &release)
 	return
 }
 
