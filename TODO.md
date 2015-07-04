@@ -109,8 +109,8 @@
 - [ ] https://developer.github.com/v3/markdown/
 - [ ] https://developer.github.com/v3/markdown/#render-an-arbitrary-markdown-document
 - [ ] https://developer.github.com/v3/media/
-- [ ] https://developer.github.com/v3/meta/
-- [ ] https://developer.github.com/v3/meta/#meta
+- [*] https://developer.github.com/v3/meta/
+- [*] https://developer.github.com/v3/meta/#meta
 - [ ] https://developer.github.com/v3/oauth/
 - [ ] https://developer.github.com/v3/oauth/#scopes
 - [ ] https://developer.github.com/v3/oauth/#scopes Available scopes
