@@ -25,15 +25,14 @@ func (c *Client) Meta(uri *Hyperlink) (info APIInfo, result *Result) {
 
 type ipNets []*net.IPNet
 
-func (i *ipNets) UnmarshalJSON(p []byte) error {
+func (i *ipNets) UnmarshalJSON(raw []byte) error {
 	*i = (*i)[:0]
-	var s []string
-	err := json.Unmarshal(p, &s)
-	if err != nil {
+	var ss []string
+	if err := json.Unmarshal(raw, &ss); err != nil {
 		return err
 	}
-	for _, str := range s {
-		_, ipNet, err := net.ParseCIDR(str)
+	for _, s := range ss {
+		_, ipNet, err := net.ParseCIDR(s)
 		if err != nil {
 			return err
 		}
@@ -44,15 +43,14 @@ func (i *ipNets) UnmarshalJSON(p []byte) error {
 
 type ips []net.IP
 
-func (i *ips) UnmarshalJSON(p []byte) error {
+func (i *ips) UnmarshalJSON(raw []byte) error {
 	*i = (*i)[:0]
-	var s []string
-	err := json.Unmarshal(p, &s)
-	if err != nil {
+	var ss []string
+	if err := json.Unmarshal(raw, &ss); err != nil {
 		return err
 	}
-	for _, str := range s {
-		*i = append(*i, net.ParseIP(str))
+	for _, s := range ss {
+		*i = append(*i, net.ParseIP(s))
 	}
 	return nil
 }
