@@ -1,8 +1,8 @@
 package octokit
 
 import (
+	"encoding/json"
 	"net"
-	"strconv"
 
 	"github.com/jingweno/go-sawyer/hypermedia"
 )
@@ -23,71 +23,60 @@ func (c *Client) Meta(uri *Hyperlink) (info APIInfo, result *Result) {
 	return
 }
 
-type ipNet struct {
-	*net.IPNet
-}
+type ipNets []*net.IPNet
 
-func (i *ipNet) UnmarshalJSON(s []byte) error {
-	str, err := strconv.Unquote(string(s))
+func (i *ipNets) UnmarshalJSON(p []byte) error {
+	*i = (*i)[:0]
+	var s []string
+	err := json.Unmarshal(p, &s)
 	if err != nil {
 		return err
 	}
-	_, ipNet, err := net.ParseCIDR(str)
-	i.IPNet = ipNet
-	return err
+	for _, str := range s {
+		_, ipNet, err := net.ParseCIDR(str)
+		if err != nil {
+			return err
+		}
+		*i = append(*i, ipNet)
+	}
+	return nil
 }
 
-type ip struct {
-	net.IP
-}
+type ips []net.IP
 
-func (i *ip) UnmarshalJSON(s []byte) error {
-	str, err := strconv.Unquote(string(s))
+func (i *ips) UnmarshalJSON(p []byte) error {
+	*i = (*i)[:0]
+	var s []string
+	err := json.Unmarshal(p, &s)
 	if err != nil {
 		return err
 	}
-	i.IP = net.ParseIP(str)
+	for _, str := range s {
+		*i = append(*i, net.ParseIP(str))
+	}
 	return nil
 }
 
 type meta struct {
 	*hypermedia.HALResource
 
-	VerifiablePasswordAuthentication bool     `json:"verifiable_password_authentication,omitempty"`
-	GithubServicesSha                string   `json:"github_services_sha,omitempty"`
-	Hooks                            []*ipNet `json:"hooks,omitempty"`
-	Git                              []*ipNet `json:"git,omitempty"`
-	Pages                            []*ipNet `json:"pages,omitempty"`
-	Importer                         []ip     `json:"importer,omitempty"`
+	VerifiablePasswordAuthentication bool   `json:"verifiable_password_authentication,omitempty"`
+	GithubServicesSha                string `json:"github_services_sha,omitempty"`
+	Hooks                            ipNets `json:"hooks,omitempty"`
+	Git                              ipNets `json:"git,omitempty"`
+	Pages                            ipNets `json:"pages,omitempty"`
+	Importer                         ips    `json:"importer,omitempty"`
 }
 
 func (m meta) transform() (info APIInfo) {
 	info.VerifiablePasswordAuthentication = m.VerifiablePasswordAuthentication
 	info.GithubServicesSha = m.GithubServicesSha
 
-	hooks := make([]*net.IPNet, len(m.Hooks))
-	for i, addr := range m.Hooks {
-		hooks[i] = addr.IPNet
-	}
-	info.Hooks = hooks
+	info.Hooks = ([]*net.IPNet)(m.Hooks)
+	info.Git = ([]*net.IPNet)(m.Git)
+	info.Pages = ([]*net.IPNet)(m.Pages)
+	info.Importer = ([]net.IP)(m.Importer)
 
-	git := make([]*net.IPNet, len(m.Git))
-	for i, addr := range m.Git {
-		git[i] = addr.IPNet
-	}
-	info.Git = git
-
-	pages := make([]*net.IPNet, len(m.Pages))
-	for i, addr := range m.Pages {
-		pages[i] = addr.IPNet
-	}
-	info.Pages = pages
-
-	importer := make([]net.IP, len(m.Importer))
-	for i, addr := range m.Importer {
-		importer[i] = addr.IP
-	}
-	info.Importer = importer
 	return
 }
 
