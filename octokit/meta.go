@@ -14,7 +14,10 @@ var (
 
 // Meta return an APIInfo with the current API meta information
 func (c *Client) Meta(uri *Hyperlink) (info APIInfo, result *Result) {
-	url, _ := uri.Expand(nil)
+	url, err := uri.Expand(nil)
+	if err != nil {
+		return info, &Result{Err: err}
+	}
 	var meta meta
 	result = c.get(url, &meta)
 	if !result.HasError() {
