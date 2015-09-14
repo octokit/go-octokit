@@ -140,6 +140,7 @@ func TestGistsService_Update(t *testing.T) {
 	setup()
 	defer tearDown()
 	params := Gist{
+		ID:          "a6bea192debdbec0d4ab",
 		Description: "the description for this gist",
 		Files: map[string]*GistFile{
 			"delete_this_file.txt": nil,
@@ -151,9 +152,9 @@ func TestGistsService_Update(t *testing.T) {
 	}
 
 	wantReqBody, _ := json.Marshal(params)
-	stubPatch(t, "/gists", "gist", nil, string(wantReqBody)+"\n", nil)
+	stubPatch(t, "/gists/a6bea192debdbec0d4ab", "gist", nil, string(wantReqBody)+"\n", nil)
 
-	gist, result := client.Gists().Update(&GistsURL, M{}, params)
+	gist, result := client.Gists().Update(&GistsURL, M{"gist_id": "a6bea192debdbec0d4ab"}, params)
 
 	assert.False(t, result.HasError())
 	assert.Equal(t, "a6bea192debdbec0d4ab", gist.ID)
@@ -167,13 +168,13 @@ func TestGistsService_Update(t *testing.T) {
 	assert.Equal(t, 8107, file.Size)
 	assert.Equal(t, false, file.Truncated)
 
-	gistNil, resultNil := client.Gists().Update(nil, M{}, params)
+	gistNil, resultNil := client.Gists().Update(nil, M{"gist_id": "a6bea192debdbec0d4ab"}, params)
 	assert.False(t, resultNil.HasError())
 	assert.Equal(t, gist, gistNil)
 
 	//Error case
 	var invalid = Hyperlink("{")
-	gistErr, resultErr := client.Gists().Update(&invalid, M{}, params)
+	gistErr, resultErr := client.Gists().Update(&invalid, M{"gist_id": "a6bea192debdbec0d4ab"}, params)
 	assert.True(t, resultErr.HasError())
 	assert.Nil(t, gistErr)
 }
