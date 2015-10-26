@@ -135,7 +135,7 @@ type Plan struct {
 	PrivateRepos int    `json:"private_repos,omitempty"`
 }
 
-// IssueParams represents the struture used to create or update an Issue
+// OrganizationParams represents the struture used to create or update an Organization
 type OrganizationParams struct {
 	BillingEmail string `json:"billing_email,omitempty"`
 	Blog         string `json:"blog,omitempty"`
