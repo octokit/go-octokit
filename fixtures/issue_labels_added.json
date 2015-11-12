@@ -1,0 +1,12 @@
+[
+  {
+    "url": "https://api.github.com/repos/octokit/go-octokit/labels/newLabel",
+    "name": "newLabel",
+    "color": "ffffff"
+  },
+  {
+    "url": "https://api.github.com/repos/octokit/go-octokit/labels/anotherNewLabel",
+    "name": "anotherNewLabel",
+    "color": "000000"
+  }
+]
