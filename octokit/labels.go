@@ -7,7 +7,7 @@ import (
 // RepoLabelsURL is a URL template for accessing labels for a repository.
 //
 // https://developer.github.com/v3/issues/labels/
-var RepoLabelsURL = Hyperlink("repos/{owner}/{repo}/labels")
+var RepoLabelsURL = Hyperlink("repos/{owner}/{repo}/labels{/name}")
 
 // Labels creates a LabelsService
 func (c *Client) Labels() (labels *LabelsService) {
@@ -43,6 +43,21 @@ func (l *LabelsService) Create(uri *Hyperlink, uriParams M, requestParams interf
 	}
 
 	result = l.client.post(url, requestParams, &label)
+	return
+}
+
+// Delete a label for a repository
+//
+// https://developer.github.com/v3/issues/labels/#delete-a-label
+func (l *LabelsService) Delete(uri *Hyperlink, uriParams M) (success bool, result *Result) {
+	url, err := ExpandWithDefault(uri, &RepoLabelsURL, uriParams)
+	if err != nil {
+		return false, &Result{Err: err}
+	}
+
+	result = l.client.delete(url, nil, nil)
+
+	success = (result.Response.StatusCode == 204)
 	return
 }
 

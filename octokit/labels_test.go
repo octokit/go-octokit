@@ -44,3 +44,17 @@ func TestLabelsService_Create(t *testing.T) {
   assert.Equal(t, "theLabel", label.Name)
 	assert.Equal(t, "ffffff", label.Color)
 }
+
+func TestLabelsService_Delete(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	var respHeaderParams = map[string]string{"Content-Type": "application/json"}
+	stubDeletewCode(t, "/repos/octokit/go-octokit/labels/theLabel", respHeaderParams, 204)
+
+	success, result := client.Labels().Delete(nil, M{"owner": "octokit", "repo": "go-octokit", "name": "theLabel"})
+
+	assert.False(t, result.HasError())
+
+	assert.True(t, success)
+}
