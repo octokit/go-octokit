@@ -3,7 +3,7 @@ package octokit
 // IssueLabelsURL is a URL template for accessing issue labels
 //
 // https://developer.github.com/v3/issues/labels/
-var IssueLabelsURL = Hyperlink("repos/{owner}/{repo}/issues/{number}/labels")
+var IssueLabelsURL = Hyperlink("repos/{owner}/{repo}/issues/{number}/labels{/name}")
 
 // IssueLabels creates an IssueLabelsService with a base url
 func (c *Client) IssueLabels() (issueLabels *IssueLabelsService) {
@@ -39,5 +39,20 @@ func (l *IssueLabelsService) All(uri *Hyperlink, uriParams M) (labels []Label, r
 	}
 
 	result = l.client.get(url, &labels)
+	return
+}
+
+// Removes a label from an issue
+//
+// https://developer.github.com/v3/issues/labels/#remove-a-label-from-an-issue
+func (l *IssueLabelsService) Remove(uri *Hyperlink, uriParams M) (success bool, result *Result) {
+	url, err := ExpandWithDefault(uri, &IssueLabelsURL, uriParams)
+	if err != nil {
+		return false, &Result{Err: err}
+	}
+
+	result = l.client.delete(url, nil, nil)
+
+	success = (result.Response.StatusCode == 204)
 	return
 }

@@ -50,3 +50,17 @@ func TestIssueLabelsService_All(t *testing.T) {
   assert.Equal(t, "duplicate", labels[1].Name)
 	assert.Equal(t, "cccccc", labels[1].Color)
 }
+
+func TestIssueLabelsService_Remove(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	var respHeaderParams = map[string]string{"Content-Type": "application/json"}
+	stubDeletewCode(t, "/repos/octokit/go-octokit/issues/33/labels/theName", respHeaderParams, 204)
+
+	success, result := client.IssueLabels().Remove(nil, M{"owner": "octokit", "repo": "go-octokit", "number": 33, "name": "theName"})
+
+	assert.False(t, result.HasError())
+
+	assert.True(t, success)
+}
