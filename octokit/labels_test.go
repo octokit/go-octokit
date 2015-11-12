@@ -1,9 +1,10 @@
 package octokit
 
 import (
-	"github.com/stretchr/testify/assert"
-
+	"encoding/json"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestLabelsService_All(t *testing.T) {
@@ -25,4 +26,21 @@ func TestLabelsService_All(t *testing.T) {
   assert.Equal(t, "https://api.github.com/repos/octokit/go-octokit/labels/duplicate", labels[1].URL)
   assert.Equal(t, "duplicate", labels[1].Name)
 	assert.Equal(t, "cccccc", labels[1].Color)
+}
+
+func TestLabelsService_Create(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	input := M{"name": "theLabel", "color": "ffffff"}
+	wantReqBody, _ := json.Marshal(input)
+	stubPost(t, "/repos/octokit/go-octokit/labels", "label_created", nil, string(wantReqBody)+"\n", nil)
+
+	label, result := client.Labels().Create(nil, M{"owner": "octokit", "repo": "go-octokit"}, input)
+
+	assert.False(t, result.HasError())
+
+	assert.Equal(t, "https://api.github.com/repos/octokit/go-octokit/labels/theLabel", label.URL)
+  assert.Equal(t, "theLabel", label.Name)
+	assert.Equal(t, "ffffff", label.Color)
 }

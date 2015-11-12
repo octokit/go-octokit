@@ -33,6 +33,19 @@ func (l *LabelsService) All(uri *Hyperlink, uriParams M) (labels []Label, result
 	return
 }
 
+// Create a new label for a repository
+//
+// https://developer.github.com/v3/issues/labels/#create-a-label
+func (l *LabelsService) Create(uri *Hyperlink, uriParams M, requestParams interface{}) (label *Label, result *Result) {
+	url, err := ExpandWithDefault(uri, &RepoLabelsURL, uriParams)
+	if err != nil {
+		return nil, &Result{Err: err}
+	}
+
+	result = l.client.post(url, requestParams, &label)
+	return
+}
+
 // Label represents a label for a GitHub repository
 type Label struct {
 	*hypermedia.HALResource
