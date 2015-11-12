@@ -91,7 +91,7 @@
 - [ ] https://developer.github.com/v3/issues/events/#list-events-for-an-issue
 - [ ] https://developer.github.com/v3/issues/labels/
 - [ ] https://developer.github.com/v3/issues/labels/#add-labels-to-an-issue
-- [ ] https://developer.github.com/v3/issues/labels/#create-a-label
+- [x] https://developer.github.com/v3/issues/labels/#create-a-label
 - [ ] https://developer.github.com/v3/issues/labels/#delete-a-label
 - [ ] https://developer.github.com/v3/issues/labels/#get-a-single-label
 - [x] https://developer.github.com/v3/issues/labels/#list-all-labels-for-this-repository
