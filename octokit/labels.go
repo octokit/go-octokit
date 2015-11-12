@@ -33,6 +33,19 @@ func (l *LabelsService) All(uri *Hyperlink, uriParams M) (labels []Label, result
 	return
 }
 
+// One gets a label for a repository
+//
+// https://developer.github.com/v3/issues/labels/#get-a-single-label
+func (l *LabelsService) One(uri *Hyperlink, uriParams M) (label *Label, result *Result) {
+	url, err := ExpandWithDefault(uri, &RepoLabelsURL, uriParams)
+	if err != nil {
+		return nil, &Result{Err: err}
+	}
+
+	result = l.client.get(url, &label)
+	return
+}
+
 // Create a new label for a repository
 //
 // https://developer.github.com/v3/issues/labels/#create-a-label

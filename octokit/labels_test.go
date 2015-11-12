@@ -28,6 +28,21 @@ func TestLabelsService_All(t *testing.T) {
 	assert.Equal(t, "cccccc", labels[1].Color)
 }
 
+func TestLabelsService_One(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	stubGet(t, "/repos/octokit/go-octokit/labels/bug", "label", nil)
+
+	label, result := client.Labels().One(nil, M{"owner": "octokit", "repo": "go-octokit", "name": "bug"})
+
+	assert.False(t, result.HasError())
+
+  assert.Equal(t, "https://api.github.com/repos/octokit/go-octokit/labels/bug", (*label).URL)
+  assert.Equal(t, "bug", (*label).Name)
+	assert.Equal(t, "fc2929", (*label).Color)
+}
+
 func TestLabelsService_Create(t *testing.T) {
 	setup()
 	defer tearDown()
