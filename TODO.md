@@ -95,7 +95,7 @@
 - [x] https://developer.github.com/v3/issues/labels/#delete-a-label
 - [x] https://developer.github.com/v3/issues/labels/#get-a-single-label
 - [x] https://developer.github.com/v3/issues/labels/#list-all-labels-for-this-repository
-- [ ] https://developer.github.com/v3/issues/labels/#list-labels-on-an-issue
+- [x] https://developer.github.com/v3/issues/labels/#list-labels-on-an-issue
 - [ ] https://developer.github.com/v3/issues/labels/#remove-a-label-from-an-issue
 - [ ] https://developer.github.com/v3/issues/labels/#remove-all-labels-from-an-issue
 - [ ] https://developer.github.com/v3/issues/labels/#replace-all-labels-for-an-issue

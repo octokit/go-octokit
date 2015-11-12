@@ -28,3 +28,16 @@ func (l *IssueLabelsService) Add(uri *Hyperlink, uriParams M, labelsToAdd []stri
   result = l.client.post(url, labelsToAdd, &labels)
 	return
 }
+
+// All gets a list of all labels for an issue
+//
+// https://developer.github.com/v3/issues/labels/#list-labels-on-an-issue
+func (l *IssueLabelsService) All(uri *Hyperlink, uriParams M) (labels []Label, result *Result) {
+	url, err := ExpandWithDefault(uri, &IssueLabelsURL, uriParams)
+	if err != nil {
+		return nil, &Result{Err: err}
+	}
+
+	result = l.client.get(url, &labels)
+	return
+}
