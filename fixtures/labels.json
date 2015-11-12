@@ -1,0 +1,12 @@
+[
+  {
+    "url": "https://api.github.com/repos/octokit/go-octokit/labels/bug",
+    "name": "bug",
+    "color": "fc2929"
+  },
+  {
+    "url": "https://api.github.com/repos/octokit/go-octokit/labels/duplicate",
+    "name": "duplicate",
+    "color": "cccccc"
+  }
+]
