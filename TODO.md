@@ -99,7 +99,7 @@
 - [ ] https://developer.github.com/v3/issues/labels/#remove-a-label-from-an-issue
 - [ ] https://developer.github.com/v3/issues/labels/#remove-all-labels-from-an-issue
 - [ ] https://developer.github.com/v3/issues/labels/#replace-all-labels-for-an-issue
-- [ ] https://developer.github.com/v3/issues/labels/#update-a-label
+- [x] https://developer.github.com/v3/issues/labels/#update-a-label
 - [ ] https://developer.github.com/v3/issues/milestones/
 - [ ] https://developer.github.com/v3/issues/milestones/#create-a-milestone
 - [ ] https://developer.github.com/v3/issues/milestones/#delete-a-milestone

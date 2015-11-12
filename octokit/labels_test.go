@@ -60,6 +60,23 @@ func TestLabelsService_Create(t *testing.T) {
 	assert.Equal(t, "ffffff", label.Color)
 }
 
+func TestLabelsService_Update(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	input := M{"name": "theChangedName", "color": "000000"}
+	wantReqBody, _ := json.Marshal(input)
+	stubPatch(t, "/repos/octokit/go-octokit/labels/theName", "label_changed", nil, string(wantReqBody)+"\n", nil)
+
+	label, result := client.Labels().Update(nil, M{"owner": "octokit", "repo": "go-octokit", "name": "theName"}, input)
+
+	assert.False(t, result.HasError())
+
+	assert.Equal(t, "https://api.github.com/repos/octokit/go-octokit/labels/theChangedName", label.URL)
+  assert.Equal(t, "theChangedName", label.Name)
+	assert.Equal(t, "000000", label.Color)
+}
+
 func TestLabelsService_Delete(t *testing.T) {
 	setup()
 	defer tearDown()

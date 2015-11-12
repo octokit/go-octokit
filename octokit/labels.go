@@ -59,6 +59,19 @@ func (l *LabelsService) Create(uri *Hyperlink, uriParams M, requestParams interf
 	return
 }
 
+// Updates a label for a repository
+//
+// https://developer.github.com/v3/issues/labels/#update-a-label
+func (l *LabelsService) Update(uri *Hyperlink, uriParams M, requestParams interface{}) (label *Label, result *Result) {
+	url, err := ExpandWithDefault(uri, &RepoLabelsURL, uriParams)
+	if err != nil {
+		return nil, &Result{Err: err}
+	}
+
+	result = l.client.patch(url, requestParams, &label)
+	return
+}
+
 // Delete a label for a repository
 //
 // https://developer.github.com/v3/issues/labels/#delete-a-label
