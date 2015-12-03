@@ -56,3 +56,18 @@ func (l *IssueLabelsService) Remove(uri *Hyperlink, uriParams M) (success bool, 
 	success = (result.Response.StatusCode == 204)
 	return
 }
+
+// Removes all labels from an issue
+//
+// https://developer.github.com/v3/issues/labels/#remove-all-labels-from-an-issue
+func (l *IssueLabelsService) RemoveAll(uri *Hyperlink, uriParams M) (success bool, result *Result) {
+	url, err := ExpandWithDefault(uri, &IssueLabelsURL, uriParams)
+	if err != nil {
+		return false, &Result{Err: err}
+	}
+
+	result = l.client.delete(url, nil, nil)
+
+	success = (result.Response.StatusCode == 204)
+	return
+}

@@ -64,3 +64,17 @@ func TestIssueLabelsService_Remove(t *testing.T) {
 
 	assert.True(t, success)
 }
+
+func TestIssueLabelsService_RemoveAll(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	var respHeaderParams = map[string]string{"Content-Type": "application/json"}
+	stubDeletewCode(t, "/repos/octokit/go-octokit/issues/33/labels", respHeaderParams, 204)
+
+	success, result := client.IssueLabels().RemoveAll(nil, M{"owner": "octokit", "repo": "go-octokit", "number": 33})
+
+	assert.False(t, result.HasError())
+
+	assert.True(t, success)
+}
