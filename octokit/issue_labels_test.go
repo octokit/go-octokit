@@ -78,3 +78,25 @@ func TestIssueLabelsService_RemoveAll(t *testing.T) {
 
 	assert.True(t, success)
 }
+
+func TestIssueLabelsService_ReplaceAll(t *testing.T) {
+	setup()
+	defer tearDown()
+
+	respHeaderParams := map[string]string{"Content-Type": "application/json"}
+	stubPutwCode(t, "/repos/octokit/go-octokit/issues/33/labels", "issue_labels_replaced", nil, "", respHeaderParams, 200)
+
+  labels, result := client.IssueLabels().ReplaceAll(nil, M{"owner": "octokit", "repo": "go-octokit", "number": 33}, []string{"theFirstNewLabel", "theSecondNewLabel"})
+
+	assert.False(t, result.HasError())
+
+	assert.Equal(t, 2, len(labels))
+
+  assert.Equal(t, "https://api.github.com/repos/octokit/go-octokit/labels/theFirstNewLabel", labels[0].URL)
+  assert.Equal(t, "theFirstNewLabel", labels[0].Name)
+	assert.Equal(t, "000000", labels[0].Color)
+
+  assert.Equal(t, "https://api.github.com/repos/octokit/go-octokit/labels/theSecondNewLabel", labels[1].URL)
+  assert.Equal(t, "theSecondNewLabel", labels[1].Name)
+	assert.Equal(t, "ffffff", labels[1].Color)
+}

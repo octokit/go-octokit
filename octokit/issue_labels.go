@@ -71,3 +71,16 @@ func (l *IssueLabelsService) RemoveAll(uri *Hyperlink, uriParams M) (success boo
 	success = (result.Response.StatusCode == 204)
 	return
 }
+
+// Replace all labels for an issue
+//
+// https://developer.github.com/v3/issues/labels/#replace-all-labels-for-an-issue
+func (l *IssueLabelsService) ReplaceAll(uri *Hyperlink, uriParams M, newLabels []string) (labels []Label, result *Result) {
+	url, err := ExpandWithDefault(uri, &IssueLabelsURL, uriParams)
+	if err != nil {
+		return nil, &Result{Err: err}
+	}
+
+	result = l.client.put(url, newLabels, &labels)
+	return
+}
