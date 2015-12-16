@@ -25,7 +25,7 @@ func (l *IssueLabelsService) Add(uri *Hyperlink, uriParams M, labelsToAdd []stri
 		return nil, &Result{Err: err}
 	}
 
-  result = l.client.post(url, labelsToAdd, &labels)
+	result = l.client.post(url, labelsToAdd, &labels)
 	return
 }
 

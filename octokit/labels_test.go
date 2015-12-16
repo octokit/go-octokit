@@ -19,12 +19,12 @@ func TestLabelsService_All(t *testing.T) {
 
 	assert.Equal(t, 2, len(labels))
 
-  assert.Equal(t, "https://api.github.com/repos/octokit/go-octokit/labels/bug", labels[0].URL)
-  assert.Equal(t, "bug", labels[0].Name)
+	assert.Equal(t, "https://api.github.com/repos/octokit/go-octokit/labels/bug", labels[0].URL)
+	assert.Equal(t, "bug", labels[0].Name)
 	assert.Equal(t, "fc2929", labels[0].Color)
 
-  assert.Equal(t, "https://api.github.com/repos/octokit/go-octokit/labels/duplicate", labels[1].URL)
-  assert.Equal(t, "duplicate", labels[1].Name)
+	assert.Equal(t, "https://api.github.com/repos/octokit/go-octokit/labels/duplicate", labels[1].URL)
+	assert.Equal(t, "duplicate", labels[1].Name)
 	assert.Equal(t, "cccccc", labels[1].Color)
 }
 
@@ -38,8 +38,8 @@ func TestLabelsService_One(t *testing.T) {
 
 	assert.False(t, result.HasError())
 
-  assert.Equal(t, "https://api.github.com/repos/octokit/go-octokit/labels/bug", (*label).URL)
-  assert.Equal(t, "bug", (*label).Name)
+	assert.Equal(t, "https://api.github.com/repos/octokit/go-octokit/labels/bug", (*label).URL)
+	assert.Equal(t, "bug", (*label).Name)
 	assert.Equal(t, "fc2929", (*label).Color)
 }
 
@@ -56,7 +56,7 @@ func TestLabelsService_Create(t *testing.T) {
 	assert.False(t, result.HasError())
 
 	assert.Equal(t, "https://api.github.com/repos/octokit/go-octokit/labels/theLabel", label.URL)
-  assert.Equal(t, "theLabel", label.Name)
+	assert.Equal(t, "theLabel", label.Name)
 	assert.Equal(t, "ffffff", label.Color)
 }
 
@@ -73,7 +73,7 @@ func TestLabelsService_Update(t *testing.T) {
 	assert.False(t, result.HasError())
 
 	assert.Equal(t, "https://api.github.com/repos/octokit/go-octokit/labels/theChangedName", label.URL)
-  assert.Equal(t, "theChangedName", label.Name)
+	assert.Equal(t, "theChangedName", label.Name)
 	assert.Equal(t, "000000", label.Color)
 }
 

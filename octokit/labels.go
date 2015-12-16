@@ -93,5 +93,5 @@ type Label struct {
 
 	URL   string `json:"url,omitempty"`
 	Name  string `json:"name,omitempty"`
-  Color string `json:"color,omitempty"`
+	Color string `json:"color,omitempty"`
 }
