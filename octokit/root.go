@@ -42,6 +42,8 @@ type RootService struct {
 }
 
 // One accesses the root URI templates and assigns them to result
+//
+// https://developer.github.com/v3/#root-endpoint
 func (r *RootService) One() (root *Root, result *Result) {
 	root = &Root{HALResource: &hypermedia.HALResource{}}
 	result = r.client.get(r.URL, &root)

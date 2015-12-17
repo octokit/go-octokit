@@ -25,6 +25,8 @@ type OrganizationService struct {
 }
 
 // Get the specified organization's information
+//
+// https://developer.github.com/v3/orgs/#get-an-organization
 func (g *OrganizationService) OrganizationGet(uri *Hyperlink, params M) (
 	organization Organization, result *Result) {
 	if uri == nil {
@@ -39,6 +41,8 @@ func (g *OrganizationService) OrganizationGet(uri *Hyperlink, params M) (
 }
 
 // Update specified organization's information
+//
+// https://developer.github.com/v3/orgs/#edit-an-organization
 func (g *OrganizationService) OrganizationUpdate(uri *Hyperlink,
 	input OrganizationParams, URLParams M) (organization Organization,
 	result *Result) {
@@ -54,6 +58,8 @@ func (g *OrganizationService) OrganizationUpdate(uri *Hyperlink,
 }
 
 // Get the list of repository information of an organization
+//
+// https://developer.github.com/v3/repos/#list-organization-repositories
 func (g *OrganizationService) OrganizationRepos(uri *Hyperlink, params M) (
 	repos []Repository, result *Result) {
 	if uri == nil {
@@ -68,6 +74,8 @@ func (g *OrganizationService) OrganizationRepos(uri *Hyperlink, params M) (
 }
 
 // Get information for the list of organizations the current user belongs to
+//
+// https://developer.github.com/v3/orgs/#list-your-organizations
 func (g *OrganizationService) YourOrganizations(uri *Hyperlink, params M) (
 	organizations []Organization, result *Result) {
 	if uri == nil {
@@ -82,6 +90,8 @@ func (g *OrganizationService) YourOrganizations(uri *Hyperlink, params M) (
 }
 
 // Get the information for the list of organizations the specified user belongs to
+//
+// https://developer.github.com/v3/orgs/#list-user-organizations
 func (g *OrganizationService) UserOrganizations(uri *Hyperlink, params M) (
 	organizations []Organization, result *Result) {
 	if uri == nil {

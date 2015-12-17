@@ -20,6 +20,8 @@ type IssueCommentsService struct {
 }
 
 // Get a list of all issue comments
+//
+// https://developer.github.com/v3/issues/comments/#list-comments-on-an-issue
 func (c *IssueCommentsService) All(uri *Hyperlink, uriParams M) (comments []IssueComment, result *Result) {
 	url, err := ExpandWithDefault(uri, &IssueCommentsURL, uriParams)
 	if err != nil {
@@ -31,6 +33,8 @@ func (c *IssueCommentsService) All(uri *Hyperlink, uriParams M) (comments []Issu
 }
 
 // Get a single comment by id
+//
+// https://developer.github.com/v3/issues/comments/#get-a-single-comment
 func (c *IssueCommentsService) One(uri *Hyperlink, uriParams M) (comment *IssueComment, result *Result) {
 	url, err := ExpandWithDefault(uri, &IssueCommentsURL, uriParams)
 	if err != nil {
@@ -42,6 +46,8 @@ func (c *IssueCommentsService) One(uri *Hyperlink, uriParams M) (comment *IssueC
 }
 
 // Creates a comment on an issue
+//
+// https://developer.github.com/v3/issues/comments/#create-a-comment
 func (c *IssueCommentsService) Create(uri *Hyperlink, uriParams M, requestParams interface{}) (comment *IssueComment, result *Result) {
 	url, err := ExpandWithDefault(uri, &IssueCommentsURL, uriParams)
 	if err != nil {
@@ -53,6 +59,8 @@ func (c *IssueCommentsService) Create(uri *Hyperlink, uriParams M, requestParams
 }
 
 // Updates a comment on an issue
+//
+// https://developer.github.com/v3/issues/comments/#edit-a-comment
 func (c *IssueCommentsService) Update(uri *Hyperlink, uriParams M, requestParams interface{}) (comment *IssueComment, result *Result) {
 	url, err := ExpandWithDefault(uri, &IssueCommentsURL, uriParams)
 	if err != nil {
@@ -64,6 +72,8 @@ func (c *IssueCommentsService) Update(uri *Hyperlink, uriParams M, requestParams
 }
 
 // Deletes a comment on an issue
+//
+// https://developer.github.com/v3/issues/comments/#delete-a-comment
 func (c *IssueCommentsService) Delete(uri *Hyperlink, uriParams M) (success bool, result *Result) {
 	url, err := ExpandWithDefault(uri, &IssueCommentsURL, uriParams)
 	if err != nil {

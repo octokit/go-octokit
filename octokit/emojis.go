@@ -26,7 +26,7 @@ type EmojisService struct {
 
 // All gets a list all the available emoji paths from the service
 //
-// https://developer.github.com/v3/emojis/
+// https://developer.github.com/v3/emojis/#emojis
 func (s *EmojisService) All() (emojis map[string]string, result *Result) {
 	result = s.client.get(s.URL, &emojis)
 	return

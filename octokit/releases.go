@@ -74,6 +74,9 @@ func (r *ReleasesService) All() (releases []Release, result *Result) {
 	return
 }
 
+// Latest gets the latest release for a repository
+//
+// https://developer.github.com/v3/repos/releases/#get-the-latest-release
 func (r *ReleasesService) Latest() (release *Release, result *Result) {
 	result = r.client.get(r.URL, &release)
 	return
