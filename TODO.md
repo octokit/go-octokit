@@ -90,16 +90,16 @@
 - [ ] https://developer.github.com/v3/issues/events/#list-events-for-a-repository
 - [ ] https://developer.github.com/v3/issues/events/#list-events-for-an-issue
 - [ ] https://developer.github.com/v3/issues/labels/
-- [ ] https://developer.github.com/v3/issues/labels/#add-labels-to-an-issue
-- [ ] https://developer.github.com/v3/issues/labels/#create-a-label
-- [ ] https://developer.github.com/v3/issues/labels/#delete-a-label
-- [ ] https://developer.github.com/v3/issues/labels/#get-a-single-label
-- [ ] https://developer.github.com/v3/issues/labels/#list-all-labels-for-this-repository
-- [ ] https://developer.github.com/v3/issues/labels/#list-labels-on-an-issue
-- [ ] https://developer.github.com/v3/issues/labels/#remove-a-label-from-an-issue
-- [ ] https://developer.github.com/v3/issues/labels/#remove-all-labels-from-an-issue
-- [ ] https://developer.github.com/v3/issues/labels/#replace-all-labels-for-an-issue
-- [ ] https://developer.github.com/v3/issues/labels/#update-a-label
+- [x] https://developer.github.com/v3/issues/labels/#add-labels-to-an-issue
+- [x] https://developer.github.com/v3/issues/labels/#create-a-label
+- [x] https://developer.github.com/v3/issues/labels/#delete-a-label
+- [x] https://developer.github.com/v3/issues/labels/#get-a-single-label
+- [x] https://developer.github.com/v3/issues/labels/#list-all-labels-for-this-repository
+- [x] https://developer.github.com/v3/issues/labels/#list-labels-on-an-issue
+- [x] https://developer.github.com/v3/issues/labels/#remove-a-label-from-an-issue
+- [x] https://developer.github.com/v3/issues/labels/#remove-all-labels-from-an-issue
+- [x] https://developer.github.com/v3/issues/labels/#replace-all-labels-for-an-issue
+- [x] https://developer.github.com/v3/issues/labels/#update-a-label
 - [ ] https://developer.github.com/v3/issues/milestones/
 - [ ] https://developer.github.com/v3/issues/milestones/#create-a-milestone
 - [ ] https://developer.github.com/v3/issues/milestones/#delete-a-milestone

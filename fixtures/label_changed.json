@@ -1,0 +1,5 @@
+{
+  "url": "https://api.github.com/repos/octokit/go-octokit/labels/theChangedName",
+  "name": "theChangedName",
+  "color": "000000"
+}
