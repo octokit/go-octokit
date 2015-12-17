@@ -23,6 +23,8 @@ type PublicKeysService struct {
 }
 
 // Get a list of keys for the user
+//
+// https://developer.github.com/v3/repos/keys/#list-deploy-keys
 func (k *PublicKeysService) All(uri *Hyperlink, uriParams M) (keys []Key, result *Result) {
 	url, err := ExpandWithDefault(uri, &CurrentPublicKeyUrl, uriParams)
 	if err != nil {
@@ -34,6 +36,8 @@ func (k *PublicKeysService) All(uri *Hyperlink, uriParams M) (keys []Key, result
 }
 
 // Get a the data for one key for the current user
+//
+// https://developer.github.com/v3/repos/keys/#get-a-deploy-key
 func (k *PublicKeysService) One(uri *Hyperlink, uriParams M) (key *Key, result *Result) {
 	url, err := ExpandWithDefault(uri, &CurrentPublicKeyUrl, uriParams)
 	if err != nil {
@@ -45,6 +49,8 @@ func (k *PublicKeysService) One(uri *Hyperlink, uriParams M) (key *Key, result *
 }
 
 // Creates a new public key for the current user
+//
+// https://developer.github.com/v3/repos/keys/#add-a-new-deploy-key
 func (k *PublicKeysService) Create(uri *Hyperlink, uriParams M, requestParams interface{}) (key *Key, result *Result) {
 	url, err := ExpandWithDefault(uri, &CurrentPublicKeyUrl, uriParams)
 	if err != nil {
@@ -56,6 +62,8 @@ func (k *PublicKeysService) Create(uri *Hyperlink, uriParams M, requestParams in
 }
 
 // Removes a public key for the current user
+//
+// https://developer.github.com/v3/repos/keys/#remove-a-deploy-key
 func (k *PublicKeysService) Delete(uri *Hyperlink, uriParams M) (success bool, result *Result) {
 	url, err := ExpandWithDefault(uri, &CurrentPublicKeyUrl, uriParams)
 	if err != nil {
