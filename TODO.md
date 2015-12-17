@@ -1,4 +1,3 @@
-- [ ] http://developer.github.com/v3/issues/labels/#get-labels-for-every-issue-in-a-milestone
 - [ ] https://developer.github.com/v3/#rate-limiting
 - [ ] https://developer.github.com/v3/activity/events/#list-events-for-an-organization
 - [ ] https://developer.github.com/v3/activity/events/#list-events-performed-by-a-user
@@ -82,6 +81,7 @@
 - [ ] https://developer.github.com/v3/issues/events/#list-events-for-a-repository
 - [ ] https://developer.github.com/v3/issues/events/#list-events-for-an-issue
 - [x] https://developer.github.com/v3/issues/labels/#add-labels-to-an-issue
+- [ ] https://developer.github.com/v3/issues/labels/#get-labels-for-every-issue-in-a-milestone
 - [x] https://developer.github.com/v3/issues/labels/#create-a-label
 - [x] https://developer.github.com/v3/issues/labels/#delete-a-label
 - [x] https://developer.github.com/v3/issues/labels/#get-a-single-label
