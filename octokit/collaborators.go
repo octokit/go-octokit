@@ -20,6 +20,8 @@ type CollaboratorsService struct {
 }
 
 // All lists all the collaborating users on the given repository
+//
+// https://developer.github.com/v3/repos/collaborators/#list
 func (r *CollaboratorsService) All(uri *Hyperlink, params M) (users []User,
 	result *Result) {
 	if uri == nil {
@@ -33,6 +35,9 @@ func (r *CollaboratorsService) All(uri *Hyperlink, params M) (users []User,
 	return
 }
 
+// IsCollaborator checks if a user is a collaborator for a repo
+//
+// https://developer.github.com/v3/repos/collaborators/#check-if-a-user-is-a-collaborator
 func (r *CollaboratorsService) IsCollaborator(uri *Hyperlink,
 	params M) (collabStatus bool, result *Result) {
 	if uri == nil {
