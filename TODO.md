@@ -47,11 +47,11 @@
 - [x] https://developer.github.com/v3/gists/#list-gists
 - [x] https://developer.github.com/v3/gists/#star-a-gist
 - [x] https://developer.github.com/v3/gists/#unstar-a-gist
-- [ ] https://developer.github.com/v3/gists/comments/#create-a-comment
-- [ ] https://developer.github.com/v3/gists/comments/#delete-a-comment
-- [ ] https://developer.github.com/v3/gists/comments/#edit-a-comment
-- [ ] https://developer.github.com/v3/gists/comments/#get-a-single-comment
-- [ ] https://developer.github.com/v3/gists/comments/#list-comments-on-a-gist
+- [x] https://developer.github.com/v3/gists/comments/#create-a-comment
+- [x] https://developer.github.com/v3/gists/comments/#delete-a-comment
+- [x] https://developer.github.com/v3/gists/comments/#edit-a-comment
+- [x] https://developer.github.com/v3/gists/comments/#get-a-single-comment
+- [x] https://developer.github.com/v3/gists/comments/#list-comments-on-a-gist
 - [ ] https://developer.github.com/v3/git/
 - [ ] https://developer.github.com/v3/git/blobs/#create-a-blob
 - [ ] https://developer.github.com/v3/git/blobs/#get-a-blob
@@ -79,12 +79,12 @@
 - [x] https://developer.github.com/v3/issues/#list-issues-for-a-repository
 - [ ] https://developer.github.com/v3/issues/assignees/#check-assignee
 - [ ] https://developer.github.com/v3/issues/assignees/#list-assignees
-- [ ] https://developer.github.com/v3/issues/comments/#create-a-comment
-- [ ] https://developer.github.com/v3/issues/comments/#delete-a-comment
-- [ ] https://developer.github.com/v3/issues/comments/#edit-a-comment
-- [ ] https://developer.github.com/v3/issues/comments/#get-a-single-comment
-- [ ] https://developer.github.com/v3/issues/comments/#list-comments-in-a-repository
-- [ ] https://developer.github.com/v3/issues/comments/#list-comments-on-an-issue
+- [x] https://developer.github.com/v3/issues/comments/#create-a-comment
+- [x] https://developer.github.com/v3/issues/comments/#delete-a-comment
+- [x] https://developer.github.com/v3/issues/comments/#edit-a-comment
+- [x] https://developer.github.com/v3/issues/comments/#get-a-single-comment
+- [x] https://developer.github.com/v3/issues/comments/#list-comments-in-a-repository
+- [x] https://developer.github.com/v3/issues/comments/#list-comments-on-an-issue
 - [ ] https://developer.github.com/v3/issues/events/
 - [ ] https://developer.github.com/v3/issues/events/#get-a-single-event
 - [ ] https://developer.github.com/v3/issues/events/#list-events-for-a-repository
@@ -127,10 +127,11 @@
 - [ ] https://developer.github.com/v3/oauth_authorizations/#revoke-all-authorizations-for-an-application
 - [ ] https://developer.github.com/v3/oauth_authorizations/#revoke-an-authorization-for-an-application
 - [ ] https://developer.github.com/v3/oauth_authorizations/#update-an-existing-authorization
-- [ ] https://developer.github.com/v3/orgs/
-- [ ] https://developer.github.com/v3/orgs/#edit-an-organization
-- [ ] https://developer.github.com/v3/orgs/#get-an-organization
-- [ ] https://developer.github.com/v3/orgs/#list-user-organizations
+- [ ] https://developer.github.com/v3/orgs/#list-all-organizations
+- [x] https://developer.github.com/v3/orgs/#edit-an-organization
+- [x] https://developer.github.com/v3/orgs/#get-an-organization
+- [x] https://developer.github.com/v3/orgs/#list-user-organizations
+- [x] https://developer.github.com/v3/orgs/#list-your-organizations
 - [ ] https://developer.github.com/v3/orgs/hooks/#create-a-hook
 - [ ] https://developer.github.com/v3/orgs/hooks/#delete-a-hook
 - [ ] https://developer.github.com/v3/orgs/hooks/#edit-a-hook
