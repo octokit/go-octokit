@@ -20,6 +20,8 @@ type GistCommentsService struct {
 }
 
 // Get a list of all gist comments
+//
+// https://developer.github.com/v3/gists/comments/#list-comments-on-a-gist
 func (c *GistCommentsService) All(uri *Hyperlink, uriParams M) (comments []GistComment, result *Result) {
 	url, err := ExpandWithDefault(uri, &GistCommentsURL, uriParams)
 	if err != nil {
@@ -31,6 +33,8 @@ func (c *GistCommentsService) All(uri *Hyperlink, uriParams M) (comments []GistC
 }
 
 // Get a single comment by id
+//
+// https://developer.github.com/v3/gists/comments/#get-a-single-comment
 func (c *GistCommentsService) One(uri *Hyperlink, uriParams M) (comment *GistComment, result *Result) {
 	url, err := ExpandWithDefault(uri, &GistCommentsURL, uriParams)
 	if err != nil {
@@ -42,6 +46,8 @@ func (c *GistCommentsService) One(uri *Hyperlink, uriParams M) (comment *GistCom
 }
 
 // Creates a comment on a gist
+//
+// https://developer.github.com/v3/gists/comments/#create-a-comment
 func (c *GistCommentsService) Create(uri *Hyperlink, uriParams M, requestParams interface{}) (comment *GistComment, result *Result) {
 	url, err := ExpandWithDefault(uri, &GistCommentsURL, uriParams)
 	if err != nil {
@@ -53,6 +59,8 @@ func (c *GistCommentsService) Create(uri *Hyperlink, uriParams M, requestParams 
 }
 
 // Updates a comment on a gist
+//
+// https://developer.github.com/v3/gists/comments/#edit-a-comment
 func (c *GistCommentsService) Update(uri *Hyperlink, uriParams M, requestParams interface{}) (comment *GistComment, result *Result) {
 	url, err := ExpandWithDefault(uri, &GistCommentsURL, uriParams)
 	if err != nil {
@@ -64,6 +72,8 @@ func (c *GistCommentsService) Update(uri *Hyperlink, uriParams M, requestParams 
 }
 
 // Deletes a comment on a gist
+//
+// https://developer.github.com/v3/gists/comments/#delete-a-comment
 func (c *GistCommentsService) Delete(uri *Hyperlink, uriParams M) (success bool, result *Result) {
 	url, err := ExpandWithDefault(uri, &GistCommentsURL, uriParams)
 	if err != nil {
