@@ -13,6 +13,8 @@ var (
 )
 
 // Meta return an APIInfo with the current API meta information
+//
+// https://developer.github.com/v3/meta/#meta
 func (c *Client) Meta(uri *Hyperlink) (info APIInfo, result *Result) {
 	url, err := uri.Expand(nil)
 	if err != nil {
