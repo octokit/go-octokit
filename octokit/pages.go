@@ -27,7 +27,8 @@ type PagesService struct {
 	client *Client
 }
 
-// Get information about a Pages site
+// PageInfo gets the information about a Pages site
+//
 // https://developer.github.com/v3/repos/pages/#get-information-about-a-pages-site
 func (g *PagesService) PageInfo(uri *Hyperlink, uriParams M) (page *PageInfo,
 	result *Result) {
@@ -39,7 +40,8 @@ func (g *PagesService) PageInfo(uri *Hyperlink, uriParams M) (page *PageInfo,
 	return
 }
 
-//https://developer.github.com/v3/repos/pages/#list-pages-builds
+// PageBuilds lists the builds of a given page
+// https://developer.github.com/v3/repos/pages/#list-pages-builds
 func (g *PagesService) PageBuilds(uri *Hyperlink, uriParams M) (builds []PageBuild,
 	result *Result) {
 	url, err := ExpandWithDefault(uri, &PagesBuildsURL, uriParams)
@@ -50,7 +52,9 @@ func (g *PagesService) PageBuilds(uri *Hyperlink, uriParams M) (builds []PageBui
 	return
 }
 
-//https://developer.github.com/v3/repos/pages/#list-latest-pages-build
+// PageBuildLatest gets the latest build for a page
+//
+// https://developer.github.com/v3/repos/pages/#list-latest-pages-build
 func (g *PagesService) PageBuildLatest(uri *Hyperlink, uriParams M) (build *PageBuild,
 	result *Result) {
 	url, err := ExpandWithDefault(uri, &PagesLatestBuildURL, uriParams)
