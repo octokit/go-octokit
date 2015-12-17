@@ -24,7 +24,9 @@ type CommitCommentsService struct {
 	client *Client
 }
 
-// Get a list of all commit comments
+// All commit comments for a single commit
+//
+// https://developer.github.com/v3/repos/comments/#list-comments-for-a-single-commit
 func (c *CommitCommentsService) All(uri *Hyperlink, uriParams M) (comments []CommitComment, result *Result) {
 	url, err := ExpandWithDefault(uri, &RepoCommentsURL, uriParams)
 	if err != nil {
@@ -35,7 +37,9 @@ func (c *CommitCommentsService) All(uri *Hyperlink, uriParams M) (comments []Com
 	return
 }
 
-// Get a single comment by id
+// One commit comment by id 
+//
+// https://developer.github.com/v3/repos/comments/#get-a-single-commit-comment
 func (c *CommitCommentsService) One(uri *Hyperlink, uriParams M) (comment *CommitComment, result *Result) {
 	url, err := ExpandWithDefault(uri, &RepoCommentsURL, uriParams)
 	if err != nil {
@@ -47,6 +51,8 @@ func (c *CommitCommentsService) One(uri *Hyperlink, uriParams M) (comment *Commi
 }
 
 // Creates a comment on a commit
+//
+// https://developer.github.com/v3/repos/comments/#create-a-commit-comment
 func (c *CommitCommentsService) Create(uri *Hyperlink, uriParams M, requestParams interface{}) (comment *CommitComment, result *Result) {
 	url, err := ExpandWithDefault(uri, &CommitCommentsURL, uriParams)
 	if err != nil {
@@ -58,6 +64,8 @@ func (c *CommitCommentsService) Create(uri *Hyperlink, uriParams M, requestParam
 }
 
 // Updates a comment on a commit
+//
+// https://developer.github.com/v3/repos/comments/#update-a-commit-comment
 func (c *CommitCommentsService) Update(uri *Hyperlink, uriParams M, requestParams interface{}) (comment *CommitComment, result *Result) {
 	url, err := ExpandWithDefault(uri, &RepoCommentsURL, uriParams)
 	if err != nil {
@@ -69,6 +77,8 @@ func (c *CommitCommentsService) Update(uri *Hyperlink, uriParams M, requestParam
 }
 
 // Deletes a comment on a commit
+//
+// https://developer.github.com/v3/repos/comments/#delete-a-commit-comment
 func (c *CommitCommentsService) Delete(uri *Hyperlink, uriParams M) (success bool, result *Result) {
 	url, err := ExpandWithDefault(uri, &RepoCommentsURL, uriParams)
 	if err != nil {
