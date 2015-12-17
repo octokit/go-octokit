@@ -114,7 +114,7 @@ func (g *GistsService) Update(uri *Hyperlink, uriParams M, requestParams interfa
 
 // Commits gets a list of all commits to the given gist
 //
-// https://developer.github.com/v3/gists/#list-gists
+// https://developer.github.com/v3/gists/#list-gist-commits
 func (g *GistsService) Commits(uri *Hyperlink, uriParams M) (gistCommits []GistCommit, result *Result) {
 	url, err := ExpandWithDefault(uri, &GistsCommitsURL, uriParams)
 	if err != nil {
