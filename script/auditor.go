@@ -75,7 +75,7 @@ func main() {
 		line := scanner.Text()
 		url := line[6:]
 		todoUrls = append(todoUrls, url)
-		if line[3] == '*' {
+		if line[3] == 'x' {
 			todoMap[url] = true
 		} else {
 			todoMap[url] = false
@@ -95,7 +95,7 @@ func main() {
 	for _, url := range todoUrls {
 		status := " "
 		if todoMap[url] {
-			status = "*"
+			status = "x"
 		}
 
 		outString += fmt.Sprintf("- [%s] %s\n", status, url)
