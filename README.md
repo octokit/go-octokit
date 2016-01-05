@@ -131,4 +131,4 @@ See [Releases](https://github.com/octokit/go-octokit/releases).
 ## License
 
 go-octokit is released under the MIT license. See
-[LICENSE.md](https://github.com/octokit/go-octokit/blob/master/LICENSE.md).
+[LICENSE](https://github.com/octokit/go-octokit/blob/master/LICENSE).
