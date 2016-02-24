@@ -254,7 +254,7 @@
 - [ ] https://developer.github.com/v3/repos/statistics/#get-the-number-of-additions-and-deletions-per-week
 - [ ] https://developer.github.com/v3/repos/statistics/#get-the-number-of-commits-per-hour-in-each-day
 - [ ] https://developer.github.com/v3/repos/statistics/#get-the-weekly-commit-count-for-the-repository-owner-and-everyone-else
-- [ ] https://developer.github.com/v3/repos/statuses/#create-a-status
+- [x] https://developer.github.com/v3/repos/statuses/#create-a-status
 - [ ] https://developer.github.com/v3/repos/statuses/#get-the-combined-status-for-a-specific-ref
 - [x] https://developer.github.com/v3/repos/statuses/#list-statuses-for-a-specific-ref
 - [ ] https://developer.github.com/v3/repos/watching/#list-watchers
