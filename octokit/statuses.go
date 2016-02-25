@@ -36,6 +36,14 @@ func (s *StatusesService) All() (statuses []Status, result *Result) {
 	return
 }
 
+// Create creates a commit status for a given ref
+//
+// https://developer.github.com/v3/repos/statuses/#create-a-status
+func (s *StatusesService) Create(params interface{}) (status *Status, result *Result) {
+	result = s.client.post(s.URL, params, &status)
+	return
+}
+
 // Status represents a state marked from an external service regarding the
 // current state of a commit, including success, failure, error or pending
 type Status struct {
@@ -48,5 +56,6 @@ type Status struct {
 	Description string    `json:"description,omitempty"`
 	ID          int       `json:"id,omitempty"`
 	URL         string    `json:"url,omitempty"`
+	Context     string    `json:"context,omitempty"`
 	Creator     User      `json:"creator,omitempty"`
 }
