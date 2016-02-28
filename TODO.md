@@ -141,23 +141,24 @@
 - [ ] https://developer.github.com/v3/orgs/migrations/#get-the-status-of-a-migration
 - [ ] https://developer.github.com/v3/orgs/migrations/#start-a-migration
 - [ ] https://developer.github.com/v3/orgs/migrations/#unlock-a-repository
-- [ ] https://developer.github.com/v3/orgs/teams/#add-team-member
-- [ ] https://developer.github.com/v3/orgs/teams/#add-team-membership
-- [ ] https://developer.github.com/v3/orgs/teams/#add-team-repository
-- [ ] https://developer.github.com/v3/orgs/teams/#check-if-a-team-manages-a-repository
-- [ ] https://developer.github.com/v3/orgs/teams/#create-team
-- [ ] https://developer.github.com/v3/orgs/teams/#delete-team
-- [ ] https://developer.github.com/v3/orgs/teams/#edit-team
-- [ ] https://developer.github.com/v3/orgs/teams/#get-team
-- [ ] https://developer.github.com/v3/orgs/teams/#get-team-member
-- [ ] https://developer.github.com/v3/orgs/teams/#get-team-membership
-- [ ] https://developer.github.com/v3/orgs/teams/#list-team-members
-- [ ] https://developer.github.com/v3/orgs/teams/#list-team-repos
-- [ ] https://developer.github.com/v3/orgs/teams/#list-teams
-- [ ] https://developer.github.com/v3/orgs/teams/#list-user-teams
-- [ ] https://developer.github.com/v3/orgs/teams/#remove-team-member
-- [ ] https://developer.github.com/v3/orgs/teams/#remove-team-membership
-- [ ] https://developer.github.com/v3/orgs/teams/#remove-team-repository
+- [ ] ~~https://developer.github.com/v3/orgs/teams/#add-team-member~~ _(deprecated)_
+- [x] https://developer.github.com/v3/orgs/teams/#add-team-membership
+- [ ] ~~https://developer.github.com/v3/orgs/teams/#add-team-repository~~ _(not listed)_
+- [x] https://developer.github.com/v3/orgs/teams/#add-or-update-team-repository
+- [x] https://developer.github.com/v3/orgs/teams/#check-if-a-team-manages-a-repository
+- [x] https://developer.github.com/v3/orgs/teams/#create-team
+- [x] https://developer.github.com/v3/orgs/teams/#delete-team
+- [x] https://developer.github.com/v3/orgs/teams/#edit-team
+- [x] https://developer.github.com/v3/orgs/teams/#get-team
+- [ ] ~~https://developer.github.com/v3/orgs/teams/#get-team-member~~ _(deprecated)_
+- [x] https://developer.github.com/v3/orgs/teams/#get-team-membership
+- [x] https://developer.github.com/v3/orgs/teams/#list-team-members
+- [x] https://developer.github.com/v3/orgs/teams/#list-team-repos
+- [x] https://developer.github.com/v3/orgs/teams/#list-teams
+- [x] https://developer.github.com/v3/orgs/teams/#list-user-teams
+- [ ] ~~https://developer.github.com/v3/orgs/teams/#remove-team-member~~ _(deprecated)_
+- [x] https://developer.github.com/v3/orgs/teams/#remove-team-membership
+- [x] https://developer.github.com/v3/orgs/teams/#remove-team-repository
 - [ ] https://developer.github.com/v3/pulls/#alternative-input
 - [x] https://developer.github.com/v3/pulls/#create-a-pull-request
 - [x] https://developer.github.com/v3/pulls/#get-a-single-pull-request

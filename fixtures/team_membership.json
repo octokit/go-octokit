@@ -1,0 +1,5 @@
+{
+  "url":"https://api.github.com/teams/1/memberships/SomeUser",
+  "role":"member",
+  "state":"active"
+}
