@@ -91,10 +91,10 @@
 - [x] https://developer.github.com/v3/issues/labels/#remove-all-labels-from-an-issue
 - [x] https://developer.github.com/v3/issues/labels/#replace-all-labels-for-an-issue
 - [x] https://developer.github.com/v3/issues/labels/#update-a-label
-- [ ] https://developer.github.com/v3/issues/milestones/#create-a-milestone
-- [ ] https://developer.github.com/v3/issues/milestones/#delete-a-milestone
-- [ ] https://developer.github.com/v3/issues/milestones/#get-a-single-milestone
-- [ ] https://developer.github.com/v3/issues/milestones/#list-milestones-for-a-repository
+- [x] https://developer.github.com/v3/issues/milestones/#create-a-milestone
+- [x] https://developer.github.com/v3/issues/milestones/#delete-a-milestone
+- [x] https://developer.github.com/v3/issues/milestones/#get-a-single-milestone
+- [x] https://developer.github.com/v3/issues/milestones/#list-milestones-for-a-repository
 - [ ] https://developer.github.com/v3/issues/milestones/#update-a-milestone
 - [ ] https://developer.github.com/v3/markdown/#render-an-arbitrary-markdown-document
 - [x] https://developer.github.com/v3/meta/#meta
