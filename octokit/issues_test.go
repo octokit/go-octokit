@@ -115,6 +115,7 @@ func validateIssue(t *testing.T, issue Issue) {
 	assert.Equal(t, (*time.Time)(nil), issue.Milestone.DueOn)
 
 	assert.Equal(t, 0, issue.Comments)
+	assert.Equal(t, "https://api.github.com/repos/octocat/Hello-World/pulls/1347", issue.PullRequest.URL)
 	assert.Equal(t, "https://github.com/octocat/Hello-World/pull/1347", issue.PullRequest.HTMLURL)
 	assert.Equal(t, "https://github.com/octocat/Hello-World/pull/1347.diff", issue.PullRequest.DiffURL)
 	assert.Equal(t, "https://github.com/octocat/Hello-World/pull/1347.patch", issue.PullRequest.PatchURL)

@@ -105,6 +105,7 @@ type Issue struct {
 	}
 	Comments    int `json:"comments,omitempty"`
 	PullRequest struct {
+		URL      string `json:"url,omitempty"`
 		HTMLURL  string `json:"html_url,omitempty"`
 		DiffURL  string `json:"diff_url,omitempty"`
 		PatchURL string `json:"patch_url,omitempty"`
