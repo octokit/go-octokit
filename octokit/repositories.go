@@ -1,8 +1,9 @@
 package octokit
 
 import (
-	"github.com/jingweno/go-sawyer/hypermedia"
 	"time"
+
+	"github.com/jingweno/go-sawyer/hypermedia"
 )
 
 // Hyperlinks to the various repository locations on github.
@@ -85,6 +86,30 @@ func (r *RepositoriesService) Create(uri *Hyperlink, uriParams M,
 	}
 	result = r.client.post(url, params, &repo)
 	return
+}
+
+// Get retrieves a repository given an owner (org or user name) and the repository's name.
+func (r *RepositoriesService) Get(owner, repo string) (*Repository, *Result) {
+	return r.One(&RepositoryURL, repositoryParams(owner, repo))
+}
+
+// Forks retrieves the forks for a repository given an owner and the repository's name.
+func (r *RepositoriesService) Forks(owner, repo string) ([]Repository, *Result) {
+	return r.All(&ForksURL, repositoryParams(owner, repo))
+}
+
+// Owned retrieves the repositories that the client's user owns.
+func (r *RepositoriesService) Owned() ([]Repository, *Result) {
+	return r.All(&UserRepositoriesURL, M{})
+}
+
+// InOrg retrieves the repositories that belong to an organization.
+func (r *RepositoriesService) InOrg(org string) ([]Repository, *Result) {
+	return r.All(&OrgRepositoriesURL, M{"org": org})
+}
+
+func repositoryParams(owner, repo string) M {
+	return M{"owner": owner, "repo": repo}
 }
 
 // Repository represents a respository on GitHub with all associated metadata
