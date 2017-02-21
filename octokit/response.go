@@ -21,6 +21,8 @@ type Response struct {
 // new Response from the underlying HttpResponse, MediaType and
 // MediaHeader
 func NewResponse(sawyerResp *sawyer.Response) (resp *Response, err error) {
+	resp = &Response{Response: sawyerResp.Response, MediaType: sawyerResp.MediaType, MediaHeader: sawyerResp.MediaHeader}
+
 	if sawyerResp.IsError() {
 		err = sawyerResp.ResponseError
 		return
@@ -28,10 +30,6 @@ func NewResponse(sawyerResp *sawyer.Response) (resp *Response, err error) {
 
 	if sawyerResp.IsApiError() {
 		err = NewResponseError(sawyerResp)
-		return
 	}
-
-	resp = &Response{Response: sawyerResp.Response, MediaType: sawyerResp.MediaType, MediaHeader: sawyerResp.MediaHeader}
-
 	return
 }
