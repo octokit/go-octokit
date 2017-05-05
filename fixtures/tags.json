@@ -1,0 +1,20 @@
+[
+  {
+    "ref": "refs/tags/v2",
+    "url": "https://api.github.com/repos/jingweno/gh/git/refs/tags/v2",
+    "object": {
+      "sha": "6cb80cb09fd9f624a64d85438157955751a9ac70",
+      "type": "commit",
+      "url": "https://api.github.com/repos/jingweno/gh/git/commits/6cb80cb09fd9f624a64d85438157955751a9ac70"
+    }
+  },
+  {
+    "ref": "refs/tags/v1",
+    "url": "https://api.github.com/repos/jingweno/gh/git/refs/tags/v1",
+    "object": {
+      "sha": "2fffba7fe19690e038314d17a117d6b87979c89f",
+      "type": "commit",
+      "url": "https://api.github.com/repos/jingweno/gh/git/commits/2fffba7fe19690e038314d17a117d6b87979c89f"
+    }
+  }
+]
