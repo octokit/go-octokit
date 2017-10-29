@@ -19,5 +19,34 @@
     "public_members_url": "https://api.github.com/orgs/octokit/public_members{/member}",
     "avatar_url": "https://avatars.githubusercontent.com/u/3430433?v=3",
     "description": null
+  },
+  {
+    "login": "github",
+    "id": 1,
+    "url": "https://api.github.com/orgs/github",
+    "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+    "name": "github",
+    "company": "GitHub",
+    "blog": "https://github.com/blog",
+    "location": "San Francisco",
+    "email": "octocat@github.com",
+    "public_repos": 2,
+    "public_gists": 1,
+    "followers": 20,
+    "following": 0,
+    "html_url": "https://github.com/octocat",
+    "created_at": "2008-01-14T04:33:35Z",
+    "type": "Organization",
+    "total_private_repos": 100,
+    "owned_private_repos": 100,
+    "private_gists": 81,
+    "disk_usage": 10000,
+    "collaborators": 8,
+    "billing_email": "support@github.com",
+    "plan": {
+        "name": "Medium",
+        "space": 400,
+        "private_repos": 20
+      }
   }
 ]
