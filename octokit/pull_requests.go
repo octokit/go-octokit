@@ -114,6 +114,7 @@ type PullRequest struct {
 	ChangedFiles      int               `json:"changed_files,omitempty"`
 	Mergeable         *bool             `json:"mergeable,omitempty"`
 	MergeableState    string            `json:"mergeable_state,omitempty"`
+	Labels            []Label           `json:"labels,omitempty"`
 }
 
 // PullRequestCommit represents one of the commits associated with the given
