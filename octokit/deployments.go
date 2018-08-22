@@ -33,6 +33,23 @@ func (c *DeploymentsService) All(uri *Hyperlink, params M) (deployments []Deploy
 	return
 }
 
+// Create posts a new deployment based on parameters in a Deployment struct to
+// the deployment service url
+//
+func (r *DeploymentsService) Create(uri *Hyperlink, uriParams M,
+	params interface{}) (repo *Deployment, result *Result) {
+	if uri == nil {
+		uri = &DeploymentsURL
+	}
+
+	url, err := uri.Expand(uriParams)
+	if err != nil {
+		return nil, &Result{Err: err}
+	}
+	result = r.client.post(url, params, &repo)
+	return
+}
+
 // Payload represents the payload on the changes made in a deployment
 type DeploymentPayload struct {
 	Task string `json:"task,omitempty"`
@@ -56,4 +73,15 @@ type Deployment struct {
 	UpdatedAt     *time.Time					`json:"updated_at,omitempty"`
 	StatusesURL   string							`json:"statuses_url,omitempty"`
 	RepositoryURL string							`json:"repository_url,omitempty"`
+}
+
+// DeploymentParams represents the struture used to create a Deployment
+type DeploymentParams struct {
+	Ref							 string   `json:"ref,omitempty"`
+	Task						 string   `json:"body,omitempty"`
+	AutoMerge				 bool     `json:"auto_merge,omitempty"`
+	RequiredContexts []string `json:"required_contexts,omitempty"`
+	Payload					 string   `json:"payload,omitempty"`
+	Environment      string		`json:"environment,omitempty"`
+	Description      string   `json:"description,omitempty"`
 }

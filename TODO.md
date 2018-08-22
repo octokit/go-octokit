@@ -209,7 +209,7 @@
 - [ ] https://developer.github.com/v3/repos/contents/#get-contents
 - [ ] https://developer.github.com/v3/repos/contents/#get-the-readme
 - [ ] https://developer.github.com/v3/repos/contents/#update-a-file
-- [ ] https://developer.github.com/v3/repos/deployments/#create-a-deployment
+- [x] https://developer.github.com/v3/repos/deployments/#create-a-deployment
 - [ ] https://developer.github.com/v3/repos/deployments/#create-a-deployment-status
 - [ ] https://developer.github.com/v3/repos/deployments/#list-deployment-statuses
 - [x] https://developer.github.com/v3/repos/deployments/#list-deployments
