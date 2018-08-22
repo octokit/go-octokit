@@ -203,7 +203,6 @@
 - [ ] https://developer.github.com/v3/repos/commits/#compare-two-commits
 - [x] https://developer.github.com/v3/repos/commits/#get-a-single-commit
 - [x] https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository
-- [ ] https://developer.github.com/v3/repos/commits/deployments/
 - [ ] https://developer.github.com/v3/repos/contents/#create-a-file
 - [ ] https://developer.github.com/v3/repos/contents/#delete-a-file
 - [ ] https://developer.github.com/v3/repos/contents/#get-archive-link
@@ -213,7 +212,7 @@
 - [ ] https://developer.github.com/v3/repos/deployments/#create-a-deployment
 - [ ] https://developer.github.com/v3/repos/deployments/#create-a-deployment-status
 - [ ] https://developer.github.com/v3/repos/deployments/#list-deployment-statuses
-- [ ] https://developer.github.com/v3/repos/deployments/#list-deployments
+- [x] https://developer.github.com/v3/repos/deployments/#list-deployments
 - [ ] https://developer.github.com/v3/repos/downloads/#delete-a-download
 - [ ] https://developer.github.com/v3/repos/downloads/#get-a-single-download
 - [ ] https://developer.github.com/v3/repos/downloads/#list-downloads-for-a-repository
