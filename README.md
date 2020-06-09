@@ -2,10 +2,6 @@
 
 Go toolkit for the GitHub API.
 
-This project is no longer maintained. If you are looking for a stable, well-maintained client for the GitHub API v3, 
-please consider [google/go-github](https://github.com/google/go-github).  If you're interested in using the 
-GraphQL API v4, the recommended library is [shurcooL/githubv4](https://github.com/shurcooL/githubv4).
-
 ## Status
 
 This project is no longer maintained. If you are looking for a stable, well-maintained client for the GitHub API v3, 
